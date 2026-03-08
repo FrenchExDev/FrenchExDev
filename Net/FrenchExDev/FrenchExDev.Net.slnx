@@ -36,6 +36,15 @@
   <Folder Name="/Docker/test/">
     <Project Path="Docker/test/FrenchExDev.Net.Docker.Tests/FrenchExDev.Net.Docker.Tests.csproj" />
   </Folder>
+  <Folder Name="/DockerCompose/" />
+  <Folder Name="/DockerCompose/doc/" />
+  <Folder Name="/DockerCompose/src/">
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose/FrenchExDev.Net.DockerCompose.csproj" />
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose.Design/FrenchExDev.Net.DockerCompose.Design.csproj" />
+  </Folder>
+  <Folder Name="/DockerCompose/test/">
+    <Project Path="DockerCompose/test/FrenchExDev.Net.DockerCompose.Tests/FrenchExDev.Net.DockerCompose.Tests.csproj" />
+  </Folder>
   <Folder Name="/DockAi/" />
   <Folder Name="/DockAi/src/">
     <Project Path="DockAi/src/DockAi.Api/DockAi.Api.csproj" />
@@ -50,6 +59,15 @@
   </Folder>
   <Folder Name="/Podman/test/">
     <Project Path="Podman/test/FrenchExDev.Net.Podman.Tests/FrenchExDev.Net.Podman.Tests.csproj" />
+  </Folder>
+  <Folder Name="/PodmanCompose/" />
+  <Folder Name="/PodmanCompose/doc/" />
+  <Folder Name="/PodmanCompose/src/">
+    <Project Path="PodmanCompose/src/FrenchExDev.Net.PodmanCompose/FrenchExDev.Net.PodmanCompose.csproj" />
+    <Project Path="PodmanCompose/src/FrenchExDev.Net.PodmanCompose.Design/FrenchExDev.Net.PodmanCompose.Design.csproj" />
+  </Folder>
+  <Folder Name="/PodmanCompose/test/">
+    <Project Path="PodmanCompose/test/FrenchExDev.Net.PodmanCompose.Tests/FrenchExDev.Net.PodmanCompose.Tests.csproj" />
   </Folder>
   <Folder Name="/Packer/" />
   <Folder Name="/Packer/src/">

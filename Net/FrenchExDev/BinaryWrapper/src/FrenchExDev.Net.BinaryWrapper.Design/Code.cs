@@ -1086,6 +1086,300 @@ public sealed class CobraHelpParser : IHelpParser
     }
 }
 
+// ── Argparse Help Parser ────────────────────────────────────────────────────
+
+/// <summary>
+/// Parser for Python argparse-generated help output.
+/// Recognises the <c>{cmd1,cmd2,...}</c> subcommand notation, the
+/// <c>options:</c> / <c>optional arguments:</c> section headers, and
+/// metavar-based value detection.
+/// </summary>
+public sealed class ArgparseHelpParser : IHelpParser
+{
+    private enum Section { None, Usage, Options, Commands, PositionalArguments }
+
+    private readonly HashSet<string> _skippedCommands;
+
+    public ArgparseHelpParser(IEnumerable<string>? skippedCommands = null)
+    {
+        _skippedCommands = skippedCommands is not null
+            ? new(skippedCommands, StringComparer.OrdinalIgnoreCase)
+            : new(["help"], StringComparer.OrdinalIgnoreCase);
+    }
+
+    public CommandNode? Parse(string helpText, string commandName)
+    {
+        if (string.IsNullOrWhiteSpace(helpText))
+            return null;
+
+        var builder = new CommandNodeBuilder(commandName);
+        var lines = helpText.Split('\n');
+        var section = Section.None;
+        string? description = null;
+        OptionDefinition? pendingOption = null;
+
+        foreach (var rawLine in lines)
+        {
+            var line = rawLine.TrimEnd('\r');
+            var trimmed = line.Trim();
+
+            if (string.IsNullOrWhiteSpace(trimmed))
+            {
+                FlushPendingOption(builder, ref pendingOption);
+                continue;
+            }
+
+            // Detect section headers (unindented or minimal-indent labels ending with ':')
+            if (TryMatchHeader(trimmed, out var newSection))
+            {
+                FlushPendingOption(builder, ref pendingOption);
+                section = newSection;
+                continue;
+            }
+
+            // Lines that don't start with whitespace reset the section (unless usage continuation)
+            if (!line.StartsWith(' ') && !line.StartsWith('\t') && section != Section.Usage)
+            {
+                FlushPendingOption(builder, ref pendingOption);
+                if (section == Section.None)
+                    description ??= trimmed;
+                section = Section.None;
+                continue;
+            }
+
+            switch (section)
+            {
+                case Section.Commands:
+                    FlushPendingOption(builder, ref pendingOption);
+                    ParseCommandLine(trimmed, builder);
+                    break;
+                case Section.Options:
+                    ParseOptionLine(trimmed, builder, ref pendingOption);
+                    break;
+                case Section.PositionalArguments:
+                    FlushPendingOption(builder, ref pendingOption);
+                    ParsePositionalLine(trimmed, builder);
+                    break;
+            }
+        }
+
+        FlushPendingOption(builder, ref pendingOption);
+        builder.Description = description;
+        return builder.Build();
+    }
+
+    private static bool TryMatchHeader(string trimmed, out Section section)
+    {
+        section = Section.None;
+
+        if (MatchesHeader(trimmed, "options") ||
+            MatchesHeader(trimmed, "optional arguments"))
+        {
+            section = Section.Options;
+            return true;
+        }
+
+        if (MatchesHeader(trimmed, "command") ||
+            MatchesHeader(trimmed, "commands") ||
+            MatchesHeader(trimmed, "subcommands"))
+        {
+            section = Section.Commands;
+            return true;
+        }
+
+        if (MatchesHeader(trimmed, "positional arguments"))
+        {
+            section = Section.PositionalArguments;
+            return true;
+        }
+
+        if (MatchesHeader(trimmed, "usage"))
+        {
+            section = Section.Usage;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool MatchesHeader(string trimmed, string header)
+    {
+        return trimmed.StartsWith(header, StringComparison.OrdinalIgnoreCase) &&
+               trimmed.Length > header.Length && trimmed[header.Length] == ':';
+    }
+
+    private void ParseCommandLine(string trimmed, CommandNodeBuilder builder)
+    {
+        // Skip {cmd1,cmd2,...} brace-list header lines
+        if (trimmed.StartsWith('{') || trimmed.StartsWith("[{"))
+            return;
+
+        var parts = trimmed.Split([' ', '\t'], 2, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0) return;
+
+        var name = parts[0];
+        if (_skippedCommands.Contains(name))
+            return;
+
+        var desc = parts.Length > 1 ? parts[1].Trim() : null;
+        builder.SubCommands.Add(new CommandNode { Name = name, Description = desc });
+    }
+
+    private static void ParseOptionLine(string trimmed, CommandNodeBuilder builder, ref OptionDefinition? pendingOption)
+    {
+        // Continuation line: doesn't start with '-'
+        if (!trimmed.StartsWith('-'))
+        {
+            // Append to pending option's description
+            if (pendingOption is not null && !string.IsNullOrWhiteSpace(trimmed))
+            {
+                pendingOption = pendingOption with
+                {
+                    Description = pendingOption.Description is null
+                        ? trimmed
+                        : pendingOption.Description + " " + trimmed
+                };
+            }
+            return;
+        }
+
+        // Flush previous option before starting a new one
+        FlushPendingOption(builder, ref pendingOption);
+
+        // Split into definition part and description part using 2+ consecutive spaces
+        string defPart;
+        string? descPart;
+        SplitDefinitionAndDescription(trimmed, out defPart, out descPart);
+
+        string? shortName = null;
+        string? longName = null;
+        var valueKind = OptionValueKind.Flag;
+
+        var tokens = defPart.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries).ToList();
+        var idx = 0;
+
+        // Parse short flag: -X or -X METAVAR
+        if (idx < tokens.Count && tokens[idx].StartsWith('-') && !tokens[idx].StartsWith("--"))
+        {
+            var shortToken = tokens[idx];
+            // Remove trailing comma if present (e.g., "-f,")
+            shortName = shortToken.TrimStart('-').TrimEnd(',');
+            idx++;
+
+            // Check for comma as separate token
+            if (idx < tokens.Count && tokens[idx] == ",")
+                idx++;
+            // If next token is NOT a flag, it's a short metavar — skip it (long flag will have its own)
+            else if (idx < tokens.Count && !tokens[idx].StartsWith('-') && tokens[idx] != ",")
+            {
+                // Short metavar — skip, but note this means the option takes a value
+                idx++;
+            }
+
+            // Skip comma between short and long
+            if (idx < tokens.Count && tokens[idx] == ",")
+                idx++;
+        }
+
+        // Parse long flag: --long-name
+        if (idx < tokens.Count && tokens[idx].StartsWith("--"))
+        {
+            longName = tokens[idx].TrimStart('-');
+            idx++;
+
+            // Check for metavar: next non-flag token
+            if (idx < tokens.Count && !tokens[idx].StartsWith('-'))
+            {
+                // It's a metavar — this option takes a value
+                valueKind = OptionValueKind.Single;
+                // idx++; // consume metavar — already at end of defPart tokens
+            }
+        }
+
+        // If only short flag found with no long flag, check if short metavar indicates a value
+        if (longName is null && shortName is not null)
+        {
+            // Re-check: if defPart had tokens after the short flag that aren't flags
+            if (idx < tokens.Count && !tokens[idx].StartsWith('-'))
+                valueKind = OptionValueKind.Single;
+        }
+
+        if (longName is null && shortName is null)
+            return;
+
+        pendingOption = new OptionDefinition
+        {
+            LongName = longName ?? shortName!,
+            ShortName = shortName,
+            Description = descPart,
+            ValueKind = valueKind,
+            ClrType = valueKind == OptionValueKind.Flag ? "bool" : "string"
+        };
+    }
+
+    private static void SplitDefinitionAndDescription(string line, out string defPart, out string? descPart)
+    {
+        // Find the first occurrence of 2+ consecutive spaces after the initial flag
+        // This separates the flag+metavar definition from the description
+        var i = 0;
+        // Skip leading whitespace
+        while (i < line.Length && line[i] == ' ') i++;
+        // Skip the first token (flag)
+        while (i < line.Length && line[i] != ' ') i++;
+
+        // Now look for 2+ consecutive spaces
+        while (i < line.Length)
+        {
+            if (i + 1 < line.Length && line[i] == ' ' && line[i + 1] == ' ')
+            {
+                defPart = line[..i].Trim();
+                descPart = line[(i + 1)..].Trim();
+                if (string.IsNullOrWhiteSpace(descPart))
+                    descPart = null;
+                return;
+            }
+            i++;
+        }
+
+        defPart = line.Trim();
+        descPart = null;
+    }
+
+    private static void ParsePositionalLine(string trimmed, CommandNodeBuilder builder)
+    {
+        // Skip {cmd1,cmd2,...} brace-list lines (subcommands, not real positional args)
+        if (trimmed.StartsWith('{') || trimmed.StartsWith("[{"))
+            return;
+
+        // Split definition from description using 2+ spaces
+        SplitDefinitionAndDescription(trimmed, out var defPart, out var desc);
+
+        var isVariadic = defPart.Contains("...");
+        var isOptional = defPart.StartsWith('[');
+        var name = defPart.Trim('[', ']', '<', '>').Replace("...", "").Trim();
+
+        if (string.IsNullOrWhiteSpace(name)) return;
+
+        builder.Arguments.Add(new ArgumentDefinition
+        {
+            Name = name,
+            Position = builder.Arguments.Count,
+            Description = desc,
+            IsRequired = !isOptional,
+            IsVariadic = isVariadic
+        });
+    }
+
+    private static void FlushPendingOption(CommandNodeBuilder builder, ref OptionDefinition? pendingOption)
+    {
+        if (pendingOption is not null)
+        {
+            builder.Options.Add(pendingOption);
+            pendingOption = null;
+        }
+    }
+}
+
 // ── Help Parser Registry ───────────────────────────────────────────────────
 
 /// <summary>
@@ -1100,6 +1394,7 @@ public static class HelpParsers
         ["standard"] = () => new StandardHelpParser(),
         ["packer"] = () => new PackerHelpParser(),
         ["cobra"] = () => new CobraHelpParser(),
+        ["argparse"] = () => new ArgparseHelpParser(),
     };
 
     public static IHelpParser Create(string strategy)

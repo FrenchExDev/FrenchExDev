@@ -5,6 +5,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)/Generated</CompilerGeneratedFilesOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,7 +20,16 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper\FrenchExDev.Net.BinaryWrapper.csproj" />
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.Attributes\FrenchExDev.Net.BinaryWrapper.Attributes.csproj" />
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.SourceGenerator\FrenchExDev.Net.BinaryWrapper.SourceGenerator.csproj"
+		                  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.Testing\FrenchExDev.Net.BinaryWrapper.Testing.csproj" />
+		<ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+		<ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="scrape\dummy-*.json" />
 	</ItemGroup>
 
 	<ItemGroup>

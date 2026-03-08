@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.DockerCompose/FrenchExDev.Net.DockerCompose.csproj" />
+    <Project Path="src/FrenchExDev.Net.DockerCompose.Design/FrenchExDev.Net.DockerCompose.Design.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.DockerCompose.Tests/FrenchExDev.Net.DockerCompose.Tests.csproj" />
+  </Folder>
+</Solution>

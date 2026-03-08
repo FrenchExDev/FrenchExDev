@@ -91,9 +91,16 @@ internal static class CommandClassEmitter
         sb.AppendLine();
 
         // CommandPath property
-        sb.Append("    public global::System.Collections.Generic.IReadOnlyList<string> CommandPath => new[] { ");
-        sb.Append(string.Join(", ", commandSegments.Select(s => $"\"{NamingHelper.EscapeString(s)}\"")));
-        sb.AppendLine(" };");
+        if (commandSegments.Count == 0)
+        {
+            sb.AppendLine("    public global::System.Collections.Generic.IReadOnlyList<string> CommandPath => global::System.Array.Empty<string>();");
+        }
+        else
+        {
+            sb.Append("    public global::System.Collections.Generic.IReadOnlyList<string> CommandPath => new[] { ");
+            sb.Append(string.Join(", ", commandSegments.Select(s => $"\"{NamingHelper.EscapeString(s)}\"")));
+            sb.AppendLine(" };");
+        }
         sb.AppendLine();
 
         // ToArguments method
