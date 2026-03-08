@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DockAi Viewer</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-brand">
+            <span class="header-logo">&#x1F4C4;</span>
+            <span class="header-title">DockAi Viewer</span>
+        </div>
+        <div class="header-search">
+            <input type="text" id="search-input" placeholder="Search documents... (entity:Erard track:penal date:>2020)" autocomplete="off">
+        </div>
+        <div class="header-actions">
+            <button id="btn-index" class="header-btn" title="Re-index documents">Index</button>
+        </div>
+    </header>
+
+    <div class="app-body">
+        <aside class="app-sidebar" id="sidebar"></aside>
+
+        <main class="app-main">
+            <div class="view-tabs">
+                <button class="view-tab active" data-view="documents">Documents</button>
+                <button class="view-tab" data-view="graph">Graph</button>
+                <button class="view-tab" data-view="timeline">Timeline</button>
+            </div>
+
+            <div class="facets-bar" id="facets"></div>
+
+            <div class="view-container" id="view-documents" style="display:block">
+                <div class="doc-placeholder">Select a document from the sidebar</div>
+            </div>
+            <div class="view-container" id="view-graph" style="display:none"></div>
+            <div class="view-container" id="view-timeline" style="display:none"></div>
+        </main>
+    </div>
+
+    <div class="preview-layer" id="preview-layer"></div>
+
+    <script type="module" src="/js/app.js"></script>
+</body>
+</html>

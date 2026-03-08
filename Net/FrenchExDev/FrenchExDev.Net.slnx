@@ -1,0 +1,80 @@
+<Solution>
+  <Folder Name="/AttaQwant/" />
+  <Folder Name="/AttaQwant/data/" />
+  <Folder Name="/AttaQwant/doc/" />
+  <Folder Name="/AttaQwant/src/" />
+  <Folder Name="/AttaQwant/test/" />
+  <Folder Name="/BinaryWrapper/" />
+  <Folder Name="/BinaryWrapper/doc/" />
+  <Folder Name="/BinaryWrapper/src/">
+    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Attributes/FrenchExDev.Net.BinaryWrapper.Attributes.csproj" />
+    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Design/FrenchExDev.Net.BinaryWrapper.Design.csproj" />
+    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.SourceGenerator/FrenchExDev.Net.BinaryWrapper.SourceGenerator.csproj" />
+    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Testing/FrenchExDev.Net.BinaryWrapper.Testing.csproj" />
+    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper/FrenchExDev.Net.BinaryWrapper.csproj" />
+  </Folder>
+  <Folder Name="/BinaryWrapper/test/">
+    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Design.Tests/FrenchExDev.Net.BinaryWrapper.Design.Tests.csproj" />
+    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests.csproj" />
+    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Tests/FrenchExDev.Net.BinaryWrapper.Tests.csproj" Id="22e8d8b0-70eb-491e-a90f-2122a4c8684b" />
+  </Folder>
+  <Folder Name="/Builder/" />
+  <Folder Name="/Builder/doc/" />
+  <Folder Name="/Builder/src/">
+    <Project Path="Builder/src/FrenchExDev.Net.Builder.Testing/FrenchExDev.Net.Builder.Testing.csproj" />
+    <Project Path="Builder/src/FrenchExDev.Net.Builder/FrenchExDev.Net.Builder.csproj" />
+  </Folder>
+  <Folder Name="/Builder/test/">
+    <Project Path="Builder/test/FrenchExDev.Net.Builder.Tests/FrenchExDev.Net.Builder.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Docker/" />
+  <Folder Name="/Docker/doc/" />
+  <Folder Name="/Docker/src/">
+    <Project Path="Docker/src/FrenchExDev.Net.Docker/FrenchExDev.Net.Docker.csproj" />
+    <Project Path="Docker/src/FrenchExDev.Net.Docker.Design/FrenchExDev.Net.Docker.Design.csproj" />
+  </Folder>
+  <Folder Name="/Docker/test/">
+    <Project Path="Docker/test/FrenchExDev.Net.Docker.Tests/FrenchExDev.Net.Docker.Tests.csproj" />
+  </Folder>
+  <Folder Name="/DockAi/" />
+  <Folder Name="/DockAi/src/">
+    <Project Path="DockAi/src/DockAi.Api/DockAi.Api.csproj" />
+    <Project Path="DockAi/src/DockAi.Viewer/DockAi.Viewer.csproj" />
+  </Folder>
+  <Folder Name="/DockAi/test/" />
+  <Folder Name="/Podman/" />
+  <Folder Name="/Podman/doc/" />
+  <Folder Name="/Podman/src/">
+    <Project Path="Podman/src/FrenchExDev.Net.Podman/FrenchExDev.Net.Podman.csproj" />
+    <Project Path="Podman/src/FrenchExDev.Net.Podman.Design/FrenchExDev.Net.Podman.Design.csproj" />
+  </Folder>
+  <Folder Name="/Podman/test/">
+    <Project Path="Podman/test/FrenchExDev.Net.Podman.Tests/FrenchExDev.Net.Podman.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Packer/" />
+  <Folder Name="/Packer/src/">
+    <Project Path="Packer/src/FrenchExDev.Net.Packer/FrenchExDev.Net.Packer.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer.Design/FrenchExDev.Net.Packer.Design.csproj" />
+  </Folder>
+  <Folder Name="/Packer/test/">
+    <Project Path="Packer/test/FrenchExDev.Net.Packer.Tests/FrenchExDev.Net.Packer.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Result/" />
+  <Folder Name="/Result/doc/" />
+  <Folder Name="/Result/src/">
+    <Project Path="Result/src/FrenchExDev.Net.Result.Testing/FrenchExDev.Net.Result.Testing.csproj" />
+    <Project Path="Result/src/FrenchExDev.Net.Result/FrenchExDev.Net.Result.csproj" />
+  </Folder>
+  <Folder Name="/Result/test/">
+    <Project Path="Result/test/FrenchExDev.Net.Result.Tests/FrenchExDev.Net.Result.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Vagrant/" />
+  <Folder Name="/Vagrant/doc/" />
+  <Folder Name="/Vagrant/src/">
+    <Project Path="Vagrant/src/FrenchExDev.Net.Vagrant.Design/FrenchExDev.Net.Vagrant.Design.csproj" />
+    <Project Path="Vagrant/src/FrenchExDev.Net.Vagrant/FrenchExDev.Net.Vagrant.csproj" />
+  </Folder>
+  <Folder Name="/Vagrant/test/">
+    <Project Path="Vagrant/test/FrenchExDev.Net.Vagrant.Tests/FrenchExDev.Net.Vagrant.Tests.csproj" />
+  </Folder>
+</Solution>

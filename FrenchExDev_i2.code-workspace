@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "Root"
+		},
+		{
+			"path": "Net/FrenchExDev",
+			"name": "Net"
+		},
+		{
+			"path": "PoSh/FrenchExDev",
+			"name": "PoSh"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"appsettings",
+			"Ardalis",
+			"combinators",
+			"netstandard",
+			"notnull",
+			"Wlaschin",
+			"xunit"
+		],
+		"search.exclude": {
+			".vs/": true,
+			"**/bin/": true,
+			"**/obj/": true,
+			"**/node_modules/": true,
+		},
+		"files.exclude": {
+			"**/.vs/": true,
+			"**/bin/": true,
+			"**/obj/": true,
+			"**/node_modules/": true,
+		},
+		"powershell.cwd": "Root"
+	}
+}

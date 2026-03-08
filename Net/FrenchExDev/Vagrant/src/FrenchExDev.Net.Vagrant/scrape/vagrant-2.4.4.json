@@ -1,0 +1,1348 @@
+{
+  "binaryName": "vagrant",
+  "root": {
+    "name": "vagrant",
+    "description": "Additional subcommands are available, but are either more advanced",
+    "options": [],
+    "arguments": [],
+    "subCommands": [
+      {
+        "name": "autocomplete",
+        "description": "manages autocomplete installation on host",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "box",
+        "description": "manages boxes: installation, removal, etc.",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "cloud",
+        "description": "manages everything related to Vagrant Cloud",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "destroy",
+        "options": [
+          {
+            "longName": "force",
+            "shortName": "f",
+            "description": "Destroy without confirmation.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]parallel",
+            "description": "Enable or disable parallelism if provider supports it (automatically enables force)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "graceful",
+            "shortName": "g",
+            "description": "Gracefully poweroff of VM",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "global-status",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "halt",
+        "options": [
+          {
+            "longName": "force",
+            "shortName": "f",
+            "description": "Force shut down (equivalent of pulling power)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "init",
+        "options": [
+          {
+            "longName": "box-version",
+            "description": "Version of the box to add",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "force",
+            "shortName": "f",
+            "description": "Overwrite existing Vagrantfile",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "minimal",
+            "shortName": "m",
+            "description": "Use minimal Vagrantfile template (no help comments). Ignored with --template",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "output",
+            "description": "Output path for the box. \u0027-\u0027 for stdout",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "template",
+            "description": "Path to custom Vagrantfile template",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "login",
+        "options": [
+          {
+            "longName": "check",
+            "shortName": "c",
+            "description": "Checks if currently logged in",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "description",
+            "shortName": "d",
+            "description": "Set description for the Vagrant Cloud token",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "token",
+            "shortName": "t",
+            "description": "Set the Vagrant Cloud token",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "username",
+            "shortName": "u",
+            "description": "Vagrant Cloud username or email address",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "package",
+        "options": [
+          {
+            "longName": "base",
+            "description": "Name of a VM in VirtualBox to package as a base box (VirtualBox Only)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "output",
+            "description": "Name of the file to output",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "include",
+            "description": "Comma separated additional files to package with the box",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "info",
+            "description": "Path to a custom info.json file containing additional box information",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "vagrantfile",
+            "description": "Vagrantfile to package with the box",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "plugin",
+        "description": "manages plugins: install, uninstall, update, etc.",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "port",
+        "options": [
+          {
+            "longName": "guest",
+            "description": "Output the host port that maps to the given guest port",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "powershell",
+        "description": "machine if both support powershell remoting.",
+        "options": [
+          {
+            "longName": "command",
+            "shortName": "c",
+            "description": "Execute a powershell command directly",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "elevated",
+            "shortName": "e",
+            "description": "Execute a powershell command with elevated permissions",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "provision",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "push",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "rdp",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "reload",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "resume",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "snapshot",
+        "description": "--[no-]color                 Enable or disable color output",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "delete",
+            "description": "--[no-]color                 Enable or disable color output",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "list",
+            "description": "--[no-]color                 Enable or disable color output",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "pop",
+            "description": "with \u0060vagrant snapshot push\u0060.",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "push",
+            "description": "it onto the stack of states. You can use \u0060vagrant snapshot pop\u0060",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "restore",
+            "description": "--no-start                   Don\u0027t start the snapshot after the restore",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "save",
+            "description": "can be restored via \u0060vagrant snapshot restore\u0060 at any point in the",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "ssh",
+        "options": [
+          {
+            "longName": "command",
+            "shortName": "c",
+            "description": "Execute an SSH command directly",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "plain",
+            "shortName": "p",
+            "description": "Plain mode, leaves authentication up to user",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]tty",
+            "shortName": "t",
+            "description": "Enables tty when executing an ssh command (defaults to true)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "ssh-config",
+        "options": [
+          {
+            "longName": "host",
+            "description": "Name the host for the config",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "status",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "suspend",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "up",
+        "options": [
+          {
+            "longName": "[no-]provision",
+            "description": "Enable or disable provisioning",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "provision-with",
+            "description": "x,y,z       Enable only certain provisioners, by type or by name.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]destroy-on-error",
+            "description": "Destroy machine if any fatal error happens (default to true)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]parallel",
+            "description": "Enable or disable parallelism if provider supports it",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "provider",
+            "description": "Back the machine with a specific provider",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]install-provider",
+            "description": "If possible, install the provider if it isn\u0027t installed",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "upload",
+        "options": [
+          {
+            "longName": "temporary",
+            "shortName": "t",
+            "description": "Upload source to temporary directory",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "compress",
+            "shortName": "c",
+            "description": "Use gzip compression for upload",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "compression-type",
+            "shortName": "C",
+            "description": "Type of compression to use (tgz, zip)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "validate",
+        "options": [
+          {
+            "longName": "ignore-provider",
+            "shortName": "p",
+            "description": "Ignores provider config options",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "version",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "winrm",
+        "options": [
+          {
+            "longName": "command",
+            "shortName": "c",
+            "description": "Execute a WinRM command directly",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "elevated",
+            "shortName": "e",
+            "description": "Run with elevated credentials",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "shell",
+            "shortName": "s",
+            "description": "Use specified shell (powershell, cmd)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "winrm-config",
+        "options": [
+          {
+            "longName": "host",
+            "description": "Name the host for the config",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]color",
+            "description": "Enable or disable color output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Enable machine readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "version",
+            "shortName": "v",
+            "description": "Display Vagrant version",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Enable debug output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp",
+            "description": "Enable timestamps on log output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "debug-timestamp",
+            "description": "Enable debug output with timestamps",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-tty",
+            "description": "Enable non-interactive output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "stryker-config": {
+    "project": "FrenchExDev.Net.Builder.csproj",
+    "test-projects": [ "test/FrenchExDev.Net.Builder.Tests/FrenchExDev.Net.Builder.Tests.csproj" ],
+    "reporters": [ "cleartext", "json" ],
+    "mutation-level": "Standard",
+    "mutate": [
+      "**/*.cs",
+      "!**/IsExternalInit.cs",
+      "!**/Polyfills.cs"
+    ],
+    "ignore-methods": [ "ConfigureAwait" ],
+    "thresholds": {
+      "high": 100,
+      "low": 100,
+      "break": 100
+    }
+  }
+}

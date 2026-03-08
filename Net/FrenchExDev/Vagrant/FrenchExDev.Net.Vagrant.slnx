@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Vagrant/FrenchExDev.Net.Vagrant.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vagrant.Design/FrenchExDev.Net.Vagrant.Design.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Vagrant.Tests/FrenchExDev.Net.Vagrant.Tests.csproj" />
+  </Folder>
+</Solution>

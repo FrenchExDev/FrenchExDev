@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Packer/FrenchExDev.Net.Packer.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Design/FrenchExDev.Net.Packer.Design.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Packer.Tests/FrenchExDev.Net.Packer.Tests.csproj" />
+  </Folder>
+</Solution>

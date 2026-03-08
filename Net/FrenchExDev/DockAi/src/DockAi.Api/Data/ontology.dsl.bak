@@ -1,0 +1,404 @@
+# ═══════════════════════════════════════════
+# DockAi Ontology — Erard vs Qwant
+# ═══════════════════════════════════════════
+
+# ─── ENTITY TYPES ─────────────────────────
+
+@type person {
+    name: string
+    role: enum [plaignant, defenderesse, temoin, complice, dirigeant, journaliste, avocat, politique]
+    aliases: string[]
+}
+
+@type organization {
+    name: string
+    role: enum [defenderesse, societe_acquise, partenaire]
+    aliases: string[]
+}
+
+@type institution {
+    name: string
+    role: enum [autorite, investisseur, regulateur]
+    aliases: string[]
+}
+
+@type technology {
+    name: string
+    role: enum [moteur_source, outil, plateforme]
+    aliases: string[]
+}
+
+@type legal_reference {
+    code: string
+    article: string
+    description: string
+}
+
+@type monetary_amount {
+    value: number
+    currency: string
+    context: string
+}
+
+@type date_event {
+    date: date
+    label: string
+    significance: string
+}
+
+# ─── ENTITY INSTANCES ─────────────────────
+
+@entity erard : person {
+    name: "Stephane Erard"
+    role: plaignant
+    aliases: ["erard", "serard", "stephane", "s. erard", "stephane erard"]
+}
+
+@entity leandri : person {
+    name: "Eric Leandri"
+    role: dirigeant
+    aliases: ["leandri", "eric leandri", "e. leandri"]
+}
+
+@entity vignaux : person {
+    name: "Pierre Vignaux"
+    role: complice
+    aliases: ["vignaux", "pierre vignaux", "p. vignaux"]
+}
+
+@entity poinat : person {
+    name: "Me Poinat"
+    role: avocat
+    aliases: ["poinat", "me poinat", "maitre poinat", "avocate poinat"]
+}
+
+@entity bourrelly : person {
+    name: "Bourrelly"
+    role: complice
+    aliases: ["bourrelly"]
+}
+
+@entity decaux : person {
+    name: "Thomas Decaux"
+    role: complice
+    aliases: ["decaux", "thomas decaux", "t. decaux"]
+}
+
+@entity mathieu : person {
+    name: "Eric Mathieu"
+    role: temoin
+    aliases: ["mathieu", "eric mathieu"]
+}
+
+@entity champeau : person {
+    name: "Guillaume Champeau"
+    role: journaliste
+    aliases: ["champeau", "guillaume champeau", "gchampeau"]
+}
+
+@entity cassar : person {
+    name: "Jonathan Cassar"
+    role: temoin
+    aliases: ["cassar", "jonathan cassar"]
+}
+
+@entity qwant : organization {
+    name: "Qwant SAS"
+    role: defenderesse
+    aliases: ["qwant", "qwant sas"]
+}
+
+@entity xilopix : organization {
+    name: "Xilopix/Xaphir"
+    role: societe_acquise
+    aliases: ["xilopix", "xaphir"]
+}
+
+@entity cnil : institution {
+    name: "CNIL"
+    role: autorite
+    aliases: ["cnil", "commission nationale informatique"]
+}
+
+@entity bpi : institution {
+    name: "BPI/CDC"
+    role: investisseur
+    aliases: ["bpi", "cdc", "caisse des depots", "bpifrance", "bpi france"]
+}
+
+@entity dinum : institution {
+    name: "DINUM"
+    role: regulateur
+    aliases: ["dinum"]
+}
+
+@entity bing : technology {
+    name: "Microsoft Bing"
+    role: moteur_source
+    aliases: ["bing", "microsoft bing"]
+}
+
+@entity sonarqube : technology {
+    name: "SonarQube"
+    role: outil
+    aliases: ["sonarqube", "sonar"]
+}
+
+# ─── RELATION TYPES ───────────────────────
+
+@relation.type employs {
+    from: organization
+    to: person
+    properties: [start_date, end_date, position]
+    inverse: employed_by
+}
+
+@relation.type accuses {
+    from: person
+    to: [person, organization]
+    properties: [motif, date, gravite]
+    inverse: accused_by
+}
+
+@relation.type directs {
+    from: person
+    to: organization
+    properties: [start_date, end_date, titre]
+    inverse: directed_by
+}
+
+@relation.type represents {
+    from: person
+    to: person
+    properties: [type_mandat, date_debut]
+    inverse: represented_by
+}
+
+@relation.type invests_in {
+    from: institution
+    to: organization
+    properties: [montant, date, type_investissement]
+    inverse: funded_by
+}
+
+@relation.type acquired {
+    from: organization
+    to: organization
+    properties: [date, montant, conditions]
+    inverse: acquired_by
+}
+
+@relation.type uses {
+    from: organization
+    to: technology
+    properties: [date_debut, contexte]
+}
+
+@relation.type regulates {
+    from: institution
+    to: [person, organization]
+    properties: [type_procedure, numero_dossier]
+    inverse: regulated_by
+}
+
+@relation.type audits {
+    from: institution
+    to: organization
+    properties: [date, type_audit, conclusion]
+    inverse: audited_by
+}
+
+@relation.type mentions {
+    from: document
+    to: [person, organization, institution, legal_reference]
+    auto: true
+    properties: [count, positions]
+}
+
+@relation.type shared_context {
+    from: document
+    to: document
+    auto: true
+    symmetric: true
+    properties: [via_entities, via_themes, strength]
+}
+
+# ─── RELATION INSTANCES ───────────────────
+
+@relation erard -[employed_by]-> qwant {
+    start_date: "2017-01"
+    end_date: "2019-07"
+    position: "Ingenieur R&D"
+}
+
+@relation leandri -[directs]-> qwant {
+    start_date: "2013"
+    end_date: "2020"
+    titre: "PDG co-fondateur"
+}
+
+@relation vignaux -[employed_by]-> qwant {
+    start_date: "2018"
+    position: "Directeur technique"
+}
+
+@relation poinat -[represents]-> erard {
+    type_mandat: "conseil_prudhommes"
+    date_debut: "2019"
+}
+
+@relation bpi -[invests_in]-> qwant {
+    montant: "25000000"
+    type_investissement: "fonds publics"
+}
+
+@relation qwant -[acquired]-> xilopix {
+    date: "2017"
+    conditions: "absorption technologie"
+}
+
+@relation qwant -[uses]-> bing {
+    date_debut: "2019"
+    contexte: "resultats de recherche repackages"
+}
+
+@relation dinum -[audits]-> qwant {
+    date: "2020"
+    type_audit: "audit technique"
+    conclusion: "faux moteur de recherche"
+}
+
+@relation cnil -[regulates]-> qwant {
+    type_procedure: "plainte RGPD"
+    numero_dossier: "19005268"
+}
+
+@relation erard -[accuses]-> qwant {
+    motif: "licenciement abusif, harcelement moral, fraude"
+    gravite: "haute"
+}
+
+@relation erard -[accuses]-> poinat {
+    motif: "faute professionnelle"
+    gravite: "moyenne"
+}
+
+# ─── TAXONOMIES ───────────────────────────
+
+@taxonomy track {
+    label: "Piste juridique"
+    facet: true
+
+    voie_a "Voie penale" { color: "#E74C3C", desc: "Plaintes penales, escroquerie, fraude" }
+    voie_b "Voie prudhomale" { color: "#3498DB", desc: "Licenciement, harcelement, Syntec 3.3" }
+    voie_c "Voie avocate" { color: "#9B59B6", desc: "Responsabilite professionnelle Me Poinat" }
+    cnil_rgpd "CNIL/RGPD" { color: "#F39C12", desc: "Protection des donnees" }
+    media "Strategie media" { color: "#1ABC9C", desc: "Presse, tribunes" }
+}
+
+@taxonomy theme {
+    label: "Theme"
+    facet: true
+
+    fraude "Fraude" {
+        fraude_tech "Fraude technique" { desc: "Bing repackage, faux moteur, audit DINUM" }
+        financier "Detournements financiers" { desc: "BPI/CDC, hauts salaires, escroquerie" }
+    }
+    droit_travail "Droit du travail" {
+        emploi "Emploi" { desc: "Licenciement, Syntec 3.3, requalification" }
+        harcelement "Harcelement" { desc: "Harcelement moral, pression, intimidation" }
+    }
+    lanceur_alerte "Lanceur d'alerte" { desc: "Protection, represailles, SLAPP" }
+    rgpd "RGPD/Donnees" { desc: "Violations RGPD, saisine CNIL" }
+    preuve "Preuves et forensique" { desc: "Git forensique, captures, attestations" }
+    strategie "Strategie juridique" { desc: "Plans d'action, feuilles de route" }
+    acteurs "Profils acteurs" { desc: "Fiches individuelles" }
+    prescription "Prescription" { desc: "Delais, art. 2226" }
+    responsabilite_avocat "Responsabilite avocate" { desc: "Fautes Poinat" }
+}
+
+@taxonomy category {
+    label: "Categorie documentaire"
+    facet: true
+
+    juridique "Juridique" { color: "#C55A11" }
+    technique "Technique" { color: "#002060" }
+    financier_cat "Financier" { color: "#00B050" }
+    preuve_cat "Preuves" { color: "#70AD47" }
+    synthese "Synthese" { color: "#FF6B6B" }
+    strategie_cat "Strategie" { color: "#1F4E79" }
+    media_cat "Media" { color: "#FFC000" }
+    acteurs_cat "Acteurs" { color: "#4ECDC4" }
+    med_poinat "MED & Poinat" { color: "#7030A0" }
+    medical "Medical" { color: "#A6A6A6" }
+    personnel "Personnel" { color: "#E7E6E6" }
+    archive "Archives" { color: "#595959" }
+}
+
+# ─── AUTO-CLASSIFICATION RULES ────────────
+
+@rule auto_track_penal {
+    when content matches "plainte|escroquerie|abus de confiance|penal|delit|infraction"
+    then assign track: voie_a
+    confidence: 0.7
+}
+
+@rule auto_track_prudhommes {
+    when content matches "prud.hommes|licenciement|syntec|harcelement moral|code du travail"
+    then assign track: voie_b
+    confidence: 0.8
+}
+
+@rule auto_track_avocate {
+    when content matches "responsabilit.+professionnelle|faute.+avocat|poinat|batonnier|manquement"
+    then assign track: voie_c
+    confidence: 0.7
+}
+
+@rule auto_track_cnil {
+    when content matches "CNIL|RGPD|donn.es personnelles|protection des donn"
+    then assign track: cnil_rgpd
+    confidence: 0.8
+}
+
+@rule auto_theme_fraude_tech {
+    when content matches "bing|repackag|faux moteur|DINUM|audit.+technique|sonarqube"
+    then assign theme: fraude_tech
+    confidence: 0.7
+}
+
+@rule auto_theme_financier {
+    when content matches "BPI|CDC|caisse des dep|subvention|detournement|hauts salaires"
+    then assign theme: financier
+    confidence: 0.7
+}
+
+@rule auto_theme_lanceur {
+    when content matches "lanceur.d.alerte|represailles|SLAPP|protection|divulgation"
+    then assign theme: lanceur_alerte
+    confidence: 0.8
+}
+
+@rule auto_theme_harcelement {
+    when content matches "harcelement|intimidation|pression|burn.out|souffrance"
+    then assign theme: harcelement
+    confidence: 0.7
+}
+
+@rule auto_theme_rgpd {
+    when content matches "RGPD|donn.es personnelles|traitement|consentement|CNIL"
+    then assign theme: rgpd
+    confidence: 0.7
+}
+
+@rule auto_theme_preuve {
+    when content matches "git.+commit|forensique|capture|attestation|preuve|screenshot"
+    then assign theme: preuve
+    confidence: 0.6
+}
+
+@rule auto_theme_prescription {
+    when content matches "prescription|art.+2226|d.lai|forclusion"
+    then assign theme: prescription
+    confidence: 0.8
+}

@@ -1,0 +1,7 @@
+**/obj/
+**/bin/
+**/coverage/
+TestResults/
+StrykerOutput/
+coverage-results/
+.vs

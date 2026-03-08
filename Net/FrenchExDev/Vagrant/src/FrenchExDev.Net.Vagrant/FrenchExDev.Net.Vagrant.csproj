@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FrenchExDev.Net.Vagrant</RootNamespace>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)/Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BinaryWrapper\src\FrenchExDev.Net.BinaryWrapper\FrenchExDev.Net.BinaryWrapper.csproj" />
+    <ProjectReference Include="..\..\..\BinaryWrapper\src\FrenchExDev.Net.BinaryWrapper.Attributes\FrenchExDev.Net.BinaryWrapper.Attributes.csproj" />
+    <ProjectReference Include="..\..\..\BinaryWrapper\src\FrenchExDev.Net.BinaryWrapper.SourceGenerator\FrenchExDev.Net.BinaryWrapper.SourceGenerator.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+    <ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="scrape\vagrant-*.json" />
+  </ItemGroup>
+
+</Project>

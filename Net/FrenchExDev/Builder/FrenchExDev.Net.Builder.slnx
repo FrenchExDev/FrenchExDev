@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Builder.Testing/FrenchExDev.Net.Builder.Testing.csproj" />
+    <Project Path="src/FrenchExDev.Net.Builder/FrenchExDev.Net.Builder.csproj" />
+    <Project Path="src/FrenchExDev.Net.Builder.Attributes/FrenchExDev.Net.Builder.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Builder.SourceGenerator/FrenchExDev.Net.Builder.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Builder.Tests/FrenchExDev.Net.Builder.Tests.csproj" />
+  </Folder>
+</Solution>
