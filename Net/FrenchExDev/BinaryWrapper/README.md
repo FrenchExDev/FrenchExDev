@@ -21,14 +21,14 @@ Calling CLI tools from .NET usually means building argument strings by hand, hop
 ```mermaid
 flowchart LR
     subgraph Design["Design Time"]
-        B["CLI Binary<br>(packer, vagrant, ...)"] -->|"run --help"| S["Help Scraper"]
-        S -->|"IHelpParser"| J["JSON files<br>binary-1.0.0.json<br>binary-2.0.0.json"]
+        B["CLI Binary (packer, vagrant, ...)"] -->|"run --help"| S["Help Scraper"]
+        S -->|"IHelpParser"| J["JSON files: binary-1.0.0.json, binary-2.0.0.json"]
     end
 
     subgraph Build["Build Time"]
         J -->|"AdditionalFiles"| SG["Source Generator"]
         D["[BinaryWrapper] descriptor"] -->|triggers| SG
-        SG -->|"VersionDiffer.Merge"| G["Generated C#<br>Commands + Builders + Client"]
+        SG -->|"VersionDiffer.Merge"| G["Generated C# - Commands + Builders + Client"]
     end
 
     subgraph Run["Runtime"]
@@ -141,9 +141,9 @@ flowchart TD
     V3["packer-1.11.0.json"] --> M
     M --> U["UnifiedCommandTree"]
     U --> C1["PackerBuildCommand"]
-    U --> C2["PackerValidateCommand<br>[SinceVersion('1.10.0')]"]
+    U --> C2["PackerValidateCommand - [SinceVersion('1.10.0')]"]
     C1 --> O1["--force"]
-    C1 --> O2["--ignore-prerelease-plugins<br>[SinceVersion('1.11.0')]"]
+    C1 --> O2["--ignore-prerelease-plugins - [SinceVersion('1.11.0')]"]
 ```
 
 ## Output Parsing

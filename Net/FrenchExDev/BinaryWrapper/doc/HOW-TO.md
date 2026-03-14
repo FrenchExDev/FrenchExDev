@@ -111,11 +111,11 @@ Five built-in parsers handle different CLI frameworks:
 ```mermaid
 flowchart TD
     Q["What does --help output look like?"]
-    Q -->|"Available Commands:<br>Flags: --name string"| COBRA["CobraHelpParser<br>(Docker, Podman, DockerCompose)"]
-    Q -->|"Options:<br>  -f, --force  Force it<br>Commands:<br>  build  Build stuff"| STD["StandardHelpParser<br>(generic GNU-style)"]
-    Q -->|"positional arguments:<br>  {cmd1,cmd2}<br>options:<br>  -h, --help"| ARGPARSE["ArgparseHelpParser<br>(PodmanCompose)"]
-    Q -->|"Available commands:<br>  build<br>Flags:<br>  -force=true"| PACKER["PackerHelpParser<br>(HashiCorp tools)"]
-    Q -->|"Common commands:<br>  box<br>Available subcommands:<br>  add"| CUSTOM["Write a custom IHelpParser<br>(Vagrant)"]
+    Q -->|"Available Commands: / Flags: --name string"| COBRA["CobraHelpParser (Docker, Podman, DockerCompose)"]
+    Q -->|"Options: -f, --force / Commands: build"| STD["StandardHelpParser (generic GNU-style)"]
+    Q -->|"positional arguments: {cmd1,cmd2} / options: -h, --help"| ARGPARSE["ArgparseHelpParser (PodmanCompose)"]
+    Q -->|"Available commands: build / Flags: -force=true"| PACKER["PackerHelpParser (HashiCorp tools)"]
+    Q -->|"Common commands: box / Available subcommands: add"| CUSTOM["Write a custom IHelpParser (Vagrant)"]
 
     style COBRA fill:#27ae60,stroke:#2ecc71,color:#fff
     style STD fill:#27ae60,stroke:#2ecc71,color:#fff
@@ -369,9 +369,9 @@ public partial class MyToolDescriptor;
 ```mermaid
 flowchart TD
     Q["What CLI convention?"]
-    Q -->|"GNU style<br>--flag value<br>docker, podman, git"| GNU["[BinaryWrapper('mytool')]<br>defaults: FlagPrefix='--', Sep=' '"]
-    Q -->|"Go style<br>-flag=value<br>packer, terraform"| GO["[BinaryWrapper('mytool',<br>  FlagPrefix='-',<br>  FlagValueSeparator='=',<br>  UseBoolEqualsFormat=true)]"]
-    Q -->|"Mixed / custom"| MIX["Choose closest match,<br>use CommandOverrides at runtime"]
+    Q -->|"GNU style: --flag value (docker, podman, git)"| GNU["[BinaryWrapper('mytool')] defaults: FlagPrefix='--', Sep=' '"]
+    Q -->|"Go style: -flag=value (packer, terraform)"| GO["[BinaryWrapper('mytool', FlagPrefix='-', FlagValueSeparator='=', UseBoolEqualsFormat=true)]"]
+    Q -->|"Mixed / custom"| MIX["Choose closest match, use CommandOverrides at runtime"]
 
     style GNU fill:#27ae60,stroke:#2ecc71,color:#fff
     style GO fill:#2980b9,stroke:#3498db,color:#fff
@@ -530,8 +530,8 @@ For structured interaction with the binary's output, implement the event-driven 
 
 ```mermaid
 flowchart LR
-    PROC["Process<br>stdout/stderr"] -->|"OutputLine"| PARSER["IOutputParser#lt;TEvent#gt;<br>line-by-line parsing"]
-    PARSER -->|"TEvent stream"| COLLECT["IResultCollector#lt;TEvent, TResult#gt;<br>aggregate events"]
+    PROC["Process stdout/stderr"] -->|"OutputLine"| PARSER["IOutputParser#lt;TEvent#gt; - line-by-line parsing"]
+    PARSER -->|"TEvent stream"| COLLECT["IResultCollector#lt;TEvent, TResult#gt; - aggregate events"]
     COLLECT -->|"TResult"| APP["Application"]
 
     PARSER -.->|"or stream directly"| STREAM["await foreach"]
@@ -845,9 +845,9 @@ flowchart TD
     subgraph Design["Design Time (one-time)"]
         HC["HashiCorp Releases API"]
         VC["VagrantVersionCollector"]
-        POD["Podman Containers<br>(Debian + dpkg + WSL fix)"]
+        POD["Podman Containers (Debian + dpkg + WSL fix)"]
         VHP["VagrantHelpParser"]
-        JSON["vagrant-2.4.3.json<br>vagrant-2.4.6.json<br>vagrant-2.4.9.json"]
+        JSON["vagrant-2.4.3.json, vagrant-2.4.6.json, vagrant-2.4.9.json"]
 
         HC -->|"collect versions"| VC
         VC -->|"per version"| POD
@@ -856,9 +856,9 @@ flowchart TD
     end
 
     subgraph Build["Build Time (every build)"]
-        DESC["[BinaryWrapper('vagrant')]<br>VagrantDescriptor"]
+        DESC["[BinaryWrapper('vagrant')] VagrantDescriptor"]
         SG["Source Generator"]
-        GEN["VagrantUpCommand<br>VagrantHaltCommand<br>VagrantBoxAddCommand<br>VagrantClient<br>..."]
+        GEN["VagrantUpCommand, VagrantHaltCommand, VagrantBoxAddCommand, VagrantClient, ..."]
 
         JSON -->|"AdditionalFiles"| SG
         DESC -->|"triggers"| SG
