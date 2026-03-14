@@ -14,12 +14,12 @@ BinaryWrapper is a framework for generating type-safe .NET wrappers around CLI b
 flowchart TB
     subgraph DT["DESIGN TIME"]
         direction TB
-        VC["IVersionCollector<br><i>GitHubReleasesVersionCollector</i><br><i>GitHubTagsVersionCollector</i><br><i>StaticVersionCollector</i>"]
-        DPR["DesignPipelineRunner<br><i>parallel Channel workers</i>"]
-        DP["DesignPipeline<br><i>middleware composition</i>"]
-        HS["HelpScraper<br><i>recursive depth-first</i>"]
-        HP["IHelpParser<br><i>Standard / Cobra / Argparse</i><br><i>Packer / Vagrant</i>"]
-        JSON["JSON Command Trees<br><i>binary-{version}.json</i>"]
+        VC["IVersionCollector<br>GitHubReleasesVersionCollector<br>GitHubTagsVersionCollector<br>StaticVersionCollector"]
+        DPR["DesignPipelineRunner<br>parallel Channel workers"]
+        DP["DesignPipeline<br>middleware composition"]
+        HS["HelpScraper<br>recursive depth-first"]
+        HP["IHelpParser<br>Standard / Cobra / Argparse<br>Packer / Vagrant"]
+        JSON["JSON Command Trees<br>binary-{version}.json"]
 
         VC -->|"versions"| DPR
         DPR -->|"per version"| DP
@@ -31,10 +31,10 @@ flowchart TB
 
     subgraph BT["BUILD TIME"]
         direction TB
-        DESC["[BinaryWrapper] Descriptor<br><i>partial class</i>"]
-        CTR["CommandTreeReader<br><i>JSON to CommandTreeModel</i>"]
-        VD["VersionDiffer<br><i>Merge / FromSingle</i>"]
-        UCT["UnifiedCommandTree<br><i>version-annotated</i>"]
+        DESC["[BinaryWrapper] Descriptor<br>partial class"]
+        CTR["CommandTreeReader<br>JSON to CommandTreeModel"]
+        VD["VersionDiffer<br>Merge / FromSingle"]
+        UCT["UnifiedCommandTree<br>version-annotated"]
         CCE["CommandClassEmitter"]
         BCE["BuilderClassEmitter"]
         CLE["ClientClassEmitter"]
@@ -50,15 +50,15 @@ flowchart TB
 
     subgraph RT["RUNTIME (event-driven)"]
         direction TB
-        CLIENT["Generated Client<br><i>{Binary}Client</i>"]
-        BUILDER["Generated Builder<br><i>AbstractBuilder#lt;TCommand#gt;</i>"]
-        CMD["Generated Command<br><i>ICliCommand</i>"]
+        CLIENT["Generated Client<br>{Binary}Client"]
+        BUILDER["Generated Builder<br>AbstractBuilder#lt;TCommand#gt;"]
+        CMD["Generated Command<br>ICliCommand"]
         VG["VersionGuard"]
         EXEC["CommandExecutor"]
-        PR["IProcessRunner<br><i>SystemProcessRunner</i>"]
-        OL["OutputLine stream<br><i>StdOut / StdErr tagged</i>"]
-        OP["IOutputParser#lt;TEvent#gt;<br><i>line to domain events</i>"]
-        RC["IResultCollector#lt;TEvent, TResult#gt;<br><i>aggregate events</i>"]
+        PR["IProcessRunner<br>SystemProcessRunner"]
+        OL["OutputLine stream<br>StdOut / StdErr tagged"]
+        OP["IOutputParser#lt;TEvent#gt;<br>line to domain events"]
+        RC["IResultCollector#lt;TEvent, TResult#gt;<br>aggregate events"]
         RESULT["TResult"]
 
         CLIENT -->|"configure"| BUILDER
@@ -89,23 +89,23 @@ flowchart TB
 ```mermaid
 flowchart TD
     subgraph Consumer["Consumer Project (e.g. Vagrant)"]
-        LIB["FrenchExDev.Net.Vagrant<br><i>Library + Generated Code</i>"]
-        DESIGN["FrenchExDev.Net.Vagrant.Design<br><i>Scraping Exe</i>"]
+        LIB["FrenchExDev.Net.Vagrant<br>Library + Generated Code"]
+        DESIGN["FrenchExDev.Net.Vagrant.Design<br>Scraping Exe"]
         TESTS["FrenchExDev.Net.Vagrant.Tests"]
     end
 
     subgraph Framework["BinaryWrapper Framework"]
-        CORE["FrenchExDev.Net.BinaryWrapper<br><i>Core Runtime (net10.0)</i>"]
-        ATTR["FrenchExDev.Net.BinaryWrapper.Attributes<br><i>[BinaryWrapper] (netstandard2.0)</i>"]
-        SG["FrenchExDev.Net.BinaryWrapper.SourceGenerator<br><i>Roslyn 4.3.1 (netstandard2.0)</i>"]
-        DES["FrenchExDev.Net.BinaryWrapper.Design<br><i>Scraping Library (net10.0)</i>"]
-        DESLIB["FrenchExDev.Net.BinaryWrapper.Design.Lib<br><i>Pipeline Runner + Spectre.Console (net10.0)</i>"]
-        TEST["FrenchExDev.Net.BinaryWrapper.Testing<br><i>Test Helpers (net10.0)</i>"]
+        CORE["FrenchExDev.Net.BinaryWrapper<br>Core Runtime (net10.0)"]
+        ATTR["FrenchExDev.Net.BinaryWrapper.Attributes<br>[BinaryWrapper] (netstandard2.0)"]
+        SG["FrenchExDev.Net.BinaryWrapper.SourceGenerator<br>Roslyn 4.3.1 (netstandard2.0)"]
+        DES["FrenchExDev.Net.BinaryWrapper.Design<br>Scraping Library (net10.0)"]
+        DESLIB["FrenchExDev.Net.BinaryWrapper.Design.Lib<br>Pipeline Runner + Spectre.Console (net10.0)"]
+        TEST["FrenchExDev.Net.BinaryWrapper.Testing<br>Test Helpers (net10.0)"]
     end
 
     subgraph Foundation["Foundation"]
-        RES["FrenchExDev.Net.Result<br><i>Result#lt;T#gt;, Result#lt;T,TError#gt;</i>"]
-        BLD["FrenchExDev.Net.Builder<br><i>AbstractBuilder#lt;T#gt;</i>"]
+        RES["FrenchExDev.Net.Result<br>Result#lt;T#gt;, Result#lt;T,TError#gt;"]
+        BLD["FrenchExDev.Net.Builder<br>AbstractBuilder#lt;T#gt;"]
     end
 
     LIB -->|"runtime"| CORE
@@ -394,10 +394,10 @@ flowchart LR
     end
 
     subgraph Command["PackerBuildCommand"]
-        O1["--force<br><i>all versions</i>"]
-        O2["--validate<br><i>[SinceVersion 1.10.0]</i>"]
-        O3["--legacy-flag<br><i>[UntilVersion 1.11.0]</i>"]
-        O4["--ignore-prerelease<br><i>[SinceVersion 1.11.0]</i>"]
+        O1["--force<br>all versions"]
+        O2["--validate<br>[SinceVersion 1.10.0]"]
+        O3["--legacy-flag<br>[UntilVersion 1.11.0]"]
+        O4["--ignore-prerelease<br>[SinceVersion 1.11.0]"]
     end
 
     subgraph Runtime["Runtime Check"]
@@ -405,7 +405,7 @@ flowchart LR
         DV -->|"--force"| OK1["OK"]
         DV -->|"--validate"| OK2["OK (>= 1.10)"]
         DV -->|"--legacy-flag"| OK3["OK (< 1.11)"]
-        DV -->|"--ignore-prerelease"| FAIL["OptionNotSupportedException<br><i>requires 1.11.0</i>"]
+        DV -->|"--ignore-prerelease"| FAIL["OptionNotSupportedException<br>requires 1.11.0"]
     end
 
     style FAIL fill:#c0392b,stroke:#e74c3c,color:#fff
@@ -460,12 +460,12 @@ flowchart TD
     end
 
     subgraph Output["Generated Files"]
-        M["PackerDescriptor.BinaryWrapper.g.cs<br><i>partial class with constants</i>"]
-        C1["PackerBuildCommand.g.cs<br><i>sealed ICliCommand</i>"]
+        M["PackerDescriptor.BinaryWrapper.g.cs<br>partial class with constants"]
+        C1["PackerBuildCommand.g.cs<br>sealed ICliCommand"]
         C2["PackerValidateCommand.g.cs"]
-        B1["PackerBuildCommandBuilder.g.cs<br><i>AbstractBuilder#lt;T#gt;</i>"]
+        B1["PackerBuildCommandBuilder.g.cs<br>AbstractBuilder#lt;T#gt;"]
         B2["PackerValidateCommandBuilder.g.cs"]
-        CL["PackerClient.g.cs<br><i>typed client + entry point</i>"]
+        CL["PackerClient.g.cs<br>typed client + entry point"]
     end
 
     DESC --> S1
@@ -809,7 +809,7 @@ flowchart TD
     subgraph Runner["DesignPipelineRunner"]
         CLI["CLI arg parsing"]
         VC["IVersionCollector"]
-        CH["Channel#lt;string#gt;<br><i>version queue</i>"]
+        CH["Channel#lt;string#gt;<br>version queue"]
         W1["Worker 1"]
         W2["Worker 2"]
         WN["Worker N"]
@@ -822,15 +822,15 @@ flowchart TD
     end
 
     subgraph Pipeline["DesignPipeline (per version)"]
-        M1["UseImageBuild<br><i>build container image</i>"]
-        M2["UseContainer<br><i>create + start container</i>"]
-        M3["UseScraper<br><i>recursive help scraping</i>"]
+        M1["UseImageBuild<br>build container image"]
+        M2["UseContainer<br>create + start container"]
+        M3["UseScraper<br>recursive help scraping"]
         M1 --> M2 --> M3
     end
 
     subgraph Reparse["Reparse Pipeline (alternative)"]
-        R1["UseCachedHelp<br><i>read .help.txt from disk</i>"]
-        R2["UseScraper<br><i>parse only, no containers</i>"]
+        R1["UseCachedHelp<br>read .help.txt from disk"]
+        R2["UseScraper<br>parse only, no containers"]
         R1 --> R2
     end
 
@@ -842,8 +842,8 @@ flowchart TD
     Reparse -->|"JSON"| OUT
 
     subgraph Dashboard["Dashboard (optional)"]
-        PROG["VersionProgressInfo<br><i>thread-safe per-version state</i>"]
-        LIVE["Spectre.Console Live<br><i>table refresh every 250ms</i>"]
+        PROG["VersionProgressInfo<br>thread-safe per-version state"]
+        LIVE["Spectre.Console Live<br>table refresh every 250ms"]
         PROG --> LIVE
     end
 
@@ -1057,12 +1057,12 @@ flowchart TD
     MERGE["VersionDiffer.Merge()"]
 
     subgraph Unified["UnifiedCommandTree"]
-        CMD_B["build command<br><i>all versions</i>"]
-        CMD_V["validate command<br><i>since 1.10.0</i>"]
-        CMD_L["legacy command<br><i>until 1.11.0</i>"]
-        OPT_F["--force<br><i>all versions</i>"]
-        OPT_I["--ignore-prerelease<br><i>since 1.11.0</i>"]
-        OPT_D["--debug<br><i>until 1.12.0</i>"]
+        CMD_B["build command<br>all versions"]
+        CMD_V["validate command<br>since 1.10.0"]
+        CMD_L["legacy command<br>until 1.11.0"]
+        OPT_F["--force<br>all versions"]
+        OPT_I["--ignore-prerelease<br>since 1.11.0"]
+        OPT_D["--debug<br>until 1.12.0"]
     end
 
     subgraph Runtime["Runtime Enforcement"]
@@ -1070,7 +1070,7 @@ flowchart TD
         CHECK1["build -> OK"]
         CHECK2["validate -> OK (>= 1.10)"]
         CHECK3["legacy -> OK (< 1.11)"]
-        CHECK4["--ignore-prerelease -> THROW<br><i>requires >= 1.11.0</i>"]
+        CHECK4["--ignore-prerelease -> THROW<br>requires >= 1.11.0"]
     end
 
     J1 --> MERGE

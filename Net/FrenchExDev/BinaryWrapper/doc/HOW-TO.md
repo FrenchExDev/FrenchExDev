@@ -15,7 +15,7 @@ flowchart LR
     E --> F["6. Create descriptor"]
     F --> G["7. Configure project"]
     G --> H["8. Build and use API"]
-    H --> I["9. Add output parsing<br>(optional)"]
+    H --> I["9. Add output parsing (optional)"]
     I --> J["10. Write tests"]
 ```
 
