@@ -1,0 +1,11 @@
+Display the contents of a manifest list or image index
+
+Description:
+  Display the contents of a manifest list or image index.
+
+Usage:
+  podman manifest inspect IMAGE
+
+Examples:
+  podman manifest inspect localhost/list
+

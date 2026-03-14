@@ -1,0 +1,4 @@
+Usage: vagrant halt [vm-name] [--force] [-h]
+
+    -f, --force                      Force shut down (equivalent of pulling power)
+    -h, --help                       Print this help

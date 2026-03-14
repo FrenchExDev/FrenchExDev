@@ -1,0 +1,19 @@
+Usage: vagrant box add [options] <url>
+
+Options:
+
+    -c, --clean                      Clean any temporary download files
+    -f, --force                      Overwrite an existing box if it exists
+        --insecure                   Do not validate SSL certificates
+        --cacert FILE                CA certificate for SSL download
+        --cert FILE                  A client SSL cert, if needed
+        --provider PROVIDER          Provider the box should satisfy
+        --box-version VERSION        Constrain version of the added box
+
+The options below only apply if you're adding a box file directly,
+and not using a Vagrant server or a box structured like 'user/box':
+
+        --checksum CHECKSUM          Checksum for the box
+        --checksum-type TYPE         Checksum type (md5, sha1, sha256)
+        --name BOX                   Name of the box
+    -h, --help                       Print this help

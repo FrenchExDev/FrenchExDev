@@ -1,0 +1,11 @@
+Usage: vagrant up [options] [name]
+
+Options:
+
+        --[no-]provision             Enable or disable provisioning
+        --provision-with x,y,z       Enable only certain provisioners, by type or by name.
+        --[no-]destroy-on-error      Destroy machine if any fatal error happens (default to true)
+        --[no-]parallel              Enable or disable parallelism if provider supports it
+        --provider PROVIDER          Back the machine with a specific provider
+        --[no-]install-provider      If possible, install the provider if it isn't installed
+    -h, --help                       Print this help

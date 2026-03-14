@@ -1,0 +1,19 @@
+
+Usage:	docker engine check [OPTIONS]
+
+Check for available engine updates
+
+Options:
+      --containerd string        override default location of containerd
+                                 endpoint
+      --downgrades               Report downgrades (default omits older
+                                 versions)
+      --engine-image string      Specify engine image (default uses the
+                                 same image as currently running)
+      --format string            Pretty-print updates using a Go template
+      --pre-releases             Include pre-release versions
+  -q, --quiet                    Only display available versions
+      --registry-prefix string   Override the existing location where
+                                 engine images are pulled (default
+                                 "docker.io/store/docker")
+      --upgrades                 Report available upgrades (default true)

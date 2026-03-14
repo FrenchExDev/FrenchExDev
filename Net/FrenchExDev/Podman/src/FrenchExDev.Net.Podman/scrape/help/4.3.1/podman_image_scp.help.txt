@@ -1,0 +1,14 @@
+securely copy images
+
+Description:
+  Securely copy an image from one host to another.
+
+Usage:
+  podman image scp [options] IMAGE [HOST::]
+
+Examples:
+  podman image scp myimage:latest otherhost::
+
+Options:
+  -q, --quiet   Suppress the output
+

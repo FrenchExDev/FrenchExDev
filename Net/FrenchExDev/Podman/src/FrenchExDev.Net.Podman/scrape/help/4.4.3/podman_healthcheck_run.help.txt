@@ -1,0 +1,11 @@
+run the health check of a container
+
+Description:
+  run the health check of a container
+
+Usage:
+  podman healthcheck run CONTAINER
+
+Examples:
+  podman healthcheck run mywebapp
+

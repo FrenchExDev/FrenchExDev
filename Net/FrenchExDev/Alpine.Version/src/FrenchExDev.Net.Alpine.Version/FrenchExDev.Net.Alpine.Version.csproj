@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>0.0.9</Version>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Description>Alpine Version in .NET</Description>
+		<Copyright>FrenchExDev</Copyright>
+		<PackageProjectUrl></PackageProjectUrl>
+		<RepositoryUrl>https://www.github.com/FrenchExDev.Net/FrenchExDev</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>alpine version</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+	  <ProjectReference Include="..\..\..\HttpClient\src\FrenchExDev.Net.HttpClient\FrenchExDev.Net.HttpClient.csproj" />
+	</ItemGroup>
+
+</Project>

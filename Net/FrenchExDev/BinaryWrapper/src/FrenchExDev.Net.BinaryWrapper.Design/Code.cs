@@ -594,7 +594,7 @@ public sealed class StandardHelpParser : IHelpParser
             var end = current.Length;
             for (var i = 2; i < current.Length; i++)
             {
-                if (current[i] == ' ' || current[i] == '=')
+                if (!IsValidOptionNameChar(current[i]))
                 {
                     end = i;
                     break;
@@ -678,6 +678,9 @@ public sealed class StandardHelpParser : IHelpParser
         }
         return true;
     }
+
+    internal static bool IsValidOptionNameChar(char c)
+        => char.IsLetterOrDigit(c) || c is '-' or '_' or '[' or ']';
 }
 
 // ── Packer Help Parser ──────────────────────────────────────────────────────
@@ -1005,7 +1008,7 @@ public sealed class CobraHelpParser : IHelpParser
             var end = current.Length;
             for (var i = 2; i < current.Length; i++)
             {
-                if (current[i] == ' ' || current[i] == '=')
+                if (!StandardHelpParser.IsValidOptionNameChar(current[i]))
                 {
                     end = i;
                     break;
@@ -1419,14 +1422,21 @@ public sealed class HelpScraper
     private readonly Func<string[], Task<string>> _runHelp;
     private readonly int _maxDepth;
     private readonly string _helpFlag;
+    private readonly string? _helpDumpDir;
+    private readonly int _maxConcurrency;
+    private readonly Action? _onCommandScraped;
 
     public HelpScraper(IHelpParser parser, Func<string[], Task<string>> runHelp,
-        int maxDepth = 10, string helpFlag = "--help")
+        int maxDepth = 10, string helpFlag = "--help", string? helpDumpDir = null,
+        int maxConcurrency = 4, Action? onCommandScraped = null)
     {
         _parser = parser;
         _runHelp = runHelp;
         _maxDepth = maxDepth;
         _helpFlag = helpFlag;
+        _helpDumpDir = helpDumpDir;
+        _maxConcurrency = Math.Max(1, maxConcurrency);
+        _onCommandScraped = onCommandScraped;
     }
 
     public async Task<CommandTree> ScrapeAsync(string binaryName,
@@ -1467,26 +1477,43 @@ public sealed class HelpScraper
             return null;
         }
 
+        // Dump raw help text for debugging and test data
+        if (_helpDumpDir is not null)
+        {
+            var commandPath = string.Join("_", helpArgs[..^1]); // all args except help flag
+            var dumpPath = Path.Combine(_helpDumpDir, $"{commandPath}.help.txt");
+            Directory.CreateDirectory(_helpDumpDir);
+            await File.WriteAllTextAsync(dumpPath, helpText);
+        }
+
         var node = _parser.Parse(helpText, commandName);
         if (node is null) return null;
+
+        _onCommandScraped?.Invoke();
 
         if (node.SubCommands.Count == 0)
             return node;
 
         var scrapedSubs = new CommandNode?[node.SubCommands.Count];
-        for (var i = 0; i < node.SubCommands.Count; i++)
+        using var semaphore = new SemaphoreSlim(_maxConcurrency);
+        var tasks = node.SubCommands.Select(async (sub, i) =>
         {
-            var sub = node.SubCommands[i];
-            var subArgs = helpArgs[..^1].Append(sub.Name).Append(_helpFlag).ToArray();
+            await semaphore.WaitAsync(ct);
             try
             {
+                var subArgs = helpArgs[..^1].Append(sub.Name).Append(_helpFlag).ToArray();
                 scrapedSubs[i] = await ScrapeNodeAsync(subArgs, sub.Name, depth + 1, ct);
             }
             catch
             {
                 scrapedSubs[i] = null;
             }
-        }
+            finally
+            {
+                semaphore.Release();
+            }
+        }).ToArray();
+        await Task.WhenAll(tasks);
 
         return ReconstructWithScrapedSubCommands(node, scrapedSubs);
     }
@@ -1946,6 +1973,9 @@ public sealed class ScrapePipeline
     private readonly List<ICommandTreeTransformer> _transformers = [];
 
     private Func<string[], Task<string>>? _runHelp;
+    private string? _helpDumpDir;
+    private int _scrapeParallelism = 4;
+    private Action? _onCommandScraped;
 
     public ScrapePipeline Binary(string name) { _binaryName = name; return this; }
     public ScrapePipeline HelpFlag(string flag) { _helpFlag = flag; return this; }
@@ -1974,6 +2004,15 @@ public sealed class ScrapePipeline
 
     public ScrapePipeline UseTransformer(ICommandTreeTransformer transformer)
     { _transformers.Add(transformer); return this; }
+
+    public ScrapePipeline DumpHelpTo(string dir)
+    { _helpDumpDir = dir; return this; }
+
+    public ScrapePipeline ScrapeParallelism(int n)
+    { _scrapeParallelism = n; return this; }
+
+    public ScrapePipeline OnCommandScraped(Action callback)
+    { _onCommandScraped = callback; return this; }
 
     public string GenerateDockerfile()
     {
@@ -2035,7 +2074,7 @@ public sealed class ScrapePipeline
         IHelpParser parser, Func<string[], Task<string>> runHelp,
         CancellationToken ct)
     {
-        var scraper = new HelpScraper(parser, runHelp, _maxDepth, _helpFlag);
+        var scraper = new HelpScraper(parser, runHelp, _maxDepth, _helpFlag, _helpDumpDir, _scrapeParallelism, _onCommandScraped);
         var tree = await scraper.ScrapeAsync(_binaryName!, ct);
 
         tree = ApplyTransforms(tree);

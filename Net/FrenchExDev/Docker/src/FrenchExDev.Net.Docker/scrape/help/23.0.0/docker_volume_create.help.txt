@@ -1,0 +1,26 @@
+
+Usage:  docker volume create [OPTIONS] [VOLUME]
+
+Create a volume
+
+Options:
+      --availability string       Cluster Volume availability ("active",
+                                  "pause", "drain") (default "active")
+  -d, --driver string             Specify volume driver name (default "local")
+      --group string              Cluster Volume group (cluster volumes)
+      --label list                Set metadata for a volume
+      --limit-bytes bytes         Minimum size of the Cluster Volume in bytes
+  -o, --opt map                   Set driver specific options (default map[])
+      --required-bytes bytes      Maximum size of the Cluster Volume in bytes
+      --scope string              Cluster Volume access scope ("single",
+                                  "multi") (default "single")
+      --secret map                Cluster Volume secrets (default map[])
+      --sharing string            Cluster Volume access sharing ("none",
+                                  "readonly", "onewriter", "all")
+                                  (default "none")
+      --topology-preferred list   A topology that the Cluster Volume
+                                  would be preferred in
+      --topology-required list    A topology that the Cluster Volume must
+                                  be accessible from
+      --type string               Cluster Volume access type ("mount",
+                                  "block") (default "block")

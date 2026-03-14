@@ -7144,7 +7144,7 @@
               },
               {
                 "longName": "sort",
-                "description": "Sort by size, tag, created, id, repository (default \u0022created\u0022)",
+                "description": "Sort by created, id, repository, size, tag (default \u0022created\u0022)",
                 "valueKind": "single",
                 "clrType": "string",
                 "isRequired": false
@@ -7651,7 +7651,7 @@
           },
           {
             "longName": "sort",
-            "description": "Sort by id, repository, size, tag, created (default \u0022created\u0022)",
+            "description": "Sort by size, tag, created, id, repository (default \u0022created\u0022)",
             "valueKind": "single",
             "clrType": "string",
             "isRequired": false

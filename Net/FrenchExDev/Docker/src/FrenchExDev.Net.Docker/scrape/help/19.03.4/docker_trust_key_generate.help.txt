@@ -1,0 +1,8 @@
+
+Usage:	docker trust key generate NAME
+
+Generate and load a signing key-pair
+
+Options:
+      --dir string   Directory to generate key in, defaults to current
+                     directory

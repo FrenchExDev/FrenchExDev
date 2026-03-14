@@ -1,0 +1,10 @@
+Usage:  docker plugin upgrade [OPTIONS] PLUGIN [REMOTE]
+
+Upgrade an existing plugin
+
+Options:
+      --disable-content-trust   Skip image verification (default true)
+      --grant-all-permissions   Grant all permissions necessary to run
+                                the plugin
+      --skip-remote-check       Do not check if specified remote plugin
+                                matches existing plugin image

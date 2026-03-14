@@ -17,8 +17,8 @@ internal static class NamingHelper
     public static string ToPascalCase(string name)
     {
         if (string.IsNullOrEmpty(name)) return name;
-        // Strip brackets from negatable flags like [no-]color → no-color
-        name = name.Replace("[", "").Replace("]", "");
+        // Strip brackets and parentheses from flag names like [no-]color or replicas)
+        name = name.Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "");
         // Strip everything after a space (malformed long names like "s DESCRIPTION")
         var spaceIdx = name.IndexOf(' ');
         if (spaceIdx > 0) name = name.Substring(0, spaceIdx);

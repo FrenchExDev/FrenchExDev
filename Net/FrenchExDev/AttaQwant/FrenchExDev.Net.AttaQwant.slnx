@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/doc/">
+    <File Path="ARCHITECTURE.md" />
+    <File Path="HOW-TO.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.AttaQwant.Design/FrenchExDev.Net.AttaQwant.Design.csproj" />
+    <Project Path="src/FrenchExDev.Net.AttaQwant/FrenchExDev.Net.AttaQwant.csproj" />
+  </Folder>
+  <Folder Name="/test/" />
+</Solution>

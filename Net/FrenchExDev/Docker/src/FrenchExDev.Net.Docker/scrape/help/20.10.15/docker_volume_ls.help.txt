@@ -1,0 +1,12 @@
+
+Usage:  docker volume ls [OPTIONS]
+
+List volumes
+
+Aliases:
+  ls, list
+
+Options:
+  -f, --filter filter   Provide filter values (e.g. 'dangling=true')
+      --format string   Pretty-print volumes using a Go template
+  -q, --quiet           Only display volume names

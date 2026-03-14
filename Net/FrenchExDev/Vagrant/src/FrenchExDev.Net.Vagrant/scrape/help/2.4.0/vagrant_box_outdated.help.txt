@@ -1,0 +1,22 @@
+Usage: vagrant box outdated [options]
+
+Checks if there is a new version available for the box
+that you are using. If you pass in the --global flag,
+all boxes will be checked for updates.
+
+Options:
+
+        --global                     Check all boxes installed
+    -f, --force                      Force checks for latest box updates
+        --insecure                   Do not validate SSL certificates
+        --cacert FILE                CA certificate for SSL download
+        --capath DIR                 CA certificate directory for SSL download
+        --cert FILE                  A client SSL cert, if needed
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

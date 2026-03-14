@@ -1,0 +1,9 @@
+{
+  "binaryName": "podman",
+  "root": {
+    "name": "podman",
+    "options": [],
+    "arguments": [],
+    "subCommands": []
+  }
+}

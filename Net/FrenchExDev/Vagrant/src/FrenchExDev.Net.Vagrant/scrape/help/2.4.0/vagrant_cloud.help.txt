@@ -1,0 +1,21 @@
+Usage: vagrant cloud <subcommand> [<args>]
+
+The cloud command can be used for taking actions against
+Vagrant Cloud like searching or uploading a Vagrant Box
+
+Available subcommands:
+     auth            For various authorization operations on Vagrant Cloud
+     box             For managing a Vagrant box entry on Vagrant Cloud
+     provider        For managing a Vagrant box's provider options
+     publish         A complete solution for creating or updating a new box on Vagrant Cloud
+     search          Search Vagrant Cloud for available boxes
+     version         For managing a Vagrant box's versions
+
+For help on any individual subcommand run `vagrant cloud <subcommand> -h`
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output

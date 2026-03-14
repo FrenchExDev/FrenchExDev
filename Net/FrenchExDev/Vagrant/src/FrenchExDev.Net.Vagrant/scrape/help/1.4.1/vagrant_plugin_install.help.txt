@@ -1,0 +1,9 @@
+Usage: vagrant plugin install <name> [-h]
+
+        --entry-point NAME           The name of the entry point file for loading the plugin.
+        --plugin-prerelease          Allow prerelease versions of this plugin.
+        --plugin-source PLUGIN_SOURCE
+                                     Add a RubyGems repository source
+        --plugin-version PLUGIN_VERSION
+                                     Install a specific version of the plugin
+    -h, --help                       Print this help

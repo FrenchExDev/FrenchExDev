@@ -1,0 +1,14 @@
+
+Usage:	docker engine update [OPTIONS]
+
+Update a local engine
+
+Options:
+      --containerd string        override default location of containerd
+                                 endpoint
+      --engine-image string      Specify engine image (default uses the
+                                 same image as currently running)
+      --registry-prefix string   Override the current location where
+                                 engine images are pulled (default
+                                 "docker.io/store/docker")
+      --version string           Specify engine version

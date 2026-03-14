@@ -1,0 +1,2 @@
+Usage: vagrant plugin repair [-h]
+    -h, --help                       Print this help

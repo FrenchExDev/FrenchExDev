@@ -46,6 +46,15 @@ public sealed class VagrantHelpParser : IHelpParser
 
             if (section == Section.None)
             {
+                // Indented lines starting with - are trailing global options (no header)
+                // → parse them as options instead of capturing as description
+                if ((line.StartsWith(' ') || line.StartsWith('\t'))
+                    && trimmed.StartsWith('-'))
+                {
+                    StandardHelpParser.ParseOptionLine(trimmed, builder);
+                    continue;
+                }
+
                 description ??= trimmed;
                 continue;
             }

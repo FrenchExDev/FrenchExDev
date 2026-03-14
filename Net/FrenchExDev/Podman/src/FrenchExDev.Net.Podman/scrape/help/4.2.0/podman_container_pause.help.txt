@@ -1,0 +1,16 @@
+Pause all the processes in one or more containers
+
+Description:
+  Pauses one or more running containers.  The container name or ID can be used.
+
+Usage:
+  podman container pause [options] CONTAINER [CONTAINER...]
+
+Examples:
+  podman container pause mywebserver
+  podman container pause 860a4b23
+  podman container pause -a
+
+Options:
+  -a, --all   Pause all running containers
+

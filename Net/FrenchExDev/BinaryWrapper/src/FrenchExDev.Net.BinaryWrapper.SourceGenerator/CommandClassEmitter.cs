@@ -112,7 +112,7 @@ internal static class CommandClassEmitter
         {
             var propName = NamingHelper.ToPascalCase(opt.LongName);
             var clrType = NamingHelper.MapClrType(opt.ClrType);
-            var rawName = opt.LongName.Replace("[", "").Replace("]", "");
+            var rawName = opt.LongName.Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "");
             var spIdx = rawName.IndexOf(' ');
             var sanitizedName = spIdx > 0 ? rawName.Substring(0, spIdx) : rawName;
             var flagName = $"{flagPrefix}{sanitizedName}";

@@ -1,0 +1,2 @@
+Usage: vagrant status [name|id]
+    -h, --help                       Print this help

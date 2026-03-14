@@ -1,0 +1,13 @@
+
+Usage:  docker network ls [OPTIONS]
+
+List networks
+
+Aliases:
+  ls, list
+
+Options:
+  -f, --filter filter   Provide filter values (e.g. 'driver=bridge')
+      --format string   Pretty-print networks using a Go template
+      --no-trunc        Do not truncate the output
+  -q, --quiet           Only display network IDs
