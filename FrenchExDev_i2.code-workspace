@@ -26,13 +26,11 @@
 		"search.exclude": {
 			".vs/": true,
 			"**/bin/": true,
-			"**/obj/": true,
 			"**/node_modules/": true,
 		},
 		"files.exclude": {
 			"**/.vs/": true,
 			"**/bin/": true,
-			"**/obj/": true,
 			"**/node_modules/": true,
 		},
 		"powershell.cwd": "Root"

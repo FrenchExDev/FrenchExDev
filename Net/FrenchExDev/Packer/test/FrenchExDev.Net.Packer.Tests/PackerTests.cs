@@ -353,96 +353,96 @@ public sealed class GeneratedCodeTests
         new(TestBindings.Create("packer"));
 
     [Fact]
-    public void Client_Build_ReturnsCommand()
+    public async Task Client_Build_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Build(b => b.WithForce(true));
+        var cmd = await client.BuildAsync(b => b.WithForce(true));
         cmd.ShouldNotBeNull();
         cmd.ShouldBeOfType<PackerBuildCommand>();
         cmd.Force.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Validate_ReturnsCommand()
+    public async Task Client_Validate_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Validate(b => b.WithSyntaxOnly(true));
+        var cmd = await client.ValidateAsync(b => b.WithSyntaxOnly(true));
         cmd.SyntaxOnly.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Init_ReturnsCommand()
+    public async Task Client_Init_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Init(b => b.WithUpgrade(true));
+        var cmd = await client.InitAsync(b => b.WithUpgrade(true));
         cmd.Upgrade.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Fmt_ReturnsCommand()
+    public async Task Client_Fmt_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Fmt(b => b.WithCheck(true));
+        var cmd = await client.FmtAsync(b => b.WithCheck(true));
         cmd.Check.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Inspect_ReturnsCommand()
+    public async Task Client_Inspect_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Inspect(b => b.WithMachineReadable(true));
+        var cmd = await client.InspectAsync(b => b.WithMachineReadable(true));
         cmd.MachineReadable.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Hcl2Upgrade_ReturnsCommand()
+    public async Task Client_Hcl2Upgrade_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Hcl2Upgrade(b => b.WithOutputFile("new.pkr.hcl"));
+        var cmd = await client.Hcl2UpgradeAsync(b => b.WithOutputFile("new.pkr.hcl"));
         cmd.OutputFile.ShouldBe("new.pkr.hcl");
     }
 
     [Fact]
-    public void Client_Console_ReturnsCommand()
+    public async Task Client_Console_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Console(b => b.WithVar(true));
+        var cmd = await client.ConsoleAsync(b => b.WithVar(true));
         cmd.Var.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Plugins_Install_ReturnsCommand()
+    public async Task Client_Plugins_Install_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Plugins.Install(b => b.WithForce(true));
+        var cmd = await client.Plugins.InstallAsync(b => b.WithForce(true));
         cmd.Force.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Plugins_Remove_ReturnsCommand()
+    public async Task Client_Plugins_Remove_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Plugins.Remove(b => { });
+        var cmd = await client.Plugins.RemoveAsync(b => { });
         cmd.ShouldNotBeNull();
         cmd.CommandPath.ShouldBe(new[] { "plugins", "remove" });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_Plugins_Installed_ReturnsCommand()
+    public async Task Client_Plugins_Installed_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Plugins.Installed(b => { });
+        var cmd = await client.Plugins.InstalledAsync(b => { });
         cmd.ShouldNotBeNull();
         cmd.CommandPath.ShouldBe(new[] { "plugins", "installed" });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_Plugins_Required_ReturnsCommand()
+    public async Task Client_Plugins_Required_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Plugins.Required(b => { });
+        var cmd = await client.Plugins.RequiredAsync(b => { });
         cmd.ShouldNotBeNull();
         cmd.CommandPath.ShouldBe(new[] { "plugins", "required" });
         cmd.ToArguments().Count.ShouldBe(0);
@@ -460,29 +460,29 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Fix_ReturnsCommand()
+    public async Task Client_Fix_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Fix(b => b.WithValidate("true"));
+        var cmd = await client.FixAsync(b => b.WithValidate("true"));
         cmd.Validate.ShouldBe("true");
         cmd.CommandPath.ShouldBe(new[] { "fix" });
     }
 
     [Fact]
-    public void Client_Version_ReturnsCommand()
+    public async Task Client_Version_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Version(b => { });
+        var cmd = await client.VersionAsync(b => { });
         cmd.ShouldNotBeNull();
         cmd.CommandPath.ShouldBe(new[] { "version" });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_Build_AllProperties_ViaBuilder()
+    public async Task Client_Build_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Build(b => b
+        var cmd = await client.BuildAsync(b => b
             .WithColor("true").WithDebug(true).WithExcept("docker")
             .WithOnly("aws").WithForce(true).WithMachineReadable(true)
             .WithOnError("abort").WithParallelBuilds("4")
@@ -492,10 +492,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Validate_AllProperties_ViaBuilder()
+    public async Task Client_Validate_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Validate(b => b
+        var cmd = await client.ValidateAsync(b => b
             .WithSyntaxOnly(true).WithExcept("docker").WithOnly("aws")
             .WithMachineReadable(true).WithVar(true).WithVarFile("vars.json")
             .WithNoWarnUndeclaredVar(true).WithEvaluateDatasources(true));
@@ -503,126 +503,126 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Console_AllProperties_ViaBuilder()
+    public async Task Client_Console_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Console(b => b
+        var cmd = await client.ConsoleAsync(b => b
             .WithVar(true).WithVarFile("f.json")
             .WithConfigType(true).WithUseSequentialEvaluation(true));
         cmd.ToArguments().Count.ShouldBe(4);
     }
 
     [Fact]
-    public void Client_Fmt_AllProperties_ViaBuilder()
+    public async Task Client_Fmt_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Fmt(b => b
+        var cmd = await client.FmtAsync(b => b
             .WithCheck(true).WithDiff(true)
             .WithWrite("output.pkr.hcl").WithRecursive(true));
         cmd.ToArguments().Count.ShouldBe(4);
     }
 
     [Fact]
-    public void Client_Hcl2Upgrade_AllProperties_ViaBuilder()
+    public async Task Client_Hcl2Upgrade_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Hcl2Upgrade(b => b
+        var cmd = await client.Hcl2UpgradeAsync(b => b
             .WithOutputFile("new.pkr.hcl").WithWithAnnotations(true));
         cmd.ToArguments().Count.ShouldBe(2);
     }
 
     [Fact]
-    public void Client_Init_AllProperties_ViaBuilder()
+    public async Task Client_Init_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Init(b => b.WithUpgrade(true).WithForce(true));
+        var cmd = await client.InitAsync(b => b.WithUpgrade(true).WithForce(true));
         cmd.ToArguments().Count.ShouldBe(2);
     }
 
     [Fact]
-    public void Client_Inspect_AllProperties_ViaBuilder()
+    public async Task Client_Inspect_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Inspect(b => b
+        var cmd = await client.InspectAsync(b => b
             .WithMachineReadable(true).WithUseSequentialEvaluation(true));
         cmd.ToArguments().Count.ShouldBe(2);
     }
 
     [Fact]
-    public void Client_PluginsInstall_AllProperties_ViaBuilder()
+    public async Task Client_PluginsInstall_AllProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Plugins.Install(b => b
+        var cmd = await client.Plugins.InstallAsync(b => b
             .WithPath("/usr/local/bin").WithForce(true));
         cmd.ToArguments().Count.ShouldBe(2);
     }
 
     [Fact]
-    public void Client_Build_NoProperties_ViaBuilder()
+    public async Task Client_Build_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Build(b => { });
+        var cmd = await client.BuildAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_Validate_NoProperties_ViaBuilder()
+    public async Task Client_Validate_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Validate(b => { });
+        var cmd = await client.ValidateAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_Console_NoProperties_ViaBuilder()
+    public async Task Client_Console_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Console(b => { });
+        var cmd = await client.ConsoleAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "console" });
     }
 
     [Fact]
-    public void Client_Fmt_NoProperties_ViaBuilder()
+    public async Task Client_Fmt_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Fmt(b => { });
+        var cmd = await client.FmtAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "fmt" });
     }
 
     [Fact]
-    public void Client_Hcl2Upgrade_NoProperties_ViaBuilder()
+    public async Task Client_Hcl2Upgrade_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Hcl2Upgrade(b => { });
+        var cmd = await client.Hcl2UpgradeAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "hcl2_upgrade" });
     }
 
     [Fact]
-    public void Client_Init_NoProperties_ViaBuilder()
+    public async Task Client_Init_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Init(b => { });
+        var cmd = await client.InitAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "init" });
     }
 
     [Fact]
-    public void Client_Inspect_NoProperties_ViaBuilder()
+    public async Task Client_Inspect_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Inspect(b => { });
+        var cmd = await client.InspectAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "inspect" });
     }
 
     [Fact]
-    public void Client_Fix_NoProperties_ViaBuilder()
+    public async Task Client_Fix_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Fix(b => { });
+        var cmd = await client.FixAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "fix" });
     }

@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/doc/" />
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.BinaryWrapper.Attributes/FrenchExDev.Net.BinaryWrapper.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.BinaryWrapper.Design.Lib/FrenchExDev.Net.BinaryWrapper.Design.Lib.csproj" />
+    <Project Path="src/FrenchExDev.Net.BinaryWrapper.Design/FrenchExDev.Net.BinaryWrapper.Design.csproj" />
+    <Project Path="src/FrenchExDev.Net.BinaryWrapper.SourceGenerator/FrenchExDev.Net.BinaryWrapper.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.BinaryWrapper.Testing/FrenchExDev.Net.BinaryWrapper.Testing.csproj" />
+    <Project Path="src/FrenchExDev.Net.BinaryWrapper/FrenchExDev.Net.BinaryWrapper.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.BinaryWrapper.Design.Tests/FrenchExDev.Net.BinaryWrapper.Design.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.BinaryWrapper.Tests/FrenchExDev.Net.BinaryWrapper.Tests.csproj" />
+  </Folder>
+</Solution>

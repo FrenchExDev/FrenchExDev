@@ -25,7 +25,7 @@ ValidateAsync() → if OK → Instantiate()
 
 Validation runs first and **always runs completely** — it accumulates all errors, not just the first one. Only if validation passes does construction begin. This means:
 
-- `CreateAsync` / `InstantiateAsync` can trust its inputs unconditionally
+- `CreateInstance` / `InstantiateAsync` can trust their inputs unconditionally
 - Callers get a complete error report in one round-trip
 - No defensive null-checks inside construction logic
 
@@ -101,13 +101,15 @@ This is not just an optimization. It is a correctness guarantee for graphs: if t
 ### The source generator removes boilerplate, not control
 
 The generator writes:
-- Input property declarations
+- Protected input property declarations (`protected T? Prop { get; private set; }`)
+- Public `With*()` fluent methods
 - Virtual validation hooks (one per property, one per collection item)
 - A `ValidateAsync` override that calls all hooks
-- A default `BuildException` that produces a readable error message
-- A sealed `Instantiate` bridge that calls `CreateAsync`
+- A default `BuildException` (or `TypedBuildException` for Mode 2)
+- A sealed `Instantiate` bridge that calls `CreateInstance()`
+- A strategy-driven `CreateInstance()` method (`init`, `ctor`, `factory:X`, or `custom`)
 
-Everything the generator produces is `virtual` or `partial` — fully overridable. The generator accelerates the 90% case. The 10% that needs custom logic (cross-property validation, async checks, graph construction) is handled in plain C# code.
+Everything the generator produces is `virtual` or overridable. The generator accelerates the 90% case. The 10% that needs custom logic (cross-property validation, async checks, graph construction) is handled in plain C# code.
 
 ---
 
@@ -138,7 +140,7 @@ This keeps errors as values through the entire call stack, from validation throu
 
 | Trade-off | Decision |
 |---|---|
-| Developers must write `CreateAsync` / `InstantiateAsync` | No way around it — construction is application-specific |
+| Mode 2 developers must write `InstantiateAsync` | No way around it -- construction with typed errors is application-specific |
 | Manual builders require more code | Full control over `Resolve` timing is necessary for graphs |
 | `Reference<T>` adds one layer of indirection | Required for single-flight caching before the value exists |
 | The generator hides `Reference<T>` entirely | Simpler developer API — most builders never need to see it |

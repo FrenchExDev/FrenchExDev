@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FrenchExDev.Net.Builder.SourceGenerator.Lib\FrenchExDev.Net.Builder.SourceGenerator.Lib.csproj" />
+  </ItemGroup>
+
 </Project>

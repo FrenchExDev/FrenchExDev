@@ -242,92 +242,92 @@ public sealed class GeneratedCodeTests
     // ── Top-level leaf commands via client ──
 
     [Fact]
-    public void Client_Inspect_ReturnsCommand()
+    public async Task Client_Inspect_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Inspect(b => b.WithFormat("json"));
+        var cmd = await client.InspectAsync(b => b.WithFormat("json"));
         cmd.Format.ShouldBe("json");
     }
 
     [Fact]
-    public void Client_Kill_ReturnsCommand()
+    public async Task Client_Kill_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Kill(b => b.WithSignal("SIGTERM"));
+        var cmd = await client.KillAsync(b => b.WithSignal("SIGTERM"));
         cmd.Signal.ShouldBe("SIGTERM");
     }
 
     [Fact]
-    public void Client_Rm_ReturnsCommand()
+    public async Task Client_Rm_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Rm(b => b.WithForce(true));
+        var cmd = await client.RmAsync(b => b.WithForce(true));
         cmd.Force.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Rmi_ReturnsCommand()
+    public async Task Client_Rmi_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Rmi(b => b.WithForce(true));
+        var cmd = await client.RmiAsync(b => b.WithForce(true));
         cmd.Force.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Stop_ReturnsCommand()
+    public async Task Client_Stop_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Stop(b => b.WithTime("10"));
+        var cmd = await client.StopAsync(b => b.WithTime("10"));
         cmd.Time.ShouldBe("10");
     }
 
     [Fact]
-    public void Client_Start_ReturnsCommand()
+    public async Task Client_Start_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Start(b => b.WithDetachKeys("ctrl-c"));
+        var cmd = await client.StartAsync(b => b.WithDetachKeys("ctrl-c"));
         cmd.DetachKeys.ShouldBe("ctrl-c");
     }
 
     [Fact]
-    public void Client_Logs_ReturnsCommand()
+    public async Task Client_Logs_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Logs(b => b.WithFollow(true));
+        var cmd = await client.LogsAsync(b => b.WithFollow(true));
         cmd.Follow.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Pause_ReturnsCommand()
+    public async Task Client_Pause_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Pause(b => { });
+        var cmd = await client.PauseAsync(b => { });
         cmd.ShouldNotBeNull();
     }
 
     [Fact]
-    public void Client_Unpause_ReturnsCommand()
+    public async Task Client_Unpause_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Unpause(b => { });
+        var cmd = await client.UnpauseAsync(b => { });
         cmd.ShouldNotBeNull();
     }
 
     // ── No-option commands ──
 
     [Fact]
-    public void Client_ContainerRun_NoProperties_ViaBuilder()
+    public async Task Client_ContainerRun_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Container.Run(b => { });
+        var cmd = await client.Container.RunAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_ContainerLs_NoProperties_ViaBuilder()
+    public async Task Client_ContainerLs_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Container.Ls(b => { });
+        var cmd = await client.Container.LsAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "container", "ls" });
     }
@@ -342,10 +342,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Container_Ls_ReturnsCommand()
+    public async Task Client_Container_Ls_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Container.Ls(b => b.WithAll(true));
+        var cmd = await client.Container.LsAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
         cmd.CommandPath.ShouldBe(new[] { "container", "ls" });
     }
@@ -358,10 +358,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Image_Ls_ReturnsCommand()
+    public async Task Client_Image_Ls_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Image.Ls(b => b.WithAll(true));
+        var cmd = await client.Image.LsAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
         cmd.CommandPath.ShouldBe(new[] { "image", "ls" });
     }
@@ -374,10 +374,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Network_Ls_ReturnsCommand()
+    public async Task Client_Network_Ls_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Network.Ls(b => b.WithQuiet(true));
+        var cmd = await client.Network.LsAsync(b => b.WithQuiet(true));
         cmd.Quiet.ShouldBe(true);
         cmd.CommandPath.ShouldBe(new[] { "network", "ls" });
     }
@@ -482,10 +482,10 @@ public sealed class GeneratedCodeTests
     // ── Run with many options via builder ──
 
     [Fact]
-    public void Client_ContainerRun_AllCommonOptions_ViaBuilder()
+    public async Task Client_ContainerRun_AllCommonOptions_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Container.Run(b => b
+        var cmd = await client.Container.RunAsync(b => b
             .WithDetach(true)
             .WithName("mycontainer")
             .WithTty(true)
@@ -512,10 +512,10 @@ public sealed class GeneratedCodeTests
     // ── ContainerLs with all options via builder ──
 
     [Fact]
-    public void Client_ContainerLs_AllOptions_ViaBuilder()
+    public async Task Client_ContainerLs_AllOptions_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Container.Ls(b => b
+        var cmd = await client.Container.LsAsync(b => b
             .WithAll(true)
             .WithFormat("json")
             .WithQuiet(true)

@@ -5,12 +5,13 @@
 | | `[Builder]` | `[Builder(Exception = ...)]` | Manual `AbstractBuilder<T>` |
 |---|---|---|---|
 | **Base class** | `AbstractBuilder<T>` | `AbstractBuilder<T, TException>` | `AbstractBuilder<T>` |
-| **Developer implements** | `partial Task<T> CreateAsync(ct)` | `override partial Task<Result<T,E>> InstantiateAsync(ct)` | `override Task<Result<Reference<T>>> Instantiate(ref, visited, ct)` |
+| **Developer implements** | Nothing (or override `CreateInstance()` with `custom` strategy) | `override Task<Result<T,E>> InstantiateAsync(ct)` (abstract from base) | `override Task<Result<Reference<T>>> Instantiate(ref, visited, ct)` |
 | **Failure surface** | `Result<ValidationResult>` | `Result<T, TException>` | `Result<ValidationResult>` |
 | **When to use** | I/O-heavy construction, unexpected errors | Domain-expected failures (not found, conflict) | Circular graphs, custom `Reference<T>` timing |
 | **Validation hooks** | Generated | Generated | Manual |
-| **Input properties** | Generated | Generated | Manual |
+| **Input properties** | Generated (`protected`, `private set`) | Generated (`protected`, `private set`) | Manual |
 | **`reference.Resolve` timing** | Managed by generator bridge | Managed by generator bridge | **Developer controls** |
+| **`CreateInstance()` strategy** | `init`/`ctor`/`factory:X`/`custom` | Same (but Mode 2 uses `InstantiateAsync` flow) | N/A |
 
 ---
 
@@ -21,7 +22,7 @@
 | `ValidateName(value)` | Override in builder class | Single property |
 | `ValidateTagsItem(item, i)` | Override in builder class | Per collection element |
 | `ValidateAsync(ct)` | Override the whole method | Cross-property, async checks |
-| `InstantiateAsync(ct)` | Return `Result.Failure(ex)` | Post-validation, domain rule |
+| `InstantiateAsync(ct)` (Mode 2) | Return `Result.Failure(ex)` | Post-validation, domain rule |
 
 Example mixing approaches:
 
@@ -52,8 +53,8 @@ public partial class BookingBuilder
         return Result<ValidationResult>.Success(vr);
     }
 
-    // Domain-level: async check in InstantiateAsync
-    protected override partial async Task<Result<Booking, BookingException>> InstantiateAsync(
+    // Domain-level: async check in InstantiateAsync (abstract from base class)
+    protected override async Task<Result<Booking, BookingException>> InstantiateAsync(
         CancellationToken ct)
     {
         var available = await _calendar.IsAvailableAsync(RoomId!.Value, StartDate!.Value, EndDate!.Value, ct);
@@ -98,8 +99,8 @@ The `Result` package is used throughout:
 | `ValidateAsync` return | `Result<ValidationResult>` | Success = no validation errors; Failure = unexpected error running validation |
 | `BuildAsync` (non-generic) | `Result<Reference<T>>` (internal) | Plumbing only — developer never sees `Reference<T>` |
 | `BuildAsync` (generic) | `Result<T, TException>` | Success = built object; Failure = typed domain exception |
-| `Instantiate` return | `Result<Reference<T>>` | Internal; generator wraps `CreateAsync` return |
-| `InstantiateAsync` return | `Result<T, TException>` | Developer returns this from their implementation |
+| `Instantiate` return | `Result<Reference<T>>` | Internal; generator bridge calls `CreateInstance()` |
+| `InstantiateAsync` return | `Result<T, TException>` | Developer implements this (Mode 2); returns typed success or failure |
 
 ---
 

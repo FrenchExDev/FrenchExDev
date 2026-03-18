@@ -143,7 +143,7 @@ flowchart TD
     U --> C1["PackerBuildCommand"]
     U --> C2["PackerValidateCommand - [SinceVersion('1.10.0')]"]
     C1 --> O1["--force"]
-    C1 --> O2["--ignore-prerelease-plugins - [SinceVersion('1.11.0')]"]
+    C1 --> O2["--ignore-prerelease-plugins[SinceVersion('1.11.0')]"]
 ```
 
 ## Output Parsing

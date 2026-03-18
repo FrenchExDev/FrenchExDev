@@ -177,17 +177,17 @@ public sealed class DummyGeneratedClientTests
     // ── Leaf commands ──
 
     [Fact]
-    public void Client_Run_ReturnsCommand()
+    public async Task Client_Run_ReturnsCommand()
     {
-        var cmd = CreateClient().Run(b => b.WithDetach(true).WithName("test"));
+        var cmd = await CreateClient().RunAsync(b => b.WithDetach(true).WithName("test"));
         cmd.Detach.ShouldBe(true);
         cmd.Name.ShouldBe("test");
     }
 
     [Fact]
-    public void Client_List_ReturnsCommand()
+    public async Task Client_List_ReturnsCommand()
     {
-        var cmd = CreateClient().List(b => b.WithAll(true).WithFormat("json"));
+        var cmd = await CreateClient().ListAsync(b => b.WithAll(true).WithFormat("json"));
         cmd.All.ShouldBe(true);
         cmd.Format.ShouldBe("json");
     }
@@ -201,17 +201,17 @@ public sealed class DummyGeneratedClientTests
     }
 
     [Fact]
-    public void Client_Config_Get_ReturnsCommand()
+    public async Task Client_Config_Get_ReturnsCommand()
     {
-        var cmd = CreateClient().Config.Get(b => b.WithKey("theme"));
+        var cmd = await CreateClient().Config.GetAsync(b => b.WithKey("theme"));
         cmd.Key.ShouldBe("theme");
         cmd.CommandPath.ShouldBe(new[] { "config", "get" });
     }
 
     [Fact]
-    public void Client_Config_Set_ReturnsCommand()
+    public async Task Client_Config_Set_ReturnsCommand()
     {
-        var cmd = CreateClient().Config.Set(b => b.WithKey("x").WithValue("y"));
+        var cmd = await CreateClient().Config.SetAsync(b => b.WithKey("x").WithValue("y"));
         cmd.Key.ShouldBe("x");
         cmd.Value.ShouldBe("y");
     }
@@ -241,55 +241,55 @@ public sealed class DummyGeneratedClientTests
     // ── No-option commands ──
 
     [Fact]
-    public void Client_Run_NoOptions()
+    public async Task Client_Run_NoOptions()
     {
-        var cmd = CreateClient().Run(b => { });
+        var cmd = await CreateClient().RunAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     // ── Version-gated option ──
 
     [Fact]
-    public void RunBuilder_WithTimeout_V2_Succeeds()
+    public async Task RunBuilder_WithTimeout_V2_Succeeds()
     {
         var client = CreateClient(new SemanticVersion(2, 0, 0));
-        var cmd = client.Run(b => b.WithTimeout("60"));
+        var cmd = await client.RunAsync(b => b.WithTimeout("60"));
         cmd.Timeout.ShouldBe("60");
     }
 
     [Fact]
-    public void RunBuilder_WithTimeout_V1_Throws()
+    public async Task RunBuilder_WithTimeout_V1_Throws()
     {
         var client = CreateClient(new SemanticVersion(1, 0, 0));
-        Should.Throw<OptionNotSupportedException>(() =>
-            client.Run(b => b.WithTimeout("60")));
+        await Should.ThrowAsync<OptionNotSupportedException>(async () =>
+            await client.RunAsync(b => b.WithTimeout("60")));
     }
 
     // ── Version-gated option (quiet added in v2) ──
 
     [Fact]
-    public void ListBuilder_WithQuiet_V2_Succeeds()
+    public async Task ListBuilder_WithQuiet_V2_Succeeds()
     {
         var client = CreateClient(new SemanticVersion(2, 0, 0));
-        var cmd = client.List(b => b.WithQuiet(true));
+        var cmd = await client.ListAsync(b => b.WithQuiet(true));
         cmd.Quiet.ShouldBe(true);
     }
 
     [Fact]
-    public void ListBuilder_WithQuiet_V1_Throws()
+    public async Task ListBuilder_WithQuiet_V1_Throws()
     {
         var client = CreateClient(new SemanticVersion(1, 0, 0));
-        Should.Throw<OptionNotSupportedException>(() =>
-            client.List(b => b.WithQuiet(true)));
+        await Should.ThrowAsync<OptionNotSupportedException>(async () =>
+            await client.ListAsync(b => b.WithQuiet(true)));
     }
 
     // ── Run with all common options via builder ──
 
     [Fact]
-    public void Client_Run_AllOptions_ViaBuilder()
+    public async Task Client_Run_AllOptions_ViaBuilder()
     {
         var client = CreateClient(new SemanticVersion(2, 0, 0));
-        var cmd = client.Run(b => b
+        var cmd = await client.RunAsync(b => b
             .WithDetach(true)
             .WithName("my-task")
             .WithEnv(["A=1", "B=2"])

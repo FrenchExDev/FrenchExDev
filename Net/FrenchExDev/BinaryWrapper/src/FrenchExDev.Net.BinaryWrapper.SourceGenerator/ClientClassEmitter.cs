@@ -92,7 +92,7 @@ internal static class ClientClassEmitter
             if (cmd.UntilVersion is not null)
                 sb.AppendLine($"{indent}[global::FrenchExDev.Net.BinaryWrapper.UntilVersion(\"{cmd.UntilVersion}\")]");
 
-            sb.AppendLine($"{indent}public {commandClassName} {methodName}(global::System.Action<{builderClassName}> configure)");
+            sb.AppendLine($"{indent}public async global::System.Threading.Tasks.Task<{commandClassName}> {methodName}Async(global::System.Action<{builderClassName}> configure)");
             sb.AppendLine($"{indent}{{");
 
             // Version guard on command
@@ -108,7 +108,7 @@ internal static class ClientClassEmitter
 
             sb.AppendLine($"{indent}    var __builder = new {builderClassName}(_detectedVersion);");
             sb.AppendLine($"{indent}    configure(__builder);");
-            sb.AppendLine($"{indent}    return __builder.BuildAsync().GetAwaiter().GetResult().ValueOrThrow().Resolved();");
+            sb.AppendLine($"{indent}    return (await __builder.BuildAsync()).ValueOrThrow().Resolved();");
             sb.AppendLine($"{indent}}}");
             sb.AppendLine();
         }

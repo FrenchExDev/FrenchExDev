@@ -8,3 +8,5 @@
 *.suo
 *.cache
 *.log
+.quality-gate
+coverage-results

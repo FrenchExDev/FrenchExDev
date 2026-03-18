@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/FrenchExDev.Net.QualityGate/FrenchExDev.Net.QualityGate.csproj" />
+    <ProjectReference Include="../../src/FrenchExDev.Net.QualityGate.Cli/FrenchExDev.Net.QualityGate.Cli.csproj" />
+    <ProjectReference Include="../../src/FrenchExDev.Net.QualityGate.Html/FrenchExDev.Net.QualityGate.Html.csproj" />
+  </ItemGroup>
+
+</Project>
