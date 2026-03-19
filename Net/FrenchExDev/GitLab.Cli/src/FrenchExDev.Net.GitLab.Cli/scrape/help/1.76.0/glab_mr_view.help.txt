@@ -1,0 +1,18 @@
+
+  Display the title, body, and other information about a merge request.                                                 
+         
+  USAGE  
+         
+    glab mr view {<id> | <branch>} [--flags]  
+         
+  FLAGS  
+         
+    -c --comments     Show merge request comments and activities.
+    -h --help         Show help for this command.
+    -F --output       Format output as: text, json. (text)
+    -p --page         Page number.
+    -P --per-page     Number of items to list per page. (20)
+    -R --repo         Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -s --system-logs  Show system activities and logs.
+    -w --web          Open merge request in a browser. Uses default browser or browser specified in BROWSER variable.
+

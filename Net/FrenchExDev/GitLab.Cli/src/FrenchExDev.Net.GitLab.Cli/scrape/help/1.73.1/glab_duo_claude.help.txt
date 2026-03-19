@@ -1,0 +1,41 @@
+Launch Claude Code with automatic GitLab authentication, proxy configuration,                                       
+  and GitLab MCP tools integration. All flags and arguments are passed through                                        
+  to the Claude executable.                                                                                           
+                                                                                                                      
+  This command automatically configures Claude Code to work with GitLab AI services,                                  
+  handling authentication tokens and API endpoints based on your current repository.                                  
+  It also provides access to all GitLab features through MCP tools, enabling                                          
+  you to interact with issues, merge requests, CI/CD pipelines, and more directly                                     
+  from within Claude Code.                                                                                            
+                                                                                                                      
+  Warning: Automatic token retrieval is currently behind the agent_platform_claude_code                               
+  feature flag. A "403 Forbidden" error usually means the feature                                                     
+  flag is not enabled for you. The flag requires a GitLab administrator                                               
+  to enable it.                                                                                                       
+                                                                                                                      
+  This feature is experimental. It might be broken or removed without any prior notice.                               
+  Read more about what experimental features mean at                                                                  
+  https://docs.gitlab.com/policy/development_stages_support/                                                          
+                                                                                                                      
+  Use experimental features at your own risk.
+
+USAGE
+  glab duo claude [flags] [args]
+
+CORE COMMANDS
+  token:      Generate GitLab Duo access token for Claude Code. (EXPERIMENTAL)
+
+FLAGS
+  --with-gitlab-mcp   If provided will configure the GitLab MCP server
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  $ glab duo claude                                                                                                   
+    $ glab duo claude -p "List all open issues in this project"                                                         
+    $ glab duo claude -p "Write a function to calculate Fibonacci numbers"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

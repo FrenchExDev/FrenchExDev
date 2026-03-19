@@ -1,0 +1,23 @@
+
+  Assigns a runner to a project.                                                                                        
+                                                                                                                        
+  Requires the Maintainer or Owner role for the project.                                                                
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner assign <runner-id> [--flags]     
+            
+  EXAMPLES  
+            
+    # Assign runner 9 to the current repository  
+    $ glab runner assign 9                       
+                                                 
+    # Assign runner 9 to a specific repository   
+    $ glab runner assign 9 -R owner/repo         
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

@@ -1,0 +1,26 @@
+Save your current progress with a diff on the stack.                             
+                                                                                   
+  This feature is experimental. It might be broken or removed without any prior    
+  notice. Read more about what experimental features mean at                       
+  https://docs.gitlab.com/policy/development_stages_support/                       
+                                                                                   
+  Use experimental features at your own risk.
+
+USAGE
+  glab stack save [flags]
+
+FLAGS
+  -d, --description string   Description of the change.
+  -m, --message string       Alias for the description flag.
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  $ glab stack save added_file $ glab stack save . -m "added a function" $ glab    
+    stack save -m "added a function"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

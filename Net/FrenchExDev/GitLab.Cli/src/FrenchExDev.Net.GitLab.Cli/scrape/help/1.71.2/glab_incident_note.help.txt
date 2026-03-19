@@ -1,0 +1,18 @@
+Comment on an incident in GitLab.
+
+USAGE
+  glab incident note <incident-id> [flags]
+
+ALIASES
+  comment
+
+FLAGS
+  -m, --message string   Message text.
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

@@ -1,0 +1,29 @@
+Schedule a new pipeline.
+
+USAGE
+  glab schedule create [flags]
+
+FLAGS
+  --active                Whether or not the schedule is active. (default true)
+  --cron string           Cron interval pattern.
+  --cronTimeZone string   Cron timezone. (default "UTC")
+  --description string    Description of the schedule.
+  --ref string            Target branch or tag.
+  --variable strings      Pass variables to schedule in the format <key>:<value>.
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # Create a scheduled pipeline that runs every hour                               
+                                                                                     
+    $ glab schedule create --cron "0 * * * *" --description "Describe your pipeline  
+    here" --                                                                         
+    ref "main" --variable "foo:bar" --variable "baz:baz"                             
+                                                                                     
+    | Created schedule
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

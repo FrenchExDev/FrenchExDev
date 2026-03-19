@@ -1,0 +1,26 @@
+
+  Manages runner controllers. This is an admin-only feature.                                                            
+                                                                                                                        
+  This feature is experimental. It might be broken or removed without any prior notice.                                 
+  Read more about what experimental features mean at                                                                    
+  https://docs.gitlab.com/policy/development_stages_support/                                                            
+                                                                                                                        
+  Use experimental features at your own risk.                                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner-controller <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    create [--flags]                     Create a runner controller. (EXPERIMENTAL)
+    delete <id> [--flags]                Delete a runner controller. (EXPERIMENTAL)
+    list [--flags]                       List runner controllers. (EXPERIMENTAL)
+    token <command> [command] [--flags]  Manage runner controller tokens. (EXPERIMENTAL)
+    update <id> [--flags]                Update a runner controller. (EXPERIMENTAL)
+         
+  FLAGS  
+         
+    -h --help                            Show help for this command.
+

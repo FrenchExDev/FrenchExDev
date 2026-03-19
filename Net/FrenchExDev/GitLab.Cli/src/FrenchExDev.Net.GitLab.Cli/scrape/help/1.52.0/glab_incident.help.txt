@@ -1,0 +1,32 @@
+Work with GitLab incidents.
+
+USAGE
+  glab incident [command] [flags]
+
+CORE COMMANDS
+  close:      Close an incident.
+  list:       List project incidents.
+  note:       Comment on an incident in GitLab.
+  reopen:     Reopen a resolved incident.
+  subscribe:  Subscribe to an incident.
+  unsubscribe: Unsubscribe from an incident.
+  view:       Display the title, body, and other information about an incident.
+
+FLAGS
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+ARGUMENTS
+  An incident can be supplied as argument in any of the following formats:
+  
+  - by number, e.g. "123"
+  - by URL, e.g. "https://gitlab.com/NAMESPACE/REPO/-/issues/incident/123"
+
+EXAMPLES
+  glab incident list
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

@@ -1,0 +1,25 @@
+View changes in a merge request.
+
+USAGE
+  glab mr diff [<id> | <branch>] [flags]
+
+FLAGS
+  --color string   Use color in diff output: always, never, auto. (default "auto")
+  --raw            Use raw diff format that can be piped to commands
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  $ glab mr diff 123 $ glab mr diff branch                                         
+                                                                                     
+    # Get merge request from current branch                                          
+                                                                                     
+    $ glab mr diff                                                                   
+                                                                                     
+    $ glab mr diff 123 --color=never
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

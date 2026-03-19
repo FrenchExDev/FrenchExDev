@@ -1,0 +1,15 @@
+
+  Interact with the changelog API.                                                                                      
+         
+  USAGE  
+         
+    glab changelog <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    generate [--flags]  Generate a changelog for the repository or project.
+         
+  FLAGS  
+         
+    -h --help           Show help for this command.
+

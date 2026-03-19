@@ -57,7 +57,9 @@ public sealed class BuilderPropertyModel
         string? dictKeyTypeFull = null,
         string? dictValueTypeFull = null,
         string? dictValueBuilderClassName = null,
-        string? dictSingularName = null)
+        string? dictSingularName = null,
+        string? itemBuilderClassName = null,
+        string? collectionSingularName = null)
     {
         Name = name;
         TypeFull = typeFull;
@@ -72,6 +74,8 @@ public sealed class BuilderPropertyModel
         DictValueTypeFull = dictValueTypeFull;
         DictValueBuilderClassName = dictValueBuilderClassName;
         DictSingularName = dictSingularName;
+        ItemBuilderClassName = itemBuilderClassName;
+        CollectionSingularName = collectionSingularName;
     }
 
     public string Name { get; }
@@ -110,4 +114,10 @@ public sealed class BuilderPropertyModel
 
     /// <summary>Singular name for single-entry convenience method (e.g., "Service" for Services). Null to skip.</summary>
     public string? DictSingularName { get; }
+
+    /// <summary>Builder class name for the collection item type (e.g., "global::MyApp.OrderItemBuilder"). Null if no builder exists.</summary>
+    public string? ItemBuilderClassName { get; }
+
+    /// <summary>Singular name for single-item collection convenience method (e.g., "Item" for Items). Null to skip.</summary>
+    public string? CollectionSingularName { get; }
 }

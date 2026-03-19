@@ -1,4 +1,5 @@
 using FrenchExDev.Net.Builder;
+using FrenchExDev.Net.Builder.Attributes;
 using FrenchExDev.Net.Result;
 using Xunit;
 
@@ -1138,5 +1139,285 @@ public class DictionaryBuilderTests
 
         protected override Exception BuildException(Result<ValidationResult> vr)
             => new InvalidOperationException(vr.ValueOrThrow().ToDataAnnotationsValidationResult().ErrorMessage);
+    }
+}
+
+// ── ListBuilder tests ───────────────────────────────────────────────────────
+
+public class ListBuilderTests
+{
+    [Fact]
+    public async Task BuildAsync_ReturnsEmptyList_WhenEmpty()
+    {
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .BuildAsync(new VisitedObjects());
+        Assert.NotNull(list);
+        Assert.Empty(list);
+    }
+
+    [Fact]
+    public async Task Add_DirectValue_AppearsInBuildOutput()
+    {
+        var item = new SimpleItem("direct");
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(item)
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(list);
+        Assert.Same(item, list[0]);
+    }
+
+    [Fact]
+    public async Task Add_WithAction_ConfiguresBuilderAndBuilds()
+    {
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(b => b.WithName("built"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(list);
+        Assert.Equal("built", list[0].Name);
+    }
+
+    [Fact]
+    public async Task Add_WithBuilder_AddsBuilderForDeferredBuild()
+    {
+        var builder = new SimpleItemBuilder().WithName("pre-configured");
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(builder)
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(list);
+        Assert.Equal("pre-configured", list[0].Name);
+    }
+
+    [Fact]
+    public async Task BuildAsync_MergesDirectAndBuiltValues()
+    {
+        var item = new SimpleItem("direct");
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(item)
+            .Add(b => b.WithName("built"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Equal(2, list.Count);
+        Assert.Same(item, list[0]);         // direct values first
+        Assert.Equal("built", list[1].Name); // built values after
+    }
+
+    [Fact]
+    public async Task BuildAsync_PassesVisitedObjects()
+    {
+        var visited = new VisitedObjects();
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(b => b.WithName("test"))
+            .BuildAsync(visited);
+
+        Assert.Single(list);
+        Assert.Equal("test", list[0].Name);
+    }
+
+    [Fact]
+    public void Add_DirectValue_ReturnsFluently()
+    {
+        var lb = new ListBuilder<SimpleItem, SimpleItemBuilder>();
+        var same = lb.Add(new SimpleItem("x"));
+        Assert.Same(lb, same);
+    }
+
+    [Fact]
+    public void Add_WithAction_ReturnsFluently()
+    {
+        var lb = new ListBuilder<SimpleItem, SimpleItemBuilder>();
+        var same = lb.Add(b => b.WithName("x"));
+        Assert.Same(lb, same);
+    }
+
+    [Fact]
+    public void Add_WithBuilder_ReturnsFluently()
+    {
+        var lb = new ListBuilder<SimpleItem, SimpleItemBuilder>();
+        var same = lb.Add(new SimpleItemBuilder());
+        Assert.Same(lb, same);
+    }
+
+    [Fact]
+    public async Task Add_MultipleItems_PreservesOrder()
+    {
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(new SimpleItem("a"))
+            .Add(new SimpleItem("b"))
+            .Add(b => b.WithName("c"))
+            .Add(b => b.WithName("d"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Equal(4, list.Count);
+        Assert.Equal("a", list[0].Name);
+        Assert.Equal("b", list[1].Name);
+        Assert.Equal("c", list[2].Name);
+        Assert.Equal("d", list[3].Name);
+    }
+
+    // ── Test helpers (ListBuilder) ──────────────────────────────────────────
+
+    public sealed class SimpleItem
+    {
+        public SimpleItem(string name) => Name = name;
+        public string Name { get; }
+    }
+
+    public sealed class SimpleItemBuilder : AbstractBuilder<SimpleItem>
+    {
+        private string? _name;
+
+        public SimpleItemBuilder WithName(string name) { _name = name; return this; }
+
+        protected override Task<Result<Reference<SimpleItem>>> Instantiate(
+            Reference<SimpleItem> reference, VisitedObjects visitedObjects,
+            CancellationToken cancellationToken = default)
+        {
+            reference.Resolve(new SimpleItem(_name ?? "default"));
+            return Task.FromResult(Result<Reference<SimpleItem>>.Success(reference));
+        }
+
+        protected override Task<Result<ValidationResult>> ValidateAsync(
+            CancellationToken cancellationToken = default)
+            => Task.FromResult(Result<ValidationResult>.Success(new ValidationResult()));
+
+        protected override Exception BuildException(Result<ValidationResult> vr)
+            => new InvalidOperationException(vr.ValueOrThrow().ToDataAnnotationsValidationResult().ErrorMessage);
+    }
+}
+
+// ── Source-generated builder integration tests ──────────────────────────────
+
+// Tier 1 target: List<string> and Dictionary<string, int> (no nested builders)
+[Builder]
+public partial class ProductTarget
+{
+    public List<string>? Tags { get; set; }
+    public Dictionary<string, int>? Scores { get; set; }
+}
+
+// Tier 2 targets: List<T> where T has [Builder]
+[Builder]
+public partial class OrderItemTarget
+{
+    public string? Sku { get; set; }
+    public int? Quantity { get; set; }
+}
+
+[Builder]
+public partial class OrderTarget
+{
+    public List<OrderItemTarget>? Items { get; set; }
+}
+
+public class GeneratedBuilderTier1Tests
+{
+    [Fact]
+    public async Task WithTag_AccumulatesStringItems()
+    {
+        var result = await new ProductTargetBuilder()
+            .WithTag("electronics")
+            .WithTag("sale")
+            .BuildAsync();
+
+        var product = result.ValueOrThrow().Resolved();
+        Assert.NotNull(product.Tags);
+        Assert.Equal(2, product.Tags!.Count);
+        Assert.Equal("electronics", product.Tags[0]);
+        Assert.Equal("sale", product.Tags[1]);
+    }
+
+    [Fact]
+    public async Task WithScore_AccumulatesDictEntries()
+    {
+        var result = await new ProductTargetBuilder()
+            .WithScore("math", 95)
+            .WithScore("english", 88)
+            .BuildAsync();
+
+        var product = result.ValueOrThrow().Resolved();
+        Assert.NotNull(product.Scores);
+        Assert.Equal(2, product.Scores!.Count);
+        Assert.Equal(95, product.Scores["math"]);
+        Assert.Equal(88, product.Scores["english"]);
+    }
+
+    [Fact]
+    public async Task WithTags_DirectValue_StillWorks()
+    {
+        var tags = new List<string> { "a", "b" };
+        var result = await new ProductTargetBuilder()
+            .WithTags(tags)
+            .BuildAsync();
+
+        var product = result.ValueOrThrow().Resolved();
+        Assert.Same(tags, product.Tags);
+    }
+}
+
+public class GeneratedBuilderTier2Tests
+{
+    [Fact]
+    public async Task WithItem_BuilderAction_AccumulatesItems()
+    {
+        var result = await new OrderTargetBuilder()
+            .WithItem(b => b.WithSku("ABC").WithQuantity(2))
+            .WithItem(b => b.WithSku("DEF").WithQuantity(1))
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.NotNull(order.Items);
+        Assert.Equal(2, order.Items!.Count);
+        Assert.Equal("ABC", order.Items[0].Sku);
+        Assert.Equal(2, order.Items[0].Quantity);
+        Assert.Equal("DEF", order.Items[1].Sku);
+        Assert.Equal(1, order.Items[1].Quantity);
+    }
+
+    [Fact]
+    public async Task WithItem_DirectValue_AccumulatesItems()
+    {
+        var item = new OrderItemTarget { Sku = "PRE", Quantity = 5 };
+        var result = await new OrderTargetBuilder()
+            .WithItem(item)
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.NotNull(order.Items);
+        Assert.Single(order.Items!);
+        Assert.Equal("PRE", order.Items[0].Sku);
+    }
+
+    [Fact]
+    public async Task WithItems_BulkBuilder_ReplacesItems()
+    {
+        var result = await new OrderTargetBuilder()
+            .WithItems(items => items
+                .Add(b => b.WithSku("X").WithQuantity(10))
+                .Add(new OrderItemTarget { Sku = "Y", Quantity = 20 }))
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.NotNull(order.Items);
+        Assert.Equal(2, order.Items!.Count);
+        Assert.Equal("Y", order.Items[0].Sku);  // direct values first
+        Assert.Equal("X", order.Items[1].Sku);  // built values after
+    }
+
+    [Fact]
+    public async Task WithItems_DirectList_StillWorks()
+    {
+        var items = new List<OrderItemTarget>
+        {
+            new() { Sku = "A", Quantity = 1 }
+        };
+        var result = await new OrderTargetBuilder()
+            .WithItems(items)
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.Same(items, order.Items);
     }
 }

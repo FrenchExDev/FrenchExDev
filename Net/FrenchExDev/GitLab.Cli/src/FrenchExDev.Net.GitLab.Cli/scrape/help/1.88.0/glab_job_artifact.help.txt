@@ -1,0 +1,26 @@
+
+  Downloads all artifacts from the most recent successful pipeline.                                                     
+                                                                                                                        
+  `<refName>` is a branch name, tag, or merge request reference. For a branch                                           
+  or tag, use the name directly. For a merge request pipeline, use the ref                                              
+  `refs/merge-requests/<iid>/head`, where `<iid>` is the merge request IID.                                             
+                                                                                                                        
+         
+  USAGE  
+         
+    glab job artifact <refName> <jobName> [--flags]         
+            
+  EXAMPLES  
+            
+    $ glab job artifact main build                          
+    $ glab job artifact main deploy --path="artifacts/"     
+    $ glab job artifact main deploy --list-paths            
+    $ glab job artifact refs/merge-requests/123/head build  
+         
+  FLAGS  
+         
+    -h --help        Show help for this command.
+    -l --list-paths  Print the paths of downloaded artifacts.
+    -p --path        Path to download the artifact files. (./)
+    -R --repo        Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

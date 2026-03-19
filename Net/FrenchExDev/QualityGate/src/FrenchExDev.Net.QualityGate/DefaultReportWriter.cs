@@ -95,10 +95,19 @@ internal sealed class DefaultReportWriter : IReportWriter
         var runsPath = Path.Combine(outputRoot, "runs.json");
         var runs = await LoadRunsAsync(runsPath, ct).ConfigureAwait(false);
 
+        var totalTypes = report.Projects.Sum(p => p.Namespaces.Sum(ns => ns.Types.Count));
+        var totalMethods = report.Projects.Sum(p => p.Namespaces.Sum(ns => ns.Types.Sum(t => t.Methods.Count)));
+
         runs.Add(new Dictionary<string, object>
         {
+            ["id"] = timestamp,
             ["timestamp"] = timestamp,
-            ["gatesPassed"] = allPassed,
+            ["gatesPassed"] = report.GateResults.Count(g => g.Passed),
+            ["gatesFailed"] = report.GateResults.Count(g => !g.Passed),
+            ["totalTypes"] = totalTypes,
+            ["totalMethods"] = totalMethods,
+            ["coveragePct"] = report.Coverage is not null ? Math.Round(report.Coverage.LineRate * 100, 1) : 0,
+            ["mutationPct"] = report.Mutation is not null ? Math.Round(report.Mutation.MutationScore * 100, 1) : 0,
             ["summary"] = string.Join(" | ", summaryLines.Where(l => !string.IsNullOrWhiteSpace(l)).Take(3))
         });
 

@@ -1,0 +1,21 @@
+
+  Get issues related to a particular merge request.                                                                     
+         
+  USAGE  
+         
+    glab mr issues [<id> | <branch>] [--flags]  
+            
+  EXAMPLES  
+            
+    # List issues for merge request 46          
+    $ glab mr issues 46                         
+    $ glab mr issues branch                     
+                                                
+    # Use the checked-out branch                
+    $ glab mr issues                            
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

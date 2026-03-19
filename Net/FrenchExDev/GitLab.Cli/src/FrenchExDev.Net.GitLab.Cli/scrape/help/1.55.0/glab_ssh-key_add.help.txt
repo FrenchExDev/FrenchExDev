@@ -1,0 +1,29 @@
+Creates a new SSH key owned by the currently authenticated user.                
+                                                                                  
+  Requires the '--title' flag.
+
+USAGE
+  glab ssh-key add [key-file] [flags]
+
+FLAGS
+  -e, --expires-at string   The expiration date of the SSH key. Uses ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+  -t, --title string        New SSH key's title.
+  -u, --usage-type string   Usage scope for the key. Possible values: 'auth', 'signing' or 'auth_and_signing'. Default value: 'auth_and_signing'. (default "auth_and_signing")
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # Read ssh key from stdin and upload.                                           
+                                                                                    
+    $ glab ssh-key add -t "my title"                                                
+                                                                                    
+    # Read ssh key from specified key file, upload and set the ssh key type to      
+    "authentication".                                                               
+                                                                                    
+    $ glab ssh-key add ~/.ssh/id_ed25519.pub -t "my title" --usage-type "auth"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

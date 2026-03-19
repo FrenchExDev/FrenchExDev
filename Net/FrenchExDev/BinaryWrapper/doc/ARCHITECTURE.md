@@ -414,6 +414,86 @@ flowchart LR
     style OK3 fill:#27ae60,stroke:#2ecc71,color:#fff
 ```
 
+### How Version Guards Work — No Reflection
+
+Version guards are enforced through **compile-time code generation**, not runtime reflection. The `[SinceVersion]` and `[UntilVersion]` attributes are emitted on generated members purely for documentation and IDE tooling — they are never read at runtime.
+
+The source generator computes version ranges by diffing multiple JSON command trees via `VersionDiffer.Merge()`, then **hardcodes** the version constants directly into the generated method bodies:
+
+**Generated client method (commands):**
+
+```csharp
+// In GlabClient.g.cs — source-generated
+[global::FrenchExDev.Net.BinaryWrapper.SinceVersion("1.56.0")]  // decorative only
+public CommandExecution<...> SecurefileList(Action<GlabSecurefileListCommandBuilder> configure)
+{
+    // Hardcoded check — no reflection, no attribute scanning
+    global::FrenchExDev.Net.BinaryWrapper.VersionGuard.EnsureCommandSupported(
+        _detectedVersion,
+        "glab securefile list",
+        new global::FrenchExDev.Net.BinaryWrapper.SemanticVersion(1, 56, 0),  // since
+        null);                                                                 // until
+    // ... build and return command
+}
+```
+
+**Generated builder method (options):**
+
+```csharp
+// In GlabMrListCommandBuilder.g.cs — source-generated
+[global::FrenchExDev.Net.BinaryWrapper.SinceVersion("1.62.0")]  // decorative only
+public GlabMrListCommandBuilder WithDraft(bool value)
+{
+    // Hardcoded check — no reflection
+    global::FrenchExDev.Net.BinaryWrapper.VersionGuard.EnsureOptionSupported(
+        _detectedVersion,
+        "glab mr list",
+        "draft",
+        new global::FrenchExDev.Net.BinaryWrapper.SemanticVersion(1, 62, 0),  // since
+        null);                                                                 // until
+    // ... set property
+}
+```
+
+**Runtime guard implementation (simple comparison):**
+
+```csharp
+public static class VersionGuard
+{
+    public static void EnsureCommandSupported(
+        SemanticVersion? detectedVersion, string commandPath,
+        SemanticVersion? since, SemanticVersion? until)
+    {
+        if (detectedVersion is null) return;  // no version detected → permissive
+        if (since is not null && detectedVersion < since)
+            throw new CommandNotSupportedException(commandPath, detectedVersion, since, until);
+        if (until is not null && detectedVersion >= until)
+            throw new CommandNotSupportedException(commandPath, detectedVersion, since, until);
+    }
+
+    public static void EnsureOptionSupported(
+        SemanticVersion? detectedVersion, string commandPath, string optionName,
+        SemanticVersion? since, SemanticVersion? until)
+    {
+        if (detectedVersion is null) return;
+        if (since is not null && detectedVersion < since)
+            throw new OptionNotSupportedException(commandPath, optionName, detectedVersion, since, until);
+        if (until is not null && detectedVersion >= until)
+            throw new OptionNotSupportedException(commandPath, optionName, detectedVersion, since, until);
+    }
+}
+```
+
+**Key design decisions:**
+
+| Aspect | Choice | Rationale |
+|--------|--------|-----------|
+| Enforcement | Hardcoded `VersionGuard` calls in generated code | Zero reflection overhead, fails at the exact call site |
+| Version constants | `new SemanticVersion(major, minor, patch)` literals | No string parsing at runtime, no attribute scanning |
+| `[SinceVersion]`/`[UntilVersion]` | Decorative attributes on generated members | IDE tooltips, documentation generators, static analysis |
+| No detected version | Permissive (`return` early) | Allows usage without version detection; guards are opt-in via `BinaryBinding.DetectedVersion` |
+| Granularity | Per-command and per-option | A command can exist in all versions while individual options come and go |
+
 ---
 
 ## Attributes (`FrenchExDev.Net.BinaryWrapper.Attributes`)

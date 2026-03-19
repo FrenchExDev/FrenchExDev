@@ -16,6 +16,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.Builder.Attributes\FrenchExDev.Net.Builder.Attributes.csproj" />
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.Builder.SourceGenerator\FrenchExDev.Net.Builder.SourceGenerator.csproj"
+						  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.Builder.SourceGenerator.Lib\FrenchExDev.Net.Builder.SourceGenerator.Lib.csproj"
+						  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>

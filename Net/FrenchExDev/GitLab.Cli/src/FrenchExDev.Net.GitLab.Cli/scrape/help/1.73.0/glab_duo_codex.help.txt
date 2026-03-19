@@ -1,0 +1,26 @@
+
+  Launch Codex with automatic GitLab authentication and proxy configuration.                                            
+  All flags and arguments are passed through to the Codex executable.                                                   
+                                                                                                                        
+  This command automatically configures Codex to work with GitLab AI services,                                          
+  handling authentication tokens and API endpoints based on your current repository.                                    
+                                                                                                                        
+  This feature is experimental. It might be broken or removed without any prior notice.                                 
+  Read more about what experimental features mean at                                                                    
+  <https://docs.gitlab.com/policy/development_stages_support/>                                                          
+                                                                                                                        
+  Use experimental features at your own risk.                                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab duo codex [args] [--flags]  
+            
+  EXAMPLES  
+            
+    $ glab duo codex                 
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+

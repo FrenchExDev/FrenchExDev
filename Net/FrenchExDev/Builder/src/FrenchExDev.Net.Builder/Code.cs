@@ -191,60 +191,57 @@ public abstract class AbstractBuilder<TClass> : IBuilder<TClass> where TClass : 
         visitedObjects ??= new VisitedObjects();
 
         if (visitedObjects.IsVisited(this, this))
-        {
             return Result<Reference<TClass>>.Success(_reference);
-        }
 
         // Stryker disable once Block : equivalent mutant
         if (_reference.IsResolved)
-        {
             return Result<Reference<TClass>>.Success(_reference);
-        }
 
+        return await BuildAsyncLocked(visitedObjects, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<Result<Reference<TClass>>> BuildAsyncLocked(VisitedObjects visitedObjects, CancellationToken cancellationToken)
+    {
         await _buildLock.WaitAsync(cancellationToken).ConfigureAwait(false);
 
         try
         {
             if (_reference.IsResolved)
-            {
                 return Result<Reference<TClass>>.Success(_reference);
-            }
 
             var validationResult = await ValidateAsync(cancellationToken).ConfigureAwait(false);
 
             if (HasValidationErrors(validationResult))
-            {
                 return Result<Reference<TClass>>.Failure(ToFailureValidationResult(validationResult));
-            }
 
-            var instantiateResult = await Instantiate(_reference, visitedObjects, cancellationToken).ConfigureAwait(false);
-
-            if (!instantiateResult.IsSuccess)
-            {
-                return instantiateResult;
-            }
-
-            var builtReference = instantiateResult.ValueOrThrow();
-
-            if (ReferenceEquals(builtReference, _reference))
-            {
-                return instantiateResult;
-            }
-
-            if (!builtReference.TryResolved(out var referenced))
-            {
-                return Result<Reference<TClass>>.Failure(
-                    new DataAnnotationsValidationResult("Instantiate must return the provided reference or a resolved reference."));
-            }
-
-            _reference.Resolve(referenced);
-
-            return Result<Reference<TClass>>.Success(_reference);
+            return await InstantiateAndResolve(visitedObjects, cancellationToken).ConfigureAwait(false);
         }
         finally
         {
             _buildLock.Release();
         }
+    }
+
+    private async Task<Result<Reference<TClass>>> InstantiateAndResolve(VisitedObjects visitedObjects, CancellationToken cancellationToken)
+    {
+        var instantiateResult = await Instantiate(_reference, visitedObjects, cancellationToken).ConfigureAwait(false);
+
+        if (!instantiateResult.IsSuccess)
+            return instantiateResult;
+
+        var builtReference = instantiateResult.ValueOrThrow();
+
+        if (ReferenceEquals(builtReference, _reference))
+            return instantiateResult;
+
+        if (!builtReference.TryResolved(out var referenced))
+        {
+            return Result<Reference<TClass>>.Failure(
+                new DataAnnotationsValidationResult("Instantiate must return the provided reference or a resolved reference."));
+        }
+
+        _reference.Resolve(referenced);
+        return Result<Reference<TClass>>.Success(_reference);
     }
 
     protected static bool HasValidationErrors(Result<ValidationResult> validationResult)
@@ -708,5 +705,57 @@ public class DictionaryBuilder<TKey, TValue, TValueBuilder>
             dict[kvp.Key] = result.ValueOrThrow().Resolved();
         }
         return dict;
+    }
+}
+
+/// <summary>
+/// Fluent list builder for collection properties where the item type has a known builder
+/// extending <see cref="AbstractBuilder{TClass}"/>.
+/// Stores item builders for deferred building during the parent's <c>Instantiate</c> phase.
+/// </summary>
+public class ListBuilder<T, TBuilder>
+    where T : notnull
+    where TBuilder : AbstractBuilder<T>, new()
+{
+    private readonly List<T> _values = new();
+    private readonly List<TBuilder> _builders = new();
+
+    /// <summary>Adds a direct (pre-built) value.</summary>
+    public ListBuilder<T, TBuilder> Add(T value)
+    {
+        _values.Add(value);
+        return this;
+    }
+
+    /// <summary>Adds a value via a builder configuration action.</summary>
+    public ListBuilder<T, TBuilder> Add(Action<TBuilder> configure)
+    {
+        var builder = new TBuilder();
+        configure(builder);
+        _builders.Add(builder);
+        return this;
+    }
+
+    /// <summary>Adds a pre-configured builder instance.</summary>
+    public ListBuilder<T, TBuilder> Add(TBuilder builder)
+    {
+        _builders.Add(builder);
+        return this;
+    }
+
+    /// <summary>
+    /// Builds all stored builders and merges with direct values.
+    /// Called during the parent builder's <c>Instantiate</c> phase.
+    /// </summary>
+    public async Task<List<T>> BuildAsync(
+        VisitedObjects visitedObjects, CancellationToken cancellationToken = default)
+    {
+        var list = new List<T>(_values);
+        foreach (var b in _builders)
+        {
+            var result = await b.BuildAsync(visitedObjects, cancellationToken);
+            list.Add(result.ValueOrThrow().Resolved());
+        }
+        return list;
     }
 }

@@ -1,0 +1,30 @@
+
+  Update issue                                                                                                          
+         
+  USAGE  
+         
+    glab issue update <id> [--flags]          
+            
+  EXAMPLES  
+            
+    $ glab issue update 42 --label ui,ux      
+    $ glab issue update 42 --unlabel working  
+         
+  FLAGS  
+         
+    -a --assignee        Assign users by username. Prefix with '!' or '-' to remove from existing assignees, or '+' to add new. Otherwise, replace existing assignees with these users.
+    -c --confidential    Make issue confidential
+    -d --description     Issue description. Set to "-" to open an editor.
+    --due-date           A date in 'YYYY-MM-DD' format.
+    -h --help            Show help for this command.
+    -l --label           Add labels.
+    --lock-discussion    Lock discussion on issue.
+    -m --milestone       Title of the milestone to assign Set to "" or 0 to unassign.
+    -p --public          Make issue public.
+    -R --repo            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -t --title           Title of issue.
+    --unassign           Unassign all users.
+    -u --unlabel         Remove labels.
+    --unlock-discussion  Unlock discussion on issue.
+    -w --weight          Set weight of the issue.
+

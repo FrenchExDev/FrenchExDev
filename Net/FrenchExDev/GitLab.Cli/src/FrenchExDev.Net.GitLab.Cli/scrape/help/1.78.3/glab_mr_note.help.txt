@@ -1,0 +1,14 @@
+
+  Add a comment or note to a merge request.                                                                             
+         
+  USAGE  
+         
+    glab mr note [<id> | <branch>] [--flags]  
+         
+  FLAGS  
+         
+    -h --help     Show help for this command.
+    -m --message  Comment or note message.
+    -R --repo     Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --unique      Don't create a comment or note if it already exists.
+

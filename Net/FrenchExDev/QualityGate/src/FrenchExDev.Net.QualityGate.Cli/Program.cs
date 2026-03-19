@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using FrenchExDev.Net.QualityGate;
 using FrenchExDev.Net.QualityGate.Cli;
 using FrenchExDev.Net.QualityGate.Config;
+using FrenchExDev.Net.QualityGate.Html;
 using FrenchExDev.Net.QualityGate.Model;
 
 // --- Shared Options ---
@@ -436,6 +437,7 @@ checkCommand.SetAction(async (parseResult, ct) =>
     var engine = new QualityEngine(config);
     var outputDir = await engine.RunAsync(ct);
     var report = await engine.AnalyzeAsync(ct);
+    EnsureSpaAssets(outputDir);
 
     PrintSummary(report);
 
@@ -467,6 +469,7 @@ serveCommand.SetAction((parseResult) =>
         return;
     }
 
+    EnsureSpaAssets(outputDir);
     Console.WriteLine($"Serving {outputDir} on port {port}...");
     LaunchServe(outputDir, port, background: false);
 });
@@ -858,12 +861,13 @@ static void LaunchServe(string outputDir, int port, bool background)
     Console.WriteLine();
 
     var isWindows = OperatingSystem.IsWindows();
+    var servePath = outputDir.Replace('\\', '/');
     var psi = new ProcessStartInfo
     {
         FileName = isWindows ? "cmd.exe" : "npx",
         Arguments = isWindows
-            ? $"/c npx serve \"{outputDir}\" -l {port}"
-            : $"serve \"{outputDir}\" -l {port}",
+            ? $"/c npx serve \"{servePath}\" -l {port}"
+            : $"serve \"{servePath}\" -l {port}",
         UseShellExecute = false,
         RedirectStandardOutput = false,
         RedirectStandardError = false
@@ -901,6 +905,7 @@ static async Task RunLoopAsync(
     do
     {
         var (outputDir, report) = await runIteration(ct);
+        EnsureSpaAssets(outputDir);
         PrintSummary(report);
 
         if (serve && firstIteration)
@@ -1010,6 +1015,13 @@ static Task WaitForFileChangeOrEnter(string dir, CancellationToken ct)
 // ===========================================================================
 // Misc helpers
 // ===========================================================================
+
+static void EnsureSpaAssets(string outputDir)
+{
+    var outputRoot = Path.GetDirectoryName(outputDir) ?? outputDir;
+    if (!File.Exists(Path.Combine(outputRoot, "index.html")))
+        IndexGenerator.Generate(outputRoot);
+}
 
 static QualityReport EmptyReport() => new()
 {

@@ -1,0 +1,15 @@
+
+  View project issue board.                                                                                             
+         
+  USAGE  
+         
+    glab issue board view [--flags]  
+         
+  FLAGS  
+         
+    -a --assignee   Filter board issues by assignee username.
+    -h --help       Show help for this command.
+    -l --labels     Filter board issues by labels. Multiple labels can be comma-separated or specified by repeating the flag.
+    -m --milestone  Filter board issues by milestone.
+    -R --repo       Select another repository using the OWNER/REPO format or the project ID. Supports group namespaces.
+

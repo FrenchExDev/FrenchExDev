@@ -1,0 +1,18 @@
+
+  Delete an issue.                                                                                                      
+         
+  USAGE  
+         
+    glab issue delete <id> [--flags]                                    
+            
+  EXAMPLES  
+            
+    $ glab issue delete 123                                             
+    $ glab issue del 123                                                
+    $ glab issue delete https://gitlab.com/profclems/glab/-/issues/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

@@ -1,0 +1,33 @@
+
+  Updates settings for a GitLab CI/CD runner.                                                                           
+  Use flags to change the runner's configuration, such as its pause state.                                              
+                                                                                                                        
+  The following roles and access levels are required:                                                                   
+                                                                                                                        
+  - Maintainer or Owner role for project runners.                                                                       
+  - Owner role for group runners.                                                                                       
+  - Administrator access for instance runners.                                                                          
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner update <runner-id> [--flags]    
+            
+  EXAMPLES  
+            
+    # Pause a runner                            
+    $ glab runner update <runner-id> --pause    
+                                                
+    # Unpause a runner                          
+    $ glab runner update <runner-id> --unpause  
+                                                
+    # Update on another host                    
+    $ glab runner update <runner-id> --pause    
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    --pause    Pause the runner
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --unpause  Resume a paused runner
+

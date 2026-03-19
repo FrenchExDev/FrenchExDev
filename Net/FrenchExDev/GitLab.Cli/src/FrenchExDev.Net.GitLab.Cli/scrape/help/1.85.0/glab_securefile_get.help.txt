@@ -1,0 +1,20 @@
+
+  Get details of a project secure file. (GitLab 18.0 and later)                                                         
+         
+  USAGE  
+         
+    glab securefile get <fileID> [--flags]                            
+            
+  EXAMPLES  
+            
+    # Get details of a project's secure file using the file ID.       
+    $ glab securefile get 1                                           
+                                                                      
+    # Get details of a project's secure file using the 'show' alias.  
+    $ glab securefile show 1                                          
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

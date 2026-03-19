@@ -1,0 +1,17 @@
+
+  Work with GitLab Duo                                                                                                  
+         
+  USAGE  
+         
+    glab duo <command> prompt [command] [--flags]  
+            
+  COMMANDS  
+            
+    ask <prompt> [--flags]             Generate Git commands from natural language.
+    claude [command] [args] [--flags]  Launch Claude Code with GitLab Duo integration. (EXPERIMENTAL)
+    codex [args] [--flags]             Launch Codex with GitLab Duo integration (EXPERIMENTAL)
+         
+  FLAGS  
+         
+    -h --help                          Show help for this command.
+

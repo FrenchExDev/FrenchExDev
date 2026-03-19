@@ -1,0 +1,16 @@
+Create, list, and delete aliases.
+
+USAGE
+  glab alias [command] [flags]
+
+CORE COMMANDS
+  delete:     Delete an alias.
+  list:       List the available aliases.
+  set:        Set an alias for a longer command.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

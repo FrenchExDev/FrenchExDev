@@ -1,0 +1,16 @@
+Manage GitLab Agents for Kubernetes tokens.
+
+USAGE
+  glab cluster agent token <command> [flags]
+
+CORE COMMANDS
+  list:       List tokens of an agent.
+  revoke:     Revoke a token of an agent.
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

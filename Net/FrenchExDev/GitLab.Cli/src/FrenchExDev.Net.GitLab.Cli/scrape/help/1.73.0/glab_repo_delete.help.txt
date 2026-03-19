@@ -1,0 +1,22 @@
+
+  Delete an existing repository on GitLab.                                                                              
+         
+  USAGE  
+         
+    glab repo delete <NAME> [<NAMESPACE>/] [--flags]                
+            
+  EXAMPLES  
+            
+    # Delete a personal repository.                                 
+    $ glab repo delete dotfiles                                     
+                                                                    
+    # Delete a repository in a GitLab group, or another repository  
+    # you have write access to:                                     
+    $ glab repo delete mygroup/dotfiles                             
+    $ glab repo delete myorg/mynamespace/dotfiles                   
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -y --yes   Skip the confirmation prompt and immediately delete the repository.
+

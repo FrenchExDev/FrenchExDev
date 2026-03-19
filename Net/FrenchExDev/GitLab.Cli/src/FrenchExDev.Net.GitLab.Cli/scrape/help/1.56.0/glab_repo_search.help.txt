@@ -1,0 +1,26 @@
+Search for GitLab repositories and projects by name.
+
+USAGE
+  glab repo search [flags]
+
+ALIASES
+  find, lookup
+
+FLAGS
+  -F, --output string   Format output as: text, json. (default "text")
+  -p, --page int        Page number. (default 1)
+  -P, --per-page int    Number of items to list per page. (default 20)
+  -s, --search string   A string contained in the project name.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+EXAMPLES
+  • glab project search -s "title"                                                 
+    • glab repo search -s "title"                                                    
+    • glab project find -s "title"                                                   
+    • glab project lookup -s "title"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

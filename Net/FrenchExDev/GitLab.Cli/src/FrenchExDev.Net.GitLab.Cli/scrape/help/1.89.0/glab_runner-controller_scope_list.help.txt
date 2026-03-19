@@ -1,0 +1,20 @@
+
+  List scopes for a runner controller. (EXPERIMENTAL)                                                                   
+         
+  USAGE  
+         
+    glab runner-controller scope list <controller-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # List all scopes for runner controller 42                   
+    $ glab runner-controller scope list 42                       
+                                                                 
+    # List scopes as JSON                                        
+    $ glab runner-controller scope list 42 --output json         
+         
+  FLAGS  
+         
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+

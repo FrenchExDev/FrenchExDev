@@ -1,0 +1,25 @@
+
+  Create a runner controller. (EXPERIMENTAL)                                                                            
+         
+  USAGE  
+         
+    glab runner-controller create [--flags]                                     
+            
+  EXAMPLES  
+            
+    # Create a runner controller with default settings                          
+    $ glab runner-controller create                                             
+                                                                                
+    # Create a runner controller with a description                             
+    $ glab runner-controller create --description "My controller"               
+                                                                                
+    # Create an enabled runner controller                                       
+    $ glab runner-controller create --description "Production" --state enabled  
+         
+  FLAGS  
+         
+    -d --description  Description of the runner controller.
+    -h --help         Show help for this command.
+    -F --output       Format output as: text, json. (text)
+    --state           State of the runner controller: disabled, enabled, dry_run.
+
