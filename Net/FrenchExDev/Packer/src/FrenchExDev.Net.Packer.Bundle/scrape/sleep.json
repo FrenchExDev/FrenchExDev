@@ -1,0 +1,14 @@
+{
+  "pluginKind": "provisioner",
+  "typeName": "sleep",
+  "repo": "hashicorp/packer",
+  "sourcePath": "provisioner/sleep/provisioner.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "duration",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

@@ -1,0 +1,152 @@
+{
+  "pluginKind": "datasource",
+  "typeName": "amazon-parameterstore",
+  "repo": "hashicorp/packer-plugin-amazon",
+  "sourcePath": "datasource/parameterstore/data.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "access_key",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "custom_endpoint_ec2",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "shared_credentials_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "decode_authorization_messages",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "insecure_skip_tls_verify",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "max_retries",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "mfa_code",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "profile",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "region",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "secret_key",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_metadata_api_check",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_credential_validation",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "with_decryption",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "value",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "arn",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": [
+    {
+      "hclName": "assume_role",
+      "nestedTypeName": "assume_role"
+    },
+    {
+      "hclName": "vault_aws_engine",
+      "nestedTypeName": "vault_aws_engine"
+    },
+    {
+      "hclName": "aws_polling",
+      "nestedTypeName": "aws_polling"
+    }
+  ]
+}

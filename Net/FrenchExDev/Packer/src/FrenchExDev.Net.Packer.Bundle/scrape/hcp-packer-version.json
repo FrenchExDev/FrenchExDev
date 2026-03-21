@@ -1,0 +1,104 @@
+{
+  "pluginKind": "datasource",
+  "typeName": "hcp-packer-version",
+  "repo": "hashicorp/packer",
+  "sourcePath": "datasource/hcp-packer-version/data.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "bucket_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "channel_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "author_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "bucket_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "status",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "created_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "fingerprint",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "updated_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "channel_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

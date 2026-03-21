@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Vos.Alpine/FrenchExDev.Net.Vos.Alpine.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Vos.Alpine.Tests/FrenchExDev.Net.Vos.Alpine.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using FrenchExDev.Net.BinaryWrapper.Design;
+using FrenchExDev.Net.Wrapper.Versioning;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 

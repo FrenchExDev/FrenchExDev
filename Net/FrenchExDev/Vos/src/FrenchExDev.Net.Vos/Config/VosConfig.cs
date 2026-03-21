@@ -1,0 +1,17 @@
+namespace FrenchExDev.Net.Vos.Config;
+
+/// <summary>
+/// Root configuration model for a Vos project.
+/// Deserialized from <c>config-vos.yaml</c>.
+/// </summary>
+public sealed class VosConfig
+{
+    /// <summary>Backend to use: "vagrant" or "podman".</summary>
+    public string Backend { get; set; } = "vagrant";
+
+    /// <summary>Machine type templates (reusable configurations).</summary>
+    public Dictionary<string, VosMachineType> MachineTypes { get; set; } = new();
+
+    /// <summary>Machine declarations (reference a machine type, define instances).</summary>
+    public Dictionary<string, VosMachine> Machines { get; set; } = new();
+}

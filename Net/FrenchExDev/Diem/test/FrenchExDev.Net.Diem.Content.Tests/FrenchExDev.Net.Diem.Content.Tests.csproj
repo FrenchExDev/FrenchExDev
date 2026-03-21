@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Content.Parts\FrenchExDev.Net.Diem.Content.Parts.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Content.Parts.Attributes\FrenchExDev.Net.Diem.Content.Parts.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Content.Blocks\FrenchExDev.Net.Diem.Content.Blocks.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Content.Blocks.Attributes\FrenchExDev.Net.Diem.Content.Blocks.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Content.StreamFields.Attributes\FrenchExDev.Net.Diem.Content.StreamFields.Attributes.csproj" />
+    <ProjectReference Include="..\..\..\Dsl\src\FrenchExDev.Net.Dsl\FrenchExDev.Net.Dsl.csproj" />
+  </ItemGroup>
+</Project>

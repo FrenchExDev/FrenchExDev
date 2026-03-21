@@ -1,0 +1,386 @@
+{
+  "pluginKind": "builder",
+  "typeName": "amazon-chroot",
+  "repo": "hashicorp/packer-plugin-amazon",
+  "sourcePath": "builder/chroot/builder.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_virtualization_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_users",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_groups",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_org_arns",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_ou_arns",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_product_codes",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_regions",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_region_validation",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "tags",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ena_support",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "sriov_support",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "force_deregister",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "force_delete_snapshot",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "encrypt_boot",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "kms_key_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "region_kms_key_ids",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_save_build_region",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_copy_duration_minutes",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "imds_support",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "deprecate_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_tags",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_users",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_groups",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "access_key",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "custom_endpoint_ec2",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "shared_credentials_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "decode_authorization_messages",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "insecure_skip_tls_verify",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "max_retries",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "mfa_code",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "profile",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "region",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "secret_key",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_metadata_api_check",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_credential_validation",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_mounts",
+      "ctyType": "cty.List(cty.List(cty.String))",
+      "isRequired": false
+    },
+    {
+      "hclName": "command_wrapper",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "copy_files",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "device_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "nvme_device_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "from_scratch",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_options",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_partition",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "post_mount_commands",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "pre_mount_commands",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "root_device_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "root_volume_size",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "root_volume_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "source_ami",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "root_volume_tags",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "root_volume_encrypt_boot",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "root_volume_kms_key_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ami_architecture",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "boot_mode",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "uefi_data",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "tpm_support",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": [
+    {
+      "hclName": "tag",
+      "nestedTypeName": "tag"
+    },
+    {
+      "hclName": "snapshot_tag",
+      "nestedTypeName": "snapshot_tag"
+    },
+    {
+      "hclName": "ami_block_device_mappings",
+      "nestedTypeName": "ami_block_device_mappings"
+    },
+    {
+      "hclName": "root_volume_tag",
+      "nestedTypeName": "root_volume_tag"
+    },
+    {
+      "hclName": "deregistration_protection",
+      "nestedTypeName": "deregistration_protection"
+    },
+    {
+      "hclName": "assume_role",
+      "nestedTypeName": "assume_role"
+    },
+    {
+      "hclName": "vault_aws_engine",
+      "nestedTypeName": "vault_aws_engine"
+    },
+    {
+      "hclName": "aws_polling",
+      "nestedTypeName": "aws_polling"
+    },
+    {
+      "hclName": "source_ami_filter",
+      "nestedTypeName": "source_ami_filter"
+    }
+  ]
+}

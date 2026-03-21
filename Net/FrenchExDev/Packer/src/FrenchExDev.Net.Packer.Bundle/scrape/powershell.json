@@ -1,0 +1,154 @@
+{
+  "pluginKind": "provisioner",
+  "typeName": "powershell",
+  "repo": "hashicorp/packer",
+  "sourcePath": "provisioner/powershell/provisioner.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "inline",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "script",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "scripts",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "valid_exit_codes",
+      "ctyType": "cty.List(cty.Number)",
+      "isRequired": false
+    },
+    {
+      "hclName": "environment_vars",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "env",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "env_var_format",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "binary",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "remote_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "execute_command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "remote_env_var_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "elevated_execute_command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_clean",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "start_retry_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "elevated_env_var_format",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "elevated_user",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "elevated_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "execution_policy",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "debug_mode",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "pause_after",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_pwsh",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

@@ -9287,9 +9287,10 @@
               },
               {
                 "longName": "no-verify",
-                "description": "Bypass the pre-push hook. (See githooks(5) for more information.)",
-                "valueKind": "flag",
-                "clrType": "bool",
+                "description": "Bypass the pre-push hook. (See githooks",
+                "valueKind": "single",
+                "clrType": "string",
+                "defaultValue": "5) for more information.",
                 "isRequired": false
               },
               {

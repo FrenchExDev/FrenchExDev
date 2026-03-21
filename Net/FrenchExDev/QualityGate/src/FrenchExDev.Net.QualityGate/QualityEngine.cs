@@ -40,14 +40,23 @@ public class QualityEngine
 
         var solution = await _solutionLoader.LoadAsync(_config.Solution).ConfigureAwait(false);
 
+        var solutionDir = Path.GetDirectoryName(Path.GetFullPath(_config.Solution)) ?? ".";
+
         var projectMetricsList = new List<ProjectMetrics>();
         foreach (var project in solution.Projects)
         {
             ct.ThrowIfCancellationRequested();
+
+            // Only analyze projects within the solution directory (skip transitive dependencies)
+            if (project.FilePath is not null &&
+                !Path.GetFullPath(project.FilePath).StartsWith(Path.GetFullPath(solutionDir), StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            if (IsExcluded(project.FilePath, _config.ExcludePatterns))
+                continue;
+
             projectMetricsList.Add(await ProjectAnalyzer.AnalyzeAsync(project, solution, ct).ConfigureAwait(false));
         }
-
-        var solutionDir = Path.GetDirectoryName(Path.GetFullPath(_config.Solution)) ?? ".";
 
         var report = new QualityReport
         {
@@ -75,5 +84,41 @@ public class QualityEngine
         var report = await AnalyzeAsync(ct).ConfigureAwait(false);
         var outputRoot = Path.GetFullPath(_config.Output);
         return await _reportWriter.WriteAsync(report, outputRoot, ct).ConfigureAwait(false);
+    }
+
+    private static bool IsExcluded(string? projectPath, List<string>? excludePatterns)
+    {
+        if (projectPath is null || excludePatterns is null || excludePatterns.Count == 0)
+            return false;
+
+        var normalizedPath = projectPath.Replace('\\', '/');
+
+        foreach (var pattern in excludePatterns)
+        {
+            if (MatchesGlob(normalizedPath, pattern))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool MatchesGlob(string path, string pattern)
+    {
+        var normalizedPattern = pattern.Replace('\\', '/');
+
+        // Simple glob matching: ** matches any path segment, * matches within a segment
+        if (normalizedPattern.StartsWith("**/"))
+        {
+            var suffix = normalizedPattern.Substring(3);
+            return path.Contains("/" + suffix) || path.EndsWith(suffix);
+        }
+
+        if (normalizedPattern.EndsWith("/**"))
+        {
+            var prefix = normalizedPattern.Substring(0, normalizedPattern.Length - 3);
+            return path.Contains(prefix + "/") || path.Contains(prefix);
+        }
+
+        return path.Contains(normalizedPattern.Replace("**/", "").Replace("/**", ""));
     }
 }

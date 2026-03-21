@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management.Automation" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.Vagrant\FrenchExDev.Net.Vos.Infra.Vagrant.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.Podman\FrenchExDev.Net.Vos.Infra.Podman.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.FileSystem\FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FrenchExDev.Net.Vos.Infra.PowerShell.psd1" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

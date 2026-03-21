@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>FrenchExDev.Net.Packer.Bundle</RootNamespace>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)/Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Packer.Bundle.Attributes\FrenchExDev.Net.Packer.Bundle.Attributes.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Packer.Bundle.SourceGenerator\FrenchExDev.Net.Packer.Bundle.SourceGenerator.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib\FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="scrape\*.json" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "frenchexdev.net.qualitygate.cli": {
+      "version": "1.0.2",
+      "commands": [
+        "quality-gate"
+      ],
+      "rollForward": false
+    }
+  }
+}

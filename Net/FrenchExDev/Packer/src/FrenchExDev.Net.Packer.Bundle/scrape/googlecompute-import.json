@@ -1,0 +1,174 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "googlecompute-import",
+  "repo": "hashicorp/packer-plugin-googlecompute",
+  "sourcePath": "post-processor/googlecompute-import/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "access_token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "account_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "credentials_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "credentials_json",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "impersonate_service_account",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vault_gcp_oauth_engine",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "scopes",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "project_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "iap",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "bucket",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "gcs_object_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_architecture",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_family",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_guest_os_features",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_labels",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_storage_locations",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_clean",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_platform_key",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_key_exchange_key",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_signatures_db",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_forbidden_signatures_db",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "universe_domain",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "custom_endpoints",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FrenchExDev.Net.Wrapper.Versioning;
 
 namespace FrenchExDev.Net.BinaryWrapper.Design;
 
@@ -1383,6 +1384,319 @@ public sealed class ArgparseHelpParser : IHelpParser
     }
 }
 
+// ── GitHub CLI-style Help Parser ──────────────────────────────────────────
+
+/// <summary>
+/// Parser for CLIs using the GitHub CLI (<c>gh</c>) help template. This custom Cobra
+/// template was created by the GitHub CLI team and subsequently forked by glab and
+/// potentially other CLIs. It differs from standard Cobra output in several ways:
+/// <list type="bullet">
+///   <item>ALL-CAPS section headers without colons: <c>COMMANDS</c>, <c>CORE COMMANDS</c>,
+///     <c>FLAGS</c>, <c>INHERITED FLAGS</c>, <c>USAGE</c>, <c>EXAMPLES</c></item>
+///   <item>Flags use space or comma as short/long separator: <c>-v --version</c> or
+///     <c>-v, --version</c> (varies by tool/version)</item>
+///   <item>No inline type hints — value kind is inferred from description heuristics:
+///     <c>(default)</c> suffix, <c>&lt;placeholder&gt;</c> patterns, "comma-separated" keywords</item>
+///   <item>Command entries may use colon suffix: <c>alias:</c> (older glab) or argument hints:
+///     <c>alias [command] [--flags]</c> (newer glab, gh)</item>
+/// </list>
+/// </summary>
+public sealed class GhStyleHelpParser : IHelpParser
+{
+    private enum Section { None, Usage, Commands, Flags, Examples, Aliases }
+
+    private readonly HashSet<string> _skippedCommands;
+    private readonly string? _binaryName;
+
+    /// <param name="skippedCommands">Commands to skip during parsing. Defaults to <c>help</c>,
+    /// <c>completion</c>, and <c>check-update</c>.</param>
+    /// <param name="binaryName">Optional binary name to filter out example/continuation lines
+    /// that start with the binary name (e.g., <c>"glab"</c> to skip lines like
+    /// <c>glab repo clone -g &lt;group&gt;</c>). If null, no binary-name filtering is applied.</param>
+    public GhStyleHelpParser(IEnumerable<string>? skippedCommands = null, string? binaryName = null)
+    {
+        _skippedCommands = skippedCommands is not null
+            ? new(skippedCommands, StringComparer.OrdinalIgnoreCase)
+            : new(["help", "completion", "check-update"], StringComparer.OrdinalIgnoreCase);
+        _binaryName = binaryName;
+    }
+
+    // ── Description heuristic helpers (no Regex dependency) ─────────────────
+
+    public CommandNode? Parse(string helpText, string commandName)
+    {
+        if (string.IsNullOrWhiteSpace(helpText))
+            return null;
+
+        var builder = new CommandNodeBuilder(commandName);
+        var lines = helpText.Split('\n');
+        var section = Section.None;
+        string? description = null;
+
+        foreach (var rawLine in lines)
+        {
+            var line = rawLine.TrimEnd('\r');
+            var trimmed = line.Trim();
+
+            if (string.IsNullOrWhiteSpace(trimmed))
+                continue;
+
+            // Detect ALL-CAPS section headers
+            if (IsSectionHeader(trimmed, out var newSection))
+            {
+                section = newSection;
+                continue;
+            }
+
+            // Content lines must be indented (gh-style uses leading spaces for all content)
+            if (section != Section.None && !line.StartsWith(' ') && !line.StartsWith('\t'))
+            {
+                section = Section.None;
+                // Fall through — might be a description line
+            }
+
+            if (section == Section.None)
+            {
+                // First non-empty, non-header line is the description
+                description ??= trimmed;
+                continue;
+            }
+
+            switch (section)
+            {
+                case Section.Commands:
+                    ParseCommandLine(trimmed, builder);
+                    break;
+                case Section.Flags:
+                    ParseFlagLine(trimmed, builder);
+                    break;
+                // Usage, Examples, Aliases — skip content
+            }
+        }
+
+        builder.Description = description;
+        return builder.Build();
+    }
+
+    private static bool IsSectionHeader(string trimmed, out Section section)
+    {
+        section = Section.None;
+
+        // gh-style uses ALL-CAPS headers. The header name varies by tool:
+        //   "CORE COMMANDS", "COMMANDS", "OTHER COMMANDS", "ADDITIONAL COMMANDS"
+        if (trimmed.EndsWith("COMMANDS") && trimmed == trimmed.ToUpperInvariant())
+        { section = Section.Commands; return true; }
+
+        if (trimmed is "FLAGS" or "INHERITED FLAGS")
+        { section = Section.Flags; return true; }
+
+        if (trimmed is "USAGE")
+        { section = Section.Usage; return true; }
+
+        if (trimmed is "EXAMPLES")
+        { section = Section.Examples; return true; }
+
+        if (trimmed is "ALIASES")
+        { section = Section.Aliases; return true; }
+
+        // Skip known non-command/non-flag sections
+        if (trimmed is "ENVIRONMENT VARIABLES" or "LEARN MORE" or "FEEDBACK"
+            or "ARGUMENTS" or "JSON FIELDS" or "HELP TOPICS")
+        { section = Section.None; return true; }
+
+        return false;
+    }
+
+    private void ParseCommandLine(string line, CommandNodeBuilder builder)
+    {
+        // Two formats:
+        //   Colon style:  "alias:       Create, list, and delete aliases."
+        //   Args style:   "alias [command] [--flags]   Create, list, and delete aliases."
+        // Split on first run of 2+ spaces to separate command from description
+        var (commandPart, desc2) = SplitOnDoubleSpace(line);
+        if (commandPart is null || desc2 is null) return;
+
+        var commandName = commandPart.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+
+        // Strip trailing colon (older format: "alias:")
+        commandName = commandName.TrimEnd(':');
+
+        if (string.IsNullOrEmpty(commandName)) return;
+        if (_skippedCommands.Contains(commandName)) return;
+
+        // Skip lines starting with the binary name — these are example/continuation lines
+        if (_binaryName is not null && string.Equals(commandName, _binaryName, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        if (string.IsNullOrEmpty(desc2)) return;
+
+        builder.SubCommands.Add(new CommandNode { Name = commandName, Description = desc2 });
+    }
+
+    private static void ParseFlagLine(string line, CommandNodeBuilder builder)
+    {
+        // Formats:
+        //   "-v, --version   show version information"   (comma-separated)
+        //   "-v --version    show version information"    (space-separated)
+        //   "    --help      Show help for this command." (long-only)
+
+        string? shortName = null;
+        string? longName = null;
+
+        var current = line.AsSpan().Trim();
+
+        // Parse optional short flag: -X or -X, (with optional comma)
+        if (current.StartsWith("-") && !current.StartsWith("--"))
+        {
+            var spaceIdx = current.IndexOf(' ');
+            if (spaceIdx > 0)
+            {
+                shortName = current[1..spaceIdx].Trim().ToString();
+                current = current[spaceIdx..].Trim();
+            }
+            else
+            {
+                shortName = current[1..].ToString();
+                current = ReadOnlySpan<char>.Empty;
+            }
+
+            // Strip trailing comma: "v," → "v"
+            shortName = shortName.TrimEnd(',');
+
+            // Skip comma-only separator that might remain
+            if (current.StartsWith(","))
+                current = current[1..].Trim();
+        }
+
+        // Parse --long-name
+        if (current.StartsWith("--"))
+        {
+            var end = current.Length;
+            for (var i = 2; i < current.Length; i++)
+            {
+                if (!IsValidOptionNameChar(current[i]))
+                {
+                    end = i;
+                    break;
+                }
+            }
+            longName = current[2..end].ToString();
+            current = end < current.Length ? current[end..].Trim() : ReadOnlySpan<char>.Empty;
+        }
+
+        if (longName is null && shortName is null)
+            return;
+
+        // Everything remaining is the description
+        var description = current.Length > 0 ? current.ToString().Trim() : null;
+
+        // Determine value kind from description heuristics
+        var valueKind = OptionValueKind.Flag;
+        var clrType = "bool";
+        string? defaultValue = null;
+
+        if (description is not null)
+        {
+            // Check for default value in parentheses at end: "(created_at)", "(30)"
+            if (TryExtractTrailingDefault(description, out var defVal, out var trimmedDesc))
+            {
+                defaultValue = defVal;
+                description = trimmedDesc;
+                valueKind = OptionValueKind.Single;
+                clrType = int.TryParse(defaultValue, out _) ? "integer" : "string";
+            }
+
+            // Check for multiple-value indicators
+            if (ContainsMultipleValueHint(description))
+            {
+                valueKind = OptionValueKind.Multiple;
+                clrType = "string";
+            }
+            // Check for placeholder indicating a value parameter
+            else if (valueKind == OptionValueKind.Flag && ContainsPlaceholder(description))
+            {
+                valueKind = OptionValueKind.Single;
+                clrType = "string";
+            }
+        }
+
+        builder.Options.Add(new OptionDefinition
+        {
+            LongName = longName ?? shortName!,
+            ShortName = shortName,
+            Description = description,
+            ValueKind = valueKind,
+            ClrType = clrType,
+            DefaultValue = defaultValue
+        });
+    }
+
+    private static bool IsValidOptionNameChar(char c) =>
+        char.IsLetterOrDigit(c) || c == '-' || c == '_';
+
+    /// <summary>Splits a line on the first run of 2+ spaces. Returns (left, right) or (null, null).</summary>
+    private static (string? Left, string? Right) SplitOnDoubleSpace(string line)
+    {
+        for (var i = 0; i < line.Length - 1; i++)
+        {
+            if (line[i] == ' ' && line[i + 1] == ' ')
+            {
+                var left = line[..i].Trim();
+                var right = line[(i + 1)..].Trim();
+                if (left.Length > 0 && right.Length > 0)
+                    return (left, right);
+            }
+        }
+        return (null, null);
+    }
+
+    /// <summary>Extracts a trailing "(value)" default from a description string.</summary>
+    private static bool TryExtractTrailingDefault(string desc, out string value, out string trimmed)
+    {
+        var s = desc.AsSpan().TrimEnd();
+        if (s.Length > 2 && s[^1] == ')')
+        {
+            var openIdx = s.LastIndexOf('(');
+            if (openIdx > 0)
+            {
+                value = s[(openIdx + 1)..^1].ToString();
+                trimmed = s[..openIdx].TrimEnd().ToString();
+                return true;
+            }
+        }
+        value = "";
+        trimmed = desc;
+        return false;
+    }
+
+    /// <summary>Checks if description contains &lt;placeholder&gt; patterns.</summary>
+    private static bool ContainsPlaceholder(string desc)
+    {
+        var i = desc.IndexOf('<');
+        while (i >= 0 && i < desc.Length - 2)
+        {
+            var j = desc.IndexOf('>', i + 1);
+            if (j > i + 1)
+            {
+                var c = desc[i + 1];
+                if (char.IsLetter(c))
+                    return true;
+            }
+            i = desc.IndexOf('<', i + 1);
+        }
+        return false;
+    }
+
+    /// <summary>Checks if description contains multiple-value keywords.</summary>
+    private static bool ContainsMultipleValueHint(string desc)
+    {
+        return desc.Contains("comma-separated", StringComparison.OrdinalIgnoreCase)
+            || desc.Contains("comma separated", StringComparison.OrdinalIgnoreCase)
+            || desc.Contains("repeating the flag", StringComparison.OrdinalIgnoreCase)
+            || desc.Contains("multiple ", StringComparison.OrdinalIgnoreCase);
+    }
+}
+
 // ── Help Parser Registry ───────────────────────────────────────────────────
 
 /// <summary>
@@ -1398,6 +1712,7 @@ public static class HelpParsers
         ["packer"] = () => new PackerHelpParser(),
         ["cobra"] = () => new CobraHelpParser(),
         ["argparse"] = () => new ArgparseHelpParser(),
+        ["gh"] = () => new GhStyleHelpParser(),
     };
 
     public static IHelpParser Create(string strategy)
@@ -1637,241 +1952,6 @@ public sealed class ContainerBuildError(string message, string buildOutput) : Sc
 public sealed class ContainerRunError(string message) : ScrapeError(message);
 
 public sealed class ParseError(string message) : ScrapeError(message);
-
-// ── Version Collector ───────────────────────────────────────────────────────
-
-public interface IVersionCollector
-{
-    Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default);
-}
-
-public sealed class StaticVersionCollector : IVersionCollector
-{
-    private readonly IReadOnlyList<string> _versions;
-
-    public StaticVersionCollector(IEnumerable<string> versions) =>
-        _versions = versions.ToList();
-
-    public Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default)
-        => Task.FromResult(_versions);
-}
-
-public sealed class GitHubReleasesVersionCollector : IVersionCollector
-{
-    private readonly string _owner;
-    private readonly string _repo;
-    private readonly HttpClient _httpClient;
-    private readonly Func<string, string> _tagToVersion;
-
-    public GitHubReleasesVersionCollector(
-        string owner, string repo,
-        HttpClient? httpClient = null,
-        Func<string, string>? tagToVersion = null)
-    {
-        _owner = owner;
-        _repo = repo;
-        _httpClient = httpClient ?? CreateDefaultHttpClient();
-        _tagToVersion = tagToVersion ?? DefaultTagToVersion;
-    }
-
-    public async Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default)
-    {
-        var versions = new List<string>();
-        var url = $"https://api.github.com/repos/{_owner}/{_repo}/releases?per_page=100";
-
-        while (url is not null)
-        {
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = await _httpClient.SendAsync(request, cancellationToken);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var releases = JsonSerializer.Deserialize<JsonElement>(json);
-
-            if (releases.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var release in releases.EnumerateArray())
-                {
-                    if (!release.TryGetProperty("tag_name", out var tagProp))
-                        continue;
-                    var tag = tagProp.GetString();
-                    if (tag is null)
-                        continue;
-                    if (release.TryGetProperty("prerelease", out var pre) && pre.GetBoolean())
-                        continue;
-
-                    var version = _tagToVersion(tag);
-                    if (!string.IsNullOrEmpty(version))
-                        versions.Add(version);
-                }
-            }
-
-            url = ParseNextLink(response.Headers);
-        }
-
-        versions.Sort(CompareVersionStrings);
-        return versions;
-    }
-
-    private static string? ParseNextLink(System.Net.Http.Headers.HttpResponseHeaders headers)
-    {
-        if (!headers.TryGetValues("Link", out var linkValues))
-            return null;
-
-        foreach (var link in linkValues)
-        {
-            foreach (var part in link.Split(','))
-            {
-                var trimmed = part.Trim();
-                if (trimmed.EndsWith("rel=\"next\"", StringComparison.Ordinal))
-                {
-                    var start = trimmed.IndexOf('<');
-                    var end = trimmed.IndexOf('>');
-                    if (start >= 0 && end > start)
-                        return trimmed[(start + 1)..end];
-                }
-            }
-        }
-        return null;
-    }
-
-    private static string DefaultTagToVersion(string tag) =>
-        tag.StartsWith('v') ? tag[1..] : tag;
-
-    private static HttpClient CreateDefaultHttpClient()
-    {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("User-Agent", "FrenchExDev-BinaryWrapper");
-        client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
-        return client;
-    }
-
-    public static int CompareVersionStrings(string a, string b)
-    {
-        var aParts = a.Split('.', '-');
-        var bParts = b.Split('.', '-');
-        var len = Math.Max(aParts.Length, bParts.Length);
-        for (var i = 0; i < len; i++)
-        {
-            var aVal = i < aParts.Length ? aParts[i] : "0";
-            var bVal = i < bParts.Length ? bParts[i] : "0";
-            if (int.TryParse(aVal, out var ai) && int.TryParse(bVal, out var bi))
-            {
-                var cmp = ai.CompareTo(bi);
-                if (cmp != 0) return cmp;
-            }
-            else
-            {
-                var cmp = string.Compare(aVal, bVal, StringComparison.Ordinal);
-                if (cmp != 0) return cmp;
-            }
-        }
-        return 0;
-    }
-}
-
-/// <summary>
-/// Collects versions from GitHub repository tags (not releases).
-/// Use this when a repository publishes version tags but not GitHub Releases.
-/// </summary>
-public sealed class GitHubTagsVersionCollector : IVersionCollector
-{
-    private readonly string _owner;
-    private readonly string _repo;
-    private readonly HttpClient _httpClient;
-    private readonly Func<string, string?> _tagToVersion;
-
-    public GitHubTagsVersionCollector(
-        string owner, string repo,
-        HttpClient? httpClient = null,
-        Func<string, string?>? tagToVersion = null)
-    {
-        _owner = owner;
-        _repo = repo;
-        _httpClient = httpClient ?? CreateDefaultHttpClient();
-        _tagToVersion = tagToVersion ?? DefaultTagToVersion;
-    }
-
-    public async Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default)
-    {
-        var versions = new List<string>();
-        var url = $"https://api.github.com/repos/{_owner}/{_repo}/tags?per_page=100";
-
-        while (url is not null)
-        {
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = await _httpClient.SendAsync(request, cancellationToken);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var tags = JsonSerializer.Deserialize<JsonElement>(json);
-
-            if (tags.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var tag in tags.EnumerateArray())
-                {
-                    if (!tag.TryGetProperty("name", out var nameProp))
-                        continue;
-                    var name = nameProp.GetString();
-                    if (name is null)
-                        continue;
-
-                    var version = _tagToVersion(name);
-                    if (!string.IsNullOrEmpty(version))
-                        versions.Add(version);
-                }
-            }
-
-            url = ParseNextLink(response.Headers);
-        }
-
-        versions.Sort(GitHubReleasesVersionCollector.CompareVersionStrings);
-        return versions;
-    }
-
-    private static string? ParseNextLink(System.Net.Http.Headers.HttpResponseHeaders headers)
-    {
-        if (!headers.TryGetValues("Link", out var linkValues))
-            return null;
-
-        foreach (var link in linkValues)
-        {
-            foreach (var part in link.Split(','))
-            {
-                var trimmed = part.Trim();
-                if (trimmed.EndsWith("rel=\"next\"", StringComparison.Ordinal))
-                {
-                    var start = trimmed.IndexOf('<');
-                    var end = trimmed.IndexOf('>');
-                    if (start >= 0 && end > start)
-                        return trimmed[(start + 1)..end];
-                }
-            }
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// Default tag-to-version mapping: strips leading 'v' prefix and
-    /// excludes pre-release tags (those containing '-', e.g. v1.0.0-rc.1).
-    /// </summary>
-    private static string? DefaultTagToVersion(string tag)
-    {
-        var version = tag.StartsWith('v') ? tag[1..] : tag;
-        // Exclude pre-release tags
-        if (version.Contains('-'))
-            return null;
-        return version;
-    }
-
-    private static HttpClient CreateDefaultHttpClient()
-    {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("User-Agent", "FrenchExDev-BinaryWrapper");
-        client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
-        return client;
-    }
-}
 
 // ── Multi-Version Scraper ───────────────────────────────────────────────────
 

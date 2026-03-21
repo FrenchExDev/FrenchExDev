@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FrenchExDev.Net.BinaryWrapper.Design;
+using FrenchExDev.Net.Wrapper.Versioning;
 
 namespace FrenchExDev.Net.Packer.Design;
 

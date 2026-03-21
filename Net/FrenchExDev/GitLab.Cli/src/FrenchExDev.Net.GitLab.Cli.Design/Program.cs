@@ -1,9 +1,10 @@
 using FrenchExDev.Net.BinaryWrapper.Design;
 using FrenchExDev.Net.BinaryWrapper.Design.Lib;
-using FrenchExDev.Net.GitLab.Cli.Design;
+using FrenchExDev.Net.Wrapper.Versioning;
 using Microsoft.Extensions.Logging;
 
-Func<string, ILogger, IHelpParser> parser = (_, _) => new GlabHelpParser();
+Func<string, ILogger, IHelpParser> parser = (_, _) =>
+    new GhStyleHelpParser(binaryName: "glab");
 
 var pipeline = new DesignPipeline()
     .UseImageBuild(

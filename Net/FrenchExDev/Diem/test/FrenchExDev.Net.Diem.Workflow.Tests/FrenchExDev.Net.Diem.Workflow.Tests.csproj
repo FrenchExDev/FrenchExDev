@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Workflow.StateMachine\FrenchExDev.Net.Diem.Workflow.StateMachine.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Workflow.StateMachine.Attributes\FrenchExDev.Net.Diem.Workflow.StateMachine.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Workflow.Gates\FrenchExDev.Net.Diem.Workflow.Gates.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Workflow.Gates.Attributes\FrenchExDev.Net.Diem.Workflow.Gates.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Workflow.Scheduling.Attributes\FrenchExDev.Net.Diem.Workflow.Scheduling.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Workflow.Locales.Attributes\FrenchExDev.Net.Diem.Workflow.Locales.Attributes.csproj" />
+    <ProjectReference Include="..\..\..\Dsl\src\FrenchExDev.Net.Dsl\FrenchExDev.Net.Dsl.csproj" />
+  </ItemGroup>
+</Project>

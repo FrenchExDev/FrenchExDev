@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <Include>[FrenchExDev.Net.Packer]*,[FrenchExDev.Net.Packer.Bundle]*,[FrenchExDev.Net.Packer.Bundle.Attributes]*,[FrenchExDev.Net.Packer.Bundle.SourceGenerator]*,[FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib]*,[FrenchExDev.Net.Packer.Bundle.Design]*,[FrenchExDev.Net.Packer.Design]*,[FrenchExDev.Net.Packer.Tests]*,[FrenchExDev.Net.Packer.Bundle.Tests]*</Include>
+          <Exclude>[FrenchExDev.Net.Packer.Bundle]FrenchExDev.Net.Packer.Bundle.Generated.*,[FrenchExDev.Net.Packer.Bundle.SourceGenerator]*,[FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib]*,[FrenchExDev.Net.Packer.Bundle.Design]*,[FrenchExDev.Net.Packer.Design]*</Exclude>
+          <ExcludeByAttribute>ExcludeFromCodeCoverageAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

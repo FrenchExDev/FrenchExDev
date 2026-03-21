@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Requirements/FrenchExDev.Net.Requirements.csproj" />
+    <Project Path="src/FrenchExDev.Net.Requirements.Attributes/FrenchExDev.Net.Requirements.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Requirements.SourceGenerator/FrenchExDev.Net.Requirements.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Requirements.SourceGenerator.Lib/FrenchExDev.Net.Requirements.SourceGenerator.Lib.csproj" />
+    <Project Path="src/FrenchExDev.Net.Requirements.Analyzers/FrenchExDev.Net.Requirements.Analyzers.csproj" />
+    <Project Path="src/FrenchExDev.Net.Requirements.Testing/FrenchExDev.Net.Requirements.Testing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Requirements.Tests/FrenchExDev.Net.Requirements.Tests.csproj" />
+  </Folder>
+</Solution>
