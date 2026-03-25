@@ -1,0 +1,10 @@
+usage: git imap-send [-v] [-q] [--[no-]curl] [(--folder|-f) <folder>] < <mbox>
+   or: git imap-send --list
+
+    -v, --[no-]verbose    be more verbose
+    -q, --[no-]quiet      be more quiet
+    --[no-]curl           use libcurl to communicate with the IMAP server
+    -f, --[no-]folder <folder>
+                          specify the IMAP folder
+    --[no-]list           list all folders on the IMAP server
+

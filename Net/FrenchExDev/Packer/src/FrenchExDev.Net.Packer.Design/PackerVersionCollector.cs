@@ -45,6 +45,9 @@ public sealed class PackerVersionCollector : IVersionCollector
         return versions;
     }
 
+    public Task<IReadOnlyList<string>> CollectItemsAsync(CancellationToken cancellationToken = default)
+        => CollectVersionsAsync(cancellationToken);
+
     private static HttpClient CreateDefaultHttpClient()
     {
         var client = new HttpClient();

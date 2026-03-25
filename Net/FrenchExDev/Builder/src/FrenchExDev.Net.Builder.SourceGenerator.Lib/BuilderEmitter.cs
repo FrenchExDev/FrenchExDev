@@ -51,6 +51,7 @@ public static class BuilderEmitter
             : $"global::FrenchExDev.Net.Builder.AbstractBuilder<{classRef}>";
 
         var classModifier = model.Instantiation == "custom" ? "abstract " : "";
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public {classModifier}partial class {model.BuilderClassName} : {baseClass}");
         sb.AppendLine("{");
 

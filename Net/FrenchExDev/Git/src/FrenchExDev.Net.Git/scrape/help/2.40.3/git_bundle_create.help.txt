@@ -1,0 +1,10 @@
+usage: git bundle create [-q | --quiet | --progress | --all-progress] [--all-progress-implied]
+                         [--version=<version>] <file> <git-rev-list-args>
+
+    -q, --quiet           do not show progress meter
+    --progress            show progress meter
+    --all-progress        show progress meter during object writing phase
+    --all-progress-implied
+                          similar to --all-progress when progress meter is shown
+    --version <n>         specify bundle format version
+

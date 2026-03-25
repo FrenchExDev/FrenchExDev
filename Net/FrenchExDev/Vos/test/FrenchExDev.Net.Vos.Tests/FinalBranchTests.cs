@@ -92,9 +92,9 @@ public class FinalBranchTests
         cf.Message.ShouldBe("msg");
         cf.ExitCode.ShouldBe(1);
 
-        var ua = new VosError.UnsupportedAction("suspend", "podman");
+        var ua = new VosError.UnsupportedAction("suspend", "vagrant");
         ua.Action.ShouldBe("suspend");
-        ua.Backend.ShouldBe("podman");
+        ua.Backend.ShouldBe("vagrant");
 
         var ce = new VosError.ConfigError("bad");
         ce.Message.ShouldBe("bad");

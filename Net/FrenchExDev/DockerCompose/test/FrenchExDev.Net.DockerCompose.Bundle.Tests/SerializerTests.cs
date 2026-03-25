@@ -1,220 +1,215 @@
-using FrenchExDev.Net.DockerCompose.Bundle.Serialization;
 using Shouldly;
 
 namespace FrenchExDev.Net.DockerCompose.Bundle.Tests;
 
-public class SerializerTests
+public class ModelTests
 {
     [Fact]
-    public void Deserialize_MinimalYaml_Succeeds()
+    public void ComposeFile_Services_CanBePopulated()
     {
-        var yaml = "services:\n  web:\n    image: nginx:latest\n";
-        var result = ComposeSerializer.Deserialize(yaml);
+        var file = new ComposeFile
+        {
+            Services = new Dictionary<string, ComposeService>
+            {
+                ["web"] = new ComposeService { Image = "nginx:latest" }
+            }
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        result.Value!.Services.ShouldContainKey("web");
-        result.Value.Services["web"].Image.ShouldBe("nginx:latest");
+        file.Services.ShouldContainKey("web");
+        file.Services["web"].Image.ShouldBe("nginx:latest");
     }
 
     [Fact]
-    public void Deserialize_EmptyYaml_ReturnsEmptyComposeFile()
+    public void ComposeFile_AllTopLevelSections_CanBeSet()
     {
-        var result = ComposeSerializer.Deserialize("");
-        result.IsSuccess.ShouldBeTrue();
-        result.Value!.Services.ShouldBeEmpty();
+        var file = new ComposeFile
+        {
+            Name = "my-app",
+            Services = new Dictionary<string, ComposeService>
+            {
+                ["web"] = new ComposeService { Image = "nginx" }
+            },
+            Networks = new Dictionary<string, ComposeNetwork?>
+            {
+                ["frontend"] = new ComposeNetwork { Driver = "bridge" }
+            },
+            Volumes = new Dictionary<string, ComposeVolume?>
+            {
+                ["data"] = new ComposeVolume { Driver = "local" }
+            },
+            Secrets = new Dictionary<string, ComposeSecret>
+            {
+                ["db_password"] = new ComposeSecret { File = "./secret.txt" }
+            },
+            Configs = new Dictionary<string, ComposeConfig>
+            {
+                ["app_config"] = new ComposeConfig { File = "./config.yaml" }
+            }
+        };
+
+        file.Name.ShouldBe("my-app");
+        file.Services.ShouldContainKey("web");
+        file.Networks!["frontend"]!.Driver.ShouldBe("bridge");
+        file.Volumes!["data"]!.Driver.ShouldBe("local");
+        file.Secrets!["db_password"].File.ShouldBe("./secret.txt");
+        file.Configs!["app_config"].File.ShouldBe("./config.yaml");
     }
 
     [Fact]
-    public void Deserialize_InvalidYaml_ReturnsFailure()
+    public void ComposeFile_Extensions_CanBeSet()
     {
-        var result = ComposeSerializer.Deserialize("{{invalid yaml");
-        result.IsFailure.ShouldBeTrue();
-        result.Error.ShouldNotBeNull();
+        var file = new ComposeFile
+        {
+            Extensions = new Dictionary<string, object?>
+            {
+                ["x-common"] = new Dictionary<string, object?> { ["image"] = "base" }
+            }
+        };
+
+        file.Extensions.ShouldNotBeNull();
+        file.Extensions.ShouldContainKey("x-common");
     }
 
     [Fact]
-    public void Deserialize_Ports_ShortSyntax()
+    public void ComposeService_Ports_CanBeConfigured()
     {
-        var yaml = "services:\n  web:\n    image: nginx\n    ports:\n      - \"8080:80\"\n";
-        var result = ComposeSerializer.Deserialize(yaml);
+        var svc = new ComposeService
+        {
+            Image = "nginx",
+            Ports = new List<ComposeServicePortsConfig>
+            {
+                new ComposeServicePortsConfig { Target = 80, Published = 8080, Protocol = "tcp" }
+            }
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        result.Value!.Services["web"].Ports.ShouldNotBeNull();
-        result.Value.Services["web"].Ports!.Count.ShouldBe(1);
-        result.Value.Services["web"].Ports![0].Published.ShouldBe("8080:80");
+        svc.Ports.ShouldNotBeNull();
+        svc.Ports!.Count.ShouldBe(1);
+        svc.Ports[0].Target.ShouldBe(80);
+        svc.Ports[0].Published.ShouldBe(8080);
+        svc.Ports[0].Protocol.ShouldBe("tcp");
     }
 
     [Fact]
-    public void Deserialize_Ports_LongSyntax()
+    public void ComposeService_Environment_CanBeSet()
     {
-        var yaml = """
-            services:
-              web:
-                image: nginx
-                ports:
-                  - target: 80
-                    published: "8080"
-                    protocol: tcp
-            """;
-        var result = ComposeSerializer.Deserialize(yaml);
+        var svc = new ComposeService
+        {
+            Image = "nginx",
+            Environment = new Dictionary<string, string?>
+            {
+                ["FOO"] = "bar",
+                ["BAZ"] = "qux"
+            }
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        var port = result.Value!.Services["web"].Ports![0];
-        port.Target.ShouldBe(80);
-        port.Published.ShouldBe("8080");
-        port.Protocol.ShouldBe("tcp");
+        svc.Environment.ShouldNotBeNull();
+        svc.Environment!["FOO"].ShouldBe("bar");
+        svc.Environment["BAZ"].ShouldBe("qux");
     }
 
     [Fact]
-    public void Deserialize_Environment_AsMap()
+    public void ComposeService_BuildConfig_CanBeSet()
     {
-        var yaml = "services:\n  web:\n    image: nginx\n    environment:\n      FOO: bar\n      BAZ: qux\n";
-        var result = ComposeSerializer.Deserialize(yaml);
+        var svc = new ComposeService
+        {
+            Build = new ComposeServiceBuildConfig
+            {
+                Context = ".",
+                Dockerfile = "Dockerfile"
+            }
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        var env = result.Value!.Services["web"].Environment!;
-        env.IsDictionary.ShouldBeTrue();
-        env.ToDictionary()["FOO"].ShouldBe("bar");
+        svc.Build.ShouldNotBeNull();
+        svc.Build!.Context.ShouldBe(".");
+        svc.Build.Dockerfile.ShouldBe("Dockerfile");
     }
 
     [Fact]
-    public void Deserialize_Environment_AsList()
+    public void ComposeNetwork_Properties_CanBeSet()
     {
-        var yaml = "services:\n  web:\n    image: nginx\n    environment:\n      - FOO=bar\n      - BAZ=qux\n";
-        var result = ComposeSerializer.Deserialize(yaml);
+        var net = new ComposeNetwork
+        {
+            Name = "frontend",
+            Driver = "bridge",
+            Internal = true,
+            Attachable = true
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        var env = result.Value!.Services["web"].Environment!;
-        env.IsList.ShouldBeTrue();
-        env.ToDictionary()["FOO"].ShouldBe("bar");
+        net.Name.ShouldBe("frontend");
+        net.Driver.ShouldBe("bridge");
+        net.Internal.ShouldBe(true);
+        net.Attachable.ShouldBe(true);
     }
 
     [Fact]
-    public void Deserialize_DependsOn_AsList()
+    public void ComposeVolume_Properties_CanBeSet()
     {
-        var yaml = "services:\n  web:\n    image: nginx\n    depends_on:\n      - db\n      - redis\n";
-        var result = ComposeSerializer.Deserialize(yaml);
+        var vol = new ComposeVolume
+        {
+            Name = "data",
+            Driver = "local",
+            External = false
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        var deps = result.Value!.Services["web"].DependsOn!;
-        deps.IsList.ShouldBeTrue();
-        deps.List.ShouldContain("db");
-        deps.List.ShouldContain("redis");
+        vol.Name.ShouldBe("data");
+        vol.Driver.ShouldBe("local");
+        vol.External.ShouldBe(false);
     }
 
     [Fact]
-    public void Deserialize_DependsOn_AsMap()
+    public void ComposeSecret_Properties_CanBeSet()
     {
-        var yaml = """
-            services:
-              web:
-                image: nginx
-                depends_on:
-                  db:
-                    condition: service_healthy
-            """;
-        var result = ComposeSerializer.Deserialize(yaml);
+        var secret = new ComposeSecret
+        {
+            Name = "db_password",
+            File = "./secret.txt"
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        var deps = result.Value!.Services["web"].DependsOn!;
-        deps.IsList.ShouldBeFalse();
-        deps.Map["db"].Condition.ShouldBe("service_healthy");
+        secret.Name.ShouldBe("db_password");
+        secret.File.ShouldBe("./secret.txt");
     }
 
     [Fact]
-    public void Deserialize_Build_AsString()
+    public void ComposeConfig_Properties_CanBeSet()
     {
-        var yaml = "services:\n  web:\n    build: ./app\n";
-        var result = ComposeSerializer.Deserialize(yaml);
+        var config = new ComposeConfig
+        {
+            Name = "app_config",
+            File = "./config.yaml"
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        result.Value!.Services["web"].Build!.IsString.ShouldBeTrue();
-        result.Value.Services["web"].Build!.StringValue.ShouldBe("./app");
+        config.Name.ShouldBe("app_config");
+        config.File.ShouldBe("./config.yaml");
     }
 
     [Fact]
-    public void Deserialize_Build_AsObject()
+    public void ComposeFile_NullableCollections_DefaultToNull()
     {
-        var yaml = """
-            services:
-              web:
-                build:
-                  context: .
-                  dockerfile: Dockerfile
-            """;
-        var result = ComposeSerializer.Deserialize(yaml);
+        var file = new ComposeFile();
 
-        result.IsSuccess.ShouldBeTrue();
-        var build = result.Value!.Services["web"].Build!;
-        build.IsObject.ShouldBeTrue();
-        build.ObjectValue.Context.ShouldBe(".");
-        build.ObjectValue.Dockerfile.ShouldBe("Dockerfile");
+        file.Services.ShouldBeNull();
+        file.Networks.ShouldBeNull();
+        file.Volumes.ShouldBeNull();
+        file.Secrets.ShouldBeNull();
+        file.Configs.ShouldBeNull();
+        file.Extensions.ShouldBeNull();
     }
 
     [Fact]
-    public void Deserialize_Networks_Volumes_Secrets_Configs()
+    public void ComposeService_Healthcheck_CanBeConfigured()
     {
-        var yaml = """
-            services:
-              web:
-                image: nginx
-            networks:
-              frontend:
-                driver: bridge
-            volumes:
-              data:
-            secrets:
-              db_password:
-                file: ./secret.txt
-            configs:
-              app_config:
-                file: ./config.yaml
-            """;
-        var result = ComposeSerializer.Deserialize(yaml);
+        var svc = new ComposeService
+        {
+            Image = "postgres:16",
+            Healthcheck = new ComposeHealthcheck
+            {
+                Disable = false,
+                Retries = 3
+            }
+        };
 
-        result.IsSuccess.ShouldBeTrue();
-        result.Value!.Networks!.ShouldContainKey("frontend");
-        result.Value.Networks["frontend"].Driver.ShouldBe("bridge");
-        result.Value.Volumes!.ShouldContainKey("data");
-        result.Value.Secrets!.ShouldContainKey("db_password");
-        result.Value.Secrets["db_password"].File.ShouldBe("./secret.txt");
-        result.Value.Configs!.ShouldContainKey("app_config");
-    }
-
-    [Fact]
-    public void Deserialize_ExtensionFields_Preserved()
-    {
-        var yaml = "x-common:\n  image: base\nservices:\n  web:\n    image: nginx\n";
-        var result = ComposeSerializer.Deserialize(yaml);
-
-        result.IsSuccess.ShouldBeTrue();
-        result.Value!.Extensions.ShouldNotBeNull();
-        result.Value.Extensions!.ShouldContainKey("x-common");
-    }
-
-    [Fact]
-    public void Serialize_MinimalFile_ProducesValidYaml()
-    {
-        var file = new Model.ComposeFile();
-        file.Services["web"] = new Model.Service { Image = "nginx:latest" };
-
-        var yaml = ComposeSerializer.Serialize(file);
-
-        yaml.ShouldContain("services");
-        yaml.ShouldContain("nginx:latest");
-    }
-
-    [Fact]
-    public void RoundTrip_MinimalYaml_Preserves()
-    {
-        var yaml = "services:\n  web:\n    image: nginx:latest\n";
-        var result = ComposeSerializer.Deserialize(yaml);
-        result.IsSuccess.ShouldBeTrue();
-
-        var serialized = ComposeSerializer.Serialize(result.Value!);
-        var result2 = ComposeSerializer.Deserialize(serialized);
-        result2.IsSuccess.ShouldBeTrue();
-
-        result2.Value!.Services["web"].Image.ShouldBe("nginx:latest");
+        svc.Healthcheck.ShouldNotBeNull();
+        svc.Healthcheck!.Disable.ShouldBe(false);
+        svc.Healthcheck.Retries.ShouldBe(3);
     }
 }

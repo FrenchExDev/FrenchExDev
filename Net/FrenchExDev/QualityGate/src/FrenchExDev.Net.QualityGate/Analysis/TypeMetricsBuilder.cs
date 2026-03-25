@@ -28,6 +28,9 @@ internal static class TypeMetricsBuilder
                 if (semanticModel.GetDeclaredSymbol(typeDecl) is not INamedTypeSymbol typeSymbol)
                     continue;
 
+                if (HasExcludeFromCodeCoverageAttribute(typeSymbol))
+                    continue;
+
                 var metrics = BuildTypeMetrics(typeDecl, typeSymbol, semanticModel, root, syntaxTree.FilePath);
                 var nsName = typeSymbol.ContainingNamespace?.ToDisplayString() ?? "(global)";
 
@@ -150,6 +153,17 @@ internal static class TypeMetricsBuilder
             RecordDeclarationSyntax => Model.TypeKind.Record,
             _ => Model.TypeKind.Class
         };
+    }
+
+    private static bool HasExcludeFromCodeCoverageAttribute(INamedTypeSymbol symbol)
+    {
+        foreach (var attr in symbol.GetAttributes())
+        {
+            var name = attr.AttributeClass?.ToDisplayString();
+            if (name == "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute")
+                return true;
+        }
+        return false;
     }
 
     private static int ComputeInheritanceDepth(INamedTypeSymbol symbol)

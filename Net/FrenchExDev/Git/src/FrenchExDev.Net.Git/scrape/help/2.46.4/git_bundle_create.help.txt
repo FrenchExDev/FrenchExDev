@@ -1,0 +1,7 @@
+usage: git bundle create [-q | --quiet | --progress]
+                         [--version=<version>] <file> <git-rev-list-args>
+
+    -q, --[no-]quiet      do not show progress meter
+    --[no-]progress       show progress meter
+    --[no-]version <n>    specify bundle format version
+

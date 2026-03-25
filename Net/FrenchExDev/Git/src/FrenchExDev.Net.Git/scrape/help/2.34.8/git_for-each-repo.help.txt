@@ -1,0 +1,4 @@
+usage: git for-each-repo --config=<config> <command-args>
+
+    --config <config>     config key storing a list of repository paths
+

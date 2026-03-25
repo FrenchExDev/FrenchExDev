@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "frenchexdev.net.qualitygate.cli": {
-      "version": "1.0.2",
+      "version": "1.0.0",
       "commands": [
         "quality-gate"
       ],

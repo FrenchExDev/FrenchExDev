@@ -1,0 +1,1 @@
+/usr/local/libexec/git-core/git-citool: 10: exec: wish: not found

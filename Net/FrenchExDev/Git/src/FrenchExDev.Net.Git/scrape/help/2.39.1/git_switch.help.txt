@@ -1,0 +1,24 @@
+usage: git switch [<options>] [<branch>]
+
+    -c, --create <branch>
+                          create and switch to a new branch
+    -C, --force-create <branch>
+                          create/reset and switch to a branch
+    --guess               second guess 'git switch <no-such-branch>'
+    --discard-changes     throw away local modifications
+    -q, --quiet           suppress progress reporting
+    --recurse-submodules[=<checkout>]
+                          control recursive updating of submodules
+    --progress            force progress reporting
+    -m, --merge           perform a 3-way merge with the new branch
+    --conflict <style>    conflict style (merge, diff3, or zdiff3)
+    -d, --detach          detach HEAD at named commit
+    -t, --track[=(direct|inherit)]
+                          set branch tracking configuration
+    -f, --force           force checkout (throw away local modifications)
+    --orphan <new-branch>
+                          new unparented branch
+    --overwrite-ignore    update ignored files (default)
+    --ignore-other-worktrees
+                          do not check if another worktree is holding the given ref
+

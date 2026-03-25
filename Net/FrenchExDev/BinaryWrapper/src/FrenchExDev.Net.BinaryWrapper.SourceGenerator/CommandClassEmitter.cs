@@ -16,12 +16,12 @@ internal static class CommandClassEmitter
         var ns = descriptor.Namespace;
         var flagPrefix = descriptor.FlagPrefix;
         var flagValueSeparator = descriptor.FlagValueSeparator;
-        var dedupedOptions = NamingHelper.DeduplicateOptions(cmd.Options);
+        var (resolvedOptions, resolvedArguments) = NamingHelper.ResolvePropertyNames(cmd.Options, cmd.Arguments);
         cmd = new UnifiedCommand
         {
             CommandPath = cmd.CommandPath, PathSegments = cmd.PathSegments, Name = cmd.Name,
             Description = cmd.Description, SinceVersion = cmd.SinceVersion, UntilVersion = cmd.UntilVersion,
-            Options = dedupedOptions, Arguments = cmd.Arguments
+            Options = resolvedOptions, Arguments = resolvedArguments
         };
         var useBoolEquals = descriptor.UseBoolEqualsFormat;
         // Command path segments after the binary name
@@ -52,13 +52,14 @@ internal static class CommandClassEmitter
         if (cmd.UntilVersion is not null)
             sb.AppendLine($"[global::FrenchExDev.Net.BinaryWrapper.UntilVersion(\"{cmd.UntilVersion}\")]");
 
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public sealed partial class {className} : global::FrenchExDev.Net.BinaryWrapper.ICliCommand");
         sb.AppendLine("{");
 
         // Properties from options
         foreach (var opt in cmd.Options)
         {
-            var propName = NamingHelper.ToPascalCase(opt.LongName);
+            var propName = NamingHelper.OptionPropertyName(opt);
             var clrType = NamingHelper.MapClrType(opt.ClrType);
 
             if (opt.SinceVersion is not null)
@@ -79,7 +80,7 @@ internal static class CommandClassEmitter
         // Properties from arguments
         foreach (var arg in cmd.Arguments)
         {
-            var propName = NamingHelper.ToPascalCase(arg.Name);
+            var propName = NamingHelper.ArgumentPropertyName(arg);
             var clrType = NamingHelper.MapClrType(arg.ClrType);
 
             if (arg.IsVariadic)
@@ -110,7 +111,7 @@ internal static class CommandClassEmitter
 
         foreach (var opt in cmd.Options)
         {
-            var propName = NamingHelper.ToPascalCase(opt.LongName);
+            var propName = NamingHelper.OptionPropertyName(opt);
             var clrType = NamingHelper.MapClrType(opt.ClrType);
             var rawName = opt.LongName.Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "");
             var spIdx = rawName.IndexOf(' ');
@@ -170,7 +171,7 @@ internal static class CommandClassEmitter
         // Positional arguments at the end
         foreach (var arg in cmd.Arguments)
         {
-            var propName = NamingHelper.ToPascalCase(arg.Name);
+            var propName = NamingHelper.ArgumentPropertyName(arg);
             if (arg.IsVariadic)
             {
                 sb.AppendLine($"        if ({propName} is not null)");

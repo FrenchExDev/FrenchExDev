@@ -6,8 +6,11 @@ namespace FrenchExDev.Net.Vos.Config;
 /// </summary>
 public sealed class VosConfig
 {
-    /// <summary>Backend to use: "vagrant" or "podman".</summary>
+    /// <summary>Backend to use (currently: "vagrant").</summary>
     public string Backend { get; set; } = "vagrant";
+
+    /// <summary>Naming format for vagrant machine names (e.g. "{machine}-{index:D2}").</summary>
+    public string? Format { get; set; }
 
     /// <summary>Machine type templates (reusable configurations).</summary>
     public Dictionary<string, VosMachineType> MachineTypes { get; set; } = new();

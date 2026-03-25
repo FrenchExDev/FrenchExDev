@@ -502,9 +502,8 @@ public class AlpineVersionSearcherTests
     /// validates that the searcher returns a non-empty result set for the exact version specified.</remarks>
     /// <returns></returns>
     [Theory]
-    [Feature(nameof(IAlpineVersionSearcher), TestKind.Unit, IntegrationKind.Isolated)]
-    [Trait(Internet.Test, Internet.Offline)]
-    [Trait(Kind.Test, Kind.Unit)]
+    [Trait("internet", "offline")]
+    [Trait("kind", "unit")]
     [InlineData("3.18.1", AlpineFlavors.Virt, "virt", AlpineArchitectures.cloud, "cloud")]
     [InlineData("3.18.2", AlpineFlavors.Virt, "virt", AlpineArchitectures.cloud, "cloud")]
     [InlineData("3.18.1", AlpineFlavors.Standard, "standard", AlpineArchitectures.x86_64, "x86_64")]
@@ -544,9 +543,9 @@ public class AlpineVersionSearcherTests
     /// <param name="architecture">The architecture to filter the search results by.</param>
     /// <returns>A task that represents the asynchronous test operation.</returns>
     [Theory]
-    [Trait(Internet.Test, Internet.Online)]
-    [Trait(Kind.Test, Kind.Integration)]
-    [Trait(Integration.Test, Integration.InfrastructureIntegration)]
+    [Trait("internet", "online")]
+    [Trait("kind", "integration")]
+    [Trait("integration", "infrastructure")]
     [InlineData("3.18.2", AlpineFlavors.Virt, AlpineArchitectures.x86_64)]
     [InlineData("3.19.0", AlpineFlavors.Virt, AlpineArchitectures.x86_64)]
     [InlineData("3.20.0", AlpineFlavors.Virt, AlpineArchitectures.x86_64)]

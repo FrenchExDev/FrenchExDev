@@ -1,0 +1,8 @@
+usage: git quiltimport [options]
+
+    -n, --[no-]dry-run    dry run
+    --[no-]author ...     author name and email address for patches without any
+    --[no-]patches ...    path to the quilt patches
+    --[no-]series ...     path to the quilt series file
+    --[no-]keep-non-patch Pass -b to git mailinfo
+

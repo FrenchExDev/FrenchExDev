@@ -1,0 +1,5 @@
+usage: git merge-one-file <orig blob> <our blob> <their blob> <path> <orig mode> <our mode> <their mode>
+
+usage: git merge-one-file <orig blob> <our blob> <their blob> <path> <orig mode> <our mode> <their mode>
+
+Blob ids and modes should be empty for missing files.

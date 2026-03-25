@@ -2,8 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/FrenchExDev.Net.Vos/FrenchExDev.Net.Vos.csproj" />
     <Project Path="src/FrenchExDev.Net.Vos.Infra.Vagrant/FrenchExDev.Net.Vos.Infra.Vagrant.csproj" />
-    <Project Path="src/FrenchExDev.Net.Vos.Infra.Podman/FrenchExDev.Net.Vos.Infra.Podman.csproj" />
-    <Project Path="src/FrenchExDev.Net.Vos.Infra.FileSystem/FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
+<Project Path="src/FrenchExDev.Net.Vos.Infra.FileSystem/FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
     <Project Path="src/FrenchExDev.Net.Vos.Cli/FrenchExDev.Net.Vos.Cli.csproj" />
     <Project Path="src/FrenchExDev.Net.Vos.Infra.PowerShell/FrenchExDev.Net.Vos.Infra.PowerShell.csproj" />
   </Folder>

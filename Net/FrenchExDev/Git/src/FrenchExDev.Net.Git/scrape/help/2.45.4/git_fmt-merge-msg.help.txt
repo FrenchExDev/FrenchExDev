@@ -1,0 +1,10 @@
+usage: git fmt-merge-msg [-m <message>] [--log[=<n>] | --no-log] [--file <file>]
+
+    --[no-]log[=<n>]      populate log with at most <n> entries from shortlog
+    -m, --[no-]message <text>
+                          use <text> as start of message
+    --[no-]into-name <name>
+                          use <name> instead of the real target branch
+    -F, --[no-]file <file>
+                          file to read from
+

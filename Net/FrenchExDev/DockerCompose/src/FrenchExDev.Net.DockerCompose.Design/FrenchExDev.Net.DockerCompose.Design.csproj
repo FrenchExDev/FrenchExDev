@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BinaryWrapper\src\FrenchExDev.Net.BinaryWrapper.Design\FrenchExDev.Net.BinaryWrapper.Design.csproj" />
     <ProjectReference Include="..\..\..\BinaryWrapper\src\FrenchExDev.Net.BinaryWrapper.Design.Lib\FrenchExDev.Net.BinaryWrapper.Design.Lib.csproj" />
+    <ProjectReference Include="..\..\..\Wrapper.Versioning\src\FrenchExDev.Net.Wrapper.Versioning\FrenchExDev.Net.Wrapper.Versioning.csproj" />
   </ItemGroup>
 
 </Project>

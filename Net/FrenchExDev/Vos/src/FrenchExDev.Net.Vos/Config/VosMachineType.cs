@@ -15,9 +15,6 @@ public sealed class VosMachineType
     /// <summary>Vagrant box URL.</summary>
     public string? BoxUrl { get; set; }
 
-    /// <summary>Podman machine image name (podman backend).</summary>
-    public string? Image { get; set; }
-
     /// <summary>Provider configuration.</summary>
     public VosProviderConfig? Provider { get; set; }
 
@@ -35,6 +32,9 @@ public sealed class VosMachineType
 
     /// <summary>Vagrant plugins to install.</summary>
     public List<string> Plugins { get; set; } = new();
+
+    /// <summary>Base path for provisioning scripts (e.g. "provisioning/").</summary>
+    public string? ProvisioningPath { get; set; }
 
     /// <summary>Whether this machine type is enabled.</summary>
     public bool IsEnabled { get; set; } = true;

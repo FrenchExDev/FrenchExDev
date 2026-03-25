@@ -1,0 +1,15 @@
+usage: git name-rev [<options>] <commit>...
+   or: git name-rev [<options>] --all
+   or: git name-rev [<options>] --annotate-stdin
+
+    --[no-]name-only      print only ref-based names (no object names)
+    --[no-]tags           only use tags to name the commits
+    --[no-]refs <pattern> only use refs matching <pattern>
+    --[no-]exclude <pattern>
+                          ignore refs matching <pattern>
+
+    --[no-]all            list all commits reachable from all refs
+    --[no-]annotate-stdin annotate text from stdin
+    --[no-]undefined      allow to print `undefined` names (default)
+    --[no-]always         show abbreviated commit object as fallback
+

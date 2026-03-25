@@ -140,6 +140,7 @@ public sealed class PackerBundleReader : IPackerBundleReader
     {
         ParsePackerBlock(bundle, root);
         ParseVariables(bundle, root);
+        ParseLocals(bundle, root);
         ParseSources(bundle, root);
         ParseBuild(bundle, root);
     }
@@ -180,6 +181,16 @@ public sealed class PackerBundleReader : IPackerBundleReader
         }
     }
 
+    private static void ParseLocals(PackerBundle bundle, JsonElement root)
+    {
+        if (!root.TryGetProperty("locals", out var localsArr) || localsArr.ValueKind != JsonValueKind.Array)
+            return;
+
+        foreach (var localsBlock in localsArr.EnumerateArray())
+            foreach (var entry in localsBlock.EnumerateObject())
+                bundle.Locals.Add(new PackerLocal { Name = entry.Name, Expression = entry.Value.ToString() });
+    }
+
     private static void ParseSources(PackerBundle bundle, JsonElement root)
     {
         if (!root.TryGetProperty("source", out var sources) || sources.ValueKind != JsonValueKind.Object)
@@ -209,11 +220,33 @@ public sealed class PackerBundleReader : IPackerBundleReader
             if (build.TryGetProperty("name", out var name))
                 bundle.Build.WithName(name.GetString()!);
 
-            if (!build.TryGetProperty("sources", out var srcs) || srcs.ValueKind != JsonValueKind.Array)
-                continue;
+            if (build.TryGetProperty("sources", out var srcs) && srcs.ValueKind == JsonValueKind.Array)
+                foreach (var src in srcs.EnumerateArray())
+                    bundle.Build.WithSource(src.GetString()!);
 
-            foreach (var src in srcs.EnumerateArray())
-                bundle.Build.WithSource(src.GetString()!);
+            // Parse provisioners: { "provisioner": { "shell": [...], "file": [...] } }
+            if (build.TryGetProperty("provisioner", out var provs) && provs.ValueKind == JsonValueKind.Object)
+                foreach (var provType in provs.EnumerateObject())
+                    if (provType.Value.ValueKind == JsonValueKind.Array)
+                        foreach (var provDef in provType.Value.EnumerateArray())
+                        {
+                            var prov = new PackerProvisioner { Type = provType.Name };
+                            foreach (var prop in provDef.EnumerateObject())
+                                prov.Arguments[prop.Name] = JsonElementToObject(prop.Value);
+                            bundle.Build.WithProvisioner(prov);
+                        }
+
+            // Parse post-processors: { "post-processor": { "vagrant": [...] } }
+            if (build.TryGetProperty("post-processor", out var pps) && pps.ValueKind == JsonValueKind.Object)
+                foreach (var ppType in pps.EnumerateObject())
+                    if (ppType.Value.ValueKind == JsonValueKind.Array)
+                        foreach (var ppDef in ppType.Value.EnumerateArray())
+                        {
+                            var pp = new PackerPostProcessor { Type = ppType.Name };
+                            foreach (var prop in ppDef.EnumerateObject())
+                                pp.Arguments[prop.Name] = JsonElementToObject(prop.Value);
+                            bundle.Build.WithPostProcessor(pp);
+                        }
         }
     }
 

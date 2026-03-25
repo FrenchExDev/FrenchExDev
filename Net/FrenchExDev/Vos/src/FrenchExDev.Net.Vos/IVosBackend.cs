@@ -19,7 +19,7 @@ public abstract record VosError
 }
 
 /// <summary>
-/// Abstracts over VM backends (Vagrant, Podman machine).
+/// Abstracts over VM backends (currently: Vagrant).
 /// Each method maps to a Vos CLI command.
 /// </summary>
 public interface IVosBackend
@@ -38,7 +38,23 @@ public interface IVosBackend
     Task<VosActionResult> ResumeAsync(ResolvedInstance instance, CancellationToken ct = default);
     Task<VosActionResult> SnapshotSaveAsync(ResolvedInstance instance, string name, CancellationToken ct = default);
     Task<VosActionResult> SnapshotRestoreAsync(ResolvedInstance instance, string name, CancellationToken ct = default);
+    Task<VosActionResult> SnapshotDeleteAsync(ResolvedInstance instance, string name, CancellationToken ct = default);
+    Task<VosActionResult> SnapshotListAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> SnapshotPushAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> SnapshotPopAsync(ResolvedInstance instance, CancellationToken ct = default);
 
-    /// <summary>Actions this backend supports. Unsupported actions return <see cref="VosError.UnsupportedAction"/>.</summary>
+    // Additional vagrant commands
+    Task<VosActionResult> SshConfigAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> PortAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> GlobalStatusAsync(CancellationToken ct = default);
+    Task<VosActionResult> PackageAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> ValidateAsync(CancellationToken ct = default);
+    Task<VosActionResult> RdpAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> PowershellAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> WinrmAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> WinrmConfigAsync(ResolvedInstance instance, CancellationToken ct = default);
+    Task<VosActionResult> UploadAsync(ResolvedInstance instance, string source, string destination, CancellationToken ct = default);
+
+    /// <summary>Actions this backend supports.</summary>
     IReadOnlySet<string> SupportedActions { get; }
 }

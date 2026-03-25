@@ -1,0 +1,1 @@
+winget install -s msstore --id 9NBLGGH4NNS1 --force --accept-source-agreements --accept-package-agreements

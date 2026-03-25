@@ -16,8 +16,7 @@
     <ProjectReference Include="..\..\src\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
     <ProjectReference Include="..\..\src\FrenchExDev.Net.Vos.Infra.FileSystem\FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
     <ProjectReference Include="..\..\src\FrenchExDev.Net.Vos.Infra.Vagrant\FrenchExDev.Net.Vos.Infra.Vagrant.csproj" />
-    <ProjectReference Include="..\..\src\FrenchExDev.Net.Vos.Infra.Podman\FrenchExDev.Net.Vos.Infra.Podman.csproj" />
-  </ItemGroup>
+</ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />
     <Using Include="Shouldly" />

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Traefik.Bundle/FrenchExDev.Net.Traefik.Bundle.csproj" />
+    <Project Path="src/FrenchExDev.Net.Traefik.Bundle.Attributes/FrenchExDev.Net.Traefik.Bundle.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Traefik.Bundle.Design/FrenchExDev.Net.Traefik.Bundle.Design.csproj" />
+    <Project Path="src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/FrenchExDev.Net.Traefik.Bundle.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Traefik.Bundle.Tests/FrenchExDev.Net.Traefik.Bundle.Tests.csproj" />
+  </Folder>
+</Solution>

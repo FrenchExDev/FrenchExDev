@@ -4,37 +4,142 @@
   <Folder Name="/Alpine.Version/src/">
     <Project Path="Alpine.Version/src/FrenchExDev.Net.Alpine.Version/FrenchExDev.Net.Alpine.Version.csproj" />
   </Folder>
-  <Folder Name="/Alpine.Version/test/" />
+  <Folder Name="/Alpine.Version/test/">
+    <Project Path="Alpine.Version/test/FrenchExDev.Net.Alpine.Version.Tests/FrenchExDev.Net.Alpine.Version.Tests.csproj" />
+  </Folder>
+  <Folder Name="/AttaQwant/" />
+  <Folder Name="/AttaQwant/doc/" />
+  <Folder Name="/AttaQwant/src/">
+    <Project Path="AttaQwant/src/FrenchExDev.Net.AttaQwant.Design/FrenchExDev.Net.AttaQwant.Design.csproj" />
+    <Project Path="AttaQwant/src/FrenchExDev.Net.AttaQwant/FrenchExDev.Net.AttaQwant.csproj" />
+  </Folder>
+  <Folder Name="/AttaQwant/test/" />
   <Folder Name="/BinaryWrapper/" />
   <Folder Name="/BinaryWrapper/doc/" />
   <Folder Name="/BinaryWrapper/src/">
     <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Attributes/FrenchExDev.Net.BinaryWrapper.Attributes.csproj" />
-    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Design/FrenchExDev.Net.BinaryWrapper.Design.csproj" />
     <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Design.Lib/FrenchExDev.Net.BinaryWrapper.Design.Lib.csproj" />
+    <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Design/FrenchExDev.Net.BinaryWrapper.Design.csproj" />
     <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.SourceGenerator/FrenchExDev.Net.BinaryWrapper.SourceGenerator.csproj" />
     <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Testing/FrenchExDev.Net.BinaryWrapper.Testing.csproj" />
     <Project Path="BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper/FrenchExDev.Net.BinaryWrapper.csproj" />
   </Folder>
   <Folder Name="/BinaryWrapper/test/">
-    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests.csproj" Id="3598d296-3a6c-4383-a1ca-d37088130ac9" />
+    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests.csproj" />
     <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Design.Tests/FrenchExDev.Net.BinaryWrapper.Design.Tests.csproj" />
     <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests.csproj" />
-    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Tests/FrenchExDev.Net.BinaryWrapper.Tests.csproj" Id="22e8d8b0-70eb-491e-a90f-2122a4c8684b" />
+    <Project Path="BinaryWrapper/test/FrenchExDev.Net.BinaryWrapper.Tests/FrenchExDev.Net.BinaryWrapper.Tests.csproj" />
   </Folder>
   <Folder Name="/Builder/" />
   <Folder Name="/Builder/doc/" />
   <Folder Name="/Builder/src/">
+    <Project Path="Builder/src/FrenchExDev.Net.Builder.Attributes/FrenchExDev.Net.Builder.Attributes.csproj" />
+    <Project Path="Builder/src/FrenchExDev.Net.Builder.SourceGenerator.Lib/FrenchExDev.Net.Builder.SourceGenerator.Lib.csproj" />
+    <Project Path="Builder/src/FrenchExDev.Net.Builder.SourceGenerator/FrenchExDev.Net.Builder.SourceGenerator.csproj" />
     <Project Path="Builder/src/FrenchExDev.Net.Builder.Testing/FrenchExDev.Net.Builder.Testing.csproj" />
     <Project Path="Builder/src/FrenchExDev.Net.Builder/FrenchExDev.Net.Builder.csproj" />
   </Folder>
   <Folder Name="/Builder/test/">
     <Project Path="Builder/test/FrenchExDev.Net.Builder.Tests/FrenchExDev.Net.Builder.Tests.csproj" />
   </Folder>
+  <Folder Name="/Ddd/" />
+  <Folder Name="/Ddd/doc/" />
+  <Folder Name="/Ddd/src/">
+    <Project Path="Ddd/src/FrenchExDev.Net.Ddd.Attributes/FrenchExDev.Net.Ddd.Attributes.csproj" />
+    <Project Path="Ddd/src/FrenchExDev.Net.Ddd.SourceGenerator.Lib/FrenchExDev.Net.Ddd.SourceGenerator.Lib.csproj" />
+    <Project Path="Ddd/src/FrenchExDev.Net.Ddd.SourceGenerator/FrenchExDev.Net.Ddd.SourceGenerator.csproj" />
+    <Project Path="Ddd/src/FrenchExDev.Net.Ddd.Testing/FrenchExDev.Net.Ddd.Testing.csproj" />
+    <Project Path="Ddd/src/FrenchExDev.Net.Ddd/FrenchExDev.Net.Ddd.csproj" />
+  </Folder>
+  <Folder Name="/Ddd/test/">
+    <Project Path="Ddd/test/FrenchExDev.Net.Ddd.Tests/FrenchExDev.Net.Ddd.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Diem/" />
+  <Folder Name="/Diem/doc/" />
+  <Folder Name="/Diem/src/">
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Actions.Attributes/FrenchExDev.Net.Diem.Admin.Actions.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Actions.SourceGenerator/FrenchExDev.Net.Diem.Admin.Actions.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Actions/FrenchExDev.Net.Diem.Admin.Actions.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Design/FrenchExDev.Net.Diem.Admin.Design.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Forms.Attributes/FrenchExDev.Net.Diem.Admin.Forms.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Forms.SourceGenerator/FrenchExDev.Net.Diem.Admin.Forms.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Forms/FrenchExDev.Net.Diem.Admin.Forms.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Lists.Attributes/FrenchExDev.Net.Diem.Admin.Lists.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Lists.SourceGenerator/FrenchExDev.Net.Diem.Admin.Lists.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Admin.Lists/FrenchExDev.Net.Diem.Admin.Lists.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Aspire.AppHost/FrenchExDev.Net.Diem.Aspire.AppHost.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Aspire.ServiceDefaults/FrenchExDev.Net.Diem.Aspire.ServiceDefaults.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Caching/FrenchExDev.Net.Diem.Caching.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Cli.Lib/FrenchExDev.Net.Diem.Cli.Lib.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Cli/FrenchExDev.Net.Diem.Cli.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Blocks.Attributes/FrenchExDev.Net.Diem.Content.Blocks.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Blocks.Design/FrenchExDev.Net.Diem.Content.Blocks.Design.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Blocks.SourceGenerator/FrenchExDev.Net.Diem.Content.Blocks.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Blocks/FrenchExDev.Net.Diem.Content.Blocks.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Parts.Attributes/FrenchExDev.Net.Diem.Content.Parts.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Parts.Design/FrenchExDev.Net.Diem.Content.Parts.Design.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Parts.SourceGenerator/FrenchExDev.Net.Diem.Content.Parts.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.Parts/FrenchExDev.Net.Diem.Content.Parts.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.StreamFields.Attributes/FrenchExDev.Net.Diem.Content.StreamFields.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.StreamFields.SourceGenerator/FrenchExDev.Net.Diem.Content.StreamFields.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Content.StreamFields/FrenchExDev.Net.Diem.Content.StreamFields.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Identity/FrenchExDev.Net.Diem.Identity.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Media.FileSystem/FrenchExDev.Net.Diem.Media.FileSystem.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Media.Minio/FrenchExDev.Net.Diem.Media.Minio.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Media/FrenchExDev.Net.Diem.Media.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Metrics/FrenchExDev.Net.Diem.Metrics.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Notifications/FrenchExDev.Net.Diem.Notifications.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Design/FrenchExDev.Net.Diem.Pages.Design.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Layouts.Attributes/FrenchExDev.Net.Diem.Pages.Layouts.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Layouts/FrenchExDev.Net.Diem.Pages.Layouts.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Routing.Attributes/FrenchExDev.Net.Diem.Pages.Routing.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Routing/FrenchExDev.Net.Diem.Pages.Routing.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Widgets.Attributes/FrenchExDev.Net.Diem.Pages.Widgets.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Widgets.Design/FrenchExDev.Net.Diem.Pages.Widgets.Design.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Widgets.SourceGenerator/FrenchExDev.Net.Diem.Pages.Widgets.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Pages.Widgets/FrenchExDev.Net.Diem.Pages.Widgets.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.RealTime/FrenchExDev.Net.Diem.RealTime.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Search.Lucene/FrenchExDev.Net.Diem.Search.Lucene.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Search/FrenchExDev.Net.Diem.Search.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Design/FrenchExDev.Net.Diem.Workflow.Design.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Gates.Attributes/FrenchExDev.Net.Diem.Workflow.Gates.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Gates.SourceGenerator/FrenchExDev.Net.Diem.Workflow.Gates.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Gates/FrenchExDev.Net.Diem.Workflow.Gates.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Locales.Attributes/FrenchExDev.Net.Diem.Workflow.Locales.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Locales/FrenchExDev.Net.Diem.Workflow.Locales.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Scheduling.Attributes/FrenchExDev.Net.Diem.Workflow.Scheduling.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.Scheduling/FrenchExDev.Net.Diem.Workflow.Scheduling.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.StateMachine.Attributes/FrenchExDev.Net.Diem.Workflow.StateMachine.Attributes.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.StateMachine.SourceGenerator/FrenchExDev.Net.Diem.Workflow.StateMachine.SourceGenerator.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem.Workflow.StateMachine/FrenchExDev.Net.Diem.Workflow.StateMachine.csproj" />
+    <Project Path="Diem/src/FrenchExDev.Net.Diem/FrenchExDev.Net.Diem.csproj" />
+  </Folder>
+  <Folder Name="/Diem/test/">
+    <Project Path="Diem/test/FrenchExDev.Net.Diem.Admin.Tests/FrenchExDev.Net.Diem.Admin.Tests.csproj" />
+    <Project Path="Diem/test/FrenchExDev.Net.Diem.Cli.Tests/FrenchExDev.Net.Diem.Cli.Tests.csproj" />
+    <Project Path="Diem/test/FrenchExDev.Net.Diem.Content.Tests/FrenchExDev.Net.Diem.Content.Tests.csproj" />
+    <Project Path="Diem/test/FrenchExDev.Net.Diem.Pages.Tests/FrenchExDev.Net.Diem.Pages.Tests.csproj" />
+    <Project Path="Diem/test/FrenchExDev.Net.Diem.Tests/FrenchExDev.Net.Diem.Tests.csproj" />
+    <Project Path="Diem/test/FrenchExDev.Net.Diem.Workflow.Tests/FrenchExDev.Net.Diem.Workflow.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Doc2Pdf/" />
+  <Folder Name="/Doc2Pdf/doc/" />
+  <Folder Name="/Doc2Pdf/src/">
+    <Project Path="Doc2Pdf/src/FrenchExDev.Net.Doc2Pdf/FrenchExDev.Net.Doc2Pdf.csproj" />
+  </Folder>
+  <Folder Name="/Doc2Pdf/test/" />
+  <Folder Name="/DockAi/" />
+  <Folder Name="/DockAi/doc/" />
+  <Folder Name="/DockAi/src/">
+    <Project Path="DockAi/src/DockAi.Api/DockAi.Api.csproj" />
+    <Project Path="DockAi/src/DockAi.Viewer/DockAi.Viewer.csproj" />
+  </Folder>
+  <Folder Name="/DockAi/test/" />
   <Folder Name="/Docker/" />
   <Folder Name="/Docker/doc/" />
   <Folder Name="/Docker/src/">
-    <Project Path="Docker/src/FrenchExDev.Net.Docker/FrenchExDev.Net.Docker.csproj" />
     <Project Path="Docker/src/FrenchExDev.Net.Docker.Design/FrenchExDev.Net.Docker.Design.csproj" />
+    <Project Path="Docker/src/FrenchExDev.Net.Docker/FrenchExDev.Net.Docker.csproj" />
   </Folder>
   <Folder Name="/Docker/test/">
     <Project Path="Docker/test/FrenchExDev.Net.Docker.Tests/FrenchExDev.Net.Docker.Tests.csproj" />
@@ -42,35 +147,58 @@
   <Folder Name="/DockerCompose/" />
   <Folder Name="/DockerCompose/doc/" />
   <Folder Name="/DockerCompose/src/">
-    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose/FrenchExDev.Net.DockerCompose.csproj" />
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose.Bundle.Attributes/FrenchExDev.Net.DockerCompose.Bundle.Attributes.csproj" />
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose.Bundle.Design/FrenchExDev.Net.DockerCompose.Bundle.Design.csproj" />
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose.Bundle.SourceGenerator/FrenchExDev.Net.DockerCompose.Bundle.SourceGenerator.csproj" />
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose.Bundle/FrenchExDev.Net.DockerCompose.Bundle.csproj" />
     <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose.Design/FrenchExDev.Net.DockerCompose.Design.csproj" />
+    <Project Path="DockerCompose/src/FrenchExDev.Net.DockerCompose/FrenchExDev.Net.DockerCompose.csproj" />
   </Folder>
   <Folder Name="/DockerCompose/test/">
+    <Project Path="DockerCompose/test/FrenchExDev.Net.DockerCompose.Bundle.Tests/FrenchExDev.Net.DockerCompose.Bundle.Tests.csproj" />
     <Project Path="DockerCompose/test/FrenchExDev.Net.DockerCompose.Tests/FrenchExDev.Net.DockerCompose.Tests.csproj" />
   </Folder>
-  <Folder Name="/DockAi/" />
-  <Folder Name="/DockAi/src/">
-    <Project Path="DockAi/src/DockAi.Api/DockAi.Api.csproj" />
-    <Project Path="DockAi/src/DockAi.Viewer/DockAi.Viewer.csproj" />
+  <Folder Name="/Dsl/" />
+  <Folder Name="/Dsl/doc/" />
+  <Folder Name="/Dsl/src/">
+    <Project Path="Dsl/src/FrenchExDev.Net.Dsl.Design/FrenchExDev.Net.Dsl.Design.csproj" />
+    <Project Path="Dsl/src/FrenchExDev.Net.Dsl.SourceGenerator.Lib/FrenchExDev.Net.Dsl.SourceGenerator.Lib.csproj" />
+    <Project Path="Dsl/src/FrenchExDev.Net.Dsl.SourceGenerator/FrenchExDev.Net.Dsl.SourceGenerator.csproj" />
+    <Project Path="Dsl/src/FrenchExDev.Net.Dsl/FrenchExDev.Net.Dsl.csproj" />
   </Folder>
-  <Folder Name="/DockAi/test/" />
-  <Folder Name="/Podman/" />
-  <Folder Name="/Podman/doc/" />
-  <Folder Name="/Podman/src/">
-    <Project Path="Podman/src/FrenchExDev.Net.Podman/FrenchExDev.Net.Podman.csproj" />
-    <Project Path="Podman/src/FrenchExDev.Net.Podman.Design/FrenchExDev.Net.Podman.Design.csproj" />
+  <Folder Name="/Dsl/test/">
+    <Project Path="Dsl/test/FrenchExDev.Net.Dsl.Tests/FrenchExDev.Net.Dsl.Tests.csproj" />
   </Folder>
-  <Folder Name="/Podman/test/">
-    <Project Path="Podman/test/FrenchExDev.Net.Podman.Tests/FrenchExDev.Net.Podman.Tests.csproj" />
+  <Folder Name="/FiniteStateMachine/" />
+  <Folder Name="/FiniteStateMachine/doc/" />
+  <Folder Name="/FiniteStateMachine/src/">
+    <Project Path="FiniteStateMachine/src/FrenchExDev.Net.FiniteStateMachine.Attributes/FrenchExDev.Net.FiniteStateMachine.Attributes.csproj" />
+    <Project Path="FiniteStateMachine/src/FrenchExDev.Net.FiniteStateMachine.Design/FrenchExDev.Net.FiniteStateMachine.Design.csproj" />
+    <Project Path="FiniteStateMachine/src/FrenchExDev.Net.FiniteStateMachine.SourceGenerator.Lib/FrenchExDev.Net.FiniteStateMachine.SourceGenerator.Lib.csproj" />
+    <Project Path="FiniteStateMachine/src/FrenchExDev.Net.FiniteStateMachine.SourceGenerator/FrenchExDev.Net.FiniteStateMachine.SourceGenerator.csproj" />
+    <Project Path="FiniteStateMachine/src/FrenchExDev.Net.FiniteStateMachine.Testing/FrenchExDev.Net.FiniteStateMachine.Testing.csproj" />
+    <Project Path="FiniteStateMachine/src/FrenchExDev.Net.FiniteStateMachine/FrenchExDev.Net.FiniteStateMachine.csproj" />
   </Folder>
-  <Folder Name="/PodmanCompose/" />
-  <Folder Name="/PodmanCompose/doc/" />
-  <Folder Name="/PodmanCompose/src/">
-    <Project Path="PodmanCompose/src/FrenchExDev.Net.PodmanCompose/FrenchExDev.Net.PodmanCompose.csproj" />
-    <Project Path="PodmanCompose/src/FrenchExDev.Net.PodmanCompose.Design/FrenchExDev.Net.PodmanCompose.Design.csproj" />
+  <Folder Name="/FiniteStateMachine/test/">
+    <Project Path="FiniteStateMachine/test/FrenchExDev.Net.FiniteStateMachine.Tests/FrenchExDev.Net.FiniteStateMachine.Tests.csproj" />
   </Folder>
-  <Folder Name="/PodmanCompose/test/">
-    <Project Path="PodmanCompose/test/FrenchExDev.Net.PodmanCompose.Tests/FrenchExDev.Net.PodmanCompose.Tests.csproj" />
+  <Folder Name="/Git/" />
+  <Folder Name="/Git/doc/" />
+  <Folder Name="/Git/src/">
+    <Project Path="Git/src/FrenchExDev.Net.Git.Design/FrenchExDev.Net.Git.Design.csproj" />
+    <Project Path="Git/src/FrenchExDev.Net.Git/FrenchExDev.Net.Git.csproj" />
+  </Folder>
+  <Folder Name="/Git/test/">
+    <Project Path="Git/test/FrenchExDev.Net.Git.Tests/FrenchExDev.Net.Git.Tests.csproj" />
+  </Folder>
+  <Folder Name="/GitLab.Cli/" />
+  <Folder Name="/GitLab.Cli/doc/" />
+  <Folder Name="/GitLab.Cli/src/">
+    <Project Path="GitLab.Cli/src/FrenchExDev.Net.GitLab.Cli.Design/FrenchExDev.Net.GitLab.Cli.Design.csproj" />
+    <Project Path="GitLab.Cli/src/FrenchExDev.Net.GitLab.Cli/FrenchExDev.Net.GitLab.Cli.csproj" />
+  </Folder>
+  <Folder Name="/GitLab.Cli/test/">
+    <Project Path="GitLab.Cli/test/FrenchExDev.Net.GitLab.Cli.Tests/FrenchExDev.Net.GitLab.Cli.Tests.csproj" />
   </Folder>
   <Folder Name="/HttpClient/" />
   <Folder Name="/HttpClient/doc/" />
@@ -80,12 +208,78 @@
   </Folder>
   <Folder Name="/HttpClient/test/" />
   <Folder Name="/Packer/" />
+  <Folder Name="/Packer/doc/" />
   <Folder Name="/Packer/src/">
-    <Project Path="Packer/src/FrenchExDev.Net.Packer/FrenchExDev.Net.Packer.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer.Bundle.Attributes/FrenchExDev.Net.Packer.Bundle.Attributes.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer.Bundle.Design/FrenchExDev.Net.Packer.Bundle.Design.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib/FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer.Bundle.SourceGenerator/FrenchExDev.Net.Packer.Bundle.SourceGenerator.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer.Bundle/FrenchExDev.Net.Packer.Bundle.csproj" />
     <Project Path="Packer/src/FrenchExDev.Net.Packer.Design/FrenchExDev.Net.Packer.Design.csproj" />
+    <Project Path="Packer/src/FrenchExDev.Net.Packer/FrenchExDev.Net.Packer.csproj" />
   </Folder>
   <Folder Name="/Packer/test/">
+    <Project Path="Packer/test/FrenchExDev.Net.Packer.Bundle.Tests/FrenchExDev.Net.Packer.Bundle.Tests.csproj" />
     <Project Path="Packer/test/FrenchExDev.Net.Packer.Tests/FrenchExDev.Net.Packer.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Packer.Alpine/" />
+  <Folder Name="/Packer.Alpine/doc/" />
+  <Folder Name="/Packer.Alpine/src/">
+    <Project Path="Packer.Alpine/src/FrenchExDev.Net.Packer.Alpine.Cli/FrenchExDev.Net.Packer.Alpine.Cli.csproj" />
+    <Project Path="Packer.Alpine/src/FrenchExDev.Net.Packer.Alpine/FrenchExDev.Net.Packer.Alpine.csproj" />
+  </Folder>
+  <Folder Name="/Packer.Alpine/test/">
+    <Project Path="Packer.Alpine/test/FrenchExDev.Net.Packer.Alpine.Tests/FrenchExDev.Net.Packer.Alpine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Packer.Alpine.DockerHost/" />
+  <Folder Name="/Packer.Alpine.DockerHost/doc/" />
+  <Folder Name="/Packer.Alpine.DockerHost/src/">
+    <Project Path="Packer.Alpine.DockerHost/src/FrenchExDev.Net.Packer.Alpine.DockerHost.Cli/FrenchExDev.Net.Packer.Alpine.DockerHost.Cli.csproj" />
+    <Project Path="Packer.Alpine.DockerHost/src/FrenchExDev.Net.Packer.Alpine.DockerHost/FrenchExDev.Net.Packer.Alpine.DockerHost.csproj" />
+  </Folder>
+  <Folder Name="/Packer.Alpine.DockerHost/test/">
+    <Project Path="Packer.Alpine.DockerHost/test/FrenchExDev.Net.Packer.Alpine.DockerHost.Tests/FrenchExDev.Net.Packer.Alpine.DockerHost.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Podman/" />
+  <Folder Name="/Podman/doc/" />
+  <Folder Name="/Podman/src/">
+    <Project Path="Podman/src/FrenchExDev.Net.Podman.Design/FrenchExDev.Net.Podman.Design.csproj" />
+    <Project Path="Podman/src/FrenchExDev.Net.Podman/FrenchExDev.Net.Podman.csproj" />
+  </Folder>
+  <Folder Name="/Podman/test/">
+    <Project Path="Podman/test/FrenchExDev.Net.Podman.Tests/FrenchExDev.Net.Podman.Tests.csproj" />
+  </Folder>
+  <Folder Name="/PodmanCompose/" />
+  <Folder Name="/PodmanCompose/doc/" />
+  <Folder Name="/PodmanCompose/src/">
+    <Project Path="PodmanCompose/src/FrenchExDev.Net.PodmanCompose.Design/FrenchExDev.Net.PodmanCompose.Design.csproj" />
+    <Project Path="PodmanCompose/src/FrenchExDev.Net.PodmanCompose/FrenchExDev.Net.PodmanCompose.csproj" />
+  </Folder>
+  <Folder Name="/PodmanCompose/test/">
+    <Project Path="PodmanCompose/test/FrenchExDev.Net.PodmanCompose.Tests/FrenchExDev.Net.PodmanCompose.Tests.csproj" />
+  </Folder>
+  <Folder Name="/QualityGate/" />
+  <Folder Name="/QualityGate/doc/" />
+  <Folder Name="/QualityGate/src/">
+    <Project Path="QualityGate/src/FrenchExDev.Net.QualityGate.Cli/FrenchExDev.Net.QualityGate.Cli.csproj" />
+    <Project Path="QualityGate/src/FrenchExDev.Net.QualityGate.Html/FrenchExDev.Net.QualityGate.Html.csproj" />
+    <Project Path="QualityGate/src/FrenchExDev.Net.QualityGate/FrenchExDev.Net.QualityGate.csproj" />
+  </Folder>
+  <Folder Name="/QualityGate/test/">
+    <Project Path="QualityGate/test/FrenchExDev.Net.QualityGate.Tests/FrenchExDev.Net.QualityGate.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Requirements/" />
+  <Folder Name="/Requirements/doc/" />
+  <Folder Name="/Requirements/src/">
+    <Project Path="Requirements/src/FrenchExDev.Net.Requirements.Analyzers/FrenchExDev.Net.Requirements.Analyzers.csproj" />
+    <Project Path="Requirements/src/FrenchExDev.Net.Requirements.Attributes/FrenchExDev.Net.Requirements.Attributes.csproj" />
+    <Project Path="Requirements/src/FrenchExDev.Net.Requirements.SourceGenerator.Lib/FrenchExDev.Net.Requirements.SourceGenerator.Lib.csproj" />
+    <Project Path="Requirements/src/FrenchExDev.Net.Requirements.SourceGenerator/FrenchExDev.Net.Requirements.SourceGenerator.csproj" />
+    <Project Path="Requirements/src/FrenchExDev.Net.Requirements.Testing/FrenchExDev.Net.Requirements.Testing.csproj" />
+    <Project Path="Requirements/src/FrenchExDev.Net.Requirements/FrenchExDev.Net.Requirements.csproj" />
+  </Folder>
+  <Folder Name="/Requirements/test/">
+    <Project Path="Requirements/test/FrenchExDev.Net.Requirements.Tests/FrenchExDev.Net.Requirements.Tests.csproj" />
   </Folder>
   <Folder Name="/Result/" />
   <Folder Name="/Result/doc/" />
@@ -96,6 +290,17 @@
   <Folder Name="/Result/test/">
     <Project Path="Result/test/FrenchExDev.Net.Result.Tests/FrenchExDev.Net.Result.Tests.csproj" />
   </Folder>
+  <Folder Name="/Traefik/" />
+  <Folder Name="/Traefik/doc/" />
+  <Folder Name="/Traefik/src/">
+    <Project Path="Traefik/src/FrenchExDev.Net.Traefik.Bundle.Attributes/FrenchExDev.Net.Traefik.Bundle.Attributes.csproj" />
+    <Project Path="Traefik/src/FrenchExDev.Net.Traefik.Bundle.Design/FrenchExDev.Net.Traefik.Bundle.Design.csproj" />
+    <Project Path="Traefik/src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/FrenchExDev.Net.Traefik.Bundle.SourceGenerator.csproj" />
+    <Project Path="Traefik/src/FrenchExDev.Net.Traefik.Bundle/FrenchExDev.Net.Traefik.Bundle.csproj" />
+  </Folder>
+  <Folder Name="/Traefik/test/">
+    <Project Path="Traefik/test/FrenchExDev.Net.Traefik.Bundle.Tests/FrenchExDev.Net.Traefik.Bundle.Tests.csproj" />
+  </Folder>
   <Folder Name="/Vagrant/" />
   <Folder Name="/Vagrant/doc/" />
   <Folder Name="/Vagrant/src/">
@@ -104,5 +309,41 @@
   </Folder>
   <Folder Name="/Vagrant/test/">
     <Project Path="Vagrant/test/FrenchExDev.Net.Vagrant.Tests/FrenchExDev.Net.Vagrant.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Vos/" />
+  <Folder Name="/Vos/doc/" />
+  <Folder Name="/Vos/src/">
+    <Project Path="Vos/src/FrenchExDev.Net.Vos.Cli/FrenchExDev.Net.Vos.Cli.csproj" />
+    <Project Path="Vos/src/FrenchExDev.Net.Vos.Infra.FileSystem/FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
+    <Project Path="Vos/src/FrenchExDev.Net.Vos.Infra.PowerShell/FrenchExDev.Net.Vos.Infra.PowerShell.csproj" />
+    <Project Path="Vos/src/FrenchExDev.Net.Vos.Infra.Vagrant/FrenchExDev.Net.Vos.Infra.Vagrant.csproj" />
+    <Project Path="Vos/src/FrenchExDev.Net.Vos/FrenchExDev.Net.Vos.csproj" />
+  </Folder>
+  <Folder Name="/Vos/test/">
+    <Project Path="Vos/test/FrenchExDev.Net.Vos.Tests/FrenchExDev.Net.Vos.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Vos.Alpine/" />
+  <Folder Name="/Vos.Alpine/doc/" />
+  <Folder Name="/Vos.Alpine/src/">
+    <Project Path="Vos.Alpine/src/FrenchExDev.Net.Vos.Alpine/FrenchExDev.Net.Vos.Alpine.csproj" />
+  </Folder>
+  <Folder Name="/Vos.Alpine/test/">
+    <Project Path="Vos.Alpine/test/FrenchExDev.Net.Vos.Alpine.Tests/FrenchExDev.Net.Vos.Alpine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Vos.Alpine.DockerHost/" />
+  <Folder Name="/Vos.Alpine.DockerHost/doc/" />
+  <Folder Name="/Vos.Alpine.DockerHost/src/">
+    <Project Path="Vos.Alpine.DockerHost/src/FrenchExDev.Net.Vos.Alpine.DockerHost/FrenchExDev.Net.Vos.Alpine.DockerHost.csproj" />
+  </Folder>
+  <Folder Name="/Vos.Alpine.DockerHost/test/">
+    <Project Path="Vos.Alpine.DockerHost/test/FrenchExDev.Net.Vos.Alpine.DockerHost.Tests/FrenchExDev.Net.Vos.Alpine.DockerHost.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Wrapper.Versioning/" />
+  <Folder Name="/Wrapper.Versioning/doc/" />
+  <Folder Name="/Wrapper.Versioning/src/">
+    <Project Path="Wrapper.Versioning/src/FrenchExDev.Net.Wrapper.Versioning/FrenchExDev.Net.Wrapper.Versioning.csproj" />
+  </Folder>
+  <Folder Name="/Wrapper.Versioning/test/">
+    <Project Path="Wrapper.Versioning/test/FrenchExDev.Net.Wrapper.Versioning.Tests/FrenchExDev.Net.Wrapper.Versioning.Tests.csproj" />
   </Folder>
 </Solution>

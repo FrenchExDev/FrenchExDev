@@ -1,4 +1,3 @@
-using FrenchExDev.Net.DockerCompose.Bundle.Model;
 using Shouldly;
 
 namespace FrenchExDev.Net.DockerCompose.Bundle.Tests;
@@ -10,23 +9,24 @@ public class BuilderTests
     {
         var result = await new ComposeFileBuilder()
             .WithName("test-app")
-            .WithServices(new Dictionary<string, Service>
+            .WithServices(new Dictionary<string, ComposeService>
             {
-                ["web"] = new Service { Image = "nginx:latest" }
+                ["web"] = new ComposeService { Image = "nginx:latest" }
             })
             .BuildAsync();
 
         result.IsSuccess.ShouldBeTrue();
         var file = result.ValueOrThrow().Resolved();
         file.Name.ShouldBe("test-app");
-        file.Services.ShouldContainKey("web");
+        file.Services.ShouldNotBeNull();
+        file.Services!.ShouldContainKey("web");
         file.Services["web"].Image.ShouldBe("nginx:latest");
     }
 
     [Fact]
-    public async Task ServiceBuilder_BuildAsync_CreatesService()
+    public async Task ComposeServiceBuilder_BuildAsync_CreatesService()
     {
-        var result = await new ServiceBuilder()
+        var result = await new ComposeServiceBuilder()
             .WithImage("postgres:16")
             .WithRestart("unless-stopped")
             .BuildAsync();
@@ -38,9 +38,9 @@ public class BuilderTests
     }
 
     [Fact]
-    public async Task NetworkBuilder_BuildAsync_CreatesNetwork()
+    public async Task ComposeNetworkBuilder_BuildAsync_CreatesNetwork()
     {
-        var result = await new NetworkBuilder()
+        var result = await new ComposeNetworkBuilder()
             .WithName("frontend")
             .WithDriver("bridge")
             .BuildAsync();
@@ -52,9 +52,9 @@ public class BuilderTests
     }
 
     [Fact]
-    public async Task VolumeBuilder_BuildAsync_CreatesVolume()
+    public async Task ComposeVolumeBuilder_BuildAsync_CreatesVolume()
     {
-        var result = await new VolumeBuilder()
+        var result = await new ComposeVolumeBuilder()
             .WithName("data")
             .WithDriver("local")
             .BuildAsync();
@@ -63,5 +63,58 @@ public class BuilderTests
         var vol = result.ValueOrThrow().Resolved();
         vol.Name.ShouldBe("data");
         vol.Driver.ShouldBe("local");
+    }
+
+    [Fact]
+    public async Task ComposeFileBuilder_WithNestedBuilders_CreatesFile()
+    {
+        var result = await new ComposeFileBuilder()
+            .WithName("nested-app")
+            .WithService("web", svc => svc
+                .WithImage("nginx:latest")
+                .WithRestart("always"))
+            .WithNetwork("frontend", net => net
+                .WithDriver("bridge"))
+            .WithVolume("data", vol => vol
+                .WithDriver("local"))
+            .BuildAsync();
+
+        result.IsSuccess.ShouldBeTrue();
+        var file = result.ValueOrThrow().Resolved();
+        file.Name.ShouldBe("nested-app");
+        file.Services.ShouldNotBeNull();
+        file.Services!["web"].Image.ShouldBe("nginx:latest");
+        file.Networks.ShouldNotBeNull();
+        file.Networks!["frontend"]!.Driver.ShouldBe("bridge");
+        file.Volumes.ShouldNotBeNull();
+        file.Volumes!["data"]!.Driver.ShouldBe("local");
+    }
+
+    [Fact]
+    public async Task ComposeSecretBuilder_BuildAsync_CreatesSecret()
+    {
+        var result = await new ComposeSecretBuilder()
+            .WithName("db_password")
+            .WithFile("./secret.txt")
+            .BuildAsync();
+
+        result.IsSuccess.ShouldBeTrue();
+        var secret = result.ValueOrThrow().Resolved();
+        secret.Name.ShouldBe("db_password");
+        secret.File.ShouldBe("./secret.txt");
+    }
+
+    [Fact]
+    public async Task ComposeConfigBuilder_BuildAsync_CreatesConfig()
+    {
+        var result = await new ComposeConfigBuilder()
+            .WithName("app_config")
+            .WithFile("./config.yaml")
+            .BuildAsync();
+
+        result.IsSuccess.ShouldBeTrue();
+        var config = result.ValueOrThrow().Resolved();
+        config.Name.ShouldBe("app_config");
+        config.File.ShouldBe("./config.yaml");
     }
 }

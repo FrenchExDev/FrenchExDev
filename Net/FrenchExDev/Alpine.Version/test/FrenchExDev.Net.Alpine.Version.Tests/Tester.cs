@@ -1,3 +1,5 @@
+using FrenchExDev.Net.Builder;
+
 namespace FrenchExDev.Net.Alpine.Version.Testing;
 
 /// <summary>
@@ -48,8 +50,9 @@ public static class AlpineVersionSearcherTester
     {
         var builder = new FakeHttpClientBuilder();
         getHttpClientBuilder(builder);
-        var getHttpClient = builder.Build().Success<IHttpClient>();
-        var result = await new AlpineVersionSearcher(getHttpClient).SearchAsync(filterBuilder, cancellationToken);
+        var buildResult = await builder.BuildAsync();
+        var httpClient = buildResult.ValueOrThrow().Resolved();
+        var result = await new AlpineVersionSearcher(httpClient).SearchAsync(filterBuilder, cancellationToken);
         assert(result);
     }
 }

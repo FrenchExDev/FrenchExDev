@@ -1,0 +1,14 @@
+usage: git bisect start [--term-(bad|new)=<term-new> --term-(good|old)=<term-old>]
+                        [--no-checkout] [--first-parent] [<bad> [<good>...]] [--] [<pathspec>...]
+   or: git bisect (bad|new|<term-new>) [<rev>]
+   or: git bisect (good|old|<term-old>) [<rev>...]
+   or: git bisect terms [--term-(good|old) | --term-(bad|new)]
+   or: git bisect skip [(<rev>|<range>)...]
+   or: git bisect next
+   or: git bisect reset [<commit>]
+   or: git bisect (visualize|view)
+   or: git bisect replay <logfile>
+   or: git bisect log
+   or: git bisect run <cmd> [<arg>...]
+   or: git bisect help
+

@@ -19,12 +19,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.Alpine.Version\FrenchExDev.Net.Alpine.Version.csproj" />
 		<ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
 		<ProjectReference Include="..\..\..\HttpClient\src\FrenchExDev.Net.HttpClient\FrenchExDev.Net.HttpClient.csproj" />
+		<ProjectReference Include="..\..\..\HttpClient\src\FrenchExDev.Net.HttpClient.Testing\FrenchExDev.Net.HttpClient.Testing.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="Xunit" />
+		<Using Include="FrenchExDev.Net.Alpine.Version" />
+		<Using Include="FrenchExDev.Net.HttpClient" />
+		<Using Include="FrenchExDev.Net.HttpClient.Testing" />
 	</ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Scriban" />
+    <PackageReference Include="Microsoft.Build.Framework" ExcludeAssets="runtime" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

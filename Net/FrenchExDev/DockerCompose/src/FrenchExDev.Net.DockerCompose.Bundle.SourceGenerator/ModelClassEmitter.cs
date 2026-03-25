@@ -22,6 +22,7 @@ internal static class ModelClassEmitter
         sb.AppendLine($"namespace {ns};");
         sb.AppendLine();
 
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine("public partial class ComposeFile");
         sb.AppendLine("{");
 
@@ -156,6 +157,7 @@ internal static class ModelClassEmitter
 
         EmitVersionAttributes(sb, sinceVersion, untilVersion, "");
 
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public partial class {className}");
         sb.AppendLine("{");
 

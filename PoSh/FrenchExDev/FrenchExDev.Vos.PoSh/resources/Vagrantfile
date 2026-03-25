@@ -1,0 +1,220 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# Copyright Stéphane Erard - FrenchExDev 
+# All rights reserved
+# For licensing information, contact stephane.erard@gmail.com
+
+VAGRANT_VERSION = 2
+
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+debug = ENV["VOS_VAGRANTFILE_DEBUG"] == "true";
+
+# Get this file directory
+  require 'pathname'
+  dir = File.dirname(File.expand_path(__FILE__))
+  onlyDir = Pathname.new(dir).basename.to_s
+
+# Load DUMPED Configuration
+require 'yaml'
+vagrant_config = YAML.load_file(File.join(dir,"config-vos.yaml"))
+overloadconfigfilepath = File.join(dir, "local", "config-vos-local.yaml")
+if(File.exist?(overloadconfigfilepath)) 
+  vagrant_config_local = YAML.load_file(overloadconfigfilepath)
+  vagrant_config = Vagrant::Util::DeepMerge.deep_merge(vagrant_config, vagrant_config_local)
+end
+
+  Vagrant.configure(VAGRANT_VERSION) do |config|
+# Global
+
+  # Plugins
+
+  if (vagrant_config['vagrant'] && vagrant_config['vagrant']['plugins'])
+
+    # Networking plugin hostmanager #
+        if Vagrant.has_plugin?('vagrant-hostmanager') && vagrant_config['vagrant']['plugins']['vagrant-hostmanager'] && true === vagrant_config['vagrant']['plugins']['vagrant-hostmanager']['enabled']
+          config.hostmanager.enabled             =   vagrant_config["vagrant"]["plugins"]["vagrant-hostmanager"]["config"]["hostmanager.enabled"] || false
+          config.hostmanager.manage_host         =   vagrant_config["vagrant"]["plugins"]["vagrant-hostmanager"]["config"]["hostmanager.manage_host"] || false
+          config.hostmanager.manage_guest        =   vagrant_config["vagrant"]["plugins"]["vagrant-hostmanager"]["config"]["hostmanager.manage_guest"] || false
+        end
+
+    # VB Guest
+    
+        if Vagrant.has_plugin?('vagrant-vbguest') && vagrant_config['vagrant']['plugins']['vagrant-vbguest'] && true === vagrant_config['vagrant']['plugins']['vagrant-vbguest']['enabled']
+            config.vbguest.auto_update              =   vagrant_config["vagrant"]["plugins"]["vagrant-vbguest"]["config"]["vbguest.auto_update"] || false
+            config.vbguest.auto_reboot              =   vagrant_config["vagrant"]["plugins"]["vagrant-vbguest"]["config"]["vbguest.auto_reboot"] || false
+            config.vbguest.installer_arguments      =   vagrant_config["vagrant"]["plugins"]["vagrant-vbguest"]["config"]["vbguest.installer_arguments"] || false
+        end
+
+    # Env dotfile
+
+        if Vagrant.has_plugin?('vagrant-env') && vagrant_config['vagrant']['plugins']['vagrant-env'] && true === vagrant_config['vagrant']['plugins']['vagrant-env']['enabled']
+            #config.env.enable # buggy
+        end
+
+  end # End Plugins
+
+  # Virtual Machines
+
+  if (!vagrant_config['machines'])
+    puts vagrant_config
+    throw "Bad configuration file : no machines key defined.";
+    exit
+  end
+
+  # Iterate through nodes entry in JSON file
+  vagrant_config['machines'].each do |servername, server|
+    
+    if (!server['is_enabled'])
+      puts "machine #{servername} is not enabled" if debug
+      next
+    end
+
+    srv_type_name = server['machine_type_name']
+    
+    if (!srv_type_name)
+      throw  "undefined machine_type_name #{servername} in machines.#{servername}"
+    end
+    
+    puts "server type name #{srv_type_name}" if debug
+
+    srv_type = vagrant_config['machines_types'][srv_type_name]
+    
+    if (!srv_type)
+      throw "undefined machine-type #{srv_type_name} in machines.#{servername}"
+    end
+
+    server = Vagrant::Util::DeepMerge.deep_merge(srv_type['base'], server)
+
+    if (!server)
+      throw  "undefined machine #{srv_type_name} in machines.#{servername}"
+    end
+    
+    puts server if debug
+
+    if(server['ssh_insert_key']) 
+      config.ssh.insert_key = server['ssh_insert_key']
+    end
+    if(server['ssh_key_path']) 
+      config.ssh.private_key_path = [server['ssh_key_path'], '~/.ssh/id_rsa']
+    end
+    
+    server['instances'].each { |instance|
+      servername_real = instance["name"]
+      puts "servername_real #{servername_real}" if debug
+
+      config.vm.define servername_real, primary: (server['is_primary'] && instance == 0) do |srv|
+        srv.vm.hostname = servername_real
+        srv.vm.box = server['box_name']
+
+        if (instance['networking'])
+          instance['networking'].each do |value|
+            if(value['kind'] == 'private')
+              srv.vm.network 'private_network', ip: value['ip'], :mac => value['mac']
+            end
+            if(value['kind'] == 'public') 
+              srv.vm.network "public_network", bridge: value['network_bridge'], :mac => value['mac']
+            end
+          end
+        end
+
+        if (server['disks'])
+          server['disks'].each do |key,value|
+            srv.vm.disk :disk, name: key, size: value['size'], primary: value['primary']
+          end  
+        end
+        
+        if (server['provider'] == 'virtualbox')
+          server['virtualbox'] = Vagrant::Util::DeepMerge.deep_merge(vagrant_config['vagrant']['virtualbox'], server)
+          srv.vm.provider "virtualbox" do |vb|
+            
+            vb.linked_clone = server['virtualbox']['linked_clones']
+            vb.check_guest_additions = server['virtualbox']['check_guest_additions']
+
+            if (server['virtualbox']['manage']) 
+              server['virtualbox']['manage'].each do |key,value|
+                vb.customize ["modifyvm", :id, "--" + key, value]
+              end  
+            end
+            
+            if (server['virtualbox']['setproperty'])
+              server['virtualbox']['setproperty'].each do |key,value|
+                vb.customize ["setproperty", key, value]
+              end  
+            end
+            
+            if (server['virtualbox']['storagectl'])
+              server['virtualbox']['storagectl'].each do |value|
+                vb.customize ["storagectl", :id] + value
+              end  
+            end
+            
+            if (server['virtualbox']['storageattach'])
+              server['virtualbox']['storageattach'].each do |value|
+                vb.customize ["storageattach", :id] + value
+              end  
+            end
+
+            vb.memory = server["ram_mb"]
+            vb.cpus   = server["vcpus"]
+            vb.gui    = server["gui"]
+          end # srv.vm.provider virtualbox
+        end # server['virtualbox']
+
+        if (Vagrant.has_plugin?('vagrant-hostmanager') &&
+            vagrant_config['vagrant'] &&
+            vagrant_config['vagrant']['plugins'] &&
+            vagrant_config['vagrant']['plugins']['vagrant-vbguest'] &&
+            true === vagrant_config['vagrant']['plugins']['vagrant-vbguest']['enabled'])
+          config.vm.provision :hostmanager
+        end
+        
+        config.vm.box_check_update = false
+        
+        server['files'].each do |key,value|
+          if (false == value['enabled'])
+              next 
+          end # if enabled
+
+          srv.vm.provision "file", source: value["source"], destination: value["destination"]
+        end if (server['files'])
+          
+        server['shared_folders'].each do |key,value|
+            if (false == value['enabled'])
+                next 
+            end # if enabled
+            
+            srv.vm.synced_folder value['host_path'], value['guest_path'], 
+                                type: value['type'],
+                                disabled: value["disabled"] || false
+  
+        end if (server['shared_folders'])
+  
+        box_name = server['box_name']
+        box_provisioning_path = server['provisioning_path']
+        box_version = server['box_version']
+        server['provisioning'].each do |key, value|
+          puts "provision #{key}" if debug
+          if (false == value['enabled'])
+            next
+          end
+          extension = value['ext'] || 'sh'
+          env = value['env'] || {}
+          if (value['reload:before'] && true == value['reload:before'])
+            srv.vm.provision :reload
+          end
+          provisioning_version = value['version']
+          complete_path =  "./#{box_provisioning_path}/#{provisioning_version}/#{key}.#{extension}"
+          puts "provisioning #{key} registered with host path: #{complete_path}" if debug
+          srv.vm.provision "shell", name: key, 
+                                    path: complete_path, 
+                                    env: env, 
+                                    privileged: value['privileged'] || false
+          srv.vm.provision :reload if (value['reload:after'] && true == value['reload:after'])
+
+        end if (server['provisioning'])
+          
+      end # config.vm.define
+    }
+  end # servers.each
+end

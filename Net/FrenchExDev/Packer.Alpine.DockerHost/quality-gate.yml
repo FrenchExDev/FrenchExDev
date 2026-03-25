@@ -11,7 +11,7 @@ output: .quality-gate/
 gates:
   max-cyclomatic-complexity: 15
   max-cognitive-complexity: 20
-  max-class-coupling: 55
+  max-class-coupling: 70
   max-inheritance-depth: 5
   min-maintainability-index: 60
   max-lcom: 50

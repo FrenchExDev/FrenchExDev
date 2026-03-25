@@ -1,0 +1,4 @@
+usage: git mktag
+
+    --strict              enable more strict checking
+

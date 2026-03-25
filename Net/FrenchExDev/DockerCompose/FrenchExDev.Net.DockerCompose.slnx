@@ -2,8 +2,13 @@
   <Folder Name="/src/">
     <Project Path="src/FrenchExDev.Net.DockerCompose/FrenchExDev.Net.DockerCompose.csproj" />
     <Project Path="src/FrenchExDev.Net.DockerCompose.Design/FrenchExDev.Net.DockerCompose.Design.csproj" />
+    <Project Path="src/FrenchExDev.Net.DockerCompose.Bundle/FrenchExDev.Net.DockerCompose.Bundle.csproj" />
+    <Project Path="src/FrenchExDev.Net.DockerCompose.Bundle.Attributes/FrenchExDev.Net.DockerCompose.Bundle.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.DockerCompose.Bundle.Design/FrenchExDev.Net.DockerCompose.Bundle.Design.csproj" />
+    <Project Path="src/FrenchExDev.Net.DockerCompose.Bundle.SourceGenerator/FrenchExDev.Net.DockerCompose.Bundle.SourceGenerator.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/FrenchExDev.Net.DockerCompose.Tests/FrenchExDev.Net.DockerCompose.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.DockerCompose.Bundle.Tests/FrenchExDev.Net.DockerCompose.Bundle.Tests.csproj" />
   </Folder>
 </Solution>

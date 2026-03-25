@@ -12,6 +12,7 @@ internal static class VersionMetadataEmitter
         sb.AppendLine();
         sb.AppendLine($"namespace {ns};");
         sb.AppendLine();
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine("public static class ComposeSchemaVersions");
         sb.AppendLine("{");
 

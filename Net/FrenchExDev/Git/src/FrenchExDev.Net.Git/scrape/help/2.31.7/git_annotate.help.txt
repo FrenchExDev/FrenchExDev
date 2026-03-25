@@ -1,0 +1,33 @@
+usage: git blame [<options>] [<rev-opts>] [<rev>] [--] <file>
+
+    <rev-opts> are documented in git-rev-list(1)
+
+    --incremental         show blame entries as we find them, incrementally
+    -b                    do not show object names of boundary commits (Default: off)
+    --root                do not treat root commits as boundaries (Default: off)
+    --show-stats          show work cost statistics
+    --progress            force progress reporting
+    --score-debug         show output score for blame entries
+    -f, --show-name       show original filename (Default: auto)
+    -n, --show-number     show original linenumber (Default: off)
+    -p, --porcelain       show in a format designed for machine consumption
+    --line-porcelain      show porcelain format with per-line commit information
+    -c                    use the same output mode as git-annotate (Default: off)
+    -t                    show raw timestamp (Default: off)
+    -l                    show long commit SHA1 (Default: off)
+    -s                    suppress author name and timestamp (Default: off)
+    -e, --show-email      show author email instead of name (Default: off)
+    -w                    ignore whitespace differences
+    --ignore-rev <rev>    ignore <rev> when blaming
+    --ignore-revs-file <file>
+                          ignore revisions from <file>
+    --color-lines         color redundant metadata from previous line differently
+    --color-by-age        color lines by age
+    --minimal             spend extra cycles to find better match
+    -S <file>             use revisions from <file> instead of calling git-rev-list
+    --contents <file>     use <file>'s contents as the final image
+    -C[<score>]           find line copies within and across files
+    -M[<score>]           find line movements within and across files
+    -L <range>            process only line range <start>,<end> or function :<funcname>
+    --abbrev[=<n>]        use <n> digits to display object names
+

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FrenchExDev.Net.BinaryWrapper.Design\FrenchExDev.Net.BinaryWrapper.Design.csproj" />
+    <ProjectReference Include="..\..\..\Wrapper.Versioning\src\FrenchExDev.Net.Wrapper.Versioning\FrenchExDev.Net.Wrapper.Versioning.csproj" />
   </ItemGroup>
 
   <ItemGroup>

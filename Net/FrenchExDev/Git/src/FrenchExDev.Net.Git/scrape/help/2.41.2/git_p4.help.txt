@@ -1,0 +1,2 @@
+fatal: 'p4' appears to be a git command, but we were not
+able to execute it. Maybe git-p4 is broken?

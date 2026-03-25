@@ -34,6 +34,7 @@ internal static class ClientClassEmitter
 
         // ── Static entry point class ────────────────────────────────────
         sb.AppendLine($"/// <summary>Static entry point for the {NamingHelper.ToPascalCase(binaryName)} binary wrapper.</summary>");
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public static partial class {entryClassName}");
         sb.AppendLine("{");
         sb.AppendLine($"    /// <summary>Detects the installed binary and returns a typed client.</summary>");
@@ -46,6 +47,7 @@ internal static class ClientClassEmitter
 
         // ── Client class ────────────────────────────────────────────────
         sb.AppendLine($"/// <summary>Typed client for the {NamingHelper.ToPascalCase(binaryName)} binary.</summary>");
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public partial class {clientClassName}");
         sb.AppendLine("{");
         sb.AppendLine("    private readonly global::FrenchExDev.Net.BinaryWrapper.BinaryBinding _binding;");
@@ -125,6 +127,7 @@ internal static class ClientClassEmitter
             sb.AppendLine();
 
             // Emit inner class
+            sb.AppendLine($"{indent}[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
             sb.AppendLine($"{indent}public partial class {innerClassName}");
             sb.AppendLine($"{indent}{{");
             sb.AppendLine($"{indent}    private readonly {clientClassName} _client;");

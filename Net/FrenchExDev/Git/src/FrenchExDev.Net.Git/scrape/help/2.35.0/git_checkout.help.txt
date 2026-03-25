@@ -1,0 +1,1 @@
+BUG: repo-settings.c:21: Cannot add settings for uninitialized repository

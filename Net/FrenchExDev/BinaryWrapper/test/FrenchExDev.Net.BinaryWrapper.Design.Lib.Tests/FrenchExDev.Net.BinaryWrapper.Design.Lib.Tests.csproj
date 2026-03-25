@@ -19,10 +19,12 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.Design.Lib\FrenchExDev.Net.BinaryWrapper.Design.Lib.csproj" />
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.Design\FrenchExDev.Net.BinaryWrapper.Design.csproj" />
+		<ProjectReference Include="..\..\..\Wrapper.Versioning\src\FrenchExDev.Net.Wrapper.Versioning\FrenchExDev.Net.Wrapper.Versioning.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Using Include="Xunit" />
+		<Using Include="FrenchExDev.Net.Wrapper.Versioning" />
 	</ItemGroup>
 
 </Project>

@@ -341,6 +341,37 @@ public class TypeMetricsBuilderTests
         metrics.MethodCount.ShouldBe(1); // symbol still exists
     }
 
+    // ─── ExcludeFromCodeCoverage skips type ────────────────────────────
+
+    [Fact]
+    public async Task BuildAsync_ExcludeFromCodeCoverage_TypeSkipped()
+    {
+        var source = """
+            using System.Diagnostics.CodeAnalysis;
+            [ExcludeFromCodeCoverage]
+            public class Generated
+            {
+                public void HugeMethod() { if (true) { } if (true) { } }
+            }
+            public class Normal { }
+            """;
+        var (compilation, _, _) = RoslynTestHelper.Compile(source);
+        var result = await TypeMetricsBuilder.BuildAsync(compilation, CancellationToken.None);
+        var types = result.Values.SelectMany(l => l).ToList();
+
+        types.Count.ShouldBe(1);
+        types[0].Name.ShouldBe("Normal");
+    }
+
+    [Fact]
+    public async Task BuildAsync_WithoutExcludeAttribute_TypeIncluded()
+    {
+        var source = "public class Included { public void M() { } }";
+        var metrics = await BuildSingleTypeMetrics(source);
+
+        metrics.Name.ShouldBe("Included");
+    }
+
     // ─── FullName includes namespace ────────────────────────────────────
 
     [Fact]

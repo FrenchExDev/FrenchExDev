@@ -124,16 +124,6 @@ public class VosConfigMergerBranchTests
         VosConfigMerger.Resolve(config, "m", config.Machines["m"].Instances[0]).VideoMemory.ShouldBe(128);
     }
 
-    [Fact]
-    public void Resolve_Image_FromMachineType()
-    {
-        var config = new VosConfig
-        {
-            MachineTypes = new() { ["t"] = new VosMachineType { Image = "alpine:latest" } },
-            Machines = new() { ["m"] = new VosMachine { MachineTypeName = "t", Instances = new() { new VosInstance { Name = "i" } } } }
-        };
-        VosConfigMerger.Resolve(config, "m", config.Machines["m"].Instances[0]).Image.ShouldBe("alpine:latest");
-    }
 
     [Fact]
     public void Resolve_MachineProvider_Memory_NonDefault()

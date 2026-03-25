@@ -14,12 +14,12 @@ internal static class BuilderClassEmitter
 {
     public static string Emit(DescriptorModel descriptor, UnifiedCommand cmd)
     {
-        var dedupedOptions = NamingHelper.DeduplicateOptions(cmd.Options);
+        var (resolvedOptions, resolvedArguments) = NamingHelper.ResolvePropertyNames(cmd.Options, cmd.Arguments);
         cmd = new UnifiedCommand
         {
             CommandPath = cmd.CommandPath, PathSegments = cmd.PathSegments, Name = cmd.Name,
             Description = cmd.Description, SinceVersion = cmd.SinceVersion, UntilVersion = cmd.UntilVersion,
-            Options = dedupedOptions, Arguments = cmd.Arguments
+            Options = resolvedOptions, Arguments = resolvedArguments
         };
 
         var commandClassName = NamingHelper.CommandClassName(descriptor.BinaryName, cmd);
@@ -34,7 +34,7 @@ internal static class BuilderClassEmitter
 
         foreach (var opt in cmd.Options)
         {
-            var propName = NamingHelper.ToPascalCase(opt.LongName);
+            var propName = NamingHelper.OptionPropertyName(opt);
             var clrType = NamingHelper.MapClrType(opt.ClrType);
             var isMultiple = string.Equals(opt.ValueKind, "multiple", StringComparison.OrdinalIgnoreCase);
 
@@ -61,7 +61,7 @@ internal static class BuilderClassEmitter
 
         foreach (var arg in cmd.Arguments)
         {
-            var propName = NamingHelper.ToPascalCase(arg.Name);
+            var propName = NamingHelper.ArgumentPropertyName(arg);
             var clrType = NamingHelper.MapClrType(arg.ClrType);
             var isVariadic = arg.IsVariadic;
 

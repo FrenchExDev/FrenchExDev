@@ -1,5 +1,6 @@
 using FrenchExDev.Net.BinaryWrapper.Design;
 using FrenchExDev.Net.BinaryWrapper.Design.Lib;
+using FrenchExDev.Net.Wrapper.Versioning;
 using Microsoft.Extensions.Logging;
 
 Func<string, ILogger, IHelpParser> parser = (_, _) => HelpParsers.Create("cobra");

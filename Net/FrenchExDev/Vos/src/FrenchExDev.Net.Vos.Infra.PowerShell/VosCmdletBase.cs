@@ -2,7 +2,6 @@ using System.Management.Automation;
 using FrenchExDev.Net.Vos;
 using FrenchExDev.Net.Vos.Config;
 using FrenchExDev.Net.Vos.Infra.Vagrant;
-using FrenchExDev.Net.Vos.Infra.Podman;
 
 namespace FrenchExDev.Net.Vos.Infra.PowerShell;
 
@@ -13,18 +12,15 @@ namespace FrenchExDev.Net.Vos.Infra.PowerShell;
 public abstract class VosCmdletBase : PSCmdlet
 {
     [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+    [ArgumentCompleter(typeof(VosMachineNameCompleter))]
     public string MachineName { get; set; } = "";
-
-    [Parameter]
-    [ValidateSet("vagrant", "podman")]
-    public string Backend { get; set; } = "vagrant";
 
     protected abstract Task<VosActionResult> ExecuteActionAsync(
         IVosBackend backend, ResolvedInstance instance, CancellationToken ct);
 
     protected override void ProcessRecord()
     {
-        var backend = ResolveBackend();
+        var backend = new VagrantBackend();
         var instance = new ResolvedInstance
         {
             Name = MachineName,
@@ -32,7 +28,7 @@ public abstract class VosCmdletBase : PSCmdlet
             Memory = 1024,
             Cpus = 2,
             VideoMemory = 64,
-            ProviderType = Backend == "vagrant" ? "virtualbox" : "qemu"
+            ProviderType = "virtualbox"
         };
 
         var task = ExecuteActionAsync(backend, instance, CancellationToken.None);
@@ -49,11 +45,4 @@ public abstract class VosCmdletBase : PSCmdlet
                 MachineName));
         }
     }
-
-    private IVosBackend ResolveBackend() => Backend switch
-    {
-        "vagrant" => new VagrantBackend(),
-        "podman" => new PodmanMachineBackend(),
-        _ => throw new PSArgumentException($"Unknown backend: {Backend}", nameof(Backend))
-    };
 }

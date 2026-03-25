@@ -26,7 +26,6 @@ public static class VosConfigMerger
             Name = instance.Name,
             Hostname = instance.Hostname ?? instance.Name,
             Box = machine.Box ?? machineType.Box,
-            Image = machineType.Image,
             Memory = instance.Memory ?? provider.Memory,
             Cpus = instance.Cpus ?? provider.Cpus,
             VideoMemory = provider.VideoMemory,
@@ -102,8 +101,7 @@ public sealed class ResolvedInstance
     public required string Name { get; init; }
     public required string Hostname { get; init; }
     public string? Box { get; init; }
-    public string? Image { get; init; }
-    public int Memory { get; init; }
+public int Memory { get; init; }
     public int Cpus { get; init; }
     public int VideoMemory { get; init; }
     public string ProviderType { get; init; } = "virtualbox";

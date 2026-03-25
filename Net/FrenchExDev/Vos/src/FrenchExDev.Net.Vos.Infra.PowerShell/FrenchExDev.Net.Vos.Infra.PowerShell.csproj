@@ -11,8 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
     <ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.Vagrant\FrenchExDev.Net.Vos.Infra.Vagrant.csproj" />
-    <ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.Podman\FrenchExDev.Net.Vos.Infra.Podman.csproj" />
-    <ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.FileSystem\FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
+<ProjectReference Include="..\FrenchExDev.Net.Vos.Infra.FileSystem\FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FrenchExDev.Net.Vos.Infra.PowerShell.psd1" CopyToOutputDirectory="PreserveNewest" />
