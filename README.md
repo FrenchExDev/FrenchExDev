@@ -64,23 +64,25 @@ Content Management Framework — each DSL is its own project, composed by Diem.
 | Project | Description |
 |---------|-------------|
 | [Diem](Net/FrenchExDev/Diem/) | Main CMF composition layer + CLI. |
-| [Dsl](Net/FrenchExDev/Dsl/) | Domain-specific language (absorbs M3/Meta). |
+| [Dsl](Net/FrenchExDev/Dsl/) | Domain-specific language with source generator (absorbs M3/Meta). |
 | [Requirements](Net/FrenchExDev/Requirements/) | Requirements management DSL. |
-| [Ddd](Net/FrenchExDev/Ddd/) | Domain-driven design patterns. |
+| [Ddd](Net/FrenchExDev/Ddd/) | Domain-driven design patterns with source generator, attributes, and testing helpers. |
 
 ### Infrastructure libraries
 
 | Project | Description |
 |---------|-------------|
-| [Vos](Net/FrenchExDev/Vos/) | VM orchestration framework. |
+| [Vos](Net/FrenchExDev/Vos/) | VM orchestration framework with CLI, Vagrant/FileSystem/PowerShell backends. |
 | [Vos.Alpine](Net/FrenchExDev/Vos.Alpine/) | Alpine Linux Vos variants. |
 | [Vos.Alpine.DockerHost](Net/FrenchExDev/Vos.Alpine.DockerHost/) | Alpine Docker host Vos config. |
 | [Packer.Alpine](Net/FrenchExDev/Packer.Alpine/) | Alpine image building. |
 | [Packer.Alpine.DockerHost](Net/FrenchExDev/Packer.Alpine.DockerHost/) | Alpine Docker host images. |
-| [Traefik](Net/FrenchExDev/Traefik/) | Traefik reverse proxy configuration. |
+| [Traefik](Net/FrenchExDev/Traefik/) | Traefik reverse proxy Bundle with source-generated configuration (Bundle, Attributes, SourceGenerator). |
 | [HomeLab](Net/FrenchExDev/HomeLab/) | Home lab configuration. |
 | [Wrapper.Versioning](Net/FrenchExDev/Wrapper.Versioning/) | Version management for BinaryWrapper. |
-| [IEC61499](Net/FrenchExDev/IEC61499/) | Industrial automation (IEC 61499). |
+| [IEC61499](Net/FrenchExDev/IEC61499/) | IEC 61499 reference implementation (function blocks, ECC, ports, builders). |
+| [IEC61499.2](Net/FrenchExDev/IEC61499.2/) | Clean-room IEC 61499 platform -- source-generated AOT function blocks + VSCode IDE extensions (12 planned: FB designer, ECC editor, network editor, deployment, monitoring, simulation). |
+| [IFC61499](Net/FrenchExDev/IFC61499/) | IEC 61499 platform variant -- same architecture as IEC61499.2 with alternative naming. |
 
 ---
 

@@ -671,6 +671,129 @@ var versionCmd = new Command("version", "Show vos version");
 versionCmd.SetAction((_) => Console.WriteLine("vos 0.2.0"));
 rootCommand.Subcommands.Add(versionCmd);
 
+// ── box (image management + build) ─────────────────────────────────
+var boxCmd = new Command("box", "Image/box management and build");
+
+var boxNameArg = new Argument<string>("name") { Description = "Box name" };
+
+var boxListCmd = new Command("list", "List installed boxes");
+boxListCmd.SetAction(async (pr, ct) =>
+{
+    var result = await new VagrantBackend().ImageListAsync(ct);
+    Console.WriteLine(result.Output);
+});
+boxCmd.Subcommands.Add(boxListCmd);
+
+var boxAddCmd = new Command("add", "Add a box");
+boxAddCmd.Arguments.Add(boxNameArg);
+boxAddCmd.SetAction(async (pr, ct) =>
+{
+    var result = await new VagrantBackend().ImageAddAsync(pr.GetValue(boxNameArg)!, ct);
+    PrintResult("box add", result);
+});
+boxCmd.Subcommands.Add(boxAddCmd);
+
+var boxRemoveCmd = new Command("remove", "Remove a box");
+boxRemoveCmd.Arguments.Add(boxNameArg);
+boxRemoveCmd.SetAction(async (pr, ct) =>
+{
+    var result = await new VagrantBackend().ImageRemoveAsync(pr.GetValue(boxNameArg)!, ct);
+    PrintResult("box remove", result);
+});
+boxCmd.Subcommands.Add(boxRemoveCmd);
+
+var boxUpdateCmd = new Command("update", "Update box for an instance");
+boxUpdateCmd.Arguments.Add(nameArg);
+boxUpdateCmd.Options.Add(configOption);
+boxUpdateCmd.SetAction(async (pr, ct) =>
+{
+    var orch = await CreateOrchestrator(pr.GetValue(configOption)!);
+    if (orch is null) return;
+    var results = await orch.ExecuteAsync(pr.GetValue(nameArg), false, (b, i, c) => b.ImageUpdateAsync(i, c), ct);
+    foreach (var (n, r) in results) PrintResult(n, r);
+});
+boxCmd.Subcommands.Add(boxUpdateCmd);
+
+var boxPruneCmd = new Command("prune", "Remove unused box versions");
+boxPruneCmd.SetAction(async (pr, ct) =>
+{
+    var result = await new VagrantBackend().ImagePruneAsync(ct);
+    PrintResult("box prune", result);
+});
+boxCmd.Subcommands.Add(boxPruneCmd);
+
+var boxOutdatedCmd = new Command("outdated", "Check if box is outdated");
+boxOutdatedCmd.Arguments.Add(nameArg);
+boxOutdatedCmd.Options.Add(configOption);
+boxOutdatedCmd.SetAction(async (pr, ct) =>
+{
+    var orch = await CreateOrchestrator(pr.GetValue(configOption)!);
+    if (orch is null) return;
+    var results = await orch.ExecuteAsync(pr.GetValue(nameArg), false, (b, i, c) => b.ImageOutdatedAsync(i, c), ct);
+    foreach (var (n, r) in results) PrintResult(n, r);
+});
+boxCmd.Subcommands.Add(boxOutdatedCmd);
+
+var boxRepackageProviderArg = new Argument<string>("provider") { Description = "Provider name (e.g. virtualbox)" };
+var boxRepackageVersionArg = new Argument<string>("version") { Description = "Box version" };
+var boxRepackageCmd = new Command("repackage", "Repackage an installed box to a .box file");
+boxRepackageCmd.Arguments.Add(boxNameArg);
+boxRepackageCmd.Arguments.Add(boxRepackageProviderArg);
+boxRepackageCmd.Arguments.Add(boxRepackageVersionArg);
+boxRepackageCmd.SetAction(async (pr, ct) =>
+{
+    var result = await new VagrantBackend().ImageRepackageAsync(
+        pr.GetValue(boxNameArg)!, pr.GetValue(boxRepackageProviderArg)!, pr.GetValue(boxRepackageVersionArg)!, ct);
+    PrintResult("box repackage", result);
+});
+boxCmd.Subcommands.Add(boxRepackageCmd);
+
+var boxInitOutputOption = new Option<string>("--output") { Description = "Output directory", DefaultValueFactory = _ => "." };
+var boxInitCmd = new Command("init", "Scaffold a new Packer project for building a box image");
+boxInitCmd.Arguments.Add(boxNameArg);
+boxInitCmd.Options.Add(boxInitOutputOption);
+boxInitCmd.SetAction(async (pr, ct) =>
+{
+    var result = await new VagrantBackend().ImageCreateAsync(
+        pr.GetValue(boxNameArg)!, pr.GetValue(boxInitOutputOption)!, ct);
+    PrintResult("box init", result);
+});
+boxCmd.Subcommands.Add(boxInitCmd);
+
+var boxBuildPathArg = new Argument<string>("path") { Description = "Path to Packer project" };
+var boxBuildForceOption = new Option<bool>("--force") { Description = "Force build (overwrite artifacts)" };
+var boxBuildVarOption = new Option<string[]>("--var") { Description = "Variable in key=value format", AllowMultipleArgumentsPerToken = true };
+var boxBuildCmd = new Command("build", "Build an image from a Packer project");
+boxBuildCmd.Arguments.Add(boxBuildPathArg);
+boxBuildCmd.Options.Add(boxBuildForceOption);
+boxBuildCmd.Options.Add(boxBuildVarOption);
+boxBuildCmd.SetAction(async (pr, ct) =>
+{
+    Dictionary<string, string>? vars = null;
+    var rawVars = pr.GetValue(boxBuildVarOption);
+    if (rawVars is { Length: > 0 })
+    {
+        vars = new Dictionary<string, string>();
+        foreach (var v in rawVars)
+        {
+            var eqIdx = v.IndexOf('=');
+            if (eqIdx > 0) vars[v[..eqIdx]] = v[(eqIdx + 1)..];
+        }
+    }
+    var result = await new VagrantBackend().ImageBuildAsync(
+        pr.GetValue(boxBuildPathArg)!, vars, pr.GetValue(boxBuildForceOption), ct);
+    PrintResult("box build", result);
+    if (result.Artifacts.Count > 0)
+    {
+        Console.WriteLine("Artifacts:");
+        foreach (var a in result.Artifacts)
+            Console.WriteLine($"  [{a.BuilderType}] {a.Name}: {a.Path}");
+    }
+});
+boxCmd.Subcommands.Add(boxBuildCmd);
+
+rootCommand.Subcommands.Add(boxCmd);
+
 // ═══════════════════════════════════════════════════════════════════
 // RUN
 // ═══════════════════════════════════════════════════════════════════

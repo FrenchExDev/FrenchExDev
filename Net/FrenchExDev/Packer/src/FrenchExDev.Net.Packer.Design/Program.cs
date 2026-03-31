@@ -26,5 +26,6 @@ return await new DesignPipelineRunner
     Pipeline = pipeline,
     ReparsePipeline = reparsePipeline,
     OutputFilePattern = "packer-{version}.json",
-    OutputDir = Path.GetFullPath(Path.Combine("..", "FrenchExDev.Net.Packer", "scrape")),
+    OutputDir = Path.GetFullPath(Path.Combine(
+        AppContext.BaseDirectory, "..", "..", "..", "..", "FrenchExDev.Net.Packer", "scrape")),
 }.RunAsync(args);

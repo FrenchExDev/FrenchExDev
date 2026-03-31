@@ -46,7 +46,7 @@
 | Project | Description |
 |---------|-------------|
 | [Traefik](Traefik/) | Strongly-typed .NET configuration for Traefik reverse proxy, generated from official JSON schemas. Two-tier configuration (`TraefikStaticConfig` + `TraefikDynamicConfig`), fluent builders, YAML round-trip serialization. |
-| [Vos](Vos/) | Virtual machine orchestration suite. HCL2-first design with Packer.Bundle integration. |
+| [Vos](Vos/) | Virtual machine orchestration suite with CLI, Vagrant/FileSystem/PowerShell backends. HCL2-first design with Packer.Bundle integration. |
 | [Packer.Alpine](Packer.Alpine/) | Packer templates and configuration for Alpine Linux VM images. |
 | [Packer.Alpine.DockerHost](Packer.Alpine.DockerHost/) | Packer templates for Alpine-based Docker host images. |
 | [Vos.Alpine](Vos.Alpine/) | Vos orchestration configurations for Alpine Linux VMs. |
@@ -62,9 +62,9 @@
 
 | Project | Description |
 |---------|-------------|
-| [IEC61499](IEC61499/) | Implementation of the IEC 61499 standard for distributed control systems. Strongly-typed function blocks, fluent builder API, event-driven execution. |
-| [IEC61499.2](IEC61499.2/) | Advanced features and extensions for IEC 61499 function blocks. |
-| [IFC61499](IFC61499/) | Integration between IFC (Industrial Foundation Classes) and IEC 61499 standards. |
+| [IEC61499](IEC61499/) | IEC 61499 reference implementation -- strongly-typed function blocks (`IBasicFunctionBlock<6 params>`), ECC, ports, builders. Reference code only. |
+| [IEC61499.2](IEC61499.2/) | Clean-room IEC 61499 platform -- source-generated AOT function blocks + VSCode IDE extensions (12 planned: FB Type Designer, ECC Editor, Network Editor, Topology Manager, Library Manager, Language Server, Deployment Manager, Security Manager, Runtime Monitor, Debugger, Diagnostics, Simulation). Inspired by EcoStruxure Automation Expert. |
+| [IFC61499](IFC61499/) | IEC 61499 platform variant -- same architecture as IEC61499.2 with alternative naming convention. |
 
 ### Applications
 
@@ -105,7 +105,9 @@ Wrapper.Versioning ── BinaryWrapper.Design, DockerCompose.Design, Traefik.De
 QualityGate          (standalone)
 Doc2Pdf              (standalone)
 DockAi               (standalone)
-IEC61499             (standalone)
+IEC61499             (standalone, reference code)
+IEC61499.2           (standalone, clean-room platform)
+IFC61499             (standalone, platform variant)
 ```
 
 ## Build Configuration

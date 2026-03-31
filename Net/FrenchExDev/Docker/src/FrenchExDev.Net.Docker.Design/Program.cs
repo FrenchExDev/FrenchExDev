@@ -3,6 +3,9 @@ using FrenchExDev.Net.BinaryWrapper.Design.Lib;
 using FrenchExDev.Net.Wrapper.Versioning;
 using Microsoft.Extensions.Logging;
 
+var env = DotEnvLoader.Load();
+env.TryGetValue("GITHUB_TOKEN", out var githubToken);
+
 Func<string, ILogger, IHelpParser> parser = (_, _) => HelpParsers.Create("cobra");
 
 var pipeline = new DesignPipeline()
@@ -27,7 +30,7 @@ var reparsePipeline = new DesignPipeline()
 
 return await new DesignPipelineRunner
 {
-    VersionCollector = new GitHubTagsVersionCollector("docker", "cli"),
+    VersionCollector = new GitHubTagsVersionCollector("docker", "cli", token: githubToken),
     Pipeline = pipeline,
     ReparsePipeline = reparsePipeline,
     DefaultMinVersion = "23.0.0",

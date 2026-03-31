@@ -117,11 +117,12 @@ public sealed class GitHubReleasesVersionCollector : IVersionCollector
     public GitHubReleasesVersionCollector(
         string owner, string repo,
         HttpClient? httpClient = null,
-        Func<string, string>? tagToVersion = null)
+        Func<string, string>? tagToVersion = null,
+        string? token = null)
     {
         _owner = owner;
         _repo = repo;
-        _httpClient = httpClient ?? CreateDefaultHttpClient();
+        _httpClient = httpClient ?? CreateDefaultHttpClient(token);
         _tagToVersion = tagToVersion ?? DefaultTagToVersion;
     }
 
@@ -150,11 +151,14 @@ public sealed class GitHubReleasesVersionCollector : IVersionCollector
     private static string DefaultTagToVersion(string tag) =>
         tag.StartsWith('v') ? tag[1..] : tag;
 
-    private static HttpClient CreateDefaultHttpClient()
+    private static HttpClient CreateDefaultHttpClient(string? token)
     {
         var client = new HttpClient();
         client.DefaultRequestHeaders.Add("User-Agent", "FrenchExDev-Wrapper");
         client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
+        if (!string.IsNullOrEmpty(token))
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         return client;
     }
 
@@ -260,11 +264,12 @@ public sealed class GitHubTagsVersionCollector : IVersionCollector
     public GitHubTagsVersionCollector(
         string owner, string repo,
         HttpClient? httpClient = null,
-        Func<string, string?>? tagToVersion = null)
+        Func<string, string?>? tagToVersion = null,
+        string? token = null)
     {
         _owner = owner;
         _repo = repo;
-        _httpClient = httpClient ?? CreateDefaultHttpClient();
+        _httpClient = httpClient ?? CreateDefaultHttpClient(token);
         _tagToVersion = tagToVersion ?? DefaultTagToVersion;
     }
 
@@ -296,11 +301,14 @@ public sealed class GitHubTagsVersionCollector : IVersionCollector
         return version;
     }
 
-    private static HttpClient CreateDefaultHttpClient()
+    private static HttpClient CreateDefaultHttpClient(string? token)
     {
         var client = new HttpClient();
         client.DefaultRequestHeaders.Add("User-Agent", "FrenchExDev-Wrapper");
         client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
+        if (!string.IsNullOrEmpty(token))
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         return client;
     }
 }

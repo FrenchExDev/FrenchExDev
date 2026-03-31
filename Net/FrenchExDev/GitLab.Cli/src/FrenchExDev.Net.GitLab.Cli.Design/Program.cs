@@ -33,5 +33,6 @@ return await new DesignPipelineRunner
     ReparsePipeline = reparsePipeline,
     DefaultMinVersion = "1.47.0",
     OutputFilePattern = "glab-{version}.json",
-    OutputDir = Path.GetFullPath(Path.Combine("..", "FrenchExDev.Net.GitLab.Cli", "scrape")),
+    OutputDir = Path.GetFullPath(Path.Combine(
+        AppContext.BaseDirectory, "..", "..", "..", "..", "FrenchExDev.Net.GitLab.Cli", "scrape")),
 }.RunAsync(args);

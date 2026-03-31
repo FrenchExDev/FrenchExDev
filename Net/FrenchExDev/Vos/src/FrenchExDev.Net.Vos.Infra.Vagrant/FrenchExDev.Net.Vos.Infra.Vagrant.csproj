@@ -7,5 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
     <ProjectReference Include="..\..\..\Vagrant\src\FrenchExDev.Net.Vagrant\FrenchExDev.Net.Vagrant.csproj" />
+    <ProjectReference Include="..\..\..\Packer\src\FrenchExDev.Net.Packer\FrenchExDev.Net.Packer.csproj" />
+    <ProjectReference Include="..\..\..\Packer\src\FrenchExDev.Net.Packer.Bundle\FrenchExDev.Net.Packer.Bundle.csproj" />
   </ItemGroup>
 </Project>

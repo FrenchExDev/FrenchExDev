@@ -234,7 +234,7 @@ public sealed class CommandSerializationTests
     [Fact]
     public void Fix_Validate_SerializesCorrectly()
     {
-        var cmd = new PackerFixCommand { Validate = "true" };
+        var cmd = new PackerFixCommand { ValidateOpt = "true" };
         var args = cmd.ToArguments();
         args.ShouldContain("-validate=true");
     }
@@ -463,8 +463,8 @@ public sealed class GeneratedCodeTests
     public async Task Client_Fix_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = await client.FixAsync(b => b.WithValidate("true"));
-        cmd.Validate.ShouldBe("true");
+        var cmd = await client.FixAsync(b => b.WithValidateOpt("true"));
+        cmd.ValidateOpt.ShouldBe("true");
         cmd.CommandPath.ShouldBe(new[] { "fix" });
     }
 

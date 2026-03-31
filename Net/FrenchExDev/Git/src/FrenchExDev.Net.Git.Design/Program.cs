@@ -5,6 +5,9 @@ using FrenchExDev.Net.Git.Design;
 using FrenchExDev.Net.Wrapper.Versioning;
 using Microsoft.Extensions.Logging;
 
+var env = DotEnvLoader.Load();
+env.TryGetValue("GITHUB_TOKEN", out var githubToken);
+
 Func<string, ILogger, IHelpParser> parser = (_, _) => new GitHelpParser();
 
 var pipeline = new DesignPipeline()
@@ -59,12 +62,13 @@ var reparsePipeline = new DesignPipeline()
 
 return await new DesignPipelineRunner
 {
-    VersionCollector = new GitHubTagsVersionCollector("git", "git"),
+    VersionCollector = new GitHubTagsVersionCollector("git", "git", token: githubToken),
     Pipeline = pipeline,
     ReparsePipeline = reparsePipeline,
     DefaultMinVersion = "2.30.0",
     OutputFilePattern = "git-{version}.json",
-    OutputDir = Path.GetFullPath(Path.Combine("..", "FrenchExDev.Net.Git", "scrape")),
+    OutputDir = Path.GetFullPath(Path.Combine(
+        AppContext.BaseDirectory, "..", "..", "..", "..", "FrenchExDev.Net.Git", "scrape")),
 }.RunAsync(args);
 
 /// <summary>

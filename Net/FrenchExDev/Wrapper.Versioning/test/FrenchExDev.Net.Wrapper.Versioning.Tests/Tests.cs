@@ -940,6 +940,34 @@ public sealed class GitLabTokenTests
 }
 
 // ---------------------------------------------------------------------------
+// GitHubReleasesVersionCollector — token
+// ---------------------------------------------------------------------------
+
+public sealed class GitHubReleasesTokenTests
+{
+    [Fact]
+    public void Constructor_WithToken_DoesNotThrow()
+    {
+        var collector = new GitHubReleasesVersionCollector("owner", "repo", token: "my-token");
+        collector.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_NullToken_DoesNotThrow()
+    {
+        var collector = new GitHubReleasesVersionCollector("owner", "repo", token: null);
+        collector.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_EmptyToken_DoesNotThrow()
+    {
+        var collector = new GitHubReleasesVersionCollector("owner", "repo", token: "");
+        collector.ShouldNotBeNull();
+    }
+}
+
+// ---------------------------------------------------------------------------
 // GitHubTagsVersionCollector
 // ---------------------------------------------------------------------------
 
@@ -1110,6 +1138,34 @@ public sealed class GitHubTagsVersionCollectorTests
         var items = await collector.CollectItemsAsync();
         items.Count.ShouldBe(1);
         items[0].ShouldBe("1.0.0");
+    }
+}
+
+// ---------------------------------------------------------------------------
+// GitHubTagsVersionCollector — token
+// ---------------------------------------------------------------------------
+
+public sealed class GitHubTagsTokenTests
+{
+    [Fact]
+    public void Constructor_WithToken_DoesNotThrow()
+    {
+        var collector = new GitHubTagsVersionCollector("owner", "repo", token: "my-token");
+        collector.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_NullToken_DoesNotThrow()
+    {
+        var collector = new GitHubTagsVersionCollector("owner", "repo", token: null);
+        collector.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_EmptyToken_DoesNotThrow()
+    {
+        var collector = new GitHubTagsVersionCollector("owner", "repo", token: "");
+        collector.ShouldNotBeNull();
     }
 }
 
