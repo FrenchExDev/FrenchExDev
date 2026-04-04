@@ -1,12 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <RunSettings>
   <DataCollectionRunSettings>
     <DataCollectors>
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
           <Format>cobertura</Format>
-          <Include>[FrenchExDev.Net.Vos]*,[FrenchExDev.Net.Vos.Infra.Vagrant]*,[FrenchExDev.Net.Vos.Infra.FileSystem]*,[FrenchExDev.Net.Vos.Cli]*,[FrenchExDev.Net.Vos.Infra.PowerShell]*,[FrenchExDev.Net.Vos.Tests]*</Include>
-          <ExcludeByAttribute>ExcludeFromCodeCoverageAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <Include>[FrenchExDev.Net.Vos]*,[FrenchExDev.Net.Vos.*]*</Include>
+          <Exclude>[*.Tests]*</Exclude>
+          <ExcludeByAttribute>ExcludeFromCodeCoverageAttribute,CompilerGeneratedAttribute,GeneratedCodeAttribute</ExcludeByAttribute>
         </Configuration>
       </DataCollector>
     </DataCollectors>

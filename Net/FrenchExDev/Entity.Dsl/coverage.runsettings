@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <!-- Measure the Lib (emitters + models) and Abstractions -->
+          <Include>[FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib]*,[FrenchExDev.Net.Entity.Dsl.Abstractions]*</Include>
+          <!-- Exclude compiler-generated, SG output, and polyfill types -->
+          <ExcludeByAttribute>System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

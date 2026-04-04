@@ -1,0 +1,27 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  NODE_VERSION: "20"
+
+build:
+  stage: build
+  image: node:20
+  script:
+    - npm ci
+    - npm run build
+
+test:
+  stage: test
+  image: node:20
+  script:
+    - npm test
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying..."
+  only:
+    - main

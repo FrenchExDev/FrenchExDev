@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Abstractions\FrenchExDev.Net.Vos.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="YamlDotNet" />

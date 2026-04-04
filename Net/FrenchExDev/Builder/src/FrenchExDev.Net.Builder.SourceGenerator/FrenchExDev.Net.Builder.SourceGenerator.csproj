@@ -13,8 +13,10 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
   </ItemGroup>
 
+  <!-- Include Lib source files directly (linked) — avoids analyzer assembly loading issues -->
   <ItemGroup>
-    <ProjectReference Include="..\FrenchExDev.Net.Builder.SourceGenerator.Lib\FrenchExDev.Net.Builder.SourceGenerator.Lib.csproj" />
+    <Compile Include="..\FrenchExDev.Net.Builder.SourceGenerator.Lib\BuilderEmitter.cs" Link="Lib\BuilderEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Builder.SourceGenerator.Lib\BuilderEmitModel.cs" Link="Lib\BuilderEmitModel.cs" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+  </ItemGroup>
+  <!-- Include Lib source files directly (linked) — avoids analyzer assembly loading issues -->
+  <ItemGroup>
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\EntityEmitModel.cs" Link="Lib\EntityEmitModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\KeyPropertyModel.cs" Link="Lib\KeyPropertyModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\PropertyConfigModel.cs" Link="Lib\PropertyConfigModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\DbContextEmitModel.cs" Link="Lib\DbContextEmitModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\DbSetModel.cs" Link="Lib\DbSetModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\RepositoryEmitModel.cs" Link="Lib\RepositoryEmitModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\UnitOfWorkEmitModel.cs" Link="Lib\UnitOfWorkEmitModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\NamingHelper.cs" Link="Lib\NamingHelper.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\EntityConfigurationEmitter.cs" Link="Lib\EntityConfigurationEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\DbContextEmitter.cs" Link="Lib\DbContextEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\DbContextRegistrationEmitter.cs" Link="Lib\DbContextRegistrationEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\RepositoryEmitter.cs" Link="Lib\RepositoryEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\UnitOfWorkEmitter.cs" Link="Lib\UnitOfWorkEmitter.cs" />
+  </ItemGroup>
+</Project>

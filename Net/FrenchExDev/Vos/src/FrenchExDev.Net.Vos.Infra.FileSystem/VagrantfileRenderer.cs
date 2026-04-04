@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using FrenchExDev.Net.Vos.Config;
 
@@ -7,6 +8,7 @@ namespace FrenchExDev.Net.Vos.Infra.FileSystem;
 /// Renders a <see cref="VosConfig"/> into a data-driven Ruby Vagrantfile
 /// that reads <c>config-vos.yaml</c> at runtime.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class VagrantfileRenderer
 {
     /// <summary>

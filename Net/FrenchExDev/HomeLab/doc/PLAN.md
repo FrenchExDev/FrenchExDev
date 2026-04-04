@@ -30,7 +30,7 @@ homelab packer init [--distro alpine] [--version 3.21]   # generate packer .pkr.
                     [--disk-size 20480]                   #   VM disk size (MB)
                     [--box-version 1.0.0]                 #   Vagrant box version tag
                     [--output ./packer]                   #   output directory for HCL2 files
-homelab packer build [--output ./packer]                 # run packer init + packer build in output dir
+homelab packer build [--output ./packer]                 # run packer build in output dir
 
 homelab box add [--name frenchexdev/alpine-3.21-dockerhost]  # vagrant box add locally
                 [--box-file ./packer/output-vagrant/*.box]    #   path to .box file from packer build

@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Outbox/FrenchExDev.Net.Outbox.csproj" />
+    <Project Path="src/FrenchExDev.Net.Outbox.EntityFramework/FrenchExDev.Net.Outbox.EntityFramework.csproj" />
+    <Project Path="src/FrenchExDev.Net.Outbox.Testing/FrenchExDev.Net.Outbox.Testing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Outbox.Tests/FrenchExDev.Net.Outbox.Tests.csproj" />
+  </Folder>
+</Solution>

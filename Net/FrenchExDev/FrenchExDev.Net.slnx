@@ -200,6 +200,17 @@
   <Folder Name="/GitLab.Cli/test/">
     <Project Path="GitLab.Cli/test/FrenchExDev.Net.GitLab.Cli.Tests/FrenchExDev.Net.GitLab.Cli.Tests.csproj" />
   </Folder>
+  <Folder Name="/GitLab.Ci.Yaml/" />
+  <Folder Name="/GitLab.Ci.Yaml/doc/" />
+  <Folder Name="/GitLab.Ci.Yaml/src/">
+    <Project Path="GitLab.Ci.Yaml/src/FrenchExDev.Net.GitLab.Ci.Yaml/FrenchExDev.Net.GitLab.Ci.Yaml.csproj" />
+    <Project Path="GitLab.Ci.Yaml/src/FrenchExDev.Net.GitLab.Ci.Yaml.Attributes/FrenchExDev.Net.GitLab.Ci.Yaml.Attributes.csproj" />
+    <Project Path="GitLab.Ci.Yaml/src/FrenchExDev.Net.GitLab.Ci.Yaml.Design/FrenchExDev.Net.GitLab.Ci.Yaml.Design.csproj" />
+    <Project Path="GitLab.Ci.Yaml/src/FrenchExDev.Net.GitLab.Ci.Yaml.SourceGenerator/FrenchExDev.Net.GitLab.Ci.Yaml.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/GitLab.Ci.Yaml/test/">
+    <Project Path="GitLab.Ci.Yaml/test/FrenchExDev.Net.GitLab.Ci.Yaml.Tests/FrenchExDev.Net.GitLab.Ci.Yaml.Tests.csproj" />
+  </Folder>
   <Folder Name="/HttpClient/" />
   <Folder Name="/HttpClient/doc/" />
   <Folder Name="/HttpClient/src/">
@@ -207,6 +218,21 @@
     <Project Path="HttpClient/src/FrenchExDev.Net.HttpClient/FrenchExDev.Net.HttpClient.csproj" />
   </Folder>
   <Folder Name="/HttpClient/test/" />
+  <Folder Name="/Injectable/" />
+  <Folder Name="/Injectable/doc/" />
+  <Folder Name="/Injectable/src/">
+    <Project Path="Injectable/src/FrenchExDev.Net.Injectable.Attributes/FrenchExDev.Net.Injectable.Attributes.csproj" />
+    <Project Path="Injectable/src/FrenchExDev.Net.Injectable.SourceGenerator.Lib/FrenchExDev.Net.Injectable.SourceGenerator.Lib.csproj" />
+    <Project Path="Injectable/src/FrenchExDev.Net.Injectable.Microsoft.SourceGenerator/FrenchExDev.Net.Injectable.Microsoft.SourceGenerator.csproj" />
+    <Project Path="Injectable/src/FrenchExDev.Net.Injectable.DryIoc.SourceGenerator/FrenchExDev.Net.Injectable.DryIoc.SourceGenerator.csproj" />
+    <Project Path="Injectable/src/FrenchExDev.Net.Injectable.SimpleInjector.SourceGenerator/FrenchExDev.Net.Injectable.SimpleInjector.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/Injectable/test/">
+    <Project Path="Injectable/test/FrenchExDev.Net.Injectable.Microsoft.Tests/FrenchExDev.Net.Injectable.Microsoft.Tests.csproj" />
+    <Project Path="Injectable/test/FrenchExDev.Net.Injectable.DryIoc.Tests/FrenchExDev.Net.Injectable.DryIoc.Tests.csproj" />
+    <Project Path="Injectable/test/FrenchExDev.Net.Injectable.SimpleInjector.Tests/FrenchExDev.Net.Injectable.SimpleInjector.Tests.csproj" />
+    <Project Path="Injectable/test/FrenchExDev.Net.Injectable.SourceGenerator.Lib.Tests/FrenchExDev.Net.Injectable.SourceGenerator.Lib.Tests.csproj" />
+  </Folder>
   <Folder Name="/Packer/" />
   <Folder Name="/Packer/doc/" />
   <Folder Name="/Packer/src/">

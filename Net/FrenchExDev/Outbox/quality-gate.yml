@@ -1,0 +1,26 @@
+solution: FrenchExDev.Net.Outbox.slnx
+
+coverage:
+  - "**/coverage.cobertura.xml"
+
+mutations:
+  - "**/mutation-report.json"
+
+output: .quality-gate/
+
+gates:
+  max-cyclomatic-complexity: 15
+  max-cognitive-complexity: 20
+  max-class-coupling: 175
+  max-inheritance-depth: 5
+  min-maintainability-index: 55
+  max-lcom: 50
+  max-distance-from-main-sequence: 1.0
+  max-duplication-percent: 5
+  min-test-quality-score: 0.80
+
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"
+  - "**/IsExternalInit.cs"
+  - "**/Polyfills.cs"

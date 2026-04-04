@@ -433,6 +433,7 @@ public sealed class DesignPipelineRunner<TItem>
     public string UserAgent { get; init; } = "FrenchExDev-DesignPipeline/1.0";
     public string? AuthTokenEnvVar { get; init; } = "GITHUB_TOKEN";
     public Func<IReadOnlyList<TItem>, IReadOnlyList<TItem>>? ItemFilter { get; init; }
+    public string? DefaultMinVersion { get; init; }
     public LogLevel MinLogLevel { get; init; } = LogLevel.Information;
 
     public async Task<int> RunAsync(string[] args)
@@ -443,7 +444,7 @@ public sealed class DesignPipelineRunner<TItem>
             builder.AddConsole().SetMinimumLevel(MinLogLevel));
         var logger = loggerFactory.CreateLogger("DesignPipelineRunner");
 
-        var items = await CollectAndFilter(logger, options.OutputDir, options.MissingOnly);
+        var items = await CollectAndFilter(logger, options.OutputDir, options.MissingOnly, options.MinVersion);
         var keys = items.Select(KeySelector).ToList();
 
         if (options.ListOnly)
@@ -464,6 +465,7 @@ public sealed class DesignPipelineRunner<TItem>
         var outputDir = OutputDir;
         var listOnly = false;
         var missingOnly = false;
+        var minVersion = DefaultMinVersion;
 
         for (var i = 0; i < args.Length; i++)
         {
@@ -471,16 +473,17 @@ public sealed class DesignPipelineRunner<TItem>
             {
                 case "--parallel" when i + 1 < args.Length: parallel = int.Parse(args[++i]); break;
                 case "--output" when i + 1 < args.Length: outputDir = args[++i]; break;
+                case "--min-version" when i + 1 < args.Length: minVersion = args[++i]; break;
                 case "--list": listOnly = true; break;
                 case "--missing": missingOnly = true; break;
             }
         }
 
-        return new RunOptions(parallel, outputDir, listOnly, missingOnly);
+        return new RunOptions(parallel, outputDir, listOnly, missingOnly, minVersion);
     }
 
     private async Task<IReadOnlyList<TItem>> CollectAndFilter(
-        ILogger logger, string outputDir, bool missingOnly)
+        ILogger logger, string outputDir, bool missingOnly, string? minVersion)
     {
         logger.LogInformation("Collecting items...");
         var allItems = await ItemCollector.CollectItemsAsync();
@@ -489,6 +492,14 @@ public sealed class DesignPipelineRunner<TItem>
         IReadOnlyList<TItem> items = ItemFilter is not null
             ? ItemFilter(allItems)
             : allItems;
+
+        if (minVersion is not null)
+        {
+            items = items.Where(item =>
+                GitHubReleasesVersionCollector.CompareVersionStrings(KeySelector(item), minVersion) >= 0)
+                .ToList();
+            logger.LogInformation("Filtered to {Count} items with version >= {MinVersion}", items.Count, minVersion);
+        }
 
         if (missingOnly)
             items = FilterToMissing(items, outputDir);
@@ -600,7 +611,7 @@ public sealed class DesignPipelineRunner<TItem>
         return httpClient;
     }
 
-    private sealed record RunOptions(int Parallel, string OutputDir, bool ListOnly, bool MissingOnly);
+    private sealed record RunOptions(int Parallel, string OutputDir, bool ListOnly, bool MissingOnly, string? MinVersion);
 }
 
 // -- Version Filters ---------------------------------------------------------
