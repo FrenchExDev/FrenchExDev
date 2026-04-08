@@ -97,9 +97,16 @@ public class GuardToResult_OutOfRange
     }
 
     [Fact]
-    public void OutOfRange_outside_returns_Failure()
+    public void OutOfRange_above_max_returns_Failure()
     {
         var result = Guard.ToResult.OutOfRange(15, 1, 10);
+        Assert.True(result.IsFailure);
+    }
+
+    [Fact]
+    public void OutOfRange_below_min_returns_Failure()
+    {
+        var result = Guard.ToResult.OutOfRange(0, 1, 10);
         Assert.True(result.IsFailure);
     }
 }
@@ -119,6 +126,13 @@ public class GuardToResult_Negative
         var result = Guard.ToResult.Negative(-1);
         Assert.True(result.IsFailure);
     }
+
+    [Fact]
+    public void Negative_string_returns_Success()
+    {
+        var result = Guard.ToResult.Negative("abc");
+        Assert.True(result.IsSuccess);
+    }
 }
 
 public class GuardToResult_NegativeOrZero
@@ -135,6 +149,13 @@ public class GuardToResult_NegativeOrZero
     {
         var result = Guard.ToResult.NegativeOrZero(0);
         Assert.True(result.IsFailure);
+    }
+
+    [Fact]
+    public void NegativeOrZero_string_returns_Success()
+    {
+        var result = Guard.ToResult.NegativeOrZero("abc");
+        Assert.True(result.IsSuccess);
     }
 }
 
@@ -169,6 +190,24 @@ public class GuardToResult_EmptyGuid
     {
         var result = Guard.ToResult.EmptyGuid(Guid.Empty);
         Assert.True(result.IsFailure);
+    }
+}
+
+public class GuardToResult_InvalidInput
+{
+    [Fact]
+    public void InvalidInput_passing_returns_Success()
+    {
+        var result = Guard.ToResult.InvalidInput("test@example.com", s => s.Contains('@'), "Invalid email");
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
+    public void InvalidInput_failing_returns_Failure()
+    {
+        var result = Guard.ToResult.InvalidInput("not-an-email", s => s.Contains('@'), "Invalid email");
+        Assert.True(result.IsFailure);
+        Assert.Equal("Invalid email", result.ValidationResult!.ErrorMessage);
     }
 }
 

@@ -6,4 +6,12 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>FrenchExDev.Net.Traefik.Bundle.Attributes</PackageId>
+    <Description>Attributes used by FrenchExDev.Net.Traefik.Bundle and its source generator (e.g. [TraefikBundle], [TraefikDiscriminatedUnion]).</Description>
+    <PackageTags>traefik;reverse-proxy;config;attributes</PackageTags>
+    <Authors>FrenchExDev</Authors>
+  </PropertyGroup>
+
 </Project>

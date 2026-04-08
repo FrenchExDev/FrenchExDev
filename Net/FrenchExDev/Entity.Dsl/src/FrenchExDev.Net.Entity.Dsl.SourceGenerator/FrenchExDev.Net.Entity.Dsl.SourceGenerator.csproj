@@ -24,6 +24,7 @@
     <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\DbContextEmitter.cs" Link="Lib\DbContextEmitter.cs" />
     <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\DbContextRegistrationEmitter.cs" Link="Lib\DbContextRegistrationEmitter.cs" />
     <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\RepositoryEmitter.cs" Link="Lib\RepositoryEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\NavigationPropertyModel.cs" Link="Lib\NavigationPropertyModel.cs" />
     <Compile Include="..\FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib\UnitOfWorkEmitter.cs" Link="Lib\UnitOfWorkEmitter.cs" />
   </ItemGroup>
 </Project>

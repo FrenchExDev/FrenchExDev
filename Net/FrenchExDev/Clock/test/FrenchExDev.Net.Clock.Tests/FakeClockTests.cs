@@ -65,4 +65,27 @@ public class FakeClockTests
         var clock = new FakeClock();
         Assert.Equal(new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero), clock.UtcNow);
     }
+
+    [Fact]
+    public void Now_converts_to_specified_time_zone()
+    {
+        var tz = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+        var now = _clock.Now(tz);
+        Assert.Equal(new DateTimeOffset(2025, 6, 15, 19, 0, 0, TimeSpan.FromHours(9)), now);
+    }
+
+    [Fact]
+    public void CreateCancellationTokenSource_returns_source()
+    {
+        using var cts = _clock.CreateCancellationTokenSource(TimeSpan.FromMinutes(5));
+        Assert.False(cts.IsCancellationRequested);
+    }
+
+    [Fact]
+    public void TimeProvider_returns_fake_provider() =>
+        Assert.IsType<Microsoft.Extensions.Time.Testing.FakeTimeProvider>(_clock.TimeProvider);
+
+    [Fact]
+    public void FakeTimeProvider_returns_underlying_provider() =>
+        Assert.Same(_clock.TimeProvider, _clock.FakeTimeProvider);
 }

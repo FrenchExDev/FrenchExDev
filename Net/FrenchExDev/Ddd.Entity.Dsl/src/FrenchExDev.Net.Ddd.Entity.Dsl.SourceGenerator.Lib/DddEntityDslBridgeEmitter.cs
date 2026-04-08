@@ -5,10 +5,18 @@ using System.Text;
 
 /// <summary>
 /// Emits Entity.Dsl attributes on partial classes based on DDD attribute analysis.
-/// Maps DDD concepts → Entity.Dsl concepts.
+/// Maps DDD concepts → Entity.Dsl concepts:
+///   [EntityId]     → [PrimaryKey("...")]        (class-level)
+///   [Composition]  → [NavigationProperty(OnDelete = Cascade)]
+///   [Aggregation]  → [NavigationProperty(OnDelete = Restrict)]
+///   [Association]  → [NavigationProperty(OnDelete = NoAction)]
 /// </summary>
 public static class DddEntityDslBridgeEmitter
 {
+    private const string PrimaryKeyAttr = "global::FrenchExDev.Net.Entity.Dsl.Attributes.PrimaryKey";
+    private const string NavigationAttr = "global::FrenchExDev.Net.Entity.Dsl.Attributes.NavigationProperty";
+    private const string DeleteBehavior = "global::FrenchExDev.Net.Entity.Dsl.Attributes.DeleteBehavior";
+
     /// <summary>
     /// Emits a partial class with [MappedEntity] and mapped Entity.Dsl attributes.
     /// </summary>
@@ -22,13 +30,39 @@ public static class DddEntityDslBridgeEmitter
         sb.AppendLine($"namespace {model.Namespace};");
         sb.AppendLine();
 
-        // Class-level attributes
+        // [MappedEntity]
         sb.AppendLine("[global::FrenchExDev.Net.Entity.Dsl.Attributes.MappedEntity]");
+
+        // [PrimaryKey("Id")] or [PrimaryKey("Id", "TenantId")] for composite
+        if (model.EntityIdPropertyNames.Count > 0)
+        {
+            var args = string.Join(", ", QuoteAll(model.EntityIdPropertyNames));
+            sb.AppendLine($"[{PrimaryKeyAttr}({args})]");
+        }
+
+        // [NavigationProperty("Items", OnDelete = DeleteBehavior.Cascade)]
+        EmitNavigations(sb, model.CompositionPropertyNames, "Cascade");
+        EmitNavigations(sb, model.AggregationPropertyNames, "Restrict");
+        EmitNavigations(sb, model.AssociationPropertyNames, "NoAction");
 
         sb.AppendLine($"public partial class {model.ClassName}");
         sb.AppendLine("{");
         sb.AppendLine("}");
         return sb.ToString();
+    }
+
+    private static void EmitNavigations(StringBuilder sb, List<string> propertyNames, string deleteBehavior)
+    {
+        foreach (var name in propertyNames)
+        {
+            sb.AppendLine($"[{NavigationAttr}(\"{name}\", OnDelete = {DeleteBehavior}.{deleteBehavior})]");
+        }
+    }
+
+    private static IEnumerable<string> QuoteAll(List<string> values)
+    {
+        foreach (var v in values)
+            yield return $"\"{v}\"";
     }
 }
 

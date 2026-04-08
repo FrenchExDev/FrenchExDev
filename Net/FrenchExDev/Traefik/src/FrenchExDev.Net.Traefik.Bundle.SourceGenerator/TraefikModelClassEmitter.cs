@@ -107,6 +107,7 @@ internal static class TraefikModelClassEmitter
         }
 
         sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
+        sb.AppendLine("[global::FrenchExDev.Net.Traefik.Bundle.Attributes.TraefikDiscriminatedUnion]");
         sb.AppendLine($"public partial class {className}");
         sb.AppendLine("{");
 

@@ -17,4 +17,7 @@ public sealed class EntityEmitModel
 
     // Properties
     public List<PropertyConfigModel> Properties { get; set; } = new List<PropertyConfigModel>();
+
+    // Navigation properties (from class-level [NavigationProperty] attributes)
+    public List<NavigationPropertyModel> NavigationProperties { get; set; } = new List<NavigationPropertyModel>();
 }

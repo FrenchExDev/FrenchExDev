@@ -46,6 +46,9 @@ public static class EntityConfigurationEmitter
             EmitConfigureProperty(sb, model, prop);
         }
 
+        // Navigation property relationships
+        EmitConfigureRelationships(sb, model);
+
         // Orchestrator
         EmitOrchestrator(sb, model);
 
@@ -184,6 +187,25 @@ public static class EntityConfigurationEmitter
         sb.AppendLine();
     }
 
+    private static void EmitConfigureRelationships(StringBuilder sb, EntityEmitModel model)
+    {
+        if (model.NavigationProperties.Count == 0) return;
+
+        sb.AppendLine("    protected virtual void ConfigureRelationships(");
+        sb.AppendLine($"        Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<{model.ClassFullName}> builder)");
+        sb.AppendLine("    {");
+
+        foreach (var nav in model.NavigationProperties)
+        {
+            sb.AppendLine($"        builder.Navigation(\"{nav.PropertyName}\").AutoInclude(false);");
+            sb.AppendLine($"        builder.HasMany(\"{nav.PropertyName}\").WithOne()");
+            sb.AppendLine($"            .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.{nav.OnDelete});");
+        }
+
+        sb.AppendLine("    }");
+        sb.AppendLine();
+    }
+
     private static void EmitOrchestrator(StringBuilder sb, EntityEmitModel model)
     {
         sb.AppendLine("    public void Configure(");
@@ -200,6 +222,9 @@ public static class EntityConfigurationEmitter
             if (prop.IsNotMapped) continue;
             sb.AppendLine($"        Configure{prop.PropertyName}(builder);");
         }
+
+        if (model.NavigationProperties.Count > 0)
+            sb.AppendLine("        ConfigureRelationships(builder);");
 
         sb.AppendLine("        PostConfigure(builder);");
         sb.AppendLine("    }");

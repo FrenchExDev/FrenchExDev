@@ -1,6 +1,6 @@
 # How-To
 
-## Build a Static Configuration
+## Build a static configuration
 
 ```csharp
 var result = await new TraefikStaticConfigBuilder()
@@ -10,116 +10,190 @@ var result = await new TraefikStaticConfigBuilder()
     .WithLog(log => log.WithLevel("DEBUG"))
     .BuildAsync();
 
-var config = result.ValueOrThrow().Value;
-string yaml = TraefikSerializer.Serialize(config);
-File.WriteAllText("traefik.yml", yaml);
+if (result.IsFailure)
+    throw new InvalidOperationException(result.ValidationResult?.ErrorMessage);
+
+var config = result.ValueOrThrow().Resolved();
 ```
 
-## Build a Dynamic Configuration
+## Build a dynamic configuration
 
 ```csharp
 var result = await new TraefikDynamicConfigBuilder()
     .WithHttp(http => http
-        .WithRouter("my-app", r => r
-            .WithRule("Host(`app.example.com`)")
-            .WithService("my-service")
-            .WithEntryPoint("websecure")
-            .WithMiddleware("auth"))
-        .WithService("my-service", s => s
+        .WithRouter("api", r => r
+            .WithRule("Host(`api.example.com`)")
+            .WithService("api-backend")
+            .WithEntryPoint("websecure"))
+        .WithService("api-backend", s => s
             .WithLoadBalancer(lb => lb /* configure servers */))
         .WithMiddleware("auth", m => m
-            .WithBasicAuth(ba => ba /* configure users */)))
+            .WithBasicAuth(new TraefikBasicAuthMiddleware { Realm = "secure" })))
     .BuildAsync();
-
-var config = result.ValueOrThrow().Value;
-string yaml = TraefikSerializer.Serialize(config);
-File.WriteAllText("dynamic.yml", yaml);
 ```
 
-## Deserialize Existing Configuration
+The `WithBasicAuth` call sets one branch of the discriminated `TraefikHttpMiddleware`. Setting a second branch in the same builder chain (e.g. `.WithStripPrefix(...)`) makes `BuildAsync` fail with *"requires exactly one branch to be set; found 2"*.
+
+## Read configuration with schema validation
+
+`TryDeserializeStatic` / `TryDeserializeDynamic` validate the YAML against the embedded JSON schema **before** deserializing into the typed POCO. They catch:
+
+- **Typo'd keys** (the schema sets `additionalProperties: false`)
+- **Wrong types** (string where bool expected, etc.)
+- **Missing required properties**
 
 ```csharp
-// Static
-string staticYaml = File.ReadAllText("traefik.yml");
-var staticConfig = TraefikSerializer.DeserializeStatic(staticYaml);
+var result = TraefikSerializer.TryDeserializeStatic(yaml);
 
-// Dynamic
-string dynamicYaml = File.ReadAllText("dynamic.yml");
-var dynamicConfig = TraefikSerializer.DeserializeDynamic(dynamicYaml);
-
-// Generic
-var config = TraefikSerializer.Deserialize<TraefikStaticConfig>(yaml);
+if (result.IsSuccess)
+{
+    var config = result.Value!;
+    // ... use config
+}
+else
+{
+    // result.ValidationResult.ErrorMessage contains schema error path + message,
+    // e.g. "/api: Required properties are missing from object: [dashboard]"
+    Console.Error.WriteLine(result.ValidationResult?.ErrorMessage);
+}
 ```
 
-## Update Schemas from SchemaStore
+The non-validating throwing API (`Deserialize<T>`, `DeserializeStatic`, `DeserializeDynamic`) is still available for back-compat. It uses `IgnoreUnmatchedProperties()` and silently drops unknown keys — use the `Try*` methods for anything that touches user input.
 
-The Design project downloads the latest schemas:
+## Atomic, schema-validated file write
+
+The Traefik file provider watches its dynamic config file. Half-written files crash it. `WriteDynamicToFileAsync` writes to a sibling `.tmp` file first, validates the schema, then atomically renames via `File.Replace` (or `File.Move` if the destination doesn't exist), with a 3× retry on `IOException` for the Windows file-watcher race.
+
+```csharp
+var write = await TraefikSerializer.WriteDynamicToFileAsync(
+    "/etc/traefik/dynamic.yml",
+    config,
+    cancellationToken);
+
+if (write.IsFailure)
+{
+    // The schema rejected the config. Nothing was written.
+    // No partial file ever exists at the destination path.
+}
+```
+
+The same atomicity applies to `WriteStaticToFileAsync`.
+
+## Read from a file
+
+```csharp
+var result = await TraefikSerializer.ReadStaticFromFileAsync("traefik.yml", ct);
+```
+
+This is `File.ReadAllTextAsync` followed by `TryDeserializeStatic`, with file-system errors mapped to `Result.Failure`.
+
+## JSON output
+
+Traefik accepts JSON for both static and dynamic configuration. The serializer emits camelCase via `System.Text.Json`:
+
+```csharp
+string json = TraefikSerializer.SerializeJson(config);
+var roundtripped = TraefikSerializer.DeserializeJson<TraefikStaticConfig>(json);
+```
+
+## Update schemas from SchemaStore
 
 ```bash
 dotnet run --project src/FrenchExDev.Net.Traefik.Bundle.Design
 ```
 
-This fetches `traefik-v3-static.json` and `traefik-v3-file-provider.json` from SchemaStore into `src/FrenchExDev.Net.Traefik.Bundle/schemas/`. After downloading, rebuild to regenerate models:
+Downloads `traefik-v3-static.json` and `traefik-v3-file-provider.json` from SchemaStore into `src/FrenchExDev.Net.Traefik.Bundle/schemas/`. Rebuild to regenerate models:
 
 ```bash
-dotnet build
+dotnet build FrenchExDev.Net.Traefik.slnx
 ```
 
-## Run Tests
+The Design project hits external services and is run manually.
+
+## Run tests
 
 ```bash
-# All tests
-dotnet test
+# All projects, both runtime and source-generator tests
+dotnet test FrenchExDev.Net.Traefik.slnx
 
 # With coverage
-dotnet test --collect:"XPlat Code Coverage" --settings coverage.runsettings
+dotnet test FrenchExDev.Net.Traefik.slnx \
+    --collect:"XPlat Code Coverage" \
+    --settings coverage.runsettings
 ```
 
-## Run Quality Gate
+## Run quality gate
 
 ```bash
-dotnet quality-gate test --config quality-gate.yml
+dotnet run --project ../QualityGate/src/FrenchExDev.Net.QualityGate.Cli -- \
+    test --config quality-gate.yml
 ```
 
-## Add Support for a New Traefik Property
+The `quality-gate.yml` in this directory carries relaxed thresholds because the generated builders for properties-heavy schema definitions naturally exceed the defaults. Pass `--config` (the CLI does *not* auto-discover the file in the current directory).
 
-No code changes needed. The property will appear automatically after updating the schema:
+## Pack for NuGet
 
-1. Run the Design project to download the latest schema
-2. Rebuild -- the source generator picks up the new property
-3. Add tests for the new property in `BuilderTests.cs` or `SerializerTests.cs`
+```bash
+dotnet pack src/FrenchExDev.Net.Traefik.Bundle.Attributes/*.csproj         -c Release -o ./artifacts
+dotnet pack src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/*.csproj    -c Release -o ./artifacts
+dotnet pack src/FrenchExDev.Net.Traefik.Bundle/*.csproj                    -c Release -o ./artifacts
+```
 
-## Extend the Source Generator
+Three packages are produced. The SourceGenerator nupkg ships both its own analyzer DLL **and** the shared `FrenchExDev.Net.Builder.SourceGenerator.Lib` DLL under `analyzers/dotnet/cs/`. Verify with:
+
+```bash
+unzip -l artifacts/FrenchExDev.Net.Traefik.Bundle.SourceGenerator.*.nupkg
+```
+
+## Add support for a new Traefik property
+
+No code changes required for the typical case:
+
+1. Run the Design project to refresh the schema (or hand-edit the JSON for testing)
+2. `dotnet build` — the source generator picks up the new property
+3. Add a test exercising it in `BuilderTests.cs` or `RealisticRoundTripTests.cs`
+
+## Add a new schema version (multi-version pipeline)
+
+The pipeline supports loading multiple versions of the same schema and stamping `[SinceVersion("...")]` on properties first introduced after the earliest loaded version.
+
+1. Drop the new schema in `src/FrenchExDev.Net.Traefik.Bundle/schemas/` following the naming convention `traefik-v{version}-{kind}.json`
+2. The csproj already globs `traefik-v*.json` for both `<AdditionalFiles>` and `<EmbeddedResource>`, so no edit is needed
+3. Rebuild — the merge stage union-merges definitions across versions, and `[SinceVersion("{newVersion}")]` is stamped on any property that didn't exist in earlier schemas
+
+The synthetic [traefik-v3.1-file-provider.json](../src/FrenchExDev.Net.Traefik.Bundle/schemas/traefik-v3.1-file-provider.json) demonstrates this end-to-end with a single `httpRouter.observability` property that is stamped `[SinceVersion("3.1")]`. See `BuilderTests.HttpRouter_Observability_HasSinceVersionAttribute` for the assertion.
+
+## Extend the source generator
 
 ### Add a new emitter
 
-1. Create a new emitter class in `Traefik.Bundle.SourceGenerator` (follow `TraefikModelClassEmitter` pattern)
-2. Call it from `TraefikBundleGenerator.Generate()` after the merge step
-3. Add the generated source via `ctx.AddSource()`
+1. Create `Foo Emitter.cs` in [SourceGenerator/](../src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/) following the `TraefikModelClassEmitter` pattern
+2. Call it from `TraefikBundleGenerator.Emit()` after the existing emitters
+3. Add the generated source via `ctx.AddSource("Foo.g.cs", ...)`
+4. Add a snapshot test in [SourceGenerator.Tests/EmitterTests.cs](../test/FrenchExDev.Net.Traefik.Bundle.SourceGenerator.Tests/EmitterTests.cs)
 
 ### Handle a new schema pattern
 
-1. Add the new `PropertyType` variant to `SchemaModels.cs`
-2. Update `TraefikSchemaReader.ParseProperty()` to detect the pattern
-3. Update `TraefikNamingHelper.MapCSharpType()` for the new type
-4. Update `TraefikModelClassEmitter` to emit the correct property declaration
-5. Update `TraefikBuilderHelper` to create the correct builder property model
+1. Add the variant to `PropertyType` in [SchemaModels.cs](../src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/SchemaModels.cs)
+2. **Update the structural equality** in the same file (`PropertyModel.Equals` / `GetHashCode`) to include the new fields — otherwise the IDE incremental cache will produce stale output
+3. Update `TraefikSchemaReader.ParseProperty` to detect the JSON shape and produce the variant
+4. Update `TraefikNamingHelper.MapCSharpType` for the new C# type
+5. Update `TraefikModelClassEmitter` and `TraefikBuilderHelper` to emit the right code
+6. Add an IR equality test to [SourceGenerator.Tests/IrEqualityTests.cs](../test/FrenchExDev.Net.Traefik.Bundle.SourceGenerator.Tests/IrEqualityTests.cs)
 
-### Add a new schema file
+### Add a new analyzer rule
 
-1. Place the JSON schema in `src/FrenchExDev.Net.Traefik.Bundle/schemas/`
-2. Name it `traefik-v{version}-{kind}.json` (the generator matches `traefik-v3-*.json`)
-3. Update `TraefikSchemaReader.DetectKind()` if the kind is not `static` or `file-provider`
-4. The `.csproj` already includes `schemas/traefik-v3-*.json` as AdditionalFiles
+1. Append the descriptor to [Analyzers/TraefikDiagnostics.cs](../src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/Analyzers/TraefikDiagnostics.cs)
+2. Add the rule ID + severity to [AnalyzerReleases.Unshipped.md](../src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/AnalyzerReleases.Unshipped.md)
+3. Implement the analyzer (see [DiscriminatedUnionAnalyzer.cs](../src/FrenchExDev.Net.Traefik.Bundle.SourceGenerator/Analyzers/DiscriminatedUnionAnalyzer.cs) for the pattern)
+4. Add positive + negative tests in [SourceGenerator.Tests/AnalyzerTests.cs](../test/FrenchExDev.Net.Traefik.Bundle.SourceGenerator.Tests/AnalyzerTests.cs) using the hand-rolled `CSharpCompilation.WithAnalyzers` harness
 
-## Inspect Generated Code
+## Inspect generated code
 
-The generated sources live in the `obj/` tree. To inspect them:
+`Bundle.csproj` sets `EmitCompilerGeneratedFiles=true` so the generator output is materialized on disk:
 
 ```bash
-# Find all generated files
-find . -path "*/Generated/*.g.cs" -name "Traefik*"
-
-# Or check the DebugInfo for statistics
-find . -path "*/Generated/DebugInfo.g.cs"
+find src/FrenchExDev.Net.Traefik.Bundle/obj -path "*Generated*" -name "*.g.cs"
 ```
+
+The `DebugInfo.g.cs` file at the top of that tree carries generation statistics (definition count, root property counts).

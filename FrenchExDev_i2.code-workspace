@@ -18,8 +18,11 @@
 			"appsettings",
 			"Ardalis",
 			"combinators",
+			"homelab",
 			"netstandard",
+			"NETSDK",
 			"notnull",
+			"slnx",
 			"Wlaschin",
 			"xunit"
 		],

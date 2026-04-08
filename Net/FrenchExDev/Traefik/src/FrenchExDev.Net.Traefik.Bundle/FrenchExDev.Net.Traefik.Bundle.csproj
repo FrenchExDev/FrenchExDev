@@ -9,6 +9,14 @@
     <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)/Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>FrenchExDev.Net.Traefik.Bundle</PackageId>
+    <Description>Strongly-typed Traefik v3 static + dynamic configuration: source-generated models + builders, schema-validated YAML round-trip serializer, and a discriminated-union analyzer.</Description>
+    <PackageTags>traefik;reverse-proxy;config;source-generator;yaml;json-schema</PackageTags>
+    <Authors>FrenchExDev</Authors>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
     <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
@@ -25,8 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="schemas\traefik-v3-*.json" />
-    <EmbeddedResource Include="schemas\traefik-v3-*.json" />
+    <AdditionalFiles Include="schemas\traefik-v*.json" />
+    <EmbeddedResource Include="schemas\traefik-v*.json" />
   </ItemGroup>
 
 </Project>

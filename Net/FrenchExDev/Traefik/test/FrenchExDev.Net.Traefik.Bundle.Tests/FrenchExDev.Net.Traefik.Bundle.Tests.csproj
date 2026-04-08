@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Content Include="Fixtures\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\samples\**\*.yaml" Link="Samples\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

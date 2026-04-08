@@ -119,6 +119,10 @@ public class GuardAgainst_Negative
     [Fact]
     public void Negative_negative_throws() =>
         Assert.Throws<ArgumentOutOfRangeException>(() => Guard.Against.Negative(-1));
+
+    [Fact]
+    public void Negative_string_returns_value() =>
+        Assert.Equal("abc", Guard.Against.Negative("abc"));
 }
 
 public class GuardAgainst_NegativeOrZero
@@ -134,6 +138,10 @@ public class GuardAgainst_NegativeOrZero
     [Fact]
     public void NegativeOrZero_negative_throws() =>
         Assert.Throws<ArgumentOutOfRangeException>(() => Guard.Against.NegativeOrZero(-1));
+
+    [Fact]
+    public void NegativeOrZero_string_returns_value() =>
+        Assert.Equal("abc", Guard.Against.NegativeOrZero("abc"));
 }
 
 public class GuardAgainst_Default
@@ -213,4 +221,8 @@ public class GuardAgainst_Zero
     [Fact]
     public void Zero_zero_throws() =>
         Assert.Throws<ArgumentOutOfRangeException>(() => Guard.Against.Zero(0));
+
+    [Fact]
+    public void Zero_string_returns_value() =>
+        Assert.Equal("abc", Guard.Against.Zero("abc"));
 }

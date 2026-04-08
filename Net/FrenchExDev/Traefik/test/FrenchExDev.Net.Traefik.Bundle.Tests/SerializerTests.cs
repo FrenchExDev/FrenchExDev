@@ -4,6 +4,167 @@ namespace FrenchExDev.Net.Traefik.Bundle.Tests;
 
 public class SerializerTests
 {
+    // ── JSON output ──────────────────────────────────────────────────────
+
+    [Fact]
+    public void Json_RoundTrip_PreservesShape()
+    {
+        var cfg = new TraefikStaticConfig
+        {
+            EntryPoints = new Dictionary<string, TraefikStaticEntryPoint>
+            {
+                ["web"] = new() { Address = ":80" },
+                ["websecure"] = new() { Address = ":443" }
+            }
+        };
+
+        var json = TraefikSerializer.SerializeJson(cfg);
+        json.ShouldContain("\"entryPoints\"");
+        json.ShouldContain("\":80\"");
+
+        var roundtripped = TraefikSerializer.DeserializeJson<TraefikStaticConfig>(json);
+        roundtripped.EntryPoints.ShouldNotBeNull();
+        roundtripped.EntryPoints["web"].Address.ShouldBe(":80");
+        roundtripped.EntryPoints["websecure"].Address.ShouldBe(":443");
+    }
+
+    // ── Schema-validating Try* API ────────────────────────────────────────
+
+    [Fact]
+    public void TryDeserializeStatic_MinimalYaml_Succeeds()
+    {
+        var yaml = File.ReadAllText("Fixtures/static-minimal.yaml");
+        var result = TraefikSerializer.TryDeserializeStatic(yaml);
+
+        result.IsSuccess.ShouldBeTrue(result.IsFailure ? result.ValidationResult?.ErrorMessage : null);
+        result.Value.ShouldNotBeNull();
+        result.Value.EntryPoints.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void TryDeserializeStatic_GarbageYaml_Fails()
+    {
+        var result = TraefikSerializer.TryDeserializeStatic("entryPoints: not-an-object");
+
+        result.IsSuccess.ShouldBeFalse();
+        result.ValidationResult.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void TryDeserializeStatic_TypoInKey_Fails()
+    {
+        // 'dashbaord' is a typo for 'dashboard'. With IgnoreUnmatchedProperties
+        // the typed deserializer would silently drop it. The schema-first
+        // validation path catches it because the embedded schema sets
+        // additionalProperties: false on the api section.
+        const string yaml = """
+            api:
+              dashbaord: true
+              insecure: true
+            """;
+
+        var result = TraefikSerializer.TryDeserializeStatic(yaml);
+
+        result.IsSuccess.ShouldBeFalse();
+        var msg = result.ValidationResult!.ErrorMessage ?? "";
+        msg.ShouldContain("dashbaord");
+    }
+
+    [Fact]
+    public void TryDeserializeStatic_WrongType_Fails()
+    {
+        // The schema requires api.dashboard: bool. Passing a string here
+        // would silently round-trip as null in the typed deserializer
+        // (because YamlDotNet can't coerce). With YAML→JsonNode→schema
+        // we see a real schema error.
+        const string yaml = """
+            api:
+              dashboard: "not-a-bool"
+            """;
+
+        var result = TraefikSerializer.TryDeserializeStatic(yaml);
+
+        result.IsSuccess.ShouldBeFalse();
+        result.ValidationResult.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void TryDeserializeStatic_BoolPrimitive_Survives()
+    {
+        // Sanity: primitive types must round-trip through the YamlToJson
+        // converter so the schema sees real bools, not strings.
+        const string yaml = """
+            api:
+              dashboard: true
+              insecure: false
+            """;
+
+        var result = TraefikSerializer.TryDeserializeStatic(yaml);
+
+        result.IsSuccess.ShouldBeTrue(result.IsFailure ? result.ValidationResult?.ErrorMessage : null);
+        result.Value!.Api!.Dashboard.ShouldBe(true);
+        result.Value.Api.Insecure.ShouldBe(false);
+    }
+
+    // ── Async / file I/O ───────────────────────────────────────────────────
+
+    [Fact]
+    public async Task ReadStaticFromFileAsync_MinimalFixture_Succeeds()
+    {
+        var result = await TraefikSerializer.ReadStaticFromFileAsync("Fixtures/static-minimal.yaml");
+
+        result.IsSuccess.ShouldBeTrue(result.IsFailure ? result.ValidationResult?.ErrorMessage : null);
+        result.Value!.EntryPoints.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task WriteStaticToFileAsync_RoundTrip()
+    {
+        var path = Path.Combine(Path.GetTempPath(), $"traefik-{Guid.NewGuid():N}.yaml");
+        try
+        {
+            var cfg = new TraefikStaticConfig
+            {
+                EntryPoints = new Dictionary<string, TraefikStaticEntryPoint>
+                {
+                    ["web"] = new() { Address = ":80" }
+                }
+            };
+
+            var write = await TraefikSerializer.WriteStaticToFileAsync(path, cfg);
+            write.IsSuccess.ShouldBeTrue();
+            File.Exists(path).ShouldBeTrue();
+            File.Exists(path + ".tmp").ShouldBeFalse();
+
+            var read = await TraefikSerializer.ReadStaticFromFileAsync(path);
+            read.IsSuccess.ShouldBeTrue();
+            read.Value!.EntryPoints!["web"].Address.ShouldBe(":80");
+        }
+        finally
+        {
+            if (File.Exists(path)) File.Delete(path);
+            if (File.Exists(path + ".tmp")) File.Delete(path + ".tmp");
+        }
+    }
+
+    [Fact]
+    public void TrySerializeStatic_ValidConfig_Succeeds()
+    {
+        var cfg = new TraefikStaticConfig
+        {
+            EntryPoints = new Dictionary<string, TraefikStaticEntryPoint>
+            {
+                ["web"] = new TraefikStaticEntryPoint { Address = ":80" }
+            }
+        };
+
+        var result = TraefikSerializer.TrySerializeStatic(cfg);
+
+        result.IsSuccess.ShouldBeTrue(result.IsFailure ? result.ValidationResult?.ErrorMessage : null);
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldContain("entryPoints");
+    }
+
     [Fact]
     public void DeserializeStatic_MinimalYaml()
     {

@@ -42,11 +42,13 @@ internal static class TraefikBuilderHelper
         string ns, string className, List<DiscriminatedBranch> branches)
     {
         var builderProps = new List<BuilderPropertyModel>();
+        var branchPropNames = new List<string>();
         foreach (var branch in branches)
         {
             var propName = TraefikNamingHelper.ToPascalCase(branch.PropertyName);
             var refClassName = TraefikNamingHelper.DefinitionToClassName(branch.RefName);
             var csharpType = $"{refClassName}?";
+            branchPropNames.Add(propName);
 
             builderProps.Add(new BuilderPropertyModel(
                 propName,
@@ -54,11 +56,39 @@ internal static class TraefikBuilderHelper
                 csharpType));
         }
 
+        var epilogue = BuildExactlyOneBranchEpilogue(className, branchPropNames);
+
         return new BuilderEmitModel(
             ns,
             className,
             className + "Builder",
-            builderProps);
+            builderProps,
+            validateAsyncEpilogue: epilogue);
+    }
+
+    /// <summary>
+    /// Emits a snippet that asserts exactly one of the discriminated-union
+    /// branch properties on the builder is non-null. Traefik silently rejects
+    /// configs where two branches of a flat union (e.g. AddPrefix + BasicAuth
+    /// on the same TraefikHttpMiddleware) are both populated; this surfaces
+    /// the error at BuildAsync time instead of at runtime.
+    /// </summary>
+    private static string BuildExactlyOneBranchEpilogue(string className, List<string> branchPropNames)
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("        var __setCount = 0;");
+        foreach (var name in branchPropNames)
+        {
+            sb.AppendLine($"        if ({name} is not null) __setCount++;");
+        }
+        sb.AppendLine("        if (__setCount != 1)");
+        sb.AppendLine("        {");
+        sb.AppendLine("            __result.AddError(");
+        sb.AppendLine("                new global::FrenchExDev.Net.Builder.MemberName(\"$Discriminator\", __type),");
+        sb.AppendLine("                new global::System.InvalidOperationException(");
+        sb.AppendLine($"                    $\"{className} requires exactly one branch to be set; found {{__setCount}}.\"));");
+        sb.AppendLine("        }");
+        return sb.ToString().TrimEnd('\r', '\n');
     }
 
     private static List<string>? BuildVersionAttributes(UnifiedProperty up)

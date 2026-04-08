@@ -1,84 +1,113 @@
 # FrenchExDev.Net.Traefik.Bundle
 
-Strongly-typed .NET configuration library for Traefik reverse proxy, generated from official JSON schemas. Provides compile-time-safe models, fluent builders, and round-trip YAML serialization for both static and dynamic Traefik configuration.
+Strongly-typed .NET configuration library for [Traefik](https://traefik.io/) v3. Models, builders, validator, and YAML/JSON round-trip serializer — all generated from Traefik's official JSON schemas.
 
-## Quick Start
+- **Two-tier configuration** — separate `TraefikStaticConfig` and `TraefikDynamicConfig` root types, mirroring how Traefik actually loads its configuration
+- **Schema-validated I/O** — `Try*` methods validate against the embedded JSON schema, including strict unknown-key detection
+- **Atomic file writes** — `WriteStaticToFileAsync` writes via a `.tmp` sibling + `File.Replace`, safe for Traefik's file provider watch loop
+- **Compile-time guardrails** — Roslyn analyzer (TFK001) flags discriminated-union misuse before runtime
+- **Multi-version pipeline** — `[SinceVersion]`/`[UntilVersion]` attributes are stamped from the schema delta across loaded versions
+
+## Quick start
+
+### Build, validate, and write
 
 ```csharp
-// Build a static configuration
-var staticConfig = new TraefikStaticConfigBuilder()
-    .WithEntryPoint("web", ep => ep.WithAddress(":80"))
-    .WithEntryPoint("websecure", ep => ep.WithAddress(":443"))
-    .BuildAsync()
-    .Result.ValueOrThrow().Value;
+using FrenchExDev.Net.Traefik.Bundle;
 
-// Serialize to YAML
-string yaml = TraefikSerializer.Serialize(staticConfig);
-
-// Build a dynamic configuration
-var dynamicConfig = new TraefikDynamicConfigBuilder()
+var dynamicConfig = (await new TraefikDynamicConfigBuilder()
     .WithHttp(http => http
-        .WithRouter("my-app", r => r
-            .WithRule("Host(`app.example.com`)")
-            .WithService("my-service")
+        .WithRouter("api", r => r
+            .WithRule("Host(`api.example.com`)")
+            .WithService("api-backend")
             .WithEntryPoint("websecure"))
-        .WithService("my-service", s => s
+        .WithService("api-backend", s => s
             .WithLoadBalancer(lb => lb /* ... */)))
-    .BuildAsync()
-    .Result.ValueOrThrow().Value;
+    .BuildAsync())
+    .ValueOrThrow().Resolved();
 
-// Deserialize from YAML
-var config = TraefikSerializer.DeserializeStatic(File.ReadAllText("traefik.yml"));
+// Atomic, schema-validated write — safe to call repeatedly while Traefik
+// is watching the file. The schema is checked BEFORE any bytes hit disk.
+var write = await TraefikSerializer.WriteDynamicToFileAsync(
+    "/etc/traefik/dynamic.yml", dynamicConfig);
+
+if (write.IsFailure)
+    throw new InvalidOperationException("Refused to write invalid config");
 ```
 
-## Solution Structure
+### Read and validate
 
-| Project | Target | Purpose |
+```csharp
+// Schema-validating read. Catches unknown keys (typos) and type errors —
+// not just structural problems.
+var result = await TraefikSerializer.ReadStaticFromFileAsync("traefik.yml");
+
+if (result.IsSuccess)
+{
+    var config = result.Value!;
+    Console.WriteLine($"Loaded {config.EntryPoints?.Count ?? 0} entry points");
+}
+else
+{
+    Console.Error.WriteLine(result.ValidationResult?.ErrorMessage);
+}
+```
+
+### Discriminated union: exactly-one-branch enforcement
+
+```csharp
+var middleware = await new TraefikHttpMiddlewareBuilder()
+    .WithStripPrefix(new TraefikStripPrefixMiddleware { Prefixes = new() { "/api" } })
+    .WithBasicAuth(new TraefikBasicAuthMiddleware())  // ← second branch!
+    .BuildAsync();
+
+// middleware.IsFailure == true
+// "TraefikHttpMiddleware requires exactly one branch to be set; found 2."
+```
+
+The same misuse is also flagged at compile time by analyzer rule **TFK001** when both branches are visible in a single object initializer.
+
+## Packages
+
+| Package | Target | Role |
 |---|---|---|
-| `Traefik.Bundle` | net10.0 | Models, builders, serializer (consumer-facing) |
-| `Traefik.Bundle.Attributes` | netstandard2.0; net10.0 | `[TraefikBundle]` marker attribute |
-| `Traefik.Bundle.SourceGenerator` | netstandard2.0 | Incremental source generator (Roslyn analyzer) |
-| `Traefik.Bundle.Design` | net10.0 | Design-time schema download utility |
-| `Traefik.Bundle.Tests` | net10.0 | xUnit tests (models, builders, schemas, serialization) |
+| `FrenchExDev.Net.Traefik.Bundle` | net10.0 | Models, builders, serializer (consumer-facing) |
+| `FrenchExDev.Net.Traefik.Bundle.Attributes` | netstandard2.0; net10.0 | `[TraefikBundle]`, `[TraefikDiscriminatedUnion]` markers |
+| `FrenchExDev.Net.Traefik.Bundle.SourceGenerator` | netstandard2.0 | Roslyn incremental generator + analyzer (TFK001, TFK004) |
 
-## Key Features
+The runtime package depends on `FrenchExDev.Net.Result` (for `Result<T>` returns), `FrenchExDev.Net.Builder` (for `AbstractBuilder<T>`), `YamlDotNet`, and `JsonSchema.Net`.
 
-- **Schema-driven** -- all models generated from Traefik's official JSON schemas (SchemaStore)
-- **Two-tier configuration** -- separate `TraefikStaticConfig` and `TraefikDynamicConfig` root types
-- **Discriminated unions** -- middleware and service types modeled as flat classes with nullable branches
-- **Fluent builders** -- generated via shared `BuilderEmitter` from `Builder.SourceGenerator.Lib`
-- **YAML round-trip** -- camelCase serialization/deserialization with `YamlDotNet`
-- **Version tracking** -- `TraefikSchemaVersions` class with `SinceVersion`/`UntilVersion` attributes
+## Diagnostics
 
-## Dependencies
+| ID | Severity | What it catches |
+|---|---|---|
+| **TFK001** | Warning | Two or more branches set on a discriminated union (`TraefikHttpMiddleware`, `TraefikHttpService`, etc.) in the same object initializer |
+| **TFK004** | Warning | `[TraefikBundle]` consumer with no `traefik-v*.json` files wired as `<AdditionalFiles>` |
 
-| Package / Project | Role |
-|---|---|
-| `FrenchExDev.Net.Builder` | `AbstractBuilder<T>` base class |
-| `FrenchExDev.Net.Builder.SourceGenerator.Lib` | Shared builder emission logic |
-| `FrenchExDev.Net.Result` | `Result<T>` return types from builders |
-| `YamlDotNet` | YAML serialization |
+`[Obsolete]` is stamped on properties marked `deprecated` in the schema, so the standard `CS0618` warning replaces a custom rule.
 
-## Running Tests
+## Building & testing
 
 ```bash
 cd Net/FrenchExDev/Traefik
-dotnet test
+dotnet build FrenchExDev.Net.Traefik.slnx
+dotnet test  FrenchExDev.Net.Traefik.slnx
+dotnet run --project ../QualityGate/src/FrenchExDev.Net.QualityGate.Cli -- test --config quality-gate.yml
 ```
 
-## Updating Schemas
+## Updating schemas
 
 ```bash
 dotnet run --project src/FrenchExDev.Net.Traefik.Bundle.Design
 ```
 
-This downloads the latest `traefik-v3-static.json` and `traefik-v3-file-provider.json` from SchemaStore into `src/FrenchExDev.Net.Traefik.Bundle/schemas/`.
+Downloads `traefik-v3-static.json` and `traefik-v3-file-provider.json` from SchemaStore into `src/FrenchExDev.Net.Traefik.Bundle/schemas/`. Rebuild to regenerate models. See [SCHEMA-MANAGEMENT](doc/SCHEMA-MANAGEMENT.md) for details.
 
 ## Documentation
 
 | Document | Content |
 |---|---|
-| [ARCHITECTURE](doc/ARCHITECTURE.md) | Project decomposition, source generator pipeline, generated code layout |
+| [ARCHITECTURE](doc/ARCHITECTURE.md) | Project decomposition, source generator pipeline, IR types, analyzer wiring |
+| [HOW-TO](doc/HOW-TO.md) | Common tasks: building, reading, validating, atomic writes, extending the SG |
 | [PHILOSOPHY](doc/PHILOSOPHY.md) | Design decisions and trade-offs |
-| [HOW-TO](doc/HOW-TO.md) | Common tasks: adding config, extending the generator, testing |
-| [SCHEMA-MANAGEMENT](doc/SCHEMA-MANAGEMENT.md) | Schema sourcing, update workflow, version tracking |
+| [SCHEMA-MANAGEMENT](doc/SCHEMA-MANAGEMENT.md) | Schema sourcing, multi-version merge, version tracking |

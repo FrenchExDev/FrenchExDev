@@ -50,4 +50,131 @@ public class DddEntityDslBridgeEmitterTests
 
         Assert.Contains("namespace MyApp.Domain.Entities;", code);
     }
+
+    [Fact]
+    public void Emit_maps_single_entity_id_to_primary_key()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "Order",
+            IsAggregateRoot = true,
+            EntityIdPropertyNames = { "Id" }
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains("[global::FrenchExDev.Net.Entity.Dsl.Attributes.PrimaryKey(\"Id\")]", code);
+    }
+
+    [Fact]
+    public void Emit_maps_composite_entity_id_to_primary_key()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "OrderLine",
+            IsEntity = true,
+            EntityIdPropertyNames = { "OrderId", "LineNumber" }
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains("[global::FrenchExDev.Net.Entity.Dsl.Attributes.PrimaryKey(\"OrderId\", \"LineNumber\")]", code);
+    }
+
+    [Fact]
+    public void Emit_maps_composition_to_cascade_delete()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "Order",
+            IsAggregateRoot = true,
+            CompositionPropertyNames = { "Lines" }
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains(
+            "[global::FrenchExDev.Net.Entity.Dsl.Attributes.NavigationProperty(\"Lines\", OnDelete = global::FrenchExDev.Net.Entity.Dsl.Attributes.DeleteBehavior.Cascade)]",
+            code);
+    }
+
+    [Fact]
+    public void Emit_maps_aggregation_to_restrict_delete()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "Order",
+            IsAggregateRoot = true,
+            AggregationPropertyNames = { "Customer" }
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains(
+            "[global::FrenchExDev.Net.Entity.Dsl.Attributes.NavigationProperty(\"Customer\", OnDelete = global::FrenchExDev.Net.Entity.Dsl.Attributes.DeleteBehavior.Restrict)]",
+            code);
+    }
+
+    [Fact]
+    public void Emit_maps_association_to_no_action_delete()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "Order",
+            IsAggregateRoot = true,
+            AssociationPropertyNames = { "CreatedBy" }
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains(
+            "[global::FrenchExDev.Net.Entity.Dsl.Attributes.NavigationProperty(\"CreatedBy\", OnDelete = global::FrenchExDev.Net.Entity.Dsl.Attributes.DeleteBehavior.NoAction)]",
+            code);
+    }
+
+    [Fact]
+    public void Emit_full_aggregate_root_with_all_relationship_types()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "Order",
+            IsAggregateRoot = true,
+            EntityIdPropertyNames = { "Id" },
+            CompositionPropertyNames = { "Lines" },
+            AggregationPropertyNames = { "Customer" },
+            AssociationPropertyNames = { "CreatedBy" }
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains("[global::FrenchExDev.Net.Entity.Dsl.Attributes.MappedEntity]", code);
+        Assert.Contains("[global::FrenchExDev.Net.Entity.Dsl.Attributes.PrimaryKey(\"Id\")]", code);
+        Assert.Contains("DeleteBehavior.Cascade", code);
+        Assert.Contains("DeleteBehavior.Restrict", code);
+        Assert.Contains("DeleteBehavior.NoAction", code);
+        Assert.Contains("public partial class Order", code);
+    }
+
+    [Fact]
+    public void Emit_without_relationships_only_emits_mapped_entity()
+    {
+        var model = new DddBridgeModel
+        {
+            Namespace = "MyApp.Domain",
+            ClassName = "ValueType",
+            IsEntity = true
+        };
+
+        var code = DddEntityDslBridgeEmitter.Emit(model);
+
+        Assert.Contains("[global::FrenchExDev.Net.Entity.Dsl.Attributes.MappedEntity]", code);
+        Assert.DoesNotContain("PrimaryKey", code);
+        Assert.DoesNotContain("NavigationProperty", code);
+    }
 }

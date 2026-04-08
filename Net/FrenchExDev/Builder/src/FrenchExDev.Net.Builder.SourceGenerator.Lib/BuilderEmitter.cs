@@ -331,6 +331,14 @@ public static class BuilderEmitter
         foreach (var prop in model.Properties)
             AppendPropertyValidation(sb, prop);
 
+        if (model.ValidateAsyncEpilogue is not null)
+        {
+            sb.AppendLine();
+            sb.AppendLine("        // ── Custom epilogue ──");
+            sb.AppendLine(model.ValidateAsyncEpilogue);
+            sb.AppendLine();
+        }
+
         sb.AppendLine("        return global::System.Threading.Tasks.Task.FromResult(");
         sb.AppendLine("            global::FrenchExDev.Net.Result.Result<global::FrenchExDev.Net.Builder.ValidationResult>.Success(__result));");
         sb.AppendLine("    }");

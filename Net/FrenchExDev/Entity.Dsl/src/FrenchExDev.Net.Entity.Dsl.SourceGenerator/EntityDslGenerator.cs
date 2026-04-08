@@ -17,6 +17,7 @@ public sealed class EntityDslGenerator : IIncrementalGenerator
     private const string ColumnAttributeFqn = "FrenchExDev.Net.Entity.Dsl.Attributes.ColumnAttribute";
     private const string PrimaryKeyAttributeFqn = "FrenchExDev.Net.Entity.Dsl.Attributes.PrimaryKeyAttribute";
     private const string DbContextAttributeFqn = "FrenchExDev.Net.Entity.Dsl.Attributes.DbContextAttribute";
+    private const string NavigationPropertyAttributeFqn = "FrenchExDev.Net.Entity.Dsl.Attributes.NavigationPropertyAttribute";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -155,6 +156,54 @@ public sealed class EntityDslGenerator : IIncrementalGenerator
             }
         }
 
+        // Read class-level [PrimaryKey("Id", "TenantId")] from bridge
+        var classLevelPk = typeSymbol.GetAttributes()
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == PrimaryKeyAttributeFqn);
+        if (classLevelPk != null && classLevelPk.ConstructorArguments.Length > 0)
+        {
+            // params string[] → first arg is an array of property names
+            var arg = classLevelPk.ConstructorArguments[0];
+            if (arg.Kind == TypedConstantKind.Array)
+            {
+                int order = 0;
+                foreach (var item in arg.Values)
+                {
+                    if (item.Value is string propName)
+                    {
+                        var keyModel = new KeyPropertyModel
+                        {
+                            PropertyName = propName,
+                            Order = order++
+                        };
+                        // Read ValueGenerated if specified
+                        foreach (var named in classLevelPk.NamedArguments)
+                        {
+                            if (named.Key == "ValueGenerated" && named.Value.Value is int vg)
+                                keyModel.ValueGenerated = ((ValueGenerationEnum)vg).ToString();
+                        }
+                        model.PrimaryKeyProperties.Add(keyModel);
+                    }
+                }
+            }
+        }
+
+        // Read class-level [NavigationProperty] attributes from bridge
+        foreach (var navAttr in typeSymbol.GetAttributes()
+            .Where(a => a.AttributeClass?.ToDisplayString() == NavigationPropertyAttributeFqn))
+        {
+            if (navAttr.ConstructorArguments.Length > 0 &&
+                navAttr.ConstructorArguments[0].Value is string navPropName)
+            {
+                var navModel = new NavigationPropertyModel { PropertyName = navPropName };
+                foreach (var named in navAttr.NamedArguments)
+                {
+                    if (named.Key == "OnDelete" && named.Value.Value is int deleteBehavior)
+                        navModel.OnDelete = ((DeleteBehaviorEnum)deleteBehavior).ToString();
+                }
+                model.NavigationProperties.Add(navModel);
+            }
+        }
+
         // Read properties
         foreach (var member in typeSymbol.GetMembers().OfType<IPropertySymbol>())
         {
@@ -165,10 +214,10 @@ public sealed class EntityDslGenerator : IIncrementalGenerator
 
             var attrs = member.GetAttributes();
 
-            // Check [PrimaryKey]
+            // Check property-level [PrimaryKey] (skip if class-level PK was already set by bridge)
             var pkAttr = attrs.FirstOrDefault(a =>
                 a.AttributeClass?.ToDisplayString() == PrimaryKeyAttributeFqn);
-            if (pkAttr != null)
+            if (pkAttr != null && classLevelPk == null)
             {
                 var keyModel = new KeyPropertyModel { PropertyName = member.Name };
                 foreach (var named in pkAttr.NamedArguments)
@@ -254,5 +303,15 @@ public sealed class EntityDslGenerator : IIncrementalGenerator
         OnAdd = 1,
         OnUpdate = 2,
         OnAddOrUpdate = 3
+    }
+
+    // Mirror of the DeleteBehavior enum from Attributes
+    private enum DeleteBehaviorEnum
+    {
+        Cascade = 0,
+        Restrict = 1,
+        NoAction = 2,
+        SetNull = 3,
+        ClientCascade = 4
     }
 }

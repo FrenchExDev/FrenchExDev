@@ -14,7 +14,8 @@ public sealed class BuilderEmitModel
         IReadOnlyList<BuilderPropertyModel> properties,
         string? exceptionFullName = null,
         string instantiation = "init",
-        string? preamble = null)
+        string? preamble = null,
+        string? validateAsyncEpilogue = null)
     {
         Namespace = ns;
         TargetClassName = targetClassName;
@@ -23,6 +24,7 @@ public sealed class BuilderEmitModel
         ExceptionFullName = exceptionFullName;
         Instantiation = instantiation;
         Preamble = preamble;
+        ValidateAsyncEpilogue = validateAsyncEpilogue;
     }
 
     public string Namespace { get; }
@@ -37,6 +39,15 @@ public sealed class BuilderEmitModel
     /// Used for custom fields, constructors, etc.
     /// </summary>
     public string? Preamble { get; }
+
+    /// <summary>
+    /// Raw C# source inserted at the end of the generated ValidateAsync body,
+    /// after per-property validation but before the success return. Has access
+    /// to the local <c>__result</c> (ValidationResult) and <c>__type</c>
+    /// (typeof(Builder)) variables. Use this to add cross-property invariants
+    /// like "exactly one of these must be set" on discriminated unions.
+    /// </summary>
+    public string? ValidateAsyncEpilogue { get; }
 }
 
 /// <summary>

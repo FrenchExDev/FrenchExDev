@@ -8,6 +8,17 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>FrenchExDev.Net.Traefik.Bundle.SourceGenerator</PackageId>
+    <Description>Roslyn source generator + analyzers (TFK001, TFK004) for FrenchExDev.Net.Traefik.Bundle. Generates strongly-typed Traefik static + dynamic config models, builders, and version metadata from JSON schemas wired as AdditionalFiles.</Description>
+    <PackageTags>traefik;reverse-proxy;config;source-generator;roslyn;analyzer</PackageTags>
+    <Authors>FrenchExDev</Authors>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
@@ -19,8 +30,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="FrenchExDev.Net.Traefik.Bundle.SourceGenerator.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
     <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+
+  <!-- Pack the SG and the shared BuilderEmitter Lib it depends on under
+       analyzers/dotnet/cs so consumers get them from a single nupkg pull. -->
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
+    <None Include="$(OutputPath)\FrenchExDev.Net.Builder.SourceGenerator.Lib.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
   </ItemGroup>
 
 </Project>

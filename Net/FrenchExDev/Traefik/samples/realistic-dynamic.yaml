@@ -1,0 +1,82 @@
+# Realistic Traefik dynamic configuration sample.
+# Exercises multiple middlewares (auth, prefix, headers, retry), TLS options,
+# weighted load balancing, and a TCP router. Used by RealisticRoundTripTests
+# to flush out edge cases the synthetic minimal fixtures don't reach.
+http:
+  routers:
+    api-router:
+      rule: "Host(`api.example.com`) && PathPrefix(`/v1`)"
+      entryPoints:
+        - websecure
+      service: api-backend
+      middlewares:
+        - api-auth
+        - api-strip-prefix
+        - api-rate-limit
+      tls:
+        certResolver: letsencrypt
+    web-router:
+      rule: "Host(`www.example.com`)"
+      entryPoints:
+        - web
+        - websecure
+      service: web-frontend
+      middlewares:
+        - secure-headers
+      priority: 100
+
+  services:
+    api-backend:
+      loadBalancer:
+        servers:
+          - url: "http://api-1.internal:8080"
+          - url: "http://api-2.internal:8080"
+        passHostHeader: true
+        responseForwarding:
+          flushInterval: "100ms"
+        healthCheck:
+          path: "/healthz"
+          interval: "30s"
+          timeout: "5s"
+    web-frontend:
+      loadBalancer:
+        servers:
+          - url: "http://web-1.internal:3000"
+
+  middlewares:
+    api-auth:
+      basicAuth:
+        users:
+          - "admin:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+        realm: "API"
+    api-strip-prefix:
+      stripPrefix:
+        prefixes:
+          - "/v1"
+    api-rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+    secure-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        stsSeconds: 31536000
+        customResponseHeaders:
+          X-Frame-Options: "DENY"
+          X-Content-Type-Options: "nosniff"
+
+tcp:
+  routers:
+    postgres-router:
+      rule: "HostSNI(`db.example.com`)"
+      entryPoints:
+        - postgres
+      service: postgres-backend
+      tls:
+        passthrough: true
+  services:
+    postgres-backend:
+      loadBalancer:
+        servers:
+          - address: "postgres-1.internal:5432"

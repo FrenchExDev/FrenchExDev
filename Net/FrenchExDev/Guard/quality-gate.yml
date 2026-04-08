@@ -22,3 +22,4 @@ gates:
 exclude:
   - "**/obj/**"
   - "**/bin/**"
+  - "FrenchExDev.Net.Result"

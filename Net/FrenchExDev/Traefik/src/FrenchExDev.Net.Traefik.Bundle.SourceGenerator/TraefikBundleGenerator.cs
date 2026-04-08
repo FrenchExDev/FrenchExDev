@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using FrenchExDev.Net.Builder.SourceGenerator.Lib;
@@ -13,74 +12,159 @@ public sealed class TraefikBundleGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var schemaFiles = context.AdditionalTextsProvider
-            .Where(static f => System.IO.Path.GetFileName(f.Path).StartsWith("traefik-v3-") &&
-                               f.Path.EndsWith(".json"));
+        // Stage 1: filter the AdditionalTexts to schemas we care about, then
+        // parse each one to a SchemaModel inside a Select so Roslyn can cache
+        // the parsed result. SchemaModel implements structural equality, so
+        // editing whitespace in a .json schema doesn't bust the downstream
+        // emit cache when the parsed shape is identical.
+        var parsedSchemas = context.AdditionalTextsProvider
+            .Where(static f => System.IO.Path.GetFileName(f.Path).StartsWith("traefik-v") &&
+                               f.Path.EndsWith(".json"))
+            .Select(static (file, ct) =>
+            {
+                var text = file.GetText(ct);
+                if (text is null) return null;
+                var filename = System.IO.Path.GetFileName(file.Path);
+                var kind = TraefikSchemaReader.DetectKind(filename);
+                var version = TraefikSchemaReader.ExtractVersion(filename);
+                try
+                {
+                    return TraefikSchemaReader.Parse(text.ToString(), version, kind);
+                }
+                catch
+                {
+                    return null;
+                }
+            });
 
-        context.RegisterSourceOutput(schemaFiles.Collect(), static (ctx, files) =>
+        // Stage 2: collect + merge into the UnifiedSchema. Also value-equal,
+        // so this stage caches too. Schemas are sorted by version so that
+        // properties first introduced in a later version get a SinceVersion
+        // marker, and properties dropped in a later version get UntilVersion.
+        var unifiedSchema = parsedSchemas.Collect().Select(static (schemas, ct) =>
         {
-            if (files.IsDefaultOrEmpty || files.Length == 0)
-                return;
+            var ordered = schemas
+                .Where(static s => s is not null)
+                .OrderBy(static s => s!.Version, System.StringComparer.Ordinal)
+                .ToList();
 
-            var ns = "FrenchExDev.Net.Traefik.Bundle";
-            Generate(ctx, ns, files);
-        });
-    }
-
-    private static void Generate(SourceProductionContext ctx, string ns,
-        ImmutableArray<AdditionalText> files)
-    {
-        try
-        {
             var allDefinitions = new Dictionary<string, UnifiedDefinition>();
             var staticRootProperties = new List<UnifiedProperty>();
             var dynamicRootProperties = new List<UnifiedProperty>();
             var versions = new HashSet<string>();
 
-            foreach (var file in files)
+            // Tracks the version a (definitionName, propertyJsonName) pair
+            // first appeared in. Used to stamp SinceVersion when later
+            // versions add new properties.
+            var firstSeen = new Dictionary<(string Def, string Prop), string>();
+
+            foreach (var schema in ordered)
             {
-                ctx.CancellationToken.ThrowIfCancellationRequested();
-                var text = file.GetText(ctx.CancellationToken);
-                if (text is null) continue;
+                ct.ThrowIfCancellationRequested();
+                if (schema is null) continue;
 
-                var filename = System.IO.Path.GetFileName(file.Path);
-                var kind = TraefikSchemaReader.DetectKind(filename);
-                var version = TraefikSchemaReader.ExtractVersion(filename);
-                versions.Add(version);
+                versions.Add(schema.Version);
 
-                var schema = TraefikSchemaReader.Parse(text.ToString(), version, kind);
-
-                // Collect definitions
                 foreach (var kvp in schema.Definitions)
                 {
-                    allDefinitions[kvp.Key] = new UnifiedDefinition
+                    // Union merge: existing properties are preserved across
+                    // schema versions; new ones are appended and stamped with
+                    // SinceVersion when they first appear after the earliest
+                    // loaded schema.
+                    if (!allDefinitions.TryGetValue(kvp.Key, out var existing))
                     {
-                        Name = kvp.Key,
-                        Description = kvp.Value.Description,
-                        Properties = kvp.Value.Properties
-                            .ConvertAll(p => new UnifiedProperty { Property = p }),
-                        IsOneOfDiscriminated = kvp.Value.IsOneOfDiscriminated,
-                        Branches = kvp.Value.Branches,
-                    };
+                        existing = new UnifiedDefinition
+                        {
+                            Name = kvp.Key,
+                            Description = kvp.Value.Description,
+                            Properties = new List<UnifiedProperty>(),
+                            IsOneOfDiscriminated = kvp.Value.IsOneOfDiscriminated,
+                            Branches = kvp.Value.Branches,
+                        };
+                        allDefinitions[kvp.Key] = existing;
+                    }
+                    else if (kvp.Value.Description is { Length: > 0 } d && existing.Description is null)
+                    {
+                        existing.Description = d;
+                    }
+
+                    var existingByName = new HashSet<string>();
+                    foreach (var ep in existing.Properties) existingByName.Add(ep.Property.JsonName);
+
+                    foreach (var p in kvp.Value.Properties)
+                    {
+                        var key = (kvp.Key, p.JsonName);
+                        if (!firstSeen.ContainsKey(key))
+                        {
+                            firstSeen[key] = schema.Version;
+                        }
+                        if (existingByName.Contains(p.JsonName))
+                        {
+                            continue; // already merged from an earlier version
+                        }
+                        var stampSince = firstSeen[key] != ordered[0]!.Version;
+                        existing.Properties.Add(new UnifiedProperty
+                        {
+                            Property = p,
+                            SinceVersion = stampSince ? firstSeen[key] : null,
+                        });
+                    }
                 }
 
-                // Collect root properties
                 var rootProps = schema.RootProperties
                     .ConvertAll(p => new UnifiedProperty { Property = p });
 
-                if (kind == SchemaKind.Static)
+                if (schema.Kind == SchemaKind.Static)
                     staticRootProperties.AddRange(rootProps);
                 else
                     dynamicRootProperties.AddRange(rootProps);
             }
 
-            var unified = new UnifiedSchema
+            return new UnifiedSchema
             {
-                Versions = versions.OrderBy(v => v).ToList(),
+                Versions = versions.OrderBy(static v => v, System.StringComparer.Ordinal).ToList(),
                 Definitions = allDefinitions,
                 RootProperties = staticRootProperties
                     .Concat(dynamicRootProperties).ToList()
             };
+        });
+
+        // Stage 3: emit. Only re-runs when the UnifiedSchema's structural
+        // equality differs from the previously cached one.
+        context.RegisterSourceOutput(unifiedSchema, static (ctx, unified) =>
+        {
+            if (unified.Definitions.Count == 0 && unified.RootProperties.Count == 0)
+            {
+                // TFK004: no schemas were wired in. The consumer's csproj is
+                // missing <AdditionalFiles Include="schemas\traefik-v3-*.json" />.
+                ctx.ReportDiagnostic(Diagnostic.Create(
+                    Analyzers.TraefikDiagnostics.NoSchemasFound,
+                    Location.None));
+                return;
+            }
+
+            var ns = "FrenchExDev.Net.Traefik.Bundle";
+            Emit(ctx, ns, unified);
+        });
+    }
+
+    private static void Emit(SourceProductionContext ctx, string ns, UnifiedSchema unified)
+    {
+        try
+        {
+            // Partition root properties back into static vs dynamic by looking
+            // at where they came from. Today the merge step concatenates them
+            // (static first, dynamic last), so we re-split using the section
+            // class-name prefix the dynamic parser stamps on every section.
+            var staticRootProperties = new List<UnifiedProperty>();
+            var dynamicRootProperties = new List<UnifiedProperty>();
+            foreach (var up in unified.RootProperties)
+            {
+                if (up.Property.InlineClassName is { } cn && cn.StartsWith("TraefikDynamic"))
+                    dynamicRootProperties.Add(up);
+                else
+                    staticRootProperties.Add(up);
+            }
 
             // Version metadata
             ctx.AddSource("TraefikSchemaVersions.g.cs",

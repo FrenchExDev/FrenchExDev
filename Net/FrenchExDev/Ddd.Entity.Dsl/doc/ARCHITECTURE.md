@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-Ddd.Entity.Dsl is a bridge source generator that connects two independent FrenchExDev projects: **Ddd** (domain-driven design attributes like `[AggregateRoot]`, `[Entity]`) and **Entity.Dsl** (persistence code generation via `[MappedEntity]`). The SG reads DDD attributes from user classes and emits partial classes decorated with Entity.Dsl attributes, enabling a two-stage code generation pipeline.
+Ddd.Entity.Dsl is a bridge source generator that connects two independent FrenchExDev projects: **Ddd** (domain-driven design attributes like `[AggregateRoot]`, `[Entity]`, `[EntityId]`, `[Composition]`) and **Entity.Dsl** (persistence code generation via `[MappedEntity]`, `[PrimaryKey]`, `[NavigationProperty]`). The SG reads DDD attributes from user classes and emits partial classes decorated with Entity.Dsl attributes, enabling a two-stage code generation pipeline.
 
 ---
 
@@ -13,14 +13,14 @@ Ddd.Entity.Dsl/
   FrenchExDev.Net.Ddd.Entity.Dsl.slnx
   src/
     FrenchExDev.Net.Ddd.Entity.Dsl.SourceGenerator/       (Roslyn incremental SG)
-      DddEntityDslBridgeGenerator.cs                       Reads [Entity]/[AggregateRoot], emits bridge
+      DddEntityDslBridgeGenerator.cs                       Reads DDD attributes, emits bridge
       FrenchExDev.Net.Ddd.Entity.Dsl.SourceGenerator.csproj
     FrenchExDev.Net.Ddd.Entity.Dsl.SourceGenerator.Lib/   (Testable emitter, no Roslyn)
       DddEntityDslBridgeEmitter.cs                         Emit() + DddBridgeModel
       FrenchExDev.Net.Ddd.Entity.Dsl.SourceGenerator.Lib.csproj
   test/
-    FrenchExDev.Net.Ddd.Entity.Dsl.Tests/                  (xUnit + Shouldly)
-      DddEntityDslBridgeEmitterTests.cs                    3 tests for emitter output
+    FrenchExDev.Net.Ddd.Entity.Dsl.Tests/                  (xUnit)
+      DddEntityDslBridgeEmitterTests.cs                    10 tests for emitter output
 ```
 
 ---
@@ -28,8 +28,8 @@ Ddd.Entity.Dsl/
 ## 3. Dependency Graph
 
 ```
-FrenchExDev.Net.Ddd.Attributes              (external — [Entity], [AggregateRoot], [EntityId], etc.)
-FrenchExDev.Net.Entity.Dsl.Attributes       (external — [MappedEntity])
+FrenchExDev.Net.Ddd.Attributes              (external -- [Entity], [AggregateRoot], [EntityId], etc.)
+FrenchExDev.Net.Entity.Dsl.Attributes       (external -- [MappedEntity], [PrimaryKey], [NavigationProperty], DeleteBehavior)
 
 Ddd.Entity.Dsl.SourceGenerator.Lib          (netstandard2.0, no dependencies)
   |-- DddEntityDslBridgeEmitter             (pure string emitter)
@@ -37,7 +37,7 @@ Ddd.Entity.Dsl.SourceGenerator.Lib          (netstandard2.0, no dependencies)
 
 Ddd.Entity.Dsl.SourceGenerator              (netstandard2.0, Roslyn analyzer)
   |-- DddEntityDslBridgeGenerator           (IIncrementalGenerator)
-  |-- Links Lib source files directly        (no project reference — SG constraint)
+  |-- Links Lib source files directly        (no project reference -- SG constraint)
 
 Ddd.Entity.Dsl.Tests                         (net10.0)
   |-- refs SourceGenerator.Lib               (project reference, tests emitter directly)
@@ -52,12 +52,14 @@ The SG links the Lib's `.cs` files via `<Compile Include>` rather than a project
 ```
 Stage 1: Ddd.Entity.Dsl bridge SG
   Input:  [AggregateRoot] or [Entity] on partial class
+          [EntityId], [Composition], [Aggregation], [Association] on properties
   Output: {ClassName}.DddBridge.g.cs
-          → partial class with [MappedEntity] attribute
+          -> partial class with [MappedEntity], [PrimaryKey], [NavigationProperty] attributes
 
 Stage 2: Entity.Dsl SG (separate project)
-  Input:  [MappedEntity] on partial class (from Stage 1 or manual)
-  Output: EF Core DbContext, entity configuration, etc.
+  Input:  [MappedEntity] + [PrimaryKey] + [NavigationProperty] on partial class
+  Output: EF Core ConfigurationBase, Configuration, ConfigurationRegistration,
+          DbContext, Repositories, UnitOfWork
 ```
 
 The two stages are independent SGs. Stage 1 emits source files that Stage 2 reads on the next compilation pass. The user only writes `[AggregateRoot]` -- both SGs run transparently.
@@ -66,7 +68,7 @@ The two stages are independent SGs. Stage 1 emits source files that Stage 2 read
 
 ## 5. DddBridgeModel
 
-The bridge model captures the information extracted from DDD attributes:
+The bridge model captures all information extracted from DDD attributes:
 
 ```csharp
 public sealed class DddBridgeModel
@@ -75,36 +77,41 @@ public sealed class DddBridgeModel
     public string ClassName { get; set; }
     public bool IsAggregateRoot { get; set; }
     public bool IsEntity { get; set; }
-    public List<string> EntityIdPropertyNames { get; set; }      // → [PrimaryKey]
-    public List<string> CompositionPropertyNames { get; set; }   // → OnDelete=Cascade
-    public List<string> AggregationPropertyNames { get; set; }   // → OnDelete=Restrict
-    public List<string> AssociationPropertyNames { get; set; }   // → OnDelete=NoAction
+    public List<string> EntityIdPropertyNames { get; set; }      // -> [PrimaryKey("...")]
+    public List<string> CompositionPropertyNames { get; set; }   // -> OnDelete = Cascade
+    public List<string> AggregationPropertyNames { get; set; }   // -> OnDelete = Restrict
+    public List<string> AssociationPropertyNames { get; set; }   // -> OnDelete = NoAction
 }
 ```
 
-Currently only `Namespace`, `ClassName`, `IsAggregateRoot`, and `IsEntity` are populated. Property-level mappings (`EntityId`, `Composition`, `Aggregation`, `Association`) are modeled but not yet emitted.
+The generator populates all fields by scanning the class symbol and its public properties for DDD attributes (`[EntityId]`, `[Composition]`, `[Aggregation]`, `[Association]`).
 
 ---
 
 ## 6. DddEntityDslBridgeEmitter
 
-The emitter is a pure function: `DddBridgeModel → string`. It generates:
+The emitter is a pure function: `DddBridgeModel -> string`. It generates a partial class with all necessary Entity.Dsl attributes:
 
 ```csharp
 // <auto-generated/>
-// Generated by Ddd.Entity.Dsl bridge — maps DDD attributes to Entity.Dsl attributes.
+// Generated by Ddd.Entity.Dsl bridge -- maps DDD attributes to Entity.Dsl attributes.
 #nullable enable
 
 namespace MyApp.Domain;
 
 [global::FrenchExDev.Net.Entity.Dsl.Attributes.MappedEntity]
+[global::FrenchExDev.Net.Entity.Dsl.Attributes.PrimaryKey("Id")]
+[global::FrenchExDev.Net.Entity.Dsl.Attributes.NavigationProperty("Lines", OnDelete = global::FrenchExDev.Net.Entity.Dsl.Attributes.DeleteBehavior.Cascade)]
+[global::FrenchExDev.Net.Entity.Dsl.Attributes.NavigationProperty("Customer", OnDelete = global::FrenchExDev.Net.Entity.Dsl.Attributes.DeleteBehavior.Restrict)]
 public partial class Order
 {
 }
 ```
 
 Key implementation details:
-- Fully qualified attribute name (`global::...`) to avoid namespace conflicts
+- Fully qualified attribute names (`global::...`) to avoid namespace conflicts
+- `[PrimaryKey]` uses class-level constructor with property name strings (C# partial classes cannot add attributes to existing properties)
+- `[NavigationProperty]` is `AllowMultiple = true` -- one per relationship
 - `#nullable enable` for compatibility with nullable-enabled projects
 - Auto-generated header for tooling recognition
 - Empty partial class body -- attributes are the only contribution
@@ -116,32 +123,54 @@ Key implementation details:
 The Roslyn incremental SG:
 
 1. Uses `ForAttributeWithMetadataName` to discover classes with `[Entity]` or `[AggregateRoot]`
-2. Extracts `DddBridgeModel` from each class symbol
-3. Merges entity and aggregate root pipelines via `Collect().Combine().SelectMany()`
-4. Calls `DddEntityDslBridgeEmitter.Emit(model)` for each model
-5. Adds source as `{ClassName}.DddBridge.g.cs`
+2. In `ExtractModel`, extracts class-level info (namespace, name, is-aggregate-root)
+3. Scans public properties for `[EntityId]`, `[Composition]`, `[Aggregation]`, `[Association]` attributes
+4. Populates all `DddBridgeModel` fields
+5. Merges entity and aggregate root pipelines via `Collect().Combine().SelectMany()`
+6. Calls `DddEntityDslBridgeEmitter.Emit(model)` for each model
+7. Adds source as `{ClassName}.DddBridge.g.cs`
 
 The generator is incremental -- it only re-emits when the relevant attributes or class declarations change.
 
 ---
 
-## 8. Ecosystem Position
+## 8. Entity.Dsl Attributes Extended for the Bridge
+
+The bridge required extending Entity.Dsl.Attributes with new types:
+
+| Type | Purpose |
+|------|---------|
+| `PrimaryKeyAttribute` (extended) | Now targets `Class \| Property`. Class-level: `[PrimaryKey("Id", "TenantId")]` with `params string[]` constructor. Property-level unchanged. |
+| `NavigationPropertyAttribute` (new) | Class-level, `AllowMultiple`. Constructor takes property name string. `OnDelete` named property with `DeleteBehavior` enum. |
+| `DeleteBehavior` enum (new) | `Cascade`, `Restrict`, `NoAction`, `SetNull`, `ClientCascade`. Maps to EF Core's `DeleteBehavior`. |
+
+The Entity.Dsl SG reads these class-level attributes alongside existing property-level attributes. Class-level `[PrimaryKey]` takes precedence over property-level when both are present (bridge scenario).
+
+---
+
+## 9. Ecosystem Position
 
 ```
 DDD layer:
-  Ddd.Attributes → [AggregateRoot], [Entity], [EntityId], [Composition], [Aggregation], [Association]
+  Ddd.Attributes -> [AggregateRoot], [Entity], [EntityId], [Composition], [Aggregation], [Association]
 
 Bridge (this project):
-  Ddd.Entity.Dsl.SG → reads DDD attributes, emits [MappedEntity]
+  Ddd.Entity.Dsl.SG -> reads DDD attributes, emits Entity.Dsl attributes
 
 Persistence layer:
-  Entity.Dsl.Attributes → [MappedEntity], [PrimaryKey], etc.
-  Entity.Dsl.SG → reads [MappedEntity], emits EF Core code
+  Entity.Dsl.Attributes -> [MappedEntity], [PrimaryKey], [NavigationProperty], DeleteBehavior
+  Entity.Dsl.SG -> reads Entity.Dsl attributes, emits EF Core code
 
 Developer writes:
-  [AggregateRoot] public partial class Order { ... }
+  [AggregateRoot] public partial class Order
+  {
+      [EntityId]     public Guid Id { get; set; }
+      [Composition]  public List<OrderLine> Lines { get; set; }
+      [Aggregation]  public Customer Customer { get; set; }
+  }
 
 Gets for free:
-  [MappedEntity] (from this bridge)
-  EF Core DbContext + configuration (from Entity.Dsl)
+  [MappedEntity] + [PrimaryKey("Id")] + [NavigationProperty(...)]    (from this bridge)
+  EF Core ConfigurationBase with HasKey + OnDelete                    (from Entity.Dsl)
+  DbContext + Repositories + UnitOfWork                               (from Entity.Dsl)
 ```
