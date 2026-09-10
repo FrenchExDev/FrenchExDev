@@ -1,0 +1,24 @@
+Description:
+  Install or work with workloads that extend the .NET experience.
+
+Usage:
+  dotnet workload [command] [options]
+
+Options:
+  --info          Display information about installed workloads.
+  --version       Display the currently installed workload version.
+  -?, -h, --help  Show command line help.
+
+Commands:
+  install <WORKLOAD_ID>         Install one or more workloads.
+  update                        Update all installed workloads.
+  list                          List workloads available.
+  search <SEARCH_STRING>        Search for available workloads.
+  uninstall <WORKLOAD_ID>       Uninstall one or more workloads.
+  repair                        Repair workload installations.
+  restore <PROJECT | SOLUTION>  Restore workloads required for a project.
+  clean                         Removes workload components that may have been left behind from previous updates and uninstallations.
+  config                        Modify or display workload configuration values.
+                                To display a value, specify the corresponding command-line option without providing a value.  For example: "dotnet workload config --update-mode"
+  history                       Shows a history of workload installation actions.
+

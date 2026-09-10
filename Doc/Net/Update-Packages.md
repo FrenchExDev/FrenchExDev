@@ -2,9 +2,11 @@
 
 Interactive NuGet package updater for Central Package Management (`Directory.Packages.props`).
 
-Checks all packages against the NuGet API in parallel, displays a live-updating table with animated spinners, then lets you pick which updates to apply.
+Checks all packages against the NuGet API in parallel, prints each result as it arrives with a PowerShell progress indicator, then lets you pick which updates to apply.
 
-![Update-Packages in action](Update-Packages.gif)
+![Previous console display](Update-Packages.gif)
+
+The recording shows the previous display with per-row spinners.
 
 ## Usage
 
@@ -41,18 +43,17 @@ Reads `Directory.Packages.props` (located alongside the script) and extracts all
 
 ### 2. Check versions (parallel)
 
-Queries the [NuGet flat container API](https://api.nuget.org/v3-flatcontainer/) for each package using a `RunspacePool` capped at `-ParallelMax` concurrent requests.
+Queries the [NuGet flat container API](https://api.nuget.org/v3-flatcontainer/) for each package using `curl.exe` processes capped at `-ParallelMax` concurrent requests.
 
-Each request retries up to 5 times with exponential backoff (500ms, 1s, 1.5s, 2s) before marking a package as failed.
+Each request makes up to 3 attempts when the process fails or returns no content before marking a package as failed.
 
 ### 3. Live table display
 
-A table is rendered with all packages upfront, then updated in-place as results arrive:
+Each completed package is printed on a new line as results arrive. A separate PowerShell progress indicator shows the completed count. No fixed cursor positions are used, so the output supports small or resized terminals and redirection to a file.
 
 ```
      Version         Status                  Package
   ─  ──────────────  ──────────────────────  ──────────────────────
-  ⠹  4.3.1                                   Microsoft.CodeAnalysis.CSharp    (checking...)
      8.0.0           ✓                        coverlet.collector               (up to date)
      2.9.3           ↑ 2.10.0                 xunit                            (update available)
   ✗  1.0.0           fetch error              SomePackage                      (all retries failed)
@@ -60,10 +61,9 @@ A table is rendered with all packages upfront, then updated in-place as results 
 
 | Symbol | Color | Meaning |
 |--------|-------|---------|
-| `⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏` | yellow | Braille spinner -- request in flight |
 | `✓` | green | Package is up to date |
 | `↑ x.y.z` | yellow | Newer version available (shown alongside) |
-| `✗` | red | All 5 fetch attempts failed |
+| `✗` | red | Fetch or response parsing failed |
 
 ### 4. Select updates (interactive mode)
 

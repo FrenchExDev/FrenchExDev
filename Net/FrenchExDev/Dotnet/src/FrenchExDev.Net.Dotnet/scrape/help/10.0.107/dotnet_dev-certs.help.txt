@@ -1,0 +1,12 @@
+
+
+Usage: dotnet dev-certs [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  https  
+
+Use "dotnet dev-certs [command] --help" for more information about a command.
+

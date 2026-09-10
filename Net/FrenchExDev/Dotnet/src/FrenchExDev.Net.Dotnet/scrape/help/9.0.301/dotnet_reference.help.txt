@@ -1,0 +1,15 @@
+Description:
+  .NET Remove Command
+
+Usage:
+  dotnet reference [command] [options]
+
+Options:
+  --project <project>  The project file to operate on. If a file is not specified, the command will search the current directory for one.
+  -?, -h, --help       Show command line help.
+
+Commands:
+  add <PROJECT_PATH>     Add a project-to-project reference to the project.
+  list                   List all project-to-project references of the project.
+  remove <PROJECT_PATH>  Remove a project-to-project reference from the project.
+

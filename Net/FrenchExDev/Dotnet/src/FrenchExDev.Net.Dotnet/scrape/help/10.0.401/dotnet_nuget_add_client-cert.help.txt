@@ -1,0 +1,20 @@
+Description:
+  Adds a client certificate configuration that matches the given package source name.
+
+Usage:
+  NuGet.CommandLine.XPlat add client-cert [options]
+
+Options:
+  -s, --package-source <package-source>  Package source name.
+  --path <path>                          Path to certificate file.
+  --password <password>                  Password for the certificate, if needed.
+  --store-password-in-clear-text         Enables storing password for the certificate by disabling password encryption.
+  --store-location <store-location>      Certificate store location (see docs).
+  --store-name <store-name>              Certificate store name (see docs).
+  --find-by <find-by>                    Search method to find certificate in certificate store (see docs).
+  --find-value <find-value>              Search the certificate store for the supplied value. Used with FindValue (see docs).
+  -f, --force                            Skip certificate validation.
+  --configfile <configfile>              The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -?, -h, --help                         Show help and usage information
+  --force-english-output                 Forces the application to run using an invariant, English-based culture.
+

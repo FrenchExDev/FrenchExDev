@@ -6,6 +6,15 @@ BinaryWrapper turns any command-line tool into a fully typed C# API. Point it at
 
 ---
 
+## Reusable collection images
+
+[Upgrade guide and complete client inventory](doc/UPGRADE-IMAGE-PIPELINES.md):
+all nine CLI clients select complete `DesignImagePlan` recipes through
+`IDesignImagePlanResolver`, prepare their shared dependencies, and build version
+images with `UseVersionImage`. Git selects Rust dependencies from 2.55; Podman
+selects its release archive at 4.4. Other clients use a single recipe. The legacy
+`ImagePlan` runner property remains compatible.
+
 ## Why?
 
 Calling CLI tools from .NET usually means building argument strings by hand, hoping you spelled the flags right, and parsing raw stdout. BinaryWrapper eliminates all of that:
@@ -56,6 +65,16 @@ flowchart LR
 | `FrenchExDev.Net.BinaryWrapper.Testing` | net10.0 | Fakes, CsCheck generators, and test helpers |
 
 ## Quick Start
+
+To scaffold a complete consumer solution (runtime, Design, tests and instructions),
+run this from `Net/FrenchExDev` in PowerShell 7:
+
+```powershell
+./BinaryWrapper/scripts/New-BinaryWrapperSolution.ps1 MyTool -CommandName my-tool
+```
+
+The script creates `MyTool/` beside BinaryWrapper and refuses to overwrite an
+existing directory. See [scaffolding options and examples](doc/SCRIPTS.md#new-binarywrappersolutionps1).
 
 ### 1. Scrape the binary's help text
 

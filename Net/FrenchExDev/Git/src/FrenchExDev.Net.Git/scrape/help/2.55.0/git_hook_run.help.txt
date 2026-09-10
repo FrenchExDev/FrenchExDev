@@ -1,0 +1,10 @@
+usage: git hook run [--allow-unknown-hook-name] [--ignore-missing] [--to-stdin=<path>] [(-j|--jobs) <n>]
+       <hook-name> [-- <hook-args>]
+
+    --[no-]allow-unknown-hook-name
+                          allow running a hook with a non-native hook name
+    --[no-]ignore-missing silently ignore missing requested <hook-name>
+    --[no-]to-stdin <path>
+                          file to read into hooks' stdin
+    -j, --[no-]jobs <n>   run up to <n> hooks simultaneously (-1 for CPU count)
+

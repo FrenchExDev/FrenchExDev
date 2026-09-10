@@ -1,0 +1,28 @@
+
+  Initialize OpenTofu or Terraform.                                                                                     
+         
+  USAGE  
+         
+    glab opentofu init <state> [--flags]                              
+            
+  EXAMPLES  
+            
+    # Initialize state with name production in working directory      
+    glab opentofu init production                                     
+                                                                      
+    # Initialize state with name production in infra/ directory       
+    glab opentofu init production -d infra/                           
+                                                                      
+    # Initialize state with name production with Terraform            
+    glab opentofu init production -b terraform                        
+                                                                      
+    # Initialize state with name production with reconfiguring state  
+    glab opentofu init production -- -reconfigure                     
+         
+  FLAGS  
+         
+    -b --binary     Name or path of the OpenTofu or Terraform binary to use for the initialization. (tofu)
+    -d --directory  Directory of the OpenTofu or Terraform project to initialize. (.)
+    -h --help       Show help for this command.
+    -R --repo       Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

@@ -22,6 +22,12 @@ public sealed class DesignPipelineRunner
     /// </summary>
     public VersionDelegate? ReparsePipeline { get; init; }
 
+    /// <summary>Optional shared dependency image and per-version installation recipes.</summary>
+    public DesignImagePlan? ImagePlan { get; init; }
+
+    /// <summary>Optional version-dependent recipes. Mutually exclusive with ImagePlan.</summary>
+    public IDesignImagePlanResolver? ImagePlanResolver { get; init; }
+
     public string? DefaultMinVersion { get; init; }
     public int DefaultParallelism { get; init; } = 4;
     public int DefaultScrapeParallelism { get; init; } = 4;
@@ -76,6 +82,13 @@ public sealed class DesignPipelineRunner
         var listKnownMissing = false;
         var useDashboard = false;
         var reparse = false;
+        var buildBase = false;
+        var buildImages = false;
+        var cleanImages = false;
+        var keepImages = false;
+        var failFast = false;
+        var stopFile = (string?)null;
+        var retryKnownMissing = false;
 
         for (var i = 0; i < args.Length; i++)
         {
@@ -93,8 +106,30 @@ public sealed class DesignPipelineRunner
                 case "--list-known-missing": listKnownMissing = true; break;
                 case "--dashboard": useDashboard = true; break;
                 case "--reparse": reparse = true; break;
+                case "--build-base": buildBase = true; break;
+                case "--build-images": buildImages = true; break;
+                case "--clean-images": cleanImages = true; break;
+                case "--keep-images": keepImages = true; break;
+                case "--fail-fast": failFast = true; break;
+                case "--stop-file": stopFile = Path.GetFullPath(args[++i]); failFast = true; break;
+                case "--retry-known-missing": retryKnownMissing = true; break;
             }
         }
+
+        if (ImagePlan is not null && ImagePlanResolver is not null)
+            throw new ArgumentException("ImagePlan and ImagePlanResolver cannot be configured together.");
+        var imageResolver = ImagePlanResolver
+            ?? (ImagePlan is null ? null : new SingleDesignImagePlanResolver(ImagePlan));
+        if ((buildBase || buildImages || cleanImages) && imageResolver is null)
+            throw new InvalidOperationException("Image commands require DesignPipelineRunner.ImagePlanResolver or ImagePlan.");
+        if ((buildBase ? 1 : 0) + (buildImages ? 1 : 0) + (cleanImages ? 1 : 0) > 1
+            || ((buildBase || buildImages || cleanImages) && reparse)
+            || ((buildBase || cleanImages) && (listOnly || missingOnly))
+            || ((buildBase || buildImages || cleanImages)
+                && (addKnownMissing is not null || removeKnownMissing is not null || listKnownMissing)))
+            throw new ArgumentException("Image commands cannot be combined with these operation modes.");
+        if (parallel < 1 || scrapeParallelism < 1)
+            throw new ArgumentOutOfRangeException(nameof(args), "Parallelism values must be positive.");
 
         // Handle --add-known-missing (early exit, no network needed)
         if (addKnownMissing is not null)
@@ -132,7 +167,49 @@ public sealed class DesignPipelineRunner
             builder.AddConsole().SetMinimumLevel(MinLogLevel));
         var logger = loggerFactory.CreateLogger("DesignPipelineRunner");
 
+        // A shared stop file coordinates independently launched clients. In-flight versions
+        // finish their finally blocks; no new version is scheduled after an observed failure.
+        var stopRequested = 0;
+        bool IsStopping() => failFast && (Volatile.Read(ref stopRequested) != 0
+            || (stopFile is not null && File.Exists(stopFile)));
+        void SignalFailure()
+        {
+            if (!failFast) return;
+            Interlocked.Exchange(ref stopRequested, 1);
+            if (stopFile is null) return;
+            try
+            {
+                using var signal = new FileStream(stopFile, FileMode.OpenOrCreate,
+                    FileAccess.Write, FileShare.ReadWrite);
+            }
+            catch (Exception ex) { logger.LogError(ex, "Could not signal sibling clients"); }
+        }
+
+        if (IsStopping()) return 1;
+        if (stopFile is not null) Directory.CreateDirectory(Path.GetDirectoryName(stopFile)!);
+
         var runProcess = RunProcess ?? ProcessRunnerContainerRuntime.RunProcessAsync;
+        ResolvedDesignImagePlans? imageCache = null;
+        ResolvedDesignImagePlans CreateImageCache() => new(imageResolver!, runtimeBinary, runProcess,
+            logger, outputDir, streamBuildOutput: RunProcess is null);
+
+        // Base preparation and cache cleanup do not need a version collector or credentials.
+        if (buildBase || cleanImages)
+        {
+            try
+            {
+                imageCache = CreateImageCache();
+                if (cleanImages) await imageCache.CleanAsync();
+                else await imageCache.PrepareAllAsync();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                SignalFailure();
+                logger.LogError(ex, "Image operation failed");
+                return 1;
+            }
+        }
 
         // Collect and filter versions
         Func<string, bool> filter = minVersion is not null
@@ -146,9 +223,21 @@ public sealed class DesignPipelineRunner
             logger.LogInformation("Reparse mode: discovering cached versions from {HelpDir}",
                 Path.Combine(outputDir, "help"));
 
-        var allVersions = reparse
-            ? DiscoverCachedVersions(outputDir)
-            : await VersionCollector.CollectVersionsAsync();
+        IReadOnlyList<string> allVersions;
+        try
+        {
+            allVersions = reparse
+                ? DiscoverCachedVersions(outputDir)
+                : await VersionCollector.CollectVersionsAsync();
+        }
+        catch (Exception ex) when (failFast)
+        {
+            SignalFailure();
+            logger.LogError(ex, "Version discovery failed");
+            return 1;
+        }
+
+        if (IsStopping()) return 1;
 
         logger.LogInformation("Discovered {Count} total versions", allVersions.Count);
         if (minVersion is not null)
@@ -183,7 +272,8 @@ public sealed class DesignPipelineRunner
             }
 
             var knownMissing = LoadKnownMissing(outputDir);
-            versions = versions.Where(v => !existing.Contains(v) && !knownMissing.Contains(v)).ToList();
+            versions = versions.Where(v => !existing.Contains(v)
+                && (retryKnownMissing || !knownMissing.Contains(v))).ToList();
         }
 
         if (listOnly)
@@ -205,6 +295,22 @@ public sealed class DesignPipelineRunner
 
         Directory.CreateDirectory(outputDir);
 
+        // Resolve filtered versions and complete their dependency images before starting workers.
+        if (imageResolver is not null && !reparse)
+        {
+            try
+            {
+                imageCache = CreateImageCache();
+                await imageCache.PrepareAsync(versions);
+            }
+            catch (Exception ex)
+            {
+                SignalFailure();
+                logger.LogError(ex, "Dependency image preparation failed");
+                return 1;
+            }
+        }
+
         // Shared crash-recovery tracking
         var activeContainers = new ConcurrentBag<string>();
         var activeImages = new ConcurrentDictionary<string, byte>();
@@ -222,15 +328,22 @@ public sealed class DesignPipelineRunner
 
         foreach (var v in versions)
             await channel.Writer.WriteAsync(v);
+
         channel.Writer.Complete();
 
         var workers = new Task[Math.Min(parallel, versions.Count)];
+
         for (var i = 0; i < workers.Length; i++)
         {
             workers[i] = Task.Run(async () =>
             {
                 await foreach (var version in channel.Reader.ReadAllAsync())
                 {
+                    if (IsStopping())
+                    {
+                        progressInfos?.GetValueOrDefault(version)?.SetStage("Stopped");
+                        continue;
+                    }
                     var ctx = new VersionContext
                     {
                         Version = version,
@@ -239,6 +352,8 @@ public sealed class DesignPipelineRunner
                         OutputDir = outputDir,
                         RunProcess = runProcess,
                         ScrapeParallelism = scrapeParallelism,
+                        AcquireVersionImage = imageCache is null ? null
+                            : v => imageCache.AcquireVersionImageAsync(v, removeAfterUse: !keepImages),
                         ActiveContainers = activeContainers,
                         ActiveImages = activeImages,
                         Progress = progressInfos?.GetValueOrDefault(version),
@@ -247,12 +362,19 @@ public sealed class DesignPipelineRunner
                     VersionScrapeResult result;
                     try
                     {
-                        await activePipeline(ctx);
+                        if (buildImages)
+                        {
+                            ctx.Progress?.SetStage("Building");
+                            ctx.ImageTag = await imageCache!.GetVersionImageAsync(version);
+                        }
+                        else
+                            await activePipeline(ctx);
                         ctx.Progress?.SetDone();
                         result = new VersionScrapeResult(version, true, ctx.Result, null);
                     }
                     catch (Exception ex)
                     {
+                        SignalFailure();
                         ctx.Progress?.SetError(ex.Message);
                         result = new VersionScrapeResult(version, false, null, ex.Message);
                     }
@@ -280,8 +402,9 @@ public sealed class DesignPipelineRunner
             var failed = results.Count(r => !r.Success);
             Console.WriteLine($"\nDone. {succeeded} succeeded, {failed} failed out of {results.Count} versions.");
 
-            // Auto-save failed versions as known-missing when running in --missing mode
-            if (missingOnly && failed > 0)
+            // Legacy collection keeps its historical auto-save behavior. Fail-fast runs must
+            // retry transient failures on replay instead of silently excluding them.
+            if (missingOnly && failed > 0 && !failFast)
             {
                 var failedVersions = results.Where(r => !r.Success).Select(r => r.Version);
                 var current = LoadKnownMissing(outputDir);
@@ -291,7 +414,9 @@ public sealed class DesignPipelineRunner
                 Console.WriteLine($"Added {failed} failed version(s) to known missing ({current.Count} total).");
             }
 
-            return failed > 0 ? 1 : 0;
+            if (results.Count < total)
+                Console.WriteLine($"Stopped: {total - results.Count} version(s) not started.");
+            return failed > 0 || IsStopping() ? 1 : 0;
         }
         finally
         {
@@ -370,6 +495,7 @@ public sealed class DesignPipelineRunner
                 "Scraping" => "[cyan]Scraping[/]",
                 "Done" => "[green]Done[/]",
                 "Failed" => "[red]Failed[/]",
+                "Stopped" => "[yellow]Stopped[/]",
                 _ => p.Stage
             };
 

@@ -1,0 +1,29 @@
+
+  View a running CI/CD pipeline on current or other branch specified.                                                   
+         
+  USAGE  
+         
+    glab ci status [--flags]                   
+            
+  EXAMPLES  
+            
+    glab ci status --live                      
+                                               
+    # A more compact view                      
+    glab ci status --compact                   
+                                               
+    # Get the pipeline for the main branch     
+    glab ci status --branch=main               
+                                               
+    # Get the pipeline for the current branch  
+    glab ci status                             
+         
+  FLAGS  
+         
+    -b --branch   Check pipeline status for a branch. (default current branch)
+    -c --compact  Show status in compact format.
+    -h --help     Show help for this command.
+    -l --live     Show status in real time until the pipeline ends.
+    -F --output   Format output as: text, json. Note: JSON output is not compatible with --live or --compact flags. (text)
+    -R --repo     Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

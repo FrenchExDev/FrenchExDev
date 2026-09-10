@@ -1,0 +1,32 @@
+
+  Lists jobs processed by the specified runner, including jobs that are currently running.                              
+                                                                                                                        
+  Requires the Maintainer or Owner role for the project.                                                                
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner jobs <runner-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # List all jobs for runner 9            
+    glab runner jobs 9                      
+                                            
+    # List only running jobs                
+    glab runner jobs 9 --status running     
+                                            
+    # List jobs as JSON                     
+    glab runner jobs 9 --output json        
+         
+  FLAGS  
+         
+    -h --help      Show help for this command.
+    --order-by     Order jobs by: id. (id)
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (30)
+    -R --repo      Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --sort         Sort order: asc or desc. (desc)
+    --status       Filter jobs by status: running, success, failed, canceled.
+

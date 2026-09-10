@@ -144,7 +144,7 @@ The `FrenchExDev.Net.PodmanCompose.Design` project scrapes `podman-compose --hel
 ### How it works
 
 1. **Version discovery** -- `GitHubReleasesVersionCollector("containers", "podman-compose")` fetches release tags from GitHub
-2. **Container build** -- Each version gets an Alpine 3.19 image with `pip install podman-compose=={version}`
+2. **Container build** -- Prepare Alpine 3.19 with Python, pip, yaml and dotenv once; install `podman-compose=={version}` in each derived image
 3. **Scraping** -- Recursively invokes `podman-compose <command> --help` and parses output using the standard `argparse` help parser
 4. **JSON output** -- Writes `podman-compose-{version}.json` to the `scrape/` directory
 
@@ -152,13 +152,13 @@ The `FrenchExDev.Net.PodmanCompose.Design` project scrapes `podman-compose --hel
 
 ```bash
 # Scrape all versions (requires podman or docker)
-dotnet run --project src/FrenchExDev.Net.PodmanCompose.Design
+dotnet run --project src/FrenchExDev.Net.PodmanCompose.Design --framework net10.0
 
 # Scrape specific version range
-dotnet run --project src/FrenchExDev.Net.PodmanCompose.Design -- --min-version 1.3.0 --max-version 1.5.0
+dotnet run --project src/FrenchExDev.Net.PodmanCompose.Design --framework net10.0 -- --min-version 1.3.0 --max-version 1.5.0
 
 # Re-parse from cached help text (no container rebuild)
-dotnet run --project src/FrenchExDev.Net.PodmanCompose.Design -- --reparse
+dotnet run --project src/FrenchExDev.Net.PodmanCompose.Design --framework net10.0 -- --reparse
 ```
 
 ### Scraped versions
@@ -249,3 +249,48 @@ The entire library consists of a single 6-line descriptor class. All 54 generate
 ## License
 
 Proprietary. All rights reserved.
+
+## Shared dependency and version images
+
+The Design runner prepares the shared system dependencies once, then installs each
+software version in an image derived from that base. `UseVersionImage().UseContainer()`
+builds or reuses the image before collecting help. After collection, the container
+and version image are removed; `--keep-images` retains the version image. The
+shared base remains cached.
+
+From the wrapper directory, with Podman running (or add `--runtime docker`):
+
+```powershell
+$design = './src/FrenchExDev.Net.PodmanCompose.Design/FrenchExDev.Net.PodmanCompose.Design.csproj'
+dotnet run --project $design --framework net10.0 -- --help
+dotnet run --project $design --framework net10.0 -- --build-base
+dotnet run --project $design --framework net10.0 -- --list --missing
+# Review the selection; optionally narrow it with --min-version.
+dotnet run --project $design --framework net10.0 -- --build-images --missing --parallel 2
+dotnet run --project $design --framework net10.0 -- --missing --parallel 2
+dotnet run --project $design --framework net10.0 -- --reparse
+dotnet run --project $design --framework net10.0 -- --clean-images
+```
+
+`--build-base` prepares only dependencies. `--build-images` installs selected versions
+without scraping and keeps their images. `--clean-images` removes this wrapper's
+version images before its base, without forcing removal. Base preparation and cleanup
+do not query the version collector; `--list` and `--reparse` do not build images.
+With `--missing`, selection is based on missing JSON files.
+
+The three image operations are mutually exclusive and cannot be combined with
+`--reparse` or known-missing management. `--build-base` and `--clean-images` also
+reject `--list` and `--missing`.
+
+The PowerShell launcher exposes `-BuildBase`, `-BuildImages`, `-CleanImages`,
+`-KeepImages`, `-Reparse`, `-Missing`, `-List`, `-MinVersion`, `-Parallel`,
+`-ScrapeParallel`, `-Runtime`, `-Output` and `-Framework`. It resolves its project
+relative to the script, so it also works from another directory:
+
+```powershell
+./scripts/Find-Missing.ps1 -BuildBase -Framework net10.0
+./scripts/Find-Missing.ps1 -BuildImages -Missing -Parallel 2 -Framework net10.0
+```
+
+See the [BinaryWrapper image pipeline guide](../BinaryWrapper/doc/UPGRADE-IMAGE-PIPELINES.md)
+for each client's dependencies, cache identities, build logs, reuse and cleanup.

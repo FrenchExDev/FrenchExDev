@@ -1,0 +1,16 @@
+
+  Work with GitLab CI/CD configuration.                                                                                 
+         
+  USAGE  
+         
+    glab ci config <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    compile    View the fully expanded CI/CD configuration.
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

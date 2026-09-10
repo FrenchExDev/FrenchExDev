@@ -1,0 +1,35 @@
+Command "for" is deprecated, use `glab mr create --related-issue <issueID>`
+
+  Creates a branch and opens a merge request linked to the issue.                                                       
+  Use `--draft` to mark the merge request as a draft.                                                                   
+                                                                                                                        
+         
+  USAGE  
+         
+    glab mr for [--flags]                                             
+            
+  EXAMPLES  
+            
+    # Create merge request for issue 34                               
+    $ glab mr for 34                                                  
+                                                                      
+    # Create merge request for issue 34 and mark as work in progress  
+    $ glab mr for 34 --wip                                            
+                                                                      
+    $ glab mr new-for 34                                              
+    $ glab mr create-for 34                                           
+         
+  FLAGS  
+         
+    --allow-collaboration   Allow commits from other members.
+    -a --assignee           Assign merge request to people by their IDs. Multiple values should be comma-separated.
+    --draft                 Mark merge request as a draft. (true)
+    -h --help               Show help for this command.
+    -l --label              Add label by name. Multiple labels should be comma-separated.
+    -m --milestone          Add milestone by <id> for this merge request. (-1)
+    --remove-source-branch  Remove source branch on merge.
+    -R --repo               Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+    -b --target-branch      The target or base branch into which you want your code merged.
+    --wip                   Mark merge request as a work in progress. Overrides --draft.
+    --with-labels           Copy labels from issue to the merge request.
+

@@ -30,7 +30,14 @@ internal static class BuilderClassEmitter
             : cmd.Name;
 
         // Build property models from options + arguments
-        var properties = new List<BuilderPropertyModel>();
+        var properties = new List<BuilderPropertyModel>
+        {
+            new BuilderPropertyModel(
+                "Environment",
+                "global::System.Collections.Generic.IReadOnlyDictionary<string, string>",
+                "global::System.Collections.Generic.IReadOnlyDictionary<string, string>?",
+                instantiationExpression: "Environment ?? new global::System.Collections.Generic.Dictionary<string, string>()")
+        };
 
         foreach (var opt in cmd.Options)
         {

@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFrameworks>net10.0;net11.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\FrenchExDev.Net.BinaryWrapper.Design.ImageBuildProbe\FrenchExDev.Net.BinaryWrapper.Design.ImageBuildProbe.csproj" />
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.Design.Lib\FrenchExDev.Net.BinaryWrapper.Design.Lib.csproj" />
 		<ProjectReference Include="..\..\src\FrenchExDev.Net.BinaryWrapper.Design\FrenchExDev.Net.BinaryWrapper.Design.csproj" />
 		<ProjectReference Include="..\..\..\Wrapper.Versioning\src\FrenchExDev.Net.Wrapper.Versioning\FrenchExDev.Net.Wrapper.Versioning.csproj" />

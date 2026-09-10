@@ -1,0 +1,19 @@
+
+  Log out from a GitLab instance.                                                                                       
+  Configuration and credentials are stored in the global configuration file (default `~/.config/glab-cli/config.yml`)   
+                                                                                                                        
+         
+  USAGE  
+         
+    glab auth logout [--flags]                      
+            
+  EXAMPLES  
+            
+    # Log out of a specific instance                
+    glab auth logout --hostname gitlab.example.com  
+         
+  FLAGS  
+         
+    -h --help   Show help for this command.
+    --hostname  The hostname of the GitLab instance.
+

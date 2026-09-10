@@ -1,0 +1,18 @@
+
+  Returns a single deploy key specified by the ID.                                                                      
+         
+  USAGE  
+         
+    glab deploy-key get <key-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # Get deploy key with ID as argument    
+    glab deploy-key get 1234                
+         
+  FLAGS  
+         
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+    -R --repo    Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

@@ -5,27 +5,40 @@ using FrenchExDev.Net.Git.Design;
 using FrenchExDev.Net.Wrapper.Versioning;
 using Microsoft.Extensions.Logging;
 
+if (args.Any(arg => arg is "--help" or "-h"))
+{
+    Console.WriteLine("""
+        Collect git help using shared dependencies and per-version images (debian:bookworm).
+          --min-version <version>       Minimum version (default: 2.30.0).
+          --list                        List matching versions without building images.
+          --fail-fast                   Stop scheduling after a failure; preserve failed versions for replay.
+          --stop-file <path>            Share a graceful stop signal with other clients (implies --fail-fast).
+          --retry-known-missing         Retry excluded versions when using --missing.
+          --missing                     Select versions without an existing JSON.
+          --parallel <n>                Concurrent versions (default: 4).
+          --scrape-parallel <n>          Concurrent help commands per container (default: 4).
+          --runtime <podman|docker>      Container runtime (default: podman).
+          --output <directory>          Override scrape output directory.
+          --reparse                     Reparse cached help without containers or version discovery.
+          --build-base                  Prepare all dependency recipes, without version discovery.
+          --build-images                Build selected version images without collecting help.
+          --clean-images                Remove this wrapper's cached images, without version discovery.
+          --keep-images                 Keep version images after scraping (default: remove).
+          --dashboard                   Display the live progress dashboard.
+          --add-known-missing <v,...>    Record unavailable versions.
+          --remove-known-missing <v,...> Remove recorded unavailable versions.
+          --list-known-missing          List recorded unavailable versions.
+        """);
+    return 0;
+}
+
 var env = DotEnvLoader.Load();
 env.TryGetValue("GITHUB_TOKEN", out var githubToken);
 
 Func<string, ILogger, IHelpParser> parser = (_, _) => new GitHelpParser();
 
 var pipeline = new DesignPipeline()
-    .UseImageBuild(
-        imageTagPrefix: "git-scrape",
-        baseImage: "debian:bookworm",
-        installScript: v =>
-            "apt-get update -qq > /dev/null 2>&1 && " +
-            "apt-get install -y -qq make gcc libz-dev libcurl4-openssl-dev " +
-            "libssl-dev libexpat1-dev gettext curl > /dev/null 2>&1 && " +
-            $"curl -fsSL https://github.com/git/git/archive/refs/tags/v{v}.tar.gz " +
-            "-o /tmp/git.tar.gz && " +
-            "tar xzf /tmp/git.tar.gz -C /tmp && " +
-            $"cd /tmp/git-{v} && " +
-            "make prefix=/usr/local -j$(nproc) all > /dev/null 2>&1 && " +
-            "make prefix=/usr/local install > /dev/null 2>&1 && " +
-            "rm -rf /tmp/git* && apt-get clean > /dev/null 2>&1",
-        shell: "bash")
+    .UseVersionImage()
     .UseContainer()
     .Use(next => async ctx =>
     {
@@ -62,6 +75,7 @@ var reparsePipeline = new DesignPipeline()
 
 return await new DesignPipelineRunner
 {
+    ImagePlanResolver = new GitImagePlanResolver(),
     VersionCollector = new GitHubTagsVersionCollector("git", "git", token: githubToken),
     Pipeline = pipeline,
     ReparsePipeline = reparsePipeline,

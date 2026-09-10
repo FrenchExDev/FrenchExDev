@@ -120,12 +120,12 @@ internal static class NamingHelper
     }
 
     /// <summary>
-    /// Reserved PascalCase names that clash with AbstractBuilder members or C# keywords.
+    /// Reserved PascalCase names that clash with generated command or AbstractBuilder members.
     /// </summary>
     private static readonly HashSet<string> ReservedNames = new(StringComparer.Ordinal)
     {
         "Reference", "VisitedObjects", "BuildAsync", "Build", "Validate", "ValidateAsync",
-        "Instantiate", "CreateInstance", "BuildException"
+        "Instantiate", "CreateInstance", "BuildException", "Environment"
     };
 
     /// <summary>

@@ -1,0 +1,30 @@
+
+  This command is experimental.                                                                                         
+                                                                                                                        
+  For more information about attestations, see:                                                                         
+                                                                                                                        
+  - Attestations API                                                                                                    
+  - SLSA provenance specification                                                                                       
+  - SLSA Software attestations                                                                                          
+                                                                                                                        
+  This command requires the cosign binary. To install it, see, Cosign installation.                                     
+                                                                                                                        
+  This command works with GitLab.com only.                                                                              
+                                                                                                                        
+         
+  USAGE  
+         
+    glab attestation verify <project_id> <artifact_path> [--flags]                    
+            
+  EXAMPLES  
+            
+    # Verify attestation for the filename.txt file in the gitlab-org/gitlab project.  
+    glab attestation verify gitlab-org/gitlab filename.txt                            
+                                                                                      
+    # Verify attestation for the filename.txt file in the project with ID 123.        
+    glab attestation verify 123 filename.txt                                          
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+

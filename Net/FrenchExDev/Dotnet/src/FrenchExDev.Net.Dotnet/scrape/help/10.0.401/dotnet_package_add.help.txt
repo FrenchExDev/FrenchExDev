@@ -1,0 +1,21 @@
+Description:
+  Add a NuGet package reference to the project.
+
+Usage:
+  dotnet package add <packageId> [options]
+
+Arguments:
+  <packageId>  Package reference in the form of a package identifier like 'Newtonsoft.Json' or package identifier and version separated by '@' like 'Newtonsoft.Json@13.0.3'.
+
+Options:
+  -v, --version <VERSION>            The version of the package to add.
+  -f, --framework <FRAMEWORK>        Add the reference only when targeting a specific framework.
+  -n, --no-restore                   Add the reference without performing restore preview and compatibility check. [default: False]
+  -s, --source <SOURCE>              The NuGet package source to use during the restore.
+  --package-directory <PACKAGE_DIR>  The directory to restore packages to.
+  --interactive                      Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  --prerelease                       Allows prerelease packages to be installed. [default: False]
+  --project <project>                The project file to operate on. If a file is not specified, the command will search the current directory for one.
+  --file <file>                      The file-based app to operate on.
+  -?, -h, --help                     Show command line help.
+

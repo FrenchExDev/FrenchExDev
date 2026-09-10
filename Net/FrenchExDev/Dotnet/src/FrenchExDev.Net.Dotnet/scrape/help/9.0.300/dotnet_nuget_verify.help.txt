@@ -1,0 +1,14 @@
+
+
+Usage: dotnet nuget verify [arguments] [options]
+
+Arguments:
+  <package-paths>  Specify the path to the package
+
+Options:
+  --all                      Specifies that all verifications possible should be performed to the package(s).
+  --certificate-fingerprint  Verify that the signer certificate matches with one of the specified SHA256 fingerprints. A certificate SHA256 fingerprint is a SHA256 hash of the certificate used to identify the certificate. Multiple inputs should be separated by space.
+  --configfile               The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -v|--verbosity             Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -h|--help                  Show help information
+

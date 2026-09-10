@@ -1,0 +1,21 @@
+
+  Creates a comment by default. Use `--resolve` or                                                                      
+  `--unresolve` to manage existing discussion threads.                                                                  
+                                                                                                                        
+         
+  USAGE  
+         
+    glab mr note [command] [<id> | <branch>] [--flags]  
+            
+  COMMANDS  
+            
+    create [<id> | <branch>] [--flags]          Create a comment or discussion on a merge request. (EXPERIMENTAL)
+    list [<id> | <branch>] [--flags]            List merge request discussions. (EXPERIMENTAL)
+    reopen  <discussion-id> [<id> | <branch>]   Reopen a discussion on a merge request. (EXPERIMENTAL)
+    resolve  <discussion-id> [<id> | <branch>]  Resolve a discussion on a merge request. (EXPERIMENTAL)
+         
+  FLAGS  
+         
+    -h --help                                   Show help for this command.
+    -R --repo                                   Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

@@ -56,6 +56,10 @@ internal static class CommandClassEmitter
         sb.AppendLine($"public sealed partial class {className} : global::FrenchExDev.Net.BinaryWrapper.ICliCommand");
         sb.AppendLine("{");
 
+        sb.AppendLine("    public global::System.Collections.Generic.IReadOnlyDictionary<string, string> Environment { get; init; } =");
+        sb.AppendLine("        new global::System.Collections.Generic.Dictionary<string, string>();");
+        sb.AppendLine();
+
         // Properties from options
         foreach (var opt in cmd.Options)
         {

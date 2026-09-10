@@ -124,8 +124,8 @@ internal static class GitLabConfigEmitter
         sb.AppendLine("    {");
         foreach (var entry in entries)
         {
-            var keyPathStr = string.Join(", ", entry.KeyPath.ConvertAll(k => $"\"{k}\""));
-            sb.AppendLine($"        new(\"{entry.Prefix}\", new[] {{ {keyPathStr} }}, GitLabRbValueKind.{entry.ValueKind}),");
+            var keyPathStr = string.Join(", ", entry.KeyPath.ConvertAll(k => $"\"{EscapeString(k)}\""));
+            sb.AppendLine($"        new(\"{EscapeString(entry.Prefix)}\", new[] {{ {keyPathStr} }}, GitLabRbValueKind.{entry.ValueKind}),");
         }
         sb.AppendLine("    };");
         sb.AppendLine();
@@ -133,16 +133,22 @@ internal static class GitLabConfigEmitter
         sb.AppendLine("    public static readonly global::System.Collections.Generic.IReadOnlyList<string> StandaloneUrls = new[]");
         sb.AppendLine("    {");
         foreach (var url in standaloneUrls)
-            sb.AppendLine($"        \"{url}\",");
+            sb.AppendLine($"        \"{EscapeString(url)}\",");
         sb.AppendLine("    };");
 
         sb.AppendLine("}");
         return sb.ToString();
     }
 
+    private static string EscapeString(string text) =>
+        text.Replace("\\", "\\\\").Replace("\"", "\\\"")
+            .Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t")
+            .Replace("\0", "\\0").Replace("\u2028", "\\u2028").Replace("\u2029", "\\u2029");
+
     private static string EscapeXml(string text)
     {
-        return text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+        return text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
+            .Replace("\r", "&#13;").Replace("\n", "&#10;").Replace("\u2028", "&#8232;").Replace("\u2029", "&#8233;");
     }
 
     /// <summary>Property info for emission.</summary>

@@ -1,0 +1,28 @@
+Description:
+  Update a global or local tool.
+
+Usage:
+  dotnet tool update <packageId> [options]
+
+Arguments:
+  <PACKAGE_ID>  The NuGet Package Id of the tool to install.
+
+Options:
+  -g, --global             Update the tool in the current user's tools directory.
+  --tool-path <PATH>       The directory containing the tool to update.
+  --local                  Update the tool and the local tool manifest.
+  --configfile <FILE>      The NuGet configuration file to use.
+  --add-source <SOURCE>    Add an additional NuGet package source to use during installation.
+  --framework <FRAMEWORK>  The target framework to install the tool for.
+  --version <VERSION>      The version of the tool package to install.
+  --tool-manifest <PATH>   Path to the manifest file.
+  --prerelease             Include pre-release packages.
+  --disable-parallel       Prevent restoring multiple projects in parallel.
+  --ignore-failed-sources  Treat package source failures as warnings.
+  --no-cache               Do not cache packages and http requests.
+  --interactive            Allows the command to stop and wait for user input or action (for example to complete authentication).
+  -v, --verbosity <LEVEL>  Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help           Show command line help.
+
+
+

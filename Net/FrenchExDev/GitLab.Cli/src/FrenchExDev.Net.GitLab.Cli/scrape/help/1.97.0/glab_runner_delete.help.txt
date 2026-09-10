@@ -1,0 +1,27 @@
+
+  Permanently deletes a runner from the GitLab instance.                                                                
+                                                                                                                        
+  Prerequisites:                                                                                                        
+                                                                                                                        
+  - Maintainer or Owner role for project runners.                                                                       
+  - Owner role for group runners.                                                                                       
+  - Administrator access for instance runners.                                                                          
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner delete <runner-id> [--flags]      
+            
+  EXAMPLES  
+            
+    # Delete a runner (prompts for confirmation)  
+    glab runner delete 6                          
+                                                  
+    # Skip confirmation prompt                    
+    glab runner delete 6 --force                  
+         
+  FLAGS  
+         
+    -f --force  Skip confirmation prompt.
+    -h --help   Show help for this command.
+

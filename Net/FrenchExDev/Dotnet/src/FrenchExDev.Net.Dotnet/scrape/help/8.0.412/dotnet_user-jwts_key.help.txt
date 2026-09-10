@@ -1,0 +1,13 @@
+
+
+Usage: dotnet user-jwts key [options]
+
+Options:
+  -p|--project  The path of the project to operate on. Defaults to the project in the current directory.
+  -o|--output   The format to use for displaying output from the command. Can be one of 'default', 'token', or 'json'.
+  --scheme      The scheme name associated with the signing key to be reset or displayed. Defaults to 'Bearer'.
+  --issuer      The issuer associated with the signing key to be reset or displayed. Defaults to 'dotnet-user-jwts'.
+  --reset       Reset the signing key. This will invalidate all previously issued JWTs for this project.
+  --force       Don't prompt for confirmation before resetting the signing key.
+  -h|--help     Show help information
+

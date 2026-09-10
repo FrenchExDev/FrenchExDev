@@ -25,6 +25,7 @@ public sealed class VersionContext
     public int ScrapeParallelism { get; init; } = 4;
 
     // Mutable state shared between middleware
+    internal Func<string, Task<DesignImageCache.VersionImageLease>>? AcquireVersionImage { get; init; }
     public string? ImageTag { get; set; }
     public string? ContainerId { get; set; }
     public CommandTree? Result { get; set; }

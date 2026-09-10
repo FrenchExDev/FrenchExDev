@@ -36,6 +36,7 @@
 			"**/bin/": true,
 			"**/node_modules/": true,
 		},
-		"powershell.cwd": "Root"
+		"powershell.cwd": "Root",
+		"dotnet.defaultSolution": "Net/Dotnet/FrenchExDev.Net.Dotnet.slnx"
 	}
 }

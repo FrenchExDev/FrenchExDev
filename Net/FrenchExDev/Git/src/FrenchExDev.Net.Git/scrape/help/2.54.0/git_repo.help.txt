@@ -1,0 +1,4 @@
+usage: git repo info [--format=(lines|nul) | -z] [--all | <key>...]
+   or: git repo info --keys [--format=(lines|nul) | -z]
+   or: git repo structure [--format=(table|lines|nul) | -z]
+

@@ -1,0 +1,16 @@
+
+  Retrieve iteration information.                                                                                       
+         
+  USAGE  
+         
+    glab iteration <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    list [--flags]  List project iterations.
+         
+  FLAGS  
+         
+    -h --help       Show help for this command.
+    -R --repo       Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

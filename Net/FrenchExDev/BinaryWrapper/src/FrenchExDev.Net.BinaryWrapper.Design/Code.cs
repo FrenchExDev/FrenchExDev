@@ -365,7 +365,7 @@ $"""
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>{wrapperNs}</RootNamespace>
@@ -402,7 +402,7 @@ $"""
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -1759,14 +1759,16 @@ public sealed class HelpScraper
     {
         try
         {
-            var rootNode = await ScrapeNodeAsync([binaryName, _helpFlag], binaryName, 0, ct);
+            // One limit for the whole traversal, independent of other ScrapeAsync calls.
+            using var semaphore = new SemaphoreSlim(_maxConcurrency, _maxConcurrency);
+            var rootNode = await ScrapeNodeAsync([binaryName, _helpFlag], binaryName, 0, semaphore, ct);
             return new CommandTree
             {
                 BinaryName = binaryName,
                 Root = rootNode ?? new CommandNode { Name = binaryName }
             };
         }
-        catch
+        catch (Exception ex) when (ex is not ContainerRuntimeException)
         {
             return new CommandTree
             {
@@ -1777,7 +1779,7 @@ public sealed class HelpScraper
     }
 
     private async Task<CommandNode?> ScrapeNodeAsync(string[] helpArgs, string commandName,
-        int depth, CancellationToken ct)
+        int depth, SemaphoreSlim semaphore, CancellationToken ct)
     {
         if (depth > _maxDepth || ct.IsCancellationRequested)
             return null;
@@ -1785,9 +1787,18 @@ public sealed class HelpScraper
         string helpText;
         try
         {
-            helpText = await _runHelp(helpArgs);
+            await semaphore.WaitAsync(ct);
+            try
+            {
+                helpText = await _runHelp(helpArgs);
+            }
+            finally
+            {
+                // Release before parsing or awaiting descendants to avoid recursive deadlocks.
+                semaphore.Release();
+            }
         }
-        catch
+        catch (Exception ex) when (ex is not ContainerRuntimeException)
         {
             return null;
         }
@@ -1810,22 +1821,16 @@ public sealed class HelpScraper
             return node;
 
         var scrapedSubs = new CommandNode?[node.SubCommands.Count];
-        using var semaphore = new SemaphoreSlim(_maxConcurrency);
         var tasks = node.SubCommands.Select(async (sub, i) =>
         {
-            await semaphore.WaitAsync(ct);
             try
             {
                 var subArgs = helpArgs[..^1].Append(sub.Name).Append(_helpFlag).ToArray();
-                scrapedSubs[i] = await ScrapeNodeAsync(subArgs, sub.Name, depth + 1, ct);
+                scrapedSubs[i] = await ScrapeNodeAsync(subArgs, sub.Name, depth + 1, semaphore, ct);
             }
-            catch
+            catch (Exception ex) when (ex is not ContainerRuntimeException)
             {
                 scrapedSubs[i] = null;
-            }
-            finally
-            {
-                semaphore.Release();
             }
         }).ToArray();
         await Task.WhenAll(tasks);
@@ -1900,7 +1905,16 @@ public class ProcessRunnerContainerRuntime : IContainerRuntime
     public Task RemoveImageAsync(string tag, CancellationToken cancellationToken = default)
         => _runProcess([_runtimeBinary, "rmi", "-f", tag]);
 
-    public static async Task<string> RunProcessAsync(string[] args)
+    public static Task<string> RunProcessAsync(string[] args)
+        => RunProcessAsync(args, null, null);
+
+    /// <summary>Streams complete output lines while retaining the captured process output.</summary>
+    public static Task<string> RunProcessAsync(string[] args,
+        Action<string>? onStandardOutput, Action<string>? onStandardError)
+        => ContainerProcessThrottle.RunAsync(args[0], () => RunProcessCoreAsync(args, onStandardOutput, onStandardError));
+
+    private static async Task<string> RunProcessCoreAsync(string[] args,
+        Action<string>? onStandardOutput, Action<string>? onStandardError)
     {
         var psi = new System.Diagnostics.ProcessStartInfo
         {
@@ -1915,9 +1929,41 @@ public class ProcessRunnerContainerRuntime : IContainerRuntime
 
         using var proc = System.Diagnostics.Process.Start(psi);
         if (proc is null) return "";
-        var stdout = await proc.StandardOutput.ReadToEndAsync();
-        var stderr = await proc.StandardError.ReadToEndAsync();
+        // Drain both streams concurrently, even if an output observer fails.
+        Exception? observerError = null;
+        async Task<string> ReadAsync(StreamReader reader, Action<string>? observer)
+        {
+            if (observer is null) return await reader.ReadToEndAsync();
+            var output = new System.Text.StringBuilder();
+            var pendingLine = new System.Text.StringBuilder();
+            var buffer = new char[4096];
+            void NotifyLine()
+            {
+                var line = pendingLine.ToString().TrimEnd('\r');
+                pendingLine.Clear();
+                try { observer(line); }
+                catch (Exception ex) { Interlocked.CompareExchange(ref observerError, ex, null); }
+            }
+            int read;
+            while ((read = await reader.ReadAsync(buffer.AsMemory())) != 0)
+            {
+                output.Append(buffer, 0, read);
+                for (var i = 0; i < read; i++)
+                {
+                    if (buffer[i] == '\n') NotifyLine();
+                    else pendingLine.Append(buffer[i]);
+                }
+            }
+            if (pendingLine.Length > 0) NotifyLine();
+            return output.ToString();
+        }
+        var stdoutTask = ReadAsync(proc.StandardOutput, onStandardOutput);
+        var stderrTask = ReadAsync(proc.StandardError, onStandardError);
         await proc.WaitForExitAsync();
+        var stdout = await stdoutTask;
+        var stderr = await stderrTask;
+        if (observerError is not null)
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(observerError).Throw();
         if (proc.ExitCode != 0)
             throw new InvalidOperationException(
                 $"Process '{args[0]}' exited with code {proc.ExitCode}: {stderr}");

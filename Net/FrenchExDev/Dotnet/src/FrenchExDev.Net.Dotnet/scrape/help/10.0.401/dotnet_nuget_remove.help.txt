@@ -1,0 +1,14 @@
+Description:
+  Remove a NuGet source.
+
+Usage:
+  NuGet.CommandLine.XPlat remove [command] [options]
+
+Options:
+  -?, -h, --help          Show help and usage information
+  --force-english-output  Forces the application to run using an invariant, English-based culture.
+
+Commands:
+  source <name>  Remove a NuGet source.
+  client-cert    Removes the client certificate configuration that matches the given package source name.
+

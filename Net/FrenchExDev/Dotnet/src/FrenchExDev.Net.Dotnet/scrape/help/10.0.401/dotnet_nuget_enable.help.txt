@@ -1,0 +1,13 @@
+Description:
+  Enable a NuGet source.
+
+Usage:
+  NuGet.CommandLine.XPlat enable [command] [options]
+
+Options:
+  -?, -h, --help          Show help and usage information
+  --force-english-output  Forces the application to run using an invariant, English-based culture.
+
+Commands:
+  source <name>  Enable a NuGet source.
+

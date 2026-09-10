@@ -415,7 +415,7 @@ public sealed class BuilderClassEmitterDeepCoverageTests
     // ── Empty options + empty arguments ──
 
     [Fact]
-    public void Emit_EmptyOptionsAndArguments_NoWithMethods()
+    public void Emit_EmptyOptionsAndArguments_StillSupportsEnvironment()
     {
         var cmd = new UnifiedCommand
         {
@@ -423,7 +423,8 @@ public sealed class BuilderClassEmitterDeepCoverageTests
             Options = [], Arguments = []
         };
         var source = BuilderClassEmitter.Emit(MakeDescriptor(), cmd);
-        source.ShouldNotContain("public ToolRunCommandBuilder With");
+        source.ShouldContain("public ToolRunCommandBuilder WithEnvironment(");
+        source.ShouldContain("Environment = Environment ?? new global::System.Collections.Generic.Dictionary<string, string>()");
     }
 }
 

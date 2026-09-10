@@ -9,6 +9,7 @@
     <Project Path="src/FrenchExDev.Net.BinaryWrapper/FrenchExDev.Net.BinaryWrapper.csproj" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.BinaryWrapper.Design.ImageBuildProbe/FrenchExDev.Net.BinaryWrapper.Design.ImageBuildProbe.csproj" />
     <Project Path="test/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests/FrenchExDev.Net.BinaryWrapper.Design.Lib.Tests.csproj" />
     <Project Path="test/FrenchExDev.Net.BinaryWrapper.Design.Tests/FrenchExDev.Net.BinaryWrapper.Design.Tests.csproj" />
     <Project Path="test/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests/FrenchExDev.Net.BinaryWrapper.SourceGenerator.Tests.csproj" />

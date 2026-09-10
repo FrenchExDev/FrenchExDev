@@ -1,0 +1,12 @@
+
+
+Usage: dotnet nuget enable [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  source  Enable a NuGet source.
+
+Use "enable [command] --help" for more information about a command.
+

@@ -4,7 +4,7 @@ Documentation index for the **FrenchExDev.Net** mono-repository.
 
 ## Repository overview
 
-FrenchExDev.Net is a .NET 10 mono-repo built around two foundational libraries (**Result** and **Builder**) and a code-generation framework (**BinaryWrapper**) that produces typed C# clients for CLI tools. Several generated CLI wrappers ship on top of this framework, alongside standalone utilities.
+FrenchExDev.Net is a .NET 10 and .NET 11 mono-repo built around two foundational libraries (**Result** and **Builder**) and a code-generation framework (**BinaryWrapper**) that produces typed C# clients for CLI tools. Several generated CLI wrappers ship on top of this framework, alongside standalone utilities.
 
 ### Architecture at a glance
 
@@ -30,7 +30,7 @@ Net/FrenchExDev/
 
 ### Result
 
-`Result`, `Result<T>`, and `Result<T, TError>` types implementing the Result/Either monad pattern. Includes extension methods for `Map`, `Bind`, `Recover`, and `FromTry`. Multi-targets `netstandard2.0` and `net10.0`.
+`Result`, `Result<T>`, and `Result<T, TError>` types implementing the Result/Either monad pattern. Includes extension methods for `Map`, `Bind`, `Recover`, and `FromTry`. Multi-targets `netstandard2.0`, `net10.0` and `net11.0`.
 
 - 47 tests, 100 % branch coverage
 - Solution: `Result/FrenchExDev.Net.Result.slnx`
@@ -139,6 +139,8 @@ AI-powered document search and viewer built on ASP.NET Core. Uses Lucene.Net for
 
 Standalone utility for converting documents to PDF format.
 
+- [BinaryWrapper client batches](Invoke-BinaryClient.md): build, collect, test, clean and resume CLI clients two at a time.
+
 ## Build infrastructure
 
 ### Central Package Management
@@ -171,7 +173,7 @@ Global build settings applied to every project:
 
 | Solution | Scope |
 |----------|-------|
-| `FrenchExDev.Net.slnx` | Central — includes all packages |
+| `FrenchExDev.Net.slnx` | Central solution — use `Rebuild-All.ps1` to include projects not listed here |
 | `Builder/FrenchExDev.Net.Builder.slnx` | Builder only |
 | `Result/FrenchExDev.Net.Result.slnx` | Result only |
 | `Docker/FrenchExDev.Net.Docker.slnx` | Docker wrapper |
@@ -183,5 +185,7 @@ Global build settings applied to every project:
 | `Doc2Pdf/FrenchExDev.Net.Doc2Pdf.slnx` | Doc2Pdf utility |
 
 ## Tooling documentation
+
+- [Build .NET 10 and .NET 11](Build.md) — Rebuild every project and configure BinaryWrapper command environments
 
 - [Update-Packages.ps1](Update-Packages.md) — Interactive NuGet package updater for Central Package Management

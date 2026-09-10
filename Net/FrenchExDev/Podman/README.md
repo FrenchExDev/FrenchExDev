@@ -21,9 +21,10 @@ Podman has over 180 commands spread across 18 command groups, with options that 
 
 ```mermaid
 flowchart LR
-    subgraph Design["Design Time (two-phase)"]
-        GH["GitHub Releases API"] -->|"version list"| P1["Phase 1: Build Images"]
-        P1 -->|"podman-scrape:{v}"| P2["Phase 2: Scrape"]
+    subgraph Design["Design Time (shared image cache)"]
+        GH["GitHub Releases API"] -->|"version list"| P1["Build or reuse version images"]
+        Base["Shared Alpine + curl + tar"] --> P1
+        P1 -->|"version image"| P2["Scrape in container"]
         P2 -->|"cobra parser"| J["58 JSON files"]
     end
 
@@ -193,52 +194,38 @@ At runtime, `VersionGuard.EnsureCommandSupported()` throws `CommandNotSupportedE
 
 ## Design Tool (Scraper)
 
-The `FrenchExDev.Net.Podman.Design` project scrapes `podman --help` across versions using a two-phase pipeline.
+The `FrenchExDev.Net.Podman.Design` project scrapes `podman --help` across versions using shared dependency and per-version images.
+`PodmanImagePlanResolver` selects `podman-remote-static.tar.gz` before 4.4.0 and
+`podman-remote-static-linux_amd64.tar.gz` from 4.4.0. Both recipes reuse the same
+Alpine dependency image.
 
-### Two-phase scraping
+### Image preparation and scraping
 
-```
-Phase 1: Build Images
-  For each version:
-    alpine:3.19 + curl + tar
-      -> download podman-remote-static-linux_amd64.tar.gz from GitHub
-      -> install to /usr/local/bin/podman
-      -> commit as podman-scrape:{version}
-
-Phase 2: Scrape (parallel)
-  For each version:
-    start container from podman-scrape:{version}
-      -> podman exec ... podman <cmd> --help (recursively)
-      -> PodmanHelpParser (cobra-aware) -> JSON
-      -> cleanup container
-
-Finally:
-  -> cleanup all containers
-  -> cleanup all podman-scrape:* images
-```
-
-Phase 1 builds reusable images so Phase 2 can start containers instantly (~100ms) without repeating downloads. This makes parallel scraping highly efficient.
+The runner prepares Alpine 3.19 with curl and tar before starting the version workers.
+Each worker downloads and installs its CLI in an image derived from that base,
+starts a container, collects help and removes the container and version image.
+The dependency image remains cached. Use `--keep-images` to retain version images.
 
 ### Running the scraper
 
 ```bash
 # Full scrape (all versions)
-dotnet run --project src/FrenchExDev.Net.Podman.Design
+dotnet run --project src/FrenchExDev.Net.Podman.Design --framework net10.0
 
 # Specific version range
-dotnet run --project src/FrenchExDev.Net.Podman.Design -- --min-version 5.0.0 --parallel 4
+dotnet run --project src/FrenchExDev.Net.Podman.Design --framework net10.0 -- --min-version 5.0.0 --parallel 4
 
 # List available versions
-dotnet run --project src/FrenchExDev.Net.Podman.Design -- --list
+dotnet run --project src/FrenchExDev.Net.Podman.Design --framework net10.0 -- --list
 
 # Build images only (pre-cache)
-dotnet run --project src/FrenchExDev.Net.Podman.Design -- --build-images --min-version 4.1.0
+dotnet run --project src/FrenchExDev.Net.Podman.Design --framework net10.0 -- --build-images --min-version 4.1.0
 
 # Re-parse from cached help text (no container rebuild)
-dotnet run --project src/FrenchExDev.Net.Podman.Design -- --reparse
+dotnet run --project src/FrenchExDev.Net.Podman.Design --framework net10.0 -- --reparse
 
 # Use docker instead of podman as container runtime
-dotnet run --project src/FrenchExDev.Net.Podman.Design -- --runtime docker
+dotnet run --project src/FrenchExDev.Net.Podman.Design --framework net10.0 -- --runtime docker
 ```
 
 ### CLI options
@@ -250,7 +237,12 @@ dotnet run --project src/FrenchExDev.Net.Podman.Design -- --runtime docker
 | `--min-version VER` | `4.1.0` | Only process versions >= VER |
 | `--runtime BIN` | `podman` | Container runtime binary (`podman` or `docker`) |
 | `--list` | off | List versions and exit |
-| `--build-images` | off | Build images and exit (skip scraping) |
+| `--build-base` | off | Prepare only shared dependencies (no version discovery) |
+| `--build-images` | off | Build selected images and keep them (skip scraping) |
+| `--clean-images` | off | Remove this wrapper's version images, then its base |
+| `--keep-images` | off | Retain version images after scraping |
+| `--missing` | off | Select versions without an existing JSON |
+| `--scrape-parallel N` | `4` | Concurrent help commands per container |
 | `--reparse` | off | Re-parse from cached help (no containers) |
 
 ### Cobra-aware help parser
@@ -270,6 +262,7 @@ Podman uses Go's cobra CLI framework, which produces help output with lowercase 
 - **58 JSON files** covering 4.1.0 through 5.8.1
 - **Broken versions**: 4.1.0 and 4.3.0 are included as JSON files but produce incomplete data (static binaries not truly static on Alpine)
 - **Asset naming change**: pre-4.4.0 uses `podman-remote-static.tar.gz`, 4.4.0+ uses `podman-remote-static-linux_amd64.tar.gz` (handled automatically)
+- **Executable validation**: archives are extracted into a separate temporary directory so the binary lookup cannot select the archive itself; the image build checks `podman --version` before collection.
 - **Version collector**: `GitHubReleasesVersionCollector("containers", "podman")` -- standard GitHub releases, no custom collector needed
 
 ## Testing
@@ -413,3 +406,48 @@ The library intentionally contains no hand-written events, parsers, or collector
 ## License
 
 Proprietary. All rights reserved.
+
+## Shared dependency and version images
+
+The Design runner prepares the shared system dependencies once, then installs each
+software version in an image derived from that base. `UseVersionImage().UseContainer()`
+builds or reuses the image before collecting help. After collection, the container
+and version image are removed; `--keep-images` retains the version image. The
+shared base remains cached.
+
+From the wrapper directory, with Podman running (or add `--runtime docker`):
+
+```powershell
+$design = './src/FrenchExDev.Net.Podman.Design/FrenchExDev.Net.Podman.Design.csproj'
+dotnet run --project $design --framework net10.0 -- --help
+dotnet run --project $design --framework net10.0 -- --build-base
+dotnet run --project $design --framework net10.0 -- --list --missing
+# Review the selection; optionally narrow it with --min-version.
+dotnet run --project $design --framework net10.0 -- --build-images --missing --parallel 2
+dotnet run --project $design --framework net10.0 -- --missing --parallel 2
+dotnet run --project $design --framework net10.0 -- --reparse
+dotnet run --project $design --framework net10.0 -- --clean-images
+```
+
+`--build-base` prepares only dependencies. `--build-images` installs selected versions
+without scraping and keeps their images. `--clean-images` removes this wrapper's
+version images before its base, without forcing removal. Base preparation and cleanup
+do not query the version collector; `--list` and `--reparse` do not build images.
+With `--missing`, selection is based on missing JSON files.
+
+The three image operations are mutually exclusive and cannot be combined with
+`--reparse` or known-missing management. `--build-base` and `--clean-images` also
+reject `--list` and `--missing`.
+
+The PowerShell launcher exposes `-BuildBase`, `-BuildImages`, `-CleanImages`,
+`-KeepImages`, `-Reparse`, `-Missing`, `-List`, `-MinVersion`, `-Parallel`,
+`-ScrapeParallel`, `-Runtime`, `-Output` and `-Framework`. It resolves its project
+relative to the script, so it also works from another directory:
+
+```powershell
+./scripts/Find-Missing.ps1 -BuildBase -Framework net10.0
+./scripts/Find-Missing.ps1 -BuildImages -Missing -Parallel 2 -Framework net10.0
+```
+
+See the [BinaryWrapper image pipeline guide](../BinaryWrapper/doc/UPGRADE-IMAGE-PIPELINES.md)
+for each client's dependencies, cache identities, build logs, reuse and cleanup.

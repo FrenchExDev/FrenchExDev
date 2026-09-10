@@ -1,5 +1,64 @@
 # BinaryWrapper Scripts
 
+## New-BinaryWrapperSolution.ps1
+
+Creates a complete consumer solution with PowerShell 7. From `Net/FrenchExDev`:
+
+```powershell
+./BinaryWrapper/scripts/New-BinaryWrapperSolution.ps1 Podman
+./BinaryWrapper/scripts/New-BinaryWrapperSolution.ps1 MyTool -CommandName my-tool -Parser cobra
+./BinaryWrapper/scripts/New-BinaryWrapperSolution.ps1 GitLab.Cli -CommandName glab
+./BinaryWrapper/scripts/New-BinaryWrapperSolution.ps1 Packer -OutputDirectory ./generated -WhatIf
+```
+
+The default destination is `<Net/FrenchExDev>/<Binary>`, resolved from the script
+location, even when launched from another working directory. Existing directories
+are rejected without changes; for names already present in this checkout, use
+`-OutputDirectory ./generated` to create e.g. `generated/Podman/`.
+
+Generated files include a `.slnx`, runtime and `.Design` projects under `src/`, an
+xUnit project under `test/`, `.binary-wrapper.yaml`, `scripts/Find-Missing.ps1`,
+and a French README with build, test, collection, reparse and multi-version instructions.
+Relative project references, Roslyn analyzers and central package management follow
+the existing wrappers. The generated directory remains dependent on this checkout.
+When `BinaryWrapper/.env` exists, it is copied byte-for-byte to `<Binary>/.env`,
+independently of the working directory. The generated `.gitignore` excludes it.
+If the source is absent, scaffolding proceeds without a `.env` file.
+
+| Parameter | Default / purpose |
+|-----------|-------------------|
+| `Binary` | Required positional solution name, e.g. `Podman` or `GitLab.Cli` |
+| `CommandName` | Lowercase Binary; use `glab`, `podman-compose`, etc. when names differ |
+| `OutputDirectory` | Parent of the new Binary directory; defaults to `Net/FrenchExDev` |
+| `Parser` | `auto`, `standard`, `cobra`, `argparse`, `gh`, `packer`, `vagrant` |
+| `HelpFlag` | `--help`, or `-h` for Packer/Vagrant |
+| `FlagPrefix`, `FlagValueSeparator`, `UseBoolEqualsFormat` | Descriptor serialization settings; Packer defaults are detected |
+| `Framework` | Framework array; defaults to the current BinaryWrapper runtime targets |
+| `WhatIf` | Preview without creating files |
+
+Auto chooses Cobra for Podman/Docker/docker-compose, Argparse for podman-compose,
+the GH parser for gh/glab, Packer's parser for packer and the existing custom parser
+source for vagrant. Other binaries start with the standard parser.
+
+The scaffold does not invoke dotnet or the CLI. An empty bootstrap JSON permits
+the initial build; it is automatically excluded after actual scrape JSONs appear.
+The generated `.Design` initially collects an installed executable using an explicit
+`--version`, supports `--binary-path` and cached `--reparse`, and documents how to
+replace local collection with the existing container pipelines and version collectors.
+
+Validation (no Pester dependency):
+
+```powershell
+./BinaryWrapper/scripts/Test-NewBinaryWrapperSolution.ps1
+./BinaryWrapper/scripts/Test-NewBinaryWrapperSolution.ps1 -Integration
+```
+
+The integration mode builds generated solutions, runs their xUnit tests under
+`net10.0` by default (select `-Framework net11.0` to exercise that runtime), collects
+help from a local fixture executable, reparses cached help offline, checks generated
+command serialization and bootstrap exclusion, and checks specialized Vagrant/Packer/glab templates. Its temporary directories are
+removed at completion. It requires the checkout's SDK and NuGet dependencies.
+
 ## Find-Missing.ps1
 
 PowerShell script to list and scrape missing versions of a wrapper.
@@ -98,3 +157,10 @@ Affected Design projects:
 - **Podman**, **DockerCompose** and **PodmanCompose**: `GitHubReleasesVersionCollector`
 
 The GitLab collector (`GitLabReleasesVersionCollector`) uses a different mechanism: it reads the `GITLAB_TOKEN` environment variable directly and sends it via the `PRIVATE-TOKEN` header.
+
+
+## Reusable image pipelines
+
+See [UPGRADE-IMAGE-PIPELINES.md](UPGRADE-IMAGE-PIPELINES.md) for `DesignImagePlan`,
+`UseVersionImage`, `--build-base`, `--build-images`, `--clean-images`,
+and the complete list of CLI clients to migrate.

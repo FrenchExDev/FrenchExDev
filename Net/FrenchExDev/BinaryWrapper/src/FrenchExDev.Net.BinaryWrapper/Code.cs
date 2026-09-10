@@ -18,6 +18,9 @@ public interface ICliCommand
 
     /// <summary>Serializes the command's options and arguments to CLI argument strings.</summary>
     IReadOnlyList<string> ToArguments();
+
+    /// <summary>The environment variables for the command.</summary>
+    IReadOnlyDictionary<string, string> Environment { get; }
 }
 
 // ── Output Parsing ───────────────────────────────────────────────────────────
@@ -549,11 +552,20 @@ public sealed class CommandExecutor
             arguments.Add(arg);
         }
 
+        // Command-specific variables override binding defaults. Copy both inputs so
+        // each runner receives an independent snapshot for this execution.
+        var environment = new Dictionary<string, string>(
+            OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
+        foreach (var (key, value) in binding.EnvironmentVariables)
+            environment[key] = value;
+        foreach (var (key, value) in command.Environment)
+            environment[key] = value;
+
         return new ProcessSpec
         {
             ExecutablePath = binding.ExecutablePath,
             Arguments = arguments,
-            EnvironmentVariables = binding.EnvironmentVariables
+            EnvironmentVariables = environment.AsReadOnly()
         };
     }
 }

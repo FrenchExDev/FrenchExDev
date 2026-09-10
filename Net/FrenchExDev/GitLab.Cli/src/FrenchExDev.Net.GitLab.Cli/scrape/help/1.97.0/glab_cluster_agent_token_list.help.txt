@@ -1,0 +1,13 @@
+
+  List tokens for an agent.                                                                                             
+         
+  USAGE  
+         
+    glab cluster agent token list <agent-id> [--flags]  
+         
+  FLAGS  
+         
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+    -R --repo    Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

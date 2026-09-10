@@ -1,0 +1,26 @@
+
+  If you don't have permission to push to the merge request's source branch, you'll get a 403 Forbidden response.       
+                                                                                                                        
+         
+  USAGE  
+         
+    glab mr rebase [<id> | <branch>] [--flags]  
+            
+  EXAMPLES  
+            
+    # Rebase merge request 123                  
+    glab mr rebase 123                          
+                                                
+    # Rebase current branch                     
+    glab mr rebase                              
+                                                
+    # Rebase merge request from branch          
+    glab mr rebase branch                       
+    glab mr rebase branch --skip-ci             
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+    --skip-ci  Rebase merge request while skipping CI/CD pipeline.
+

@@ -985,7 +985,7 @@ var reparsePipeline = new DesignPipeline()
 | Flag | Description |
 |------|-------------|
 | `--parallel N` | Number of concurrent version workers (default 4) |
-| `--scrape-parallel N` | Concurrent subcommand scraping within a version (default 4) |
+| `--scrape-parallel N` | Maximum active help calls across the entire command tree of each version (default 4) |
 | `--output DIR` | Output directory override |
 | `--min-version VER` | Filter versions >= VER |
 | `--runtime BIN` | Container runtime binary (default `podman`) |
@@ -1211,3 +1211,10 @@ flowchart TD
 | **Total** | **571** | |
 
 All tests use xUnit with CsCheck for property-based testing of core abstractions.
+
+
+## Reusable image pipelines
+
+See [UPGRADE-IMAGE-PIPELINES.md](UPGRADE-IMAGE-PIPELINES.md) for `DesignImagePlan`,
+`UseVersionImage`, `--build-base`, `--build-images`, `--clean-images`,
+and the complete list of CLI clients to migrate.

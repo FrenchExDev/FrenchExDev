@@ -1,0 +1,23 @@
+
+  Defaults to the current repository if no repository is specified.                                                     
+  Use `--clone` and `--remote` to skip the interactive prompts.                                                         
+                                                                                                                        
+         
+  USAGE  
+         
+    glab repo fork <repo> [--flags]        
+            
+  EXAMPLES  
+            
+    glab repo fork                         
+    glab repo fork namespace/repo          
+    glab repo fork namespace/repo --clone  
+         
+  FLAGS  
+         
+    -c --clone  Clone the fork. Options: true, false.
+    -h --help   Show help for this command.
+    -n --name   The name assigned to the new project after forking.
+    -p --path   The path assigned to the new project after forking.
+    --remote    Add a remote for the fork. Options: true, false.
+

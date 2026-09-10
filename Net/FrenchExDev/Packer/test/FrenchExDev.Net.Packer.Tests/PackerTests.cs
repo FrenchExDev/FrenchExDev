@@ -1598,15 +1598,26 @@ public sealed class PackerMachineReadableParserRoundTripFuzzTests
     }
 
     [Fact]
+    public void ParseLine_NumericPrefixBeforeComma_IsAValidTimestampField()
+    {
+        var line = new OutputLine(" 0,not-a-timestamp,target,event", OutputSource.StdOut);
+        var evt = _parser.ParseLine(line).Single().ShouldBeOfType<PackerMachineReadableEvent>();
+        evt.Timestamp.ShouldBe(0);
+        evt.Target.ShouldBe("not-a-timestamp");
+        evt.EventType.ShouldBe("target");
+        evt.Data.ShouldBe(["event"]);
+    }
+
+    [Fact]
     public void ParseLine_InvalidTimestamp_AlwaysYieldsOutputLine()
     {
         Gen.Select(Gens.NonEmpty, Gen.String, Gen.String).Sample((badTs, target, evtType) =>
         {
-            if (long.TryParse(badTs, out _)) return; // skip if accidentally valid
-
+            // The generated string may contain commas, making its numeric prefix the
+            // actual CSV timestamp. Keep the first field invalid for every generated input.
             target ??= "";
             evtType ??= "";
-            var text = $"{badTs},{target},{evtType}";
+            var text = $"invalid:{badTs},{target},{evtType}";
             var line = new OutputLine(text, OutputSource.StdOut);
             var events = _parser.ParseLine(line).ToList();
             events.Count.ShouldBe(1);

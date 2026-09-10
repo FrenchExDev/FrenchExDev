@@ -308,7 +308,7 @@ dotnet run -- --parallel 8 --scrape-parallel 4
 | Flag | Description |
 |------|-------------|
 | `--parallel N` | Number of concurrent version workers (default 4) |
-| `--scrape-parallel N` | Concurrent subcommand scraping within a version (default 4) |
+| `--scrape-parallel N` | Maximum active help calls across the entire command tree of each version (default 4) |
 | `--output DIR` | Output directory override |
 | `--min-version VER` | Filter versions >= VER |
 | `--runtime BIN` | Container runtime binary (default `podman`) |
@@ -977,3 +977,10 @@ The generator deduplicates options with the same PascalCase name (e.g., `--no-tt
 
 - [Architecture](ARCHITECTURE.md) — deep dive into system design and component interactions
 - [Comparison Table](COMPARISON-TABLE.md) — side-by-side comparison of all 6 consumers
+
+
+## Reusable image pipelines
+
+See [UPGRADE-IMAGE-PIPELINES.md](UPGRADE-IMAGE-PIPELINES.md) for `DesignImagePlan`,
+`UseVersionImage`, `--build-base`, `--build-images`, `--keep-images`, `--clean-images`,
+and the complete list of CLI clients to migrate.

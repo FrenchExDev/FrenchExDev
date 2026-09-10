@@ -1,0 +1,14 @@
+Description:
+  Search for available workloads.
+
+Usage:
+  dotnet workload search [<SEARCH_STRING>] [options]
+
+Arguments:
+  <SEARCH_STRING>  The text to search for in the IDs and descriptions of available workloads.
+
+Options:
+  -?, -h, --help  Show command line help.
+
+
+

@@ -9,10 +9,7 @@
   </Folder>
   <Folder Name="/AttaQwant/" />
   <Folder Name="/AttaQwant/doc/" />
-  <Folder Name="/AttaQwant/src/">
-    <Project Path="AttaQwant/src/FrenchExDev.Net.AttaQwant.Design/FrenchExDev.Net.AttaQwant.Design.csproj" />
-    <Project Path="AttaQwant/src/FrenchExDev.Net.AttaQwant/FrenchExDev.Net.AttaQwant.csproj" />
-  </Folder>
+  <Folder Name="/AttaQwant/src/" />
   <Folder Name="/AttaQwant/test/" />
   <Folder Name="/BinaryWrapper/" />
   <Folder Name="/BinaryWrapper/doc/" />

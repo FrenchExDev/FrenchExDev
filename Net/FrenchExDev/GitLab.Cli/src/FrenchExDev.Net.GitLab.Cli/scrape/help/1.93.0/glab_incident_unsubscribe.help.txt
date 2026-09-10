@@ -1,0 +1,18 @@
+
+  Unsubscribe from an incident.                                                                                         
+         
+  USAGE  
+         
+    glab incident unsubscribe <id> [--flags]                                       
+            
+  EXAMPLES  
+            
+    glab incident unsubscribe 123                                                  
+    glab incident unsub 123                                                        
+    glab incident unsubscribe https://gitlab.com/OWNER/REPO/-/issues/incident/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

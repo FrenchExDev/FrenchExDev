@@ -1,0 +1,17 @@
+Description:
+  Add one or more projects to a solution file.
+
+Usage:
+  dotnet sln <SLN_FILE> add [<PROJECT_PATH>...] [options]
+
+Arguments:
+  <SLN_FILE>      The solution file to operate on. If not specified, the command will search the current directory for one. [default: /]
+  <PROJECT_PATH>  The paths to the projects to add to the solution.
+
+Options:
+  --in-root                                Place project in root of the solution, rather than creating a solution folder.
+  -s, --solution-folder <solution-folder>  The destination solution folder path to add the projects to.
+  -?, -h, --help                           Show command line help.
+
+
+

@@ -1,0 +1,22 @@
+
+  Checks if your `.gitlab-ci.yml` file is valid.                                                                        
+         
+  USAGE  
+         
+    glab ci lint [--flags]                          
+            
+  EXAMPLES  
+            
+    # Uses .gitlab-ci.yml in the current directory  
+    glab ci lint                                    
+    glab ci lint .gitlab-ci.yml                     
+    glab ci lint path/to/.gitlab-ci.yml             
+         
+  FLAGS  
+         
+    --dry-run       Run pipeline creation simulation.
+    -h --help       Show help for this command.
+    --include-jobs  Response includes the list of jobs that would exist in a static check or pipeline simulation.
+    --ref           When 'dry-run' is true, sets the branch or tag context for validating the CI/CD YAML configuration.
+    -R --repo       Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

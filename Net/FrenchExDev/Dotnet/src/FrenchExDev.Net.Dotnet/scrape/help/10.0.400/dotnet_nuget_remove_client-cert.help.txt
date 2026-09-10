@@ -1,0 +1,12 @@
+Description:
+  Removes the client certificate configuration that matches the given package source name.
+
+Usage:
+  NuGet.CommandLine.XPlat remove client-cert [options]
+
+Options:
+  -s, --package-source <package-source>  Package source name.
+  --configfile <configfile>              The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -?, -h, --help                         Show help and usage information
+  --force-english-output                 Forces the application to run using an invariant, English-based culture.
+

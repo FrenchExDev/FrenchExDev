@@ -1,0 +1,13 @@
+
+  Delete the given state or if the serial is provided only that version of the given state.                             
+         
+  USAGE  
+         
+    glab opentofu state delete <state> [<serial>] [--flags]  
+         
+  FLAGS  
+         
+    -f --force  Force delete the state without prompting.
+    -h --help   Show help for this command.
+    -R --repo   Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

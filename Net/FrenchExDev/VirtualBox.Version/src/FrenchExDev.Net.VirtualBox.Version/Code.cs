@@ -1,4 +1,6 @@
-﻿namespace FrenchExDev.Net.VirtualBox.Version;
+using System.Diagnostics;
+
+namespace FrenchExDev.Net.VirtualBox.Version;
 
 /// <summary>
 /// Defines a mechanism for asynchronously discovering the installed VirtualBox system version.

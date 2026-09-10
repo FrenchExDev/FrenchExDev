@@ -1,0 +1,26 @@
+
+  Display the title, body, and other information about an incident.                                                     
+         
+  USAGE  
+         
+    glab incident view <id> [--flags]                                           
+            
+  EXAMPLES  
+            
+    glab incident view 123                                                      
+    glab incident show 123                                                      
+    glab incident view --web 123                                                
+    glab incident view --comments 123                                           
+    glab incident view https://gitlab.com/NAMESPACE/REPO/-/issues/incident/123  
+         
+  FLAGS  
+         
+    -c --comments     Show incident comments and activities.
+    -h --help         Show help for this command.
+    -F --output       Format output as: text, json. (text)
+    -p --page         Page number. (1)
+    -P --per-page     Number of items to list per page. (20)
+    -R --repo         Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -s --system-logs  Show system activities and logs.
+    -w --web          Open incident in a browser. Uses the default browser, or the browser specified in the $BROWSER variable.
+

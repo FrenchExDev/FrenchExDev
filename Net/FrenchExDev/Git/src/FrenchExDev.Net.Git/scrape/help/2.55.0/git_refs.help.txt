@@ -1,0 +1,12 @@
+usage: git refs migrate --ref-format=<format> [--no-reflog] [--dry-run]
+   or: git refs verify [--strict] [--verbose]
+   or: git refs list [--count=<count>] [--shell|--perl|--python|--tcl]
+                                [(--sort=<key>)...] [--format=<format>]
+                                [--include-root-refs] [--points-at=<object>]
+                                [--merged[=<object>]] [--no-merged[=<object>]]
+                                [--contains[=<object>]] [--no-contains[=<object>]]
+                                [(--exclude=<pattern>)...] [--start-after=<marker>]
+                                [ --stdin | (<pattern>...)]
+   or: git refs exists <ref>
+   or: git refs optimize [--all] [--no-prune] [--auto] [--include <pattern>] [--exclude <pattern>]
+

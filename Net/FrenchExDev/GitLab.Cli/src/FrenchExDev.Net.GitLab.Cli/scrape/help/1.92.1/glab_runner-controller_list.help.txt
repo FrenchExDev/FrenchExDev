@@ -1,0 +1,22 @@
+
+  List runner controllers. (EXPERIMENTAL)                                                                               
+         
+  USAGE  
+         
+    glab runner-controller list [--flags]      
+            
+  EXAMPLES  
+            
+    # List all runner controllers              
+    glab runner-controller list                
+                                               
+    # List runner controllers as JSON          
+    glab runner-controller list --output json  
+         
+  FLAGS  
+         
+    -h --help      Show help for this command.
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items per page. (30)
+

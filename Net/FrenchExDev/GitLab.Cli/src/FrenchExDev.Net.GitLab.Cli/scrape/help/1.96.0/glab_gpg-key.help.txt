@@ -1,0 +1,19 @@
+
+  Manage GPG keys registered with your GitLab account.                                                                  
+         
+  USAGE  
+         
+    glab gpg-key <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    add [key-file]          Add a GPG key to your GitLab account.
+    delete <key-id>         Deletes a single GPG key specified by the ID.
+    get <key-id> [--flags]  Returns a single GPG key specified by the ID.
+    list [--flags]          Get a list of GPG keys for the currently authenticated user.
+         
+  FLAGS  
+         
+    -h --help               Show help for this command.
+    -R --repo               Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

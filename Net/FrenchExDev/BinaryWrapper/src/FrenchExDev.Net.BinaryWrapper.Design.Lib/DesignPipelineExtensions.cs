@@ -10,6 +10,23 @@ namespace FrenchExDev.Net.BinaryWrapper.Design.Lib;
 public static class DesignPipelineExtensions
 {
     /// <summary>
+    /// Builds or reuses the version image from the runner's ImagePlan.
+    /// Releases the image after inner middleware (including container cleanup) completes.
+    /// </summary>
+    public static DesignPipeline UseVersionImage(this DesignPipeline pipeline)
+    {
+        return pipeline.Use(next => async ctx =>
+        {
+            var acquire = ctx.AcquireVersionImage
+                ?? throw new InvalidOperationException("UseVersionImage requires DesignPipelineRunner.ImagePlan.");
+            ctx.Progress?.SetStage("Building");
+            await using var image = await acquire(ctx.Version);
+            ctx.ImageTag = image.Tag;
+            await next(ctx);
+        });
+    }
+
+    /// <summary>
     /// Builds a container image for the version if it doesn't already exist.
     /// Eagerly removes the image in finally after inner middleware completes.
     /// </summary>

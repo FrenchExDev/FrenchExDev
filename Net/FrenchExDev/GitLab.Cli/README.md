@@ -167,32 +167,36 @@ Since glab omits explicit type hints, `GlabHelpParser` infers `OptionValueKind` 
 The Design project uses the standard `DesignPipeline` middleware stack, following the Podman pattern:
 
 ```csharp
+var images = new DesignImagePlan
+{
+    ImageName = "glab-cli",
+    BaseImage = "alpine:3.19",
+    Platform = "linux/amd64",
+    BaseInstallScript = "apk add --no-cache curl tar",
+    InstallScript = v =>
+        $"curl -fsSL https://gitlab.com/gitlab-org/cli/-/releases/v{v}/downloads/glab_{v}_linux_amd64.tar.gz -o /tmp/glab.tar.gz && " +
+        "tar xzf /tmp/glab.tar.gz --no-same-owner -C /tmp && " +
+        "mv /tmp/bin/glab /usr/local/bin/glab && " +
+        "chmod +x /usr/local/bin/glab && " +
+        "rm -rf /tmp/glab.tar.gz /tmp/bin",
+};
+
 var pipeline = new DesignPipeline()
-    .UseImageBuild(
-        imageTagPrefix: "glab-scrape",
-        baseImage: "alpine:3.19",
-        installScript: v =>
-            "apk add --no-cache curl tar > /dev/null 2>&1 && " +
-            $"curl -fsSL https://gitlab.com/gitlab-org/cli/-/releases/v{v}/downloads/glab_{v}_linux_amd64.tar.gz -o /tmp/glab.tar.gz && " +
-            "tar xzf /tmp/glab.tar.gz --no-same-owner -C /tmp && " +
-            "mv /tmp/bin/glab /usr/local/bin/glab && " +
-            "chmod +x /usr/local/bin/glab && " +
-            "rm -rf /tmp/glab.tar.gz /tmp/bin")
+    .UseVersionImage()
     .UseContainer()
     .UseScraper("glab", parser)
     .Build();
 ```
 
+Set `ImagePlanResolver = new SingleDesignImagePlanResolver(images)` on the `DesignPipelineRunner` alongside the existing version collector and pipelines.
+
 ### Pipeline stages
 
-```
-┌──────────────┐     ┌──────────────┐    ┌──────────────┐     ┌──────────────┐
-│ Collect      │     │ Build image  │    │ Start        │     │ Scrape help  │
-│ versions     │───▶│ (alpine +    │───▶│ container    │───▶│ recursively  │
-│ (GitLab API) │     │  glab binary)│    │ (sleep ∞)    │     │ (GlabParser) │
-└──────────────┘     └──────────────┘    └──────────────┘     └──────────────┘
-                                                                    │
-                                                            glab-{v}.json
+```text
+GitLab releases -> prepare/reuse shared Alpine + curl + tar base
+                -> build/reuse glab image for each selected version
+                -> start container -> collect help -> glab-{version}.json
+                -> remove container and version image (unless --keep-images)
 ```
 
 ### Running the scraper
@@ -201,19 +205,19 @@ var pipeline = new DesignPipeline()
 # From GitLab.Cli/src/FrenchExDev.Net.GitLab.Cli.Design/
 
 # List all discoverable versions
-dotnet run -- --list
+dotnet run --framework net10.0 -- --list
 
 # Scrape all versions from 1.20.0 onward (first with current help format)
-dotnet run -- --min-version 1.20.0 --dashboard
+dotnet run --framework net10.0 -- --min-version 1.20.0 --dashboard
 
 # Scrape only versions not yet scraped
-dotnet run -- --missing --dashboard
+dotnet run --framework net10.0 -- --missing --dashboard
 
 # Reparse from cached help text (no containers needed)
-dotnet run -- --reparse --dashboard
+dotnet run --framework net10.0 -- --reparse --dashboard
 
 # Control parallelism
-dotnet run -- --parallel 8 --scrape-parallel 6 --dashboard
+dotnet run --framework net10.0 -- --parallel 8 --scrape-parallel 6 --dashboard
 ```
 
 ---
@@ -342,3 +346,48 @@ glab uses `--help` (or `-h`) as the help flag, which is the default for the `Use
 | [Vagrant](../Vagrant/) | Vagrant wrapper (custom parser, HashiCorp releases) |
 | [Builder](../Builder/) | `AbstractBuilder<T>` and builder source generator |
 | [Result](../Result/) | `Result<T>` monad for error handling |
+
+## Shared dependency and version images
+
+The Design runner prepares the shared system dependencies once, then installs each
+software version in an image derived from that base. `UseVersionImage().UseContainer()`
+builds or reuses the image before collecting help. After collection, the container
+and version image are removed; `--keep-images` retains the version image. The
+shared base remains cached.
+
+From the wrapper directory, with Podman running (or add `--runtime docker`):
+
+```powershell
+$design = './src/FrenchExDev.Net.GitLab.Cli.Design/FrenchExDev.Net.GitLab.Cli.Design.csproj'
+dotnet run --project $design --framework net10.0 -- --help
+dotnet run --project $design --framework net10.0 -- --build-base
+dotnet run --project $design --framework net10.0 -- --list --missing
+# Review the selection; optionally narrow it with --min-version.
+dotnet run --project $design --framework net10.0 -- --build-images --missing --parallel 2
+dotnet run --project $design --framework net10.0 -- --missing --parallel 2
+dotnet run --project $design --framework net10.0 -- --reparse
+dotnet run --project $design --framework net10.0 -- --clean-images
+```
+
+`--build-base` prepares only dependencies. `--build-images` installs selected versions
+without scraping and keeps their images. `--clean-images` removes this wrapper's
+version images before its base, without forcing removal. Base preparation and cleanup
+do not query the version collector; `--list` and `--reparse` do not build images.
+With `--missing`, selection is based on missing JSON files.
+
+The three image operations are mutually exclusive and cannot be combined with
+`--reparse` or known-missing management. `--build-base` and `--clean-images` also
+reject `--list` and `--missing`.
+
+The PowerShell launcher exposes `-BuildBase`, `-BuildImages`, `-CleanImages`,
+`-KeepImages`, `-Reparse`, `-Missing`, `-List`, `-MinVersion`, `-Parallel`,
+`-ScrapeParallel`, `-Runtime`, `-Output` and `-Framework`. It resolves its project
+relative to the script, so it also works from another directory:
+
+```powershell
+./scripts/Find-Missing.ps1 -BuildBase -Framework net10.0
+./scripts/Find-Missing.ps1 -BuildImages -Missing -Parallel 2 -Framework net10.0
+```
+
+See the [BinaryWrapper image pipeline guide](../BinaryWrapper/doc/UPGRADE-IMAGE-PIPELINES.md)
+for each client's dependencies, cache identities, build logs, reuse and cleanup.
