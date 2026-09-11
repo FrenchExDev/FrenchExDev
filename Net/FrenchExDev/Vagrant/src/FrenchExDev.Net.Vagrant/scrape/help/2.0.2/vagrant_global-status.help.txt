@@ -1,0 +1,7 @@
+==> vagrant: A new version of Vagrant is available: 2.4.9!
+==> vagrant: To upgrade visit: https://www.vagrantup.com/downloads.html
+
+Usage: vagrant global-status
+
+        --prune                      Prune invalid entries.
+    -h, --help                       Print this help

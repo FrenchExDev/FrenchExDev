@@ -1,0 +1,6 @@
+Usage: vagrant box list [options]
+
+Options:
+
+    -i, --box-info                   Displays additional information about the boxes
+    -h, --help                       Print this help

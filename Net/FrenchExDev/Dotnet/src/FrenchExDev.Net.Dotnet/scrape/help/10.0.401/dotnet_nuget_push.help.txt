@@ -1,0 +1,25 @@
+Description:
+  Pushes a package to the server and publishes it.
+
+Usage:
+  NuGet.CommandLine.XPlat push <package-paths>... [options]
+
+Arguments:
+  <package-paths>  Specify the path to the package and your API key to push the package to the server.
+
+Options:
+  -s, --source <source>                   Package source (URL, UNC/folder path or package source name) to use. Defaults to DefaultPushSource if specified in NuGet.Config.
+  --allow-insecure-connections            Allows pushing to HTTP sources (insecure).
+  -ss, --symbol-source <symbol-source>    Symbol server URL to use.
+  -t, --timeout <timeout>                 Timeout for pushing to a server in seconds. Defaults to 300 seconds (5 minutes).
+  -k, --api-key <api-key>                 The API key for the server. If not set, the NUGET_API_KEY environment variable is read.
+  -sk, --symbol-api-key <symbol-api-key>  The API key for the symbol server. If not set, the NUGET_SYMBOL_API_KEY environment variable is read.
+  -d, --disable-buffering                 Disable buffering when pushing to an HTTP(S) server to decrease memory usage.
+  -n, --no-symbols                        If a symbols package exists, it will not be pushed to a symbols server.
+  --no-service-endpoint                   Does not append "api/v2/package" to the source URL.
+  --interactive                           Allow the command to block and require manual action for operations like authentication.
+  --skip-duplicate                        If a package and version already exists, skip it and continue with the next package in the push, if any.
+  --configfile <configfile>               The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -?, -h, --help                          Show help and usage information
+  --force-english-output                  Forces the application to run using an invariant, English-based culture.
+

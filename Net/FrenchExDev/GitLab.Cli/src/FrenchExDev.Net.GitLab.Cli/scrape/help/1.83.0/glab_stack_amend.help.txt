@@ -1,0 +1,27 @@
+
+  Add more changes to an existing stacked diff.                                                                         
+                                                                                                                        
+  This feature is experimental. It might be broken or removed without any prior notice.                                 
+  Read more about what experimental features mean at                                                                    
+  https://docs.gitlab.com/policy/development_stages_support/                                                            
+                                                                                                                        
+  Use experimental features at your own risk.                                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab stack amend [--flags]                          
+            
+  EXAMPLES  
+            
+    $ glab stack amend modifiedfile                     
+    $ glab stack amend . -m "fixed a function"          
+    $ glab stack amend newfile -d "forgot to add this"  
+         
+  FLAGS  
+         
+    -d --description  A description of the change
+    -h --help         Show help for this command.
+    -m --message      Alias for the description flag
+    -R --repo         Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

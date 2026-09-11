@@ -1,0 +1,16 @@
+Description:
+
+Usage:
+  dotnet nuget trust certificate <NAME> <FINGERPRINT> [options]
+
+Arguments:
+  <NAME>
+  <FINGERPRINT>
+
+Options:
+  --configfile <configfile>
+  -v, --verbosity <LEVEL>             Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. [default: normal]
+  --allow-untrusted-root              [default: False]
+  --algorithm <SHA256|SHA384|SHA512>  [default: SHA256]
+  -?, -h, --help                      Show command line help.
+

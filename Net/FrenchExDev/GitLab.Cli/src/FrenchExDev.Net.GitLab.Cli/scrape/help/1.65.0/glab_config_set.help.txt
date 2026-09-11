@@ -1,0 +1,23 @@
+Update the configuration by setting a key to a value. Use 'glab config set --    
+  global' to set a global config. Specifying the '--hostname' flag also saves in   
+  the                                                                              
+  global configuration file.
+
+USAGE
+  glab config set <key> <value> [flags]
+
+FLAGS
+  -g, --global        Write to global '~/.config/glab-cli/config.yml' file rather than the repository's '.git/glab-cli/config.yml' file.
+  -h, --host string   Set per-host setting.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+EXAMPLES
+  • glab config set editor vim                                                     
+    • glab config set token xxxxx -h gitlab.com                                      
+    • glab config set check_update false --global
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

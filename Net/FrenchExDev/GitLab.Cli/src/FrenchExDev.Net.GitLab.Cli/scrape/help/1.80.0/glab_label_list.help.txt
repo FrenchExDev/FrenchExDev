@@ -1,0 +1,23 @@
+
+  List labels in the repository.                                                                                        
+         
+  USAGE  
+         
+    glab label list [--flags]              
+            
+  EXAMPLES  
+            
+    $ glab label list                      
+    $ glab label ls                        
+    $ glab label list -R owner/repository  
+    $ glab label list -g mygroup           
+         
+  FLAGS  
+         
+    -g --group     List labels for a group.
+    -h --help      Show help for this command.
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (30)
+    -R --repo      Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

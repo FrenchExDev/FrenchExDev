@@ -1906,6 +1906,251 @@ public class CobraHelpParserTests
     }
 }
 
+// ── ArgparseHelpParser Tests ────────────────────────────────────────────────
+
+public class ArgparseHelpParserTests
+{
+    private readonly ArgparseHelpParser _parser = new();
+
+    [Fact]
+    public void Parse_NullOrEmpty_ReturnsNull()
+    {
+        _parser.Parse(null!, "cmd").ShouldBeNull();
+        _parser.Parse("", "cmd").ShouldBeNull();
+        _parser.Parse("   ", "cmd").ShouldBeNull();
+    }
+
+    [Fact]
+    public void Parse_RootCommandWithSubcommands()
+    {
+        var help = """
+            Manage compose workloads
+
+            options:
+              -h, --help            show this help message and exit
+              --verbose             Print debugging output
+
+            command:
+              {up,down,ps,run,build,logs}
+                up                  Create and start the entire stack
+                down                tear down entire stack
+                ps                  show status of containers
+                run                 create a container
+                build               build stack images
+                logs                show logs from services
+            """;
+
+        var node = _parser.Parse(help, "podman-compose");
+        node.ShouldNotBeNull();
+        node!.Description.ShouldBe("Manage compose workloads");
+        node.SubCommands.Count.ShouldBe(6);
+        node.SubCommands[0].Name.ShouldBe("up");
+        node.SubCommands[0].Description.ShouldBe("Create and start the entire stack");
+        node.SubCommands[5].Name.ShouldBe("logs");
+    }
+
+    [Fact]
+    public void Parse_OptionsWithMetavars()
+    {
+        var help = """
+            options:
+              --in-pod in_pod       Specify pod usage
+              --project-name PROJECT_NAME
+                                    Specify an alternate project name
+              --no-ansi             Do not print ANSI control characters
+              --parallel PARALLEL
+              --verbose             Print debugging output
+            """;
+
+        var node = _parser.Parse(help, "cmd");
+        node.ShouldNotBeNull();
+
+        var inPod = node!.Options.First(o => o.LongName == "in-pod");
+        inPod.ValueKind.ShouldBe(OptionValueKind.Single);
+        inPod.ClrType.ShouldBe("string");
+        inPod.Description.ShouldBe("Specify pod usage");
+
+        var projectName = node.Options.First(o => o.LongName == "project-name");
+        projectName.ValueKind.ShouldBe(OptionValueKind.Single);
+        projectName.ClrType.ShouldBe("string");
+        projectName.Description.ShouldBe("Specify an alternate project name");
+
+        var noAnsi = node.Options.First(o => o.LongName == "no-ansi");
+        noAnsi.ValueKind.ShouldBe(OptionValueKind.Flag);
+        noAnsi.ClrType.ShouldBe("bool");
+
+        var parallel = node.Options.First(o => o.LongName == "parallel");
+        parallel.ValueKind.ShouldBe(OptionValueKind.Single);
+
+        var verbose = node.Options.First(o => o.LongName == "verbose");
+        verbose.ValueKind.ShouldBe(OptionValueKind.Flag);
+    }
+
+    [Fact]
+    public void Parse_ShortAndLongWithMetavar()
+    {
+        var help = """
+            options:
+              -f file, --file file  Specify an compose file
+              -p PROJECT_NAME, --project-name PROJECT_NAME
+                                    Specify an alternate project name
+              -d, --detach          Detached mode
+            """;
+
+        var node = _parser.Parse(help, "cmd");
+        node.ShouldNotBeNull();
+
+        var file = node!.Options.First(o => o.LongName == "file");
+        file.ShortName.ShouldBe("f");
+        file.ValueKind.ShouldBe(OptionValueKind.Single);
+
+        var project = node.Options.First(o => o.LongName == "project-name");
+        project.ShortName.ShouldBe("p");
+        project.ValueKind.ShouldBe(OptionValueKind.Single);
+
+        var detach = node.Options.First(o => o.LongName == "detach");
+        detach.ShortName.ShouldBe("d");
+        detach.ValueKind.ShouldBe(OptionValueKind.Flag);
+    }
+
+    [Fact]
+    public void Parse_SubcommandHelp_ParsesOptions()
+    {
+        var help = """
+            positional arguments:
+              services              affected services
+
+            options:
+              -h, --help            show this help message and exit
+              -d, --detach          Detached mode
+              --force-recreate      Recreate containers
+              -t TIMEOUT, --timeout TIMEOUT
+                                    Use this timeout in seconds
+              --scale SERVICE=NUM   Scale SERVICE to NUM instances
+              --build-arg key=val   Set build-time variables
+              --no-cache            Do not use cache
+            """;
+
+        var node = _parser.Parse(help, "up");
+        node.ShouldNotBeNull();
+
+        node!.Options.Count.ShouldBe(7);
+
+        var detach = node.Options.First(o => o.LongName == "detach");
+        detach.ValueKind.ShouldBe(OptionValueKind.Flag);
+
+        var timeout = node.Options.First(o => o.LongName == "timeout");
+        timeout.ShortName.ShouldBe("t");
+        timeout.ValueKind.ShouldBe(OptionValueKind.Single);
+
+        var scale = node.Options.First(o => o.LongName == "scale");
+        scale.ValueKind.ShouldBe(OptionValueKind.Single);
+
+        var buildArg = node.Options.First(o => o.LongName == "build-arg");
+        buildArg.ValueKind.ShouldBe(OptionValueKind.Single);
+
+        node.Arguments.Count.ShouldBe(1);
+        node.Arguments[0].Name.ShouldBe("services");
+        node.Arguments[0].IsVariadic.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Parse_SkipsDefaultCommands()
+    {
+        var help = """
+            command:
+              {help,up,down}
+                help                show help
+                up                  start
+                down                stop
+            """;
+
+        var node = _parser.Parse(help, "cmd");
+        node!.SubCommands.Count.ShouldBe(2);
+        node.SubCommands[0].Name.ShouldBe("up");
+        node.SubCommands[1].Name.ShouldBe("down");
+    }
+
+    [Fact]
+    public void Parse_CustomSkippedCommands()
+    {
+        var parser = new ArgparseHelpParser(["help", "version"]);
+        var help = """
+            command:
+              {help,version,up,down}
+                help                show help
+                version             show version
+                up                  start
+                down                stop
+            """;
+
+        var node = parser.Parse(help, "cmd");
+        node!.SubCommands.Count.ShouldBe(2);
+        node.SubCommands[0].Name.ShouldBe("up");
+        node.SubCommands[1].Name.ShouldBe("down");
+    }
+
+    [Fact]
+    public void Parse_PositionalArguments()
+    {
+        var help = """
+            positional arguments:
+              [services ...]        affected services
+
+            options:
+              -h, --help            show this help message and exit
+            """;
+
+        var node = _parser.Parse(help, "up");
+        node.ShouldNotBeNull();
+        node!.Arguments.Count.ShouldBe(1);
+        node.Arguments[0].Name.ShouldBe("services");
+        node.Arguments[0].IsVariadic.ShouldBeTrue();
+        node.Arguments[0].IsRequired.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Parse_OlderPythonOptionsHeader()
+    {
+        var help = """
+            optional arguments:
+              -h, --help            show this help message and exit
+              --verbose             Print debugging output
+            """;
+
+        var node = _parser.Parse(help, "cmd");
+        node.ShouldNotBeNull();
+        node!.Options.Count.ShouldBe(2);
+        node.Options[0].LongName.ShouldBe("help");
+        node.Options[1].LongName.ShouldBe("verbose");
+    }
+
+    [Fact]
+    public void Parse_ContinuationLines()
+    {
+        var help = """
+            options:
+              --force-recreate      Recreate containers even if their
+                                    configuration and image haven't changed.
+              --no-build            Don't build an image.
+            """;
+
+        var node = _parser.Parse(help, "cmd");
+        node.ShouldNotBeNull();
+        node!.Options.Count.ShouldBe(2);
+        node.Options[0].LongName.ShouldBe("force-recreate");
+        node.Options[0].Description!.ShouldContain("configuration and image");
+        node.Options[1].LongName.ShouldBe("no-build");
+    }
+
+    [Fact]
+    public void Create_Argparse_ReturnsArgparseHelpParser()
+    {
+        var parser = HelpParsers.Create("argparse");
+        parser.ShouldBeOfType<ArgparseHelpParser>();
+    }
+}
+
 // ── HelpParsers Registry Tests ─────────────────────────────────────────────
 
 public class HelpParsersTests
@@ -1916,6 +2161,7 @@ public class HelpParsersTests
     [InlineData("cobra")]
     [InlineData("COBRA")]
     [InlineData("Standard")]
+    [InlineData("argparse")]
     public void Create_KnownStrategy_ReturnsParser(string strategy)
     {
         var parser = HelpParsers.Create(strategy);
@@ -1943,6 +2189,7 @@ public class HelpParsersTests
         strategies.ShouldContain("standard");
         strategies.ShouldContain("packer");
         strategies.ShouldContain("cobra");
+        strategies.ShouldContain("argparse");
     }
 
     [Fact]

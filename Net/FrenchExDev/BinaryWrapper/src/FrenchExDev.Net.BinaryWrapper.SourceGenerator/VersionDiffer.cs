@@ -239,6 +239,11 @@ internal sealed class UnifiedCommand
 internal sealed class UnifiedOption
 {
     public string LongName { get; set; } = "";
+    /// <summary>
+    /// PascalCase property name override. When set, used instead of ToPascalCase(LongName)
+    /// to avoid clashes with argument property names or reserved members.
+    /// </summary>
+    public string? DisplayName { get; set; }
     public string? ShortName { get; set; }
     public string? Description { get; set; }
     public string ValueKind { get; set; } = "single";
@@ -252,6 +257,11 @@ internal sealed class UnifiedOption
 internal sealed class UnifiedArgument
 {
     public string Name { get; set; } = "";
+    /// <summary>
+    /// PascalCase property name override. When set, used instead of ToPascalCase(Name)
+    /// to avoid clashes with option property names or reserved members.
+    /// </summary>
+    public string? DisplayName { get; set; }
     public int Position { get; set; }
     public string? Description { get; set; }
     public string ClrType { get; set; } = "string";

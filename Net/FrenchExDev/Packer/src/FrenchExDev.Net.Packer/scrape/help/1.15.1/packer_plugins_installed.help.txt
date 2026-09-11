@@ -1,0 +1,4 @@
+Usage: packer plugins installed
+
+  This command lists all installed plugin binaries that match with the current
+  OS and architecture. Packer's API version will be ignored.

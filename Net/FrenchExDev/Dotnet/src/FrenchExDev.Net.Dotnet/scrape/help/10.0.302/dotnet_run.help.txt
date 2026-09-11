@@ -1,0 +1,42 @@
+Description:
+  .NET Run Command
+
+Usage:
+  dotnet run [<applicationArguments>...] [options]
+
+Arguments:
+  <applicationArguments>  Arguments passed to the application that is being run. []
+
+Options:
+  -c, --configuration <CONFIGURATION>     The configuration to run for. The default for most projects is 'Debug'.
+  -f, --framework <FRAMEWORK>             The target framework to run for. The target framework must also be specified in the project file.
+  --project <PROJECT_PATH>                Defines the path of the project file to run. Use path to the project file, or path to the directory containing the project file. If not specified, it defaults to the current directory.
+  --file <FILE_PATH>                      The path to the file-based app to run (can be also passed as the first argument if there is no project in the current directory).
+  -lp, --launch-profile <LAUNCH_PROFILE>  The name of the launch profile (if any) to use when launching the application.
+  --no-launch-profile                     Do not attempt to use launchSettings.json or [app].run.json to configure the application. [default: False]
+  --device <DEVICE>                       The device identifier to use for running the application.
+  --list-devices                          List available devices for running the application. [default: False]
+  --no-build                              Do not build the project before running. Implies --no-restore. [default: False]
+  --interactive                           Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  --no-restore                            Do not restore the project before building. [default: False]
+  --no-cache                              Skip up to date checks and always build the program before running. [default: False]
+  --sc, --self-contained                  Publish the .NET runtime with your application so the runtime doesn't need to be installed on the target machine.
+                                          The default is 'false.' However, when targeting .NET 7 or lower, the default is 'true' if a runtime identifier is specified. [default: False]
+  --no-self-contained                     Publish your application as a framework dependent application. A compatible .NET runtime must be installed on the target machine to run your application. [default: False]
+  -v, -verbosity <LEVEL>                  Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -r, --runtime <RUNTIME_IDENTIFIER>      The target runtime to run for.
+  -a, --arch <ARCH>                       The target architecture.
+  --os <OS>                               The target operating system.
+  --disable-build-servers                 Force the command to ignore any persistent build servers. [default: False]
+  --artifacts-path <ARTIFACTS_DIR>        The artifacts path. All output from the project, including build, publish, and pack output, will go in subfolders under the specified path.
+  -e, --environment <NAME="VALUE">        Sets the value of an environment variable. 
+                                          Creates the variable if it does not exist, overrides if it does. 
+                                          This argument can be specified multiple times to provide multiple variables.
+  
+                                          Examples:
+                                          -e VARIABLE=abc
+                                          -e VARIABLE="value with spaces"
+                                          -e VARIABLE="value;seperated with;semicolons"
+                                          -e VAR1=abc -e VAR2=def -e VAR3=ghi
+  -?, -h, --help                          Show command line help.
+

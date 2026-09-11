@@ -1,0 +1,18 @@
+
+  Reopen a closed issue.                                                                                                
+         
+  USAGE  
+         
+    glab issue reopen [<id> | <url>] [--flags]                        
+            
+  EXAMPLES  
+            
+    glab issue reopen 123                                             
+    glab issue open 123                                               
+    glab issue reopen https://gitlab.com/NAMESPACE/REPO/-/issues/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

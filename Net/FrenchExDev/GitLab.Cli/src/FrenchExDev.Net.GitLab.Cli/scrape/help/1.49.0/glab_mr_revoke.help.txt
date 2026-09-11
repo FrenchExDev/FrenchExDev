@@ -1,0 +1,25 @@
+Revoke approval on a merge request.
+
+USAGE
+  glab mr revoke [<id> | <branch>] [flags]
+
+ALIASES
+  unapprove
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  $ glab mr revoke 123
+  $ glab mr unapprove 123
+  $ glab mr revoke branch
+  
+  # Uses the checked-out branch
+  $ glab mr revoke
+  
+  $ glab mr revoke 123 branch 456
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

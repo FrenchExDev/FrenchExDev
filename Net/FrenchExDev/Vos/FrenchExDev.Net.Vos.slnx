@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Vos/FrenchExDev.Net.Vos.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Abstractions/FrenchExDev.Net.Vos.Abstractions.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Lib.Abstractions/FrenchExDev.Net.Vos.Lib.Abstractions.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.VosFile/FrenchExDev.Net.Vos.VosFile.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Bundle/FrenchExDev.Net.Vos.Bundle.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Lib/FrenchExDev.Net.Vos.Lib.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Infra.FileSystem/FrenchExDev.Net.Vos.Infra.FileSystem.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Infra.Vagrant/FrenchExDev.Net.Vos.Infra.Vagrant.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Cli/FrenchExDev.Net.Vos.Cli.csproj" />
+    <Project Path="src/FrenchExDev.Net.Vos.Infra.PowerShell/FrenchExDev.Net.Vos.Infra.PowerShell.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Vos.Tests/FrenchExDev.Net.Vos.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Vos.Lib.Tests/FrenchExDev.Net.Vos.Lib.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Vos.VosFile.Tests/FrenchExDev.Net.Vos.VosFile.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Vos.Bundle.Tests/FrenchExDev.Net.Vos.Bundle.Tests.csproj" />
+  </Folder>
+</Solution>

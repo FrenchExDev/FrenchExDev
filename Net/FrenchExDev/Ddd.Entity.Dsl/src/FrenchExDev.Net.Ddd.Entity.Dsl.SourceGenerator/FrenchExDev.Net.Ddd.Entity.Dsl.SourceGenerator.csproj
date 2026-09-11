@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+  </ItemGroup>
+  <!-- Include Lib source files directly (linked) -->
+  <ItemGroup>
+    <Compile Include="..\FrenchExDev.Net.Ddd.Entity.Dsl.SourceGenerator.Lib\DddEntityDslBridgeEmitter.cs" Link="Lib\DddEntityDslBridgeEmitter.cs" />
+  </ItemGroup>
+</Project>

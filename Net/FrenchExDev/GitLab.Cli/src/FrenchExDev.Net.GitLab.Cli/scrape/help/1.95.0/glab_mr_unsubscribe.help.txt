@@ -1,0 +1,23 @@
+
+  You no longer receive notifications after unsubscribing.                                                              
+                                                                                                                        
+         
+  USAGE  
+         
+    glab mr unsubscribe [<id> | <branch>] [--flags]  
+            
+  EXAMPLES  
+            
+    # Unsubscribe from a merge request               
+    glab mr unsubscribe 123                          
+    glab mr unsub 123                                
+    glab mr unsubscribe branch                       
+                                                     
+    # Unsubscribe from multiple merge requests       
+    glab mr unsubscribe 123 branch                   
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

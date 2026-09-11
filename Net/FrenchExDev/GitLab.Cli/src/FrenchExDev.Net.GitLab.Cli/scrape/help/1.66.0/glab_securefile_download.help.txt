@@ -1,0 +1,24 @@
+Download a secure file for a project.
+
+USAGE
+  glab securefile download <fileID> [flags]
+
+FLAGS
+  -p, --path string   Path to download the secure file to, including filename and extension. (default "./downloaded.tmp")
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  Download a project's secure file using the file's ID.                            
+                                                                                     
+    • glab securefile download 1                                                     
+                                                                                     
+    Download a project's secure file using the file's ID to a given path.            
+                                                                                     
+    • glab securefile download 1 --path="securefiles/file.txt"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

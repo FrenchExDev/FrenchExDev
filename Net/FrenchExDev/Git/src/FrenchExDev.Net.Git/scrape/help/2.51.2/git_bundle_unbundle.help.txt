@@ -1,0 +1,4 @@
+usage: git bundle unbundle [--progress] <file> [<refname>...]
+
+    --[no-]progress       show progress meter
+

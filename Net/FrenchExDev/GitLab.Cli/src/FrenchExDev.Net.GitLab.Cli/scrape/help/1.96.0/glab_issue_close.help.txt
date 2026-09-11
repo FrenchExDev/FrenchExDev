@@ -1,0 +1,18 @@
+
+  You can use a full GitLab URL instead of an ID.                                                                       
+                                                                                                                        
+         
+  USAGE  
+         
+    glab issue close [<id> | <url>] [--flags]                        
+            
+  EXAMPLES  
+            
+    glab issue close 123                                             
+    glab issue close https://gitlab.com/NAMESPACE/REPO/-/issues/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

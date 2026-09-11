@@ -1,0 +1,9 @@
+Usage: vagrant snapshot push [options] [vm-name]
+
+Take a snapshot of the current state of the machine and 'push'
+it onto the stack of states. You can use `vagrant snapshot pop`
+to restore back to this state at any time.
+
+If you use `vagrant snapshot save` or restore at any point after
+a push, pop will still bring you back to this pushed state.
+    -h, --help                       Print this help

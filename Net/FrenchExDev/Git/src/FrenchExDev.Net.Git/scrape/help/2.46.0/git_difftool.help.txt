@@ -1,0 +1,16 @@
+usage: git difftool [<options>] [<commit> [<commit>]] [--] [<path>...]
+
+    -g, --[no-]gui        use `diff.guitool` instead of `diff.tool`
+    -d, --[no-]dir-diff   perform a full-directory diff
+    -y, --no-prompt       do not prompt before launching a diff tool
+    --[no-]symlinks       use symlinks in dir-diff mode
+    -t, --[no-]tool <tool>
+                          use the specified diff tool
+    --[no-]tool-help      print a list of diff tools that may be used with `--tool`
+    --[no-]trust-exit-code
+                          make 'git-difftool' exit when an invoked diff tool returns a non-zero exit code
+    -x, --[no-]extcmd <command>
+                          specify a custom command for viewing diffs
+    --no-index            passed to `diff`
+    --index               opposite of --no-index
+

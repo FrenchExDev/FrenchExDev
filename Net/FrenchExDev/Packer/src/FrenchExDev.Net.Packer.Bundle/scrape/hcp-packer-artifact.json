@@ -1,0 +1,129 @@
+{
+  "pluginKind": "datasource",
+  "typeName": "hcp-packer-artifact",
+  "repo": "hashicorp/packer",
+  "sourcePath": "datasource/hcp-packer-artifact/data.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "bucket_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "channel_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "version_fingerprint",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "platform",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "region",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "component_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "platform",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "component_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "created_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "build_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "version_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "channel_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_run_uuid",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "external_identifier",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "region",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "labels",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

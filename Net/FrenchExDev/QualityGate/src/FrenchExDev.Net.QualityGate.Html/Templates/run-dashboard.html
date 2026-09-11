@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quality Gate Report — {{ report.SolutionPath }}</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f5f7; color: #1a1a2e; line-height: 1.5; }
+  a { color: #2563eb; text-decoration: none; }
+
+  /* Header */
+  .header { background: #1a1a2e; color: #fff; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .header h1 { font-size: 1.25rem; font-weight: 600; }
+  .header .meta { font-size: 0.85rem; opacity: 0.8; }
+  .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
+  .badge-pass { background: #16a34a; color: #fff; }
+  .badge-fail { background: #dc2626; color: #fff; }
+
+  /* Layout */
+  .container { max-width: 1280px; margin: 0 auto; padding: 1.5rem; }
+
+  /* Summary cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: #fff; border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .card .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 0.25rem; }
+  .card .value { font-size: 1.75rem; font-weight: 700; font-family: "SF Mono", "Cascadia Code", "Consolas", monospace; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+  th { background: #f8fafc; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 600; }
+  td { font-size: 0.875rem; }
+  td.mono { font-family: "SF Mono", "Cascadia Code", "Consolas", monospace; }
+  tr:last-child td { border-bottom: none; }
+  .pass { color: #16a34a; font-weight: 600; }
+  .fail { color: #dc2626; font-weight: 600; }
+
+  /* Section headings */
+  .section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+
+  /* Accordion */
+  details { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 0.75rem; }
+  details summary { padding: 0.75rem 1rem; cursor: pointer; font-weight: 600; font-size: 0.9rem; list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  details summary::before { content: "\25B6"; font-size: 0.65rem; transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .inner { padding: 0 1rem 1rem; }
+  details .inner details { box-shadow: none; border-left: 2px solid #e2e8f0; border-radius: 0; }
+
+  .type-header { font-size: 0.85rem; }
+  .type-header .kind { font-size: 0.7rem; background: #e2e8f0; padding: 0.1rem 0.4rem; border-radius: 3px; }
+  .method-list { font-size: 0.8rem; }
+  .method-list li { padding: 0.25rem 0; font-family: "SF Mono", "Cascadia Code", "Consolas", monospace; }
+
+  /* Interface map */
+  .intf-group { margin-bottom: 1rem; }
+  .intf-name { font-weight: 600; font-family: "SF Mono", "Cascadia Code", "Consolas", monospace; font-size: 0.85rem; margin-bottom: 0.25rem; }
+  .impl-list { padding-left: 1.5rem; font-size: 0.8rem; }
+  .impl-list li { padding: 0.15rem 0; }
+
+  @media (max-width: 640px) {
+    .header { padding: 1rem; }
+    .container { padding: 1rem; }
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+{{
+  total_types = 0
+  total_methods = 0
+  total_complexity = 0
+  method_count_for_avg = 0
+  all_methods = []
+
+  for project in report.Projects
+    for ns in project.Namespaces
+      total_types = total_types + ns.Types.size
+      for type in ns.Types
+        total_methods = total_methods + type.Methods.size
+        total_complexity = total_complexity + type.CyclomaticComplexity
+        for m in type.Methods
+          all_methods = all_methods | array.add m
+          method_count_for_avg = method_count_for_avg + 1
+        end
+      end
+    end
+  end
+
+  avg_complexity = 0
+  if method_count_for_avg > 0
+    avg_complexity = total_complexity / method_count_for_avg
+  end
+
+  coverage_pct = 0
+  if report.Coverage
+    coverage_pct = report.Coverage.LineRate * 100
+  end
+
+  mutation_pct = 0
+  if report.Mutation
+    mutation_pct = report.Mutation.MutationScore * 100
+  end
+
+  all_passed = true
+  for g in report.GateResults
+    if !g.Passed
+      all_passed = false
+    end
+  end
+
+  # Sort methods by cyclomatic complexity descending — collect top 10
+  sorted_methods = all_methods | array.sort "CyclomaticComplexity" | array.reverse
+  top_methods = sorted_methods | array.first 10
+}}
+
+<header class="header">
+  <div>
+    <h1>{{ report.SolutionPath }}</h1>
+    <div class="meta">{{ report.Timestamp | date.to_string "%Y-%m-%d %H:%M:%S %Z" }}</div>
+  </div>
+  <div>
+    {{ if all_passed }}
+    <span class="badge badge-pass">Passed</span>
+    {{ else }}
+    <span class="badge badge-fail">Failed</span>
+    {{ end }}
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Summary Cards -->
+  <div class="cards">
+    <div class="card">
+      <div class="label">Total Types</div>
+      <div class="value">{{ total_types }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Total Methods</div>
+      <div class="value">{{ total_methods }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Avg Complexity</div>
+      <div class="value">{{ avg_complexity | math.round 1 }}</div>
+    </div>
+    <div class="card">
+      <div class="label">Line Coverage</div>
+      <div class="value">{{ coverage_pct | math.round 1 }}%</div>
+    </div>
+    <div class="card">
+      <div class="label">Mutation Score</div>
+      <div class="value">{{ mutation_pct | math.round 1 }}%</div>
+    </div>
+  </div>
+
+  <!-- Quality Gates -->
+  {{ if report.GateResults.size > 0 }}
+  <h2 class="section-title">Quality Gates</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Gate</th>
+        <th>Description</th>
+        <th>Threshold</th>
+        <th>Actual</th>
+        <th>Status</th>
+        <th>Violating Element</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ for g in report.GateResults }}
+      <tr>
+        <td>{{ g.GateName }}</td>
+        <td>{{ g.Description }}</td>
+        <td class="mono">{{ g.Threshold }}</td>
+        <td class="mono">{{ g.ActualValue }}</td>
+        <td>{{ if g.Passed }}<span class="pass">PASS</span>{{ else }}<span class="fail">FAIL</span>{{ end }}</td>
+        <td class="mono">{{ g.ViolatingElement }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ end }}
+
+  <!-- Projects Accordion -->
+  {{ if report.Projects.size > 0 }}
+  <h2 class="section-title">Projects</h2>
+  {{ for project in report.Projects }}
+  <details>
+    <summary>{{ project.Name }}</summary>
+    <div class="inner">
+      {{ for ns in project.Namespaces }}
+      <details>
+        <summary>{{ ns.Name }} ({{ ns.Types.size }} types, Ca={{ ns.AfferentCoupling }}, Ce={{ ns.EfferentCoupling }})</summary>
+        <div class="inner">
+          {{ for type in ns.Types }}
+          <details>
+            <summary class="type-header"><span class="kind">{{ type.Kind }}</span> {{ type.FullName }} &mdash; CC={{ type.CyclomaticComplexity }}, Cog={{ type.CognitiveComplexity }}, LOC={{ type.LinesOfCode }}, LCOM4={{ type.Lcom4 }}</summary>
+            <div class="inner">
+              {{ if type.Methods.size > 0 }}
+              <ul class="method-list">
+                {{ for m in type.Methods }}
+                <li>{{ m.Name }} &mdash; CC={{ m.CyclomaticComplexity }}, Cog={{ m.CognitiveComplexity }}, LOC={{ m.LinesOfCode }}, Params={{ m.ParameterCount }}{{ if m.MaintainabilityIndex }}, MI={{ m.MaintainabilityIndex | math.round 1 }}{{ end }}</li>
+                {{ end }}
+              </ul>
+              {{ end }}
+            </div>
+          </details>
+          {{ end }}
+        </div>
+      </details>
+      {{ end }}
+    </div>
+  </details>
+  {{ end }}
+  {{ end }}
+
+  <!-- Top 10 Most Complex Methods -->
+  {{ if top_methods.size > 0 }}
+  <h2 class="section-title">Top 10 Most Complex Methods</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Method</th>
+        <th>Cyclomatic</th>
+        <th>Cognitive</th>
+        <th>LOC</th>
+        <th>Params</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ for m in top_methods }}
+      <tr>
+        <td class="mono">{{ for.index + 1 }}</td>
+        <td class="mono">{{ m.FullName }}</td>
+        <td class="mono">{{ m.CyclomaticComplexity }}</td>
+        <td class="mono">{{ m.CognitiveComplexity }}</td>
+        <td class="mono">{{ m.LinesOfCode }}</td>
+        <td class="mono">{{ m.ParameterCount }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ end }}
+
+  <!-- Interface Map -->
+  {{ has_interfaces = false }}
+  {{ for project in report.Projects }}
+    {{ if project.Interfaces.size > 0 }}
+      {{ has_interfaces = true }}
+    {{ end }}
+  {{ end }}
+
+  {{ if has_interfaces }}
+  <h2 class="section-title">Interface Map</h2>
+  {{ for project in report.Projects }}
+    {{ if project.Interfaces.size > 0 }}
+    <h3 style="font-size:0.95rem; margin: 1rem 0 0.5rem;">{{ project.Name }}</h3>
+    {{ for intf in project.Interfaces }}
+    <div class="intf-group">
+      <div class="intf-name">{{ intf.FullName }}</div>
+      <ul class="impl-list">
+        {{
+          impl_found = false
+          for impl in project.Implementations
+            if impl.InterfaceFullName == intf.FullName
+              impl_found = true
+        }}
+        <li>{{ impl.ImplementingTypeFullName }}</li>
+        {{
+            end
+          end
+          if !impl_found
+        }}
+        <li style="color:#64748b; font-style:italic;">No implementations</li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ end }}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+Description:
+  Publisher for the .NET Platform
+
+Usage:
+  dotnet publish [<PROJECT | SOLUTION | FILE>...] [options]
+
+Arguments:
+  <PROJECT | SOLUTION | FILE>  The project or solution or C# (file-based program) file to operate on. If a file is not specified, the command will search the current directory for a project or solution.
+
+Options:
+  --ucr, --use-current-runtime         Use current runtime as the target runtime. [default: False]
+  -o, --output <OUTPUT_DIR>            The output directory to place the published artifacts in.
+  --artifacts-path <ARTIFACTS_DIR>     The artifacts path. All output from the project, including build, publish, and pack output, will go in subfolders under the specified path.
+  --manifest <MANIFEST>                The path to a target manifest file that contains the list of packages to be excluded from the publish step.
+  --no-build                           Do not build the project before publishing. Implies --no-restore. [default: False]
+  --sc, --self-contained               Publish the .NET runtime with your application so the runtime doesn't need to be installed on the target machine.
+                                       The default is 'false.' However, when targeting .NET 7 or lower, the default is 'true' if a runtime identifier is specified. [default: False]
+  --no-self-contained                  Publish your application as a framework dependent application. A compatible .NET runtime must be installed on the target machine to run your application. [default: False]
+  --nologo                             Do not display the startup banner or the copyright message. [default: False]
+  -f, --framework <FRAMEWORK>          The target framework to publish for. The target framework has to be specified in the project file.
+  -r, --runtime <RUNTIME_IDENTIFIER>   The target runtime to publish for. This is used when creating a self-contained deployment.
+                                       The default is to publish a framework-dependent application.
+  -c, --configuration <CONFIGURATION>  The configuration to publish for. The default is 'Release' for NET 8.0 projects and above, but 'Debug' for older projects.
+  --version-suffix <VERSION_SUFFIX>    Set the value of the $(VersionSuffix) property to use when building the project.
+  --interactive                        Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  --no-restore                         Do not restore the project before building. [default: False]
+  -v, -verbosity <LEVEL>               Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -a, --arch <ARCH>                    The target architecture.
+  --os <OS>                            The target operating system.
+  --disable-build-servers              Force the command to ignore any persistent build servers. [default: False]
+  -?, -h, --help                       Show command line help.
+

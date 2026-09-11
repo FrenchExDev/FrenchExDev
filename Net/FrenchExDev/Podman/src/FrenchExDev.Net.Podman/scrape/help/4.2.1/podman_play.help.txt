@@ -1,0 +1,11 @@
+Play containers, pods or volumes from a structured file
+
+Description:
+  Play structured data (e.g., Kubernetes YAML) based on containers, pods or volumes.
+
+Usage:
+  podman play [command]
+
+Available Commands:
+  kube        Play a pod or volume based on Kubernetes YAML.
+

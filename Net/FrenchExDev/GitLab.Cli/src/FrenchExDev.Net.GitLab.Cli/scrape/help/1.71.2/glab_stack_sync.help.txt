@@ -1,0 +1,27 @@
+Sync and submit progress on a stacked diff. This command runs these steps:                                          
+                                                                                                                      
+  1. Optional. If working in a fork, select whether to push to the fork,                                              
+  or the upstream repository.                                                                                         
+  2. Pushes any amended changes to their merge requests.                                                              
+  3. Rebases any changes that happened previously in the stack.                                                       
+  4. Removes any branches that were already merged, or with a closed merge request.                                   
+                                                                                                                      
+  This feature is experimental. It might be broken or removed without any prior notice.                               
+  Read more about what experimental features mean at                                                                  
+  https://docs.gitlab.com/policy/development_stages_support/                                                          
+                                                                                                                      
+  Use experimental features at your own risk.
+
+USAGE
+  glab stack sync [flags]
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  $ glab stack sync
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

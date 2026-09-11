@@ -1,0 +1,16 @@
+
+  Work with GitLab CI/CD jobs.                                                                                          
+         
+  USAGE  
+         
+    glab job <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    artifact <refName> <jobName> [--flags]  Download all artifacts from the most recent pipeline.
+         
+  FLAGS  
+         
+    -h --help                               Show help for this command.
+    -R --repo                               Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

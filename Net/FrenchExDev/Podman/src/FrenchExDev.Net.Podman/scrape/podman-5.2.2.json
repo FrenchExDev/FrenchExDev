@@ -903,134 +903,14 @@
           {
             "name": "attach",
             "description": "Attach to a running container",
-            "options": [
-              {
-                "longName": "detach-keys",
-                "description": "Select the key sequence for detaching a container. Format is a single character [a-Z] or a comma separated sequence of \u0060ctrl-\u003Cvalue\u003E\u0060, where \u0060\u003Cvalue\u003E\u0060 is one of: \u0060a-z\u0060, \u0060@\u0060, \u0060^\u0060, \u0060[\u0060, \u0060\\\u0060, \u0060]\u0060, \u0060^\u0060 or \u0060_\u0060 (default \u0022ctrl-p,ctrl-q\u0022)",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "no-stdin",
-                "description": "Do not attach STDIN. The default is false",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "sig-proxy",
-                "description": "Proxy received signals to the process (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
           {
             "name": "checkpoint",
             "description": "Checkpoint one or more containers",
-            "options": [
-              {
-                "longName": "all",
-                "shortName": "a",
-                "description": "Checkpoint all running containers",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "compress",
-                "shortName": "c",
-                "description": "Select compression algorithm (gzip, none, zstd) for checkpoint archive. (default \u0022zstd\u0022)",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "create-image",
-                "description": "Create checkpoint image with specified name",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "export",
-                "shortName": "e",
-                "description": "Export the checkpoint image to a tar.gz",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "file-locks",
-                "description": "Checkpoint a container with file locks",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "ignore-rootfs",
-                "description": "Do not include root file-system changes when exporting",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "ignore-volumes",
-                "description": "Do not export volumes associated with container",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "keep",
-                "shortName": "k",
-                "description": "Keep all temporary checkpoint files",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "leave-running",
-                "shortName": "R",
-                "description": "Leave the container running after writing checkpoint to disk",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "pre-checkpoint",
-                "shortName": "P",
-                "description": "Dump container\u0027s memory information only, leave the container running",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "print-stats",
-                "description": "Display checkpoint statistics",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tcp-established",
-                "description": "Checkpoint a container with established TCP connections",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "with-previous",
-                "description": "Checkpoint container with pre-checkpoint images",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -1280,23 +1160,7 @@
           {
             "name": "cp",
             "description": "Copy files/folders between a container and the local filesystem",
-            "options": [
-              {
-                "longName": "archive",
-                "shortName": "a",
-                "description": "Chown copied files to the primary uid/gid of the destination container. (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "overwrite",
-                "description": "Allow to overwrite directories with non-directories and vice versa",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -4163,24 +4027,7 @@
           {
             "name": "unpause",
             "description": "Unpause the processes in one or more containers",
-            "options": [
-              {
-                "longName": "all",
-                "shortName": "a",
-                "description": "Unpause all paused containers",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "filter",
-                "shortName": "f",
-                "description": "Filter output based on conditions given",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -4337,30 +4184,7 @@
           {
             "name": "wait",
             "description": "Block on one or more containers",
-            "options": [
-              {
-                "longName": "condition",
-                "description": "Condition to wait on",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ignore",
-                "description": "Ignore if a container does not exist",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "interval",
-                "shortName": "i",
-                "description": "Time Interval to wait before polling for completion (default \u0022250ms\u0022)",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           }
@@ -6495,15 +6319,7 @@
         "description": "Manage health checks on containers",
         "options": [],
         "arguments": [],
-        "subCommands": [
-          {
-            "name": "run",
-            "description": "Run the health check of a container",
-            "options": [],
-            "arguments": [],
-            "subCommands": []
-          }
-        ]
+        "subCommands": []
       },
       {
         "name": "history",
@@ -7438,7 +7254,7 @@
               },
               {
                 "longName": "sort",
-                "description": "Sort by tag, created, id, repository, size (default \u0022created\u0022)",
+                "description": "Sort by created, id, repository, size, tag (default \u0022created\u0022)",
                 "valueKind": "single",
                 "clrType": "string",
                 "isRequired": false
@@ -7973,7 +7789,7 @@
           },
           {
             "longName": "sort",
-            "description": "Sort by repository, size, tag, created, id (default \u0022created\u0022)",
+            "description": "Sort by tag, created, id, repository, size (default \u0022created\u0022)",
             "valueKind": "single",
             "clrType": "string",
             "isRequired": false
@@ -8247,143 +8063,7 @@
           {
             "name": "play",
             "description": "Play a pod or volume based on Kubernetes YAML",
-            "options": [
-              {
-                "longName": "annotation",
-                "description": "Add annotations to pods (key=value)",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "authfile",
-                "description": "Path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "configmap",
-                "description": "Pathname       Pathname of a YAML file containing a kubernetes configmap",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "creds",
-                "description": "Credentials        Credentials (USERNAME:PASSWORD) to use for authenticating to a registry",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "force",
-                "description": "Remove volumes as part of --down",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "ip",
-                "description": "Static IP addresses to assign to the pods (default [])",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "log-driver",
-                "description": "Logging driver for the container",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "log-opt",
-                "description": "Logging driver options",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "mac-address",
-                "description": "Static MAC addresses to assign to the pods",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "network",
-                "description": "Connect pod to network(s) or network mode",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "no-hosts",
-                "description": "Do not create /etc/hosts within the pod\u0027s containers, instead use the version from the image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "publish",
-                "description": "Publish a container\u0027s port, or a range of ports, to the host",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "publish-all",
-                "description": "Whether to publish all ports defined in the K8S YAML file (containerPort, hostPort), if false only hostPort will be published",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "quiet",
-                "shortName": "q",
-                "description": "Suppress output information when pulling images",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "replace",
-                "description": "Delete and recreate pods defined in the YAML file",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "start",
-                "description": "Start the pod after creating it (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "Require HTTPS and verify certificates when contacting registries (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "userns",
-                "description": "User namespace to use",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "wait",
-                "shortName": "w",
-                "description": "Clean up all objects created when a SIGTERM is received or pods exit",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           }
@@ -9305,328 +8985,12 @@
         "description": "Manage networks",
         "options": [],
         "arguments": [],
-        "subCommands": [
-          {
-            "name": "connect",
-            "description": "Add container to a network",
-            "options": [
-              {
-                "longName": "alias",
-                "description": "network scoped alias for container",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ip",
-                "description": "set a static ipv4 address for this container network",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ip6",
-                "description": "set a static ipv6 address for this container network",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "mac-address",
-                "description": "set a static mac address for this container network",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "create",
-            "description": "Create networks for containers and pods",
-            "options": [
-              {
-                "longName": "disable-dns",
-                "description": "disable dns plugin",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "dns",
-                "description": "DNS servers this network will use",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "driver",
-                "shortName": "d",
-                "description": "driver to manage the network (default \u0022bridge\u0022)",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "gateway",
-                "description": "IPv4 or IPv6 gateway for the subnet (default [])",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ignore",
-                "description": "Don\u0027t fail if network already exists",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "interface-name",
-                "description": "interface name which is used by the driver",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "internal",
-                "description": "restrict external access from this network",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "ip-range",
-                "description": "allocate container IP from range",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ipam-driver",
-                "description": "IP Address Management Driver",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ipv6",
-                "description": "enable IPv6 networking",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "label",
-                "description": "set metadata on a network",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "opt",
-                "shortName": "o",
-                "description": "Set driver specific options (default [])",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "route",
-                "description": "static routes",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "subnet",
-                "description": "subnets in CIDR format",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "disconnect",
-            "description": "Disconnect a container from a network",
-            "options": [
-              {
-                "longName": "force",
-                "shortName": "f",
-                "description": "force removal of container from network",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "exists",
-            "description": "Check if network exists",
-            "options": [],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "inspect",
-            "description": "Inspect network",
-            "options": [
-              {
-                "longName": "format",
-                "shortName": "f",
-                "description": "Pretty-print network to JSON or using a Go template",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "ls",
-            "description": "List networks",
-            "options": [
-              {
-                "longName": "filter",
-                "shortName": "f",
-                "description": "Provide filter values (e.g. \u0027name=podman\u0027)",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "format",
-                "description": "Pretty-print networks to JSON or using a Go template",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "no-trunc",
-                "description": "Do not truncate the network ID",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "noheading",
-                "shortName": "n",
-                "description": "Do not print headers",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "quiet",
-                "shortName": "q",
-                "description": "display only names",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "prune",
-            "description": "Prune unused networks",
-            "options": [
-              {
-                "longName": "filter",
-                "description": "Provide filter values (e.g. \u0027label=\u003Ckey\u003E=\u003Cvalue\u003E\u0027)",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "force",
-                "shortName": "f",
-                "description": "do not prompt for confirmation",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "rm",
-            "description": "Remove networks",
-            "options": [
-              {
-                "longName": "force",
-                "shortName": "f",
-                "description": "remove any containers using network",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "time",
-                "shortName": "t",
-                "description": "Seconds to wait for running containers to stop before killing the container (default 10)",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          },
-          {
-            "name": "update",
-            "description": "Update an existing podman network",
-            "options": [
-              {
-                "longName": "dns-add",
-                "description": "add network level nameservers",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "dns-drop",
-                "description": "remove network level nameservers",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
-            "arguments": [],
-            "subCommands": []
-          }
-        ]
+        "subCommands": []
       },
       {
         "name": "pause",
         "description": "Pause all the processes in one or more containers",
-        "options": [
-          {
-            "longName": "all",
-            "shortName": "a",
-            "description": "Pause all running containers",
-            "valueKind": "flag",
-            "clrType": "bool",
-            "isRequired": false
-          },
-          {
-            "longName": "filter",
-            "shortName": "f",
-            "description": "Filter output based on conditions given",
-            "valueKind": "multiple",
-            "clrType": "string",
-            "isRequired": false
-          }
-        ],
+        "options": [],
         "arguments": [],
         "subCommands": []
       },

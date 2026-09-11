@@ -959,3 +959,137 @@ public class ErrorTypeTests
         a.ShouldBe(b);
     }
 }
+
+// ── SystemProcessRunner Tests ───────────────────────────────────────────────
+
+public class SystemProcessRunnerTests
+{
+    private static ProcessSpec EchoSpec(string text) => new()
+    {
+        ExecutablePath = "cmd",
+        Arguments = ["/c", $"echo {text}"]
+    };
+
+    private static ProcessSpec StderrSpec(string text) => new()
+    {
+        ExecutablePath = "cmd",
+        Arguments = ["/c", $"echo {text} 1>&2"]
+    };
+
+    private static ProcessSpec ExitCodeSpec(int code) => new()
+    {
+        ExecutablePath = "cmd",
+        Arguments = ["/c", $"exit {code}"]
+    };
+
+    // ── RunAsync ──
+
+    [Fact]
+    public async Task RunAsync_CapturesStdout()
+    {
+        var runner = new SystemProcessRunner();
+        var result = await runner.RunAsync(EchoSpec("hello"));
+        result.ExitCode.ShouldBe(0);
+        result.StandardOutput.Trim().ShouldBe("hello");
+    }
+
+    [Fact]
+    public async Task RunAsync_CapturesStderr()
+    {
+        var runner = new SystemProcessRunner();
+        var result = await runner.RunAsync(StderrSpec("oops"));
+        result.StandardError.Trim().ShouldBe("oops");
+    }
+
+    [Fact]
+    public async Task RunAsync_CapturesExitCode()
+    {
+        var runner = new SystemProcessRunner();
+        var result = await runner.RunAsync(ExitCodeSpec(42));
+        result.ExitCode.ShouldBe(42);
+    }
+
+    [Fact]
+    public async Task RunAsync_WithTimeout_CompletesNormally()
+    {
+        var runner = new SystemProcessRunner();
+        var spec = new ProcessSpec
+        {
+            ExecutablePath = "cmd",
+            Arguments = ["/c", "echo ok"],
+            Timeout = TimeSpan.FromSeconds(10)
+        };
+        var result = await runner.RunAsync(spec);
+        result.ExitCode.ShouldBe(0);
+        result.StandardOutput.Trim().ShouldBe("ok");
+    }
+
+    [Fact]
+    public async Task RunAsync_WithWorkingDirectory()
+    {
+        var runner = new SystemProcessRunner();
+        var tempDir = Path.GetTempPath().TrimEnd('\\');
+        var spec = new ProcessSpec
+        {
+            ExecutablePath = "cmd",
+            Arguments = ["/c", "cd"],
+            WorkingDirectory = tempDir
+        };
+        var result = await runner.RunAsync(spec);
+        result.ExitCode.ShouldBe(0);
+        result.StandardOutput.Trim().ShouldStartWith(tempDir, Case.Insensitive);
+    }
+
+    [Fact]
+    public async Task RunAsync_WithEnvironmentVariable()
+    {
+        var runner = new SystemProcessRunner();
+        var spec = new ProcessSpec
+        {
+            ExecutablePath = "cmd",
+            Arguments = ["/c", "echo %MY_TEST_VAR%"],
+            EnvironmentVariables = new Dictionary<string, string> { ["MY_TEST_VAR"] = "test_value_123" }
+        };
+        var result = await runner.RunAsync(spec);
+        result.StandardOutput.Trim().ShouldBe("test_value_123");
+    }
+
+    // ── StreamAsync ──
+
+    [Fact]
+    public async Task StreamAsync_CapturesStdoutLines()
+    {
+        var runner = new SystemProcessRunner();
+        var spec = new ProcessSpec
+        {
+            ExecutablePath = "cmd",
+            Arguments = ["/c", "echo line1 & echo line2"]
+        };
+
+        var lines = new List<OutputLine>();
+        await foreach (var line in runner.StreamAsync(spec))
+            lines.Add(line);
+
+        var stdoutLines = lines.Where(l => l.Source == OutputSource.StdOut).Select(l => l.Text.Trim()).ToList();
+        stdoutLines.ShouldContain("line1");
+        stdoutLines.ShouldContain("line2");
+    }
+
+    [Fact]
+    public async Task StreamAsync_CapturesStderrLines()
+    {
+        var runner = new SystemProcessRunner();
+        var spec = new ProcessSpec
+        {
+            ExecutablePath = "cmd",
+            Arguments = ["/c", "echo err_msg 1>&2"]
+        };
+
+        var lines = new List<OutputLine>();
+        await foreach (var line in runner.StreamAsync(spec))
+            lines.Add(line);
+
+        var stderrLines = lines.Where(l => l.Source == OutputSource.StdErr).Select(l => l.Text.Trim()).ToList();
+        stderrLines.ShouldContain("err_msg");
+    }
+}

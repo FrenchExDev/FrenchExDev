@@ -1,0 +1,10 @@
+Description:
+  List workloads available.
+
+Usage:
+  dotnet workload list [options]
+
+Options:
+  -?, -h, --help  Show command line help.
+
+

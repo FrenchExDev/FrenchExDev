@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Packer.Alpine.DockerHost/FrenchExDev.Net.Packer.Alpine.DockerHost.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Alpine.DockerHost.Cli/FrenchExDev.Net.Packer.Alpine.DockerHost.Cli.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Packer.Alpine.DockerHost.Tests/FrenchExDev.Net.Packer.Alpine.DockerHost.Tests.csproj" />
+  </Folder>
+</Solution>

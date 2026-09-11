@@ -1,0 +1,22 @@
+
+  Edit group or project label.                                                                                          
+         
+  USAGE  
+         
+    glab label edit [--flags]      
+            
+  EXAMPLES  
+            
+    glab label edit                
+    glab label edit -R owner/repo  
+         
+  FLAGS  
+         
+    -c --color        The color of the label given in 6-digit hex notation with leading ‘#’ sign.
+    -d --description  Label description.
+    -h --help         Show help for this command.
+    -l --label-id     The label ID we are updating.
+    -n --new-name     The new name of the label.
+    -p --priority     Label priority.
+    -R --repo         Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

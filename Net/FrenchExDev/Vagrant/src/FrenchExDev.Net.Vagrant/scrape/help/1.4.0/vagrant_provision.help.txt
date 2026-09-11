@@ -1,0 +1,4 @@
+Usage: vagrant provision [vm-name] [--provision-with x,y,z]
+        --provision-with x,y,z       Enable only certain provisioners, by type.
+        --[no-]parallel              Enable or disable parallelism if provider supports it.
+    -h, --help                       Print this help

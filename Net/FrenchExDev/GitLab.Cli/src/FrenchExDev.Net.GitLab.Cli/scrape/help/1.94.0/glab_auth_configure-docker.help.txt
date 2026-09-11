@@ -1,0 +1,11 @@
+
+  Register glab as a Docker credential helper.                                                                          
+         
+  USAGE  
+         
+    glab auth configure-docker [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+

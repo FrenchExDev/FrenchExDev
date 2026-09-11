@@ -1,0 +1,5 @@
+usage: git pack-refs [--all] [--no-prune]
+
+    --all                 pack everything
+    --prune               prune loose refs (default)
+

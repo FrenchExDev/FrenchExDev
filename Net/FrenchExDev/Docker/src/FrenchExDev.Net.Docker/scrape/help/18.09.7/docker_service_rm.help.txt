@@ -1,0 +1,7 @@
+
+Usage:	docker service rm SERVICE [SERVICE...]
+
+Remove one or more services
+
+Aliases:
+  rm, remove

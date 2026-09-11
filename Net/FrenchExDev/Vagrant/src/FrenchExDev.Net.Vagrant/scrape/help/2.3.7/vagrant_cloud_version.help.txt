@@ -1,0 +1,19 @@
+Usage: vagrant cloud version <subcommand> [<args>]
+
+For taking various actions against a Vagrant box's version attribute on Vagrant Cloud
+
+Available subcommands:
+     create
+     delete
+     release
+     revoke
+     update
+
+For help on any individual subcommand run `vagrant cloud version <subcommand> -h`
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output

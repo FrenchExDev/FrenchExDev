@@ -1,0 +1,10 @@
+usage: (EXPERIMENTAL!) git replay ([--contained] --onto <newbase> | --advance <branch>) [--ref-action[=<mode>]] <revision-range>
+
+    --[no-]advance <branch>
+                          make replay advance given branch
+    --[no-]onto <revision>
+                          replay onto given commit
+    --[no-]contained      update all branches that point at commits in <revision-range>
+    --[no-]ref-action <mode>
+                          control ref update behavior (update|print)
+

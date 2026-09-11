@@ -1,0 +1,12 @@
+
+  Add a to-do item to merge request.                                                                                    
+         
+  USAGE  
+         
+    glab mr todo [<id> | <branch>] [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

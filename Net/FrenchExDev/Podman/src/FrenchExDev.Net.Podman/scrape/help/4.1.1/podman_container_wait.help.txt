@@ -1,0 +1,17 @@
+Block on one or more containers
+
+Description:
+  Block until one or more containers stop and then print their exit codes.
+
+
+Usage:
+  podman container wait [options] CONTAINER [CONTAINER...]
+
+Examples:
+  podman container wait --interval 5s ctrID
+  podman container wait ctrID1 ctrID2
+
+Options:
+      --condition string   Condition to wait on (default "stopped")
+  -i, --interval string    Time Interval to wait before polling for completion (default "250ms")
+

@@ -1,0 +1,7 @@
+usage: git pack-refs [--all] [--no-prune] [--include <pattern>] [--exclude <pattern>]
+
+    --all                 pack everything
+    --prune               prune loose refs (default)
+    --include <pattern>   references to include
+    --exclude <pattern>   references to exclude
+

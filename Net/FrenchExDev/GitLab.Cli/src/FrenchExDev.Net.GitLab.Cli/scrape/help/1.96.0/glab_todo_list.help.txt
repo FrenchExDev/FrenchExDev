@@ -1,0 +1,25 @@
+
+  List your to-do items.                                                                                                
+         
+  USAGE  
+         
+    glab todo list [--flags]            
+            
+  EXAMPLES  
+            
+    glab todo list                      
+    glab todo list --state=done         
+    glab todo list --action=assigned    
+    glab todo list --type=MergeRequest  
+    glab todo list --output=json        
+         
+  FLAGS  
+         
+    -a --action    Filter by action: assigned, mentioned, build_failed, marked, approval_required, directly_addressed.
+    -h --help      Show help for this command.
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (30)
+    -s --state     Filter by state: pending, done, all. (pending)
+    -t --type      Filter by target type: Issue, MergeRequest.
+

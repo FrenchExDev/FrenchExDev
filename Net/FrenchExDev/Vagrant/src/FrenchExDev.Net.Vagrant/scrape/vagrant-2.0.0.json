@@ -1,0 +1,1047 @@
+{
+  "binaryName": "vagrant",
+  "root": {
+    "name": "vagrant",
+    "description": "Additional subcommands are available, but are either more advanced",
+    "options": [],
+    "arguments": [],
+    "subCommands": [
+      {
+        "name": "box",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "add",
+            "description": "or a URL, or a local .box file, or a local .json file containing",
+            "options": [
+              {
+                "longName": "clean",
+                "shortName": "c",
+                "description": "Clean any temporary download files",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "force",
+                "shortName": "f",
+                "description": "Overwrite an existing box if it exists",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "insecure",
+                "description": "Do not validate SSL certificates",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "cacert",
+                "description": "CA certificate for SSL download",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "capath",
+                "description": "CA certificate directory for SSL download",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "cert",
+                "description": "A client SSL cert, if needed",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "location-trusted",
+                "description": "Trust \u0027Location\u0027 header from HTTP redirects and use the same credentials for subsequent urls as for the initial one",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "provider",
+                "description": "Provider the box should satisfy",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "box-version",
+                "description": "Constrain version of the added box",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "checksum",
+                "description": "Checksum for the box",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "checksum-type",
+                "description": "Checksum type (md5, sha1, sha256)",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "name",
+                "description": "Name of the box",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "list",
+            "options": [
+              {
+                "longName": "box-info",
+                "shortName": "i",
+                "description": "Displays additional information about the boxes",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "outdated",
+            "description": "that are you are using. If you pass in the --global flag,",
+            "options": [
+              {
+                "longName": "global",
+                "description": "Check all boxes installed",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "insecure",
+                "description": "Do not validate SSL certificates",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "cacert",
+                "description": "CA certificate for SSL download",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "capath",
+                "description": "CA certificate directory for SSL download",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "cert",
+                "description": "A client SSL cert, if needed",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "prune",
+            "options": [
+              {
+                "longName": "provider",
+                "shortName": "p",
+                "description": "The specific provider type for the boxes to destroy.",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "dry-run",
+                "shortName": "n",
+                "description": "Only print the boxes that would be removed.",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "name",
+                "description": "The specific box name to check for outdated versions.",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "force",
+                "shortName": "f",
+                "description": "Destroy without confirmation even when box is in use.",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "remove",
+            "options": [
+              {
+                "longName": "force",
+                "shortName": "f",
+                "description": "Remove without confirmation.",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "provider",
+                "description": "The specific provider type for the box to remove",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "box-version",
+                "description": "The specific version of the box to remove",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "all",
+                "description": "Remove all available versions of the box",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "repackage",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "update",
+            "description": "if there any updates available. This does not destroy/recreate the",
+            "options": [
+              {
+                "longName": "box",
+                "description": "Update a specific box",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "provider",
+                "description": "Update box with specific provider",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "force",
+                "shortName": "f",
+                "description": "Overwrite an existing box if it exists",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "insecure",
+                "description": "Do not validate SSL certificates",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "cacert",
+                "description": "CA certificate for SSL download",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "capath",
+                "description": "CA certificate directory for SSL download",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "cert",
+                "description": "A client SSL cert, if needed",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "connect",
+        "description": "\u0060vagrant share\u0060. The NAME parameter should be the unique name",
+        "options": [
+          {
+            "longName": "disable-static-ip",
+            "description": "No static IP, only a SOCKS proxy",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "static-ip",
+            "description": "Manually override static IP chosen",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "ssh",
+            "description": "into the remote machine",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "driver",
+            "description": "Driver specific information",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "share-password",
+            "description": "Custom share password (ngrok driver only)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "destroy",
+        "options": [
+          {
+            "longName": "force",
+            "shortName": "f",
+            "description": "Destroy without confirmation.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "global-status",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "halt",
+        "options": [
+          {
+            "longName": "force",
+            "shortName": "f",
+            "description": "Force shut down (equivalent of pulling power)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "init",
+        "options": [
+          {
+            "longName": "box-version",
+            "description": "Version of the box to add",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "force",
+            "shortName": "f",
+            "description": "Overwrite existing Vagrantfile",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "minimal",
+            "shortName": "m",
+            "description": "Create minimal Vagrantfile (no help comments)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "output",
+            "description": "Output path for the box. \u0027-\u0027 for stdout",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "login",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "package",
+        "options": [
+          {
+            "longName": "base",
+            "description": "Name of a VM in VirtualBox to package as a base box (VirtualBox Only)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "output",
+            "description": "Name of the file to output",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "include",
+            "description": "Comma separated additional files to package with the box",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "vagrantfile",
+            "description": "Vagrantfile to package with the box",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "plugin",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "expunge",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "install",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "license",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "list",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "repair",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "uninstall",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "update",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "port",
+        "options": [
+          {
+            "longName": "guest",
+            "description": "Output the host port that maps to the given guest port",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Display machine-readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "powershell",
+        "options": [
+          {
+            "longName": "command",
+            "shortName": "c",
+            "description": "Execute a powershell command directly",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "provision",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "push",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "rdp",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "reload",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "resume",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "share",
+        "description": "your Vagrant environment by giving you a globally accessible",
+        "options": [
+          {
+            "longName": "disable-http",
+            "description": "Disable publicly visible HTTP(S) endpoint",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "disable-https",
+            "description": "Disable publicly visible HTTPS endpoint only",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "domain",
+            "description": "Domain the share name will be a subdomain of",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "http",
+            "description": "Local HTTP port to forward to",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "https",
+            "description": "Local HTTPS port to forward to",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "name",
+            "description": "Specific name for the share",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "ssh",
+            "description": "Allow \u0027vagrant connect --ssh\u0027 access",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "ssh-no-password",
+            "description": "Key won\u0027t be encrypted with --ssh",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "ssh-port",
+            "description": "Specific port for SSH when using --ssh",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "ssh-once",
+            "description": "Allow \u0027vagrant connect --ssh\u0027 only one time",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "driver",
+            "description": "Share driver information (classic, ngrok)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "full",
+            "description": "Share entire machine (ngrok driver only)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "share-password",
+            "description": "Custom share password (ngrok driver only)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "snapshot",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "delete",
+            "options": [
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "list",
+            "options": [
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "pop",
+            "options": [
+              {
+                "longName": "no-delete",
+                "description": "Don\u0027t delete the snapshot after the restore",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "push",
+            "description": "it onto the stack of states. You can use \u0060vagrant snapshot pop\u0060",
+            "options": [
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "restore",
+            "options": [
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "save",
+            "description": "can be restored via \u0060vagrant snapshot restore\u0060 at any point in the",
+            "options": [
+              {
+                "longName": "force",
+                "shortName": "f",
+                "description": "Replace snapshot without confirmation",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              },
+              {
+                "longName": "help",
+                "shortName": "h",
+                "description": "Print this help",
+                "valueKind": "flag",
+                "clrType": "bool",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "ssh",
+        "options": [
+          {
+            "longName": "command",
+            "shortName": "c",
+            "description": "Execute an SSH command directly",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "plain",
+            "shortName": "p",
+            "description": "Plain mode, leaves authentication up to user",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]tty",
+            "shortName": "t",
+            "description": "Enables tty when executing an ssh command (defaults to true)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "ssh-config",
+        "options": [
+          {
+            "longName": "host",
+            "description": "Name the host for the config",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "status",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "suspend",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "up",
+        "options": [
+          {
+            "longName": "[no-]provision",
+            "description": "Enable or disable provisioning",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "provision-with",
+            "description": "x,y,z       Enable only certain provisioners, by type or by name.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]destroy-on-error",
+            "description": "Destroy machine if any fatal error happens (default to true)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]parallel",
+            "description": "Enable or disable parallelism if provider supports it",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "provider",
+            "description": "Back the machine with a specific provider",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "[no-]install-provider",
+            "description": "If possible, install the provider if it isn\u0027t installed",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "Print this help",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "validate",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "version",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      }
+    ]
+  }
+}

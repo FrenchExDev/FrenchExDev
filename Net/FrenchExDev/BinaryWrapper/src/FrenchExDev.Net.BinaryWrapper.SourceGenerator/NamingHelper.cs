@@ -17,8 +17,8 @@ internal static class NamingHelper
     public static string ToPascalCase(string name)
     {
         if (string.IsNullOrEmpty(name)) return name;
-        // Strip brackets from negatable flags like [no-]color → no-color
-        name = name.Replace("[", "").Replace("]", "");
+        // Strip brackets and parentheses from flag names like [no-]color or replicas)
+        name = name.Replace("[", "").Replace("]", "").Replace("(", "").Replace(")", "");
         // Strip everything after a space (malformed long names like "s DESCRIPTION")
         var spaceIdx = name.IndexOf(' ');
         if (spaceIdx > 0) name = name.Substring(0, spaceIdx);
@@ -96,6 +96,12 @@ internal static class NamingHelper
     public static string EntryClassName(string binaryName) => ToPascalCase(binaryName);
 
     /// <summary>
+    /// Returns the PascalCase property name for an argument, using DisplayName if set.
+    /// </summary>
+    public static string ArgumentPropertyName(UnifiedArgument arg) =>
+        arg.DisplayName ?? ToPascalCase(arg.Name);
+
+    /// <summary>
     /// Escapes a string for C# string literal.
     /// </summary>
     public static string EscapeString(string value) =>
@@ -111,6 +117,101 @@ internal static class NamingHelper
         var minor = parts.Length > 1 ? parts[1] : "0";
         var patch = parts.Length > 2 ? parts[2] : "0";
         return $"new global::FrenchExDev.Net.BinaryWrapper.SemanticVersion({major}, {minor}, {patch})";
+    }
+
+    /// <summary>
+    /// Reserved PascalCase names that clash with generated command or AbstractBuilder members.
+    /// </summary>
+    private static readonly HashSet<string> ReservedNames = new(StringComparer.Ordinal)
+    {
+        "Reference", "VisitedObjects", "BuildAsync", "Build", "Validate", "ValidateAsync",
+        "Instantiate", "CreateInstance", "BuildException", "Environment"
+    };
+
+    /// <summary>
+    /// Returns the PascalCase property name for an option, using DisplayName if set.
+    /// </summary>
+    public static string OptionPropertyName(UnifiedOption opt) =>
+        opt.DisplayName ?? ToPascalCase(opt.LongName);
+
+    /// <summary>
+    /// Resolves property names for options and arguments, handling clashes:
+    /// <list type="bullet">
+    /// <item>Options clashing with reserved names → suffixed with "Opt" (e.g., Reference → ReferenceOpt)</item>
+    /// <item>Options clashing with arguments → prefixed "Opt" (e.g., File → OptFile), argument → "Arg" prefix (e.g., ArgFile)</item>
+    /// <item>Duplicate options/arguments are dropped</item>
+    /// </list>
+    /// Sets DisplayName on both options and arguments as needed.
+    /// </summary>
+    public static (List<UnifiedOption> Options, List<UnifiedArgument> Arguments) ResolvePropertyNames(
+        List<UnifiedOption> options, List<UnifiedArgument> arguments)
+    {
+        // Step 1: Deduplicate options
+        var dedupedOptions = DeduplicateOptions(options);
+
+        // Step 2: Build option PascalCase name set
+        var optNameMap = new Dictionary<string, UnifiedOption>(StringComparer.Ordinal);
+        foreach (var opt in dedupedOptions)
+        {
+            var propName = ToPascalCase(opt.LongName);
+            if (!optNameMap.ContainsKey(propName))
+                optNameMap[propName] = opt;
+        }
+
+        // Step 3: Deduplicate arguments, detect clashes
+        var argSeen = new HashSet<string>(StringComparer.Ordinal);
+        var dedupedArgs = new List<UnifiedArgument>();
+        var clashingNames = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var arg in arguments)
+        {
+            var propName = ToPascalCase(arg.Name);
+            if (propName.Length == 0 || !char.IsLetter(propName[0]))
+                continue;
+            if (!argSeen.Add(propName))
+                continue; // duplicate argument
+
+            if (optNameMap.ContainsKey(propName))
+                clashingNames.Add(propName);
+
+            dedupedArgs.Add(arg);
+        }
+
+        // Step 4: Apply renames for clashes
+        // Options clashing with arguments: "File" → "OptFile"
+        foreach (var opt in dedupedOptions)
+        {
+            var propName = ToPascalCase(opt.LongName);
+            if (clashingNames.Contains(propName))
+                opt.DisplayName = "Opt" + propName;
+            else if (ReservedNames.Contains(propName))
+                opt.DisplayName = propName + "Opt";
+        }
+
+        // Arguments clashing with options: "File" → "ArgFile"
+        var resultArgs = new List<UnifiedArgument>();
+        foreach (var arg in dedupedArgs)
+        {
+            var propName = ToPascalCase(arg.Name);
+            var displayName = propName;
+
+            if (clashingNames.Contains(propName))
+                displayName = "Arg" + propName;
+            else if (ReservedNames.Contains(propName))
+                displayName = propName + "Arg";
+
+            resultArgs.Add(new UnifiedArgument
+            {
+                Name = arg.Name,
+                DisplayName = displayName,
+                Position = arg.Position,
+                ClrType = arg.ClrType,
+                IsRequired = arg.IsRequired,
+                IsVariadic = arg.IsVariadic
+            });
+        }
+
+        return (dedupedOptions, resultArgs);
     }
 
     /// <summary>

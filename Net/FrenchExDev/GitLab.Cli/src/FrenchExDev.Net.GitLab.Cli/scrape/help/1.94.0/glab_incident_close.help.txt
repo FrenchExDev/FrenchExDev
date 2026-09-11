@@ -1,0 +1,17 @@
+
+  Close an incident.                                                                                                    
+         
+  USAGE  
+         
+    glab incident close [<id> | <url>] [--flags]                                 
+            
+  EXAMPLES  
+            
+    glab incident close 123                                                      
+    glab incident close https://gitlab.com/NAMESPACE/REPO/-/issues/incident/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

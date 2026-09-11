@@ -1,0 +1,23 @@
+
+
+Usage: dotnet nuget push [arguments] [options]
+
+Arguments:
+  [root]  Specify the path to the package and your API key to push the package to the server.
+
+Options:
+  -h|--help                      Show help information
+  --force-english-output         Forces the application to run using an invariant, English-based culture.
+  -s|--source <source>           Package source (URL, UNC/folder path or package source name) to use. Defaults to DefaultPushSource if specified in NuGet.Config.
+  --allow-insecure-connections   Allows pushing to HTTP sources (insecure).
+  -ss|--symbol-source <source>   Symbol server URL to use.
+  -t|--timeout <timeout>         Timeout for pushing to a server in seconds. Defaults to 300 seconds (5 minutes).
+  -k|--api-key <apiKey>          The API key for the server.
+  -sk|--symbol-api-key <apiKey>  The API key for the symbol server.
+  -d|--disable-buffering         Disable buffering when pushing to an HTTP(S) server to decrease memory usage.
+  -n|--no-symbols                If a symbols package exists, it will not be pushed to a symbols server.
+  --no-service-endpoint          Does not append "api/v2/package" to the source URL.
+  --interactive                  Allow the command to block and require manual action for operations like authentication.
+  --skip-duplicate               If a package and version already exists, skip it and continue with the next package in the push, if any.
+  --configfile                   The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+

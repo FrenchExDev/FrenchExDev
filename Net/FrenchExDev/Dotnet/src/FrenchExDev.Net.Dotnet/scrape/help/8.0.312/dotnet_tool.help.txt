@@ -1,0 +1,18 @@
+Description:
+  Install or work with tools that extend the .NET experience.
+
+Usage:
+  dotnet tool [command] [options]
+
+Options:
+  -?, -h, --help  Show command line help.
+
+Commands:
+  install <PACKAGE_ID>                Install global or local tool. Local tools are added to manifest and restored.
+  uninstall <PACKAGE_ID>              Uninstall a global tool or local tool.
+  update <PACKAGE_ID>                 Update a global or local tool.
+  list <PACKAGE_ID>                   List tools installed globally or locally.
+  run <COMMAND_NAME> <toolArguments>  Run local tool.
+  search <SEARCH_TERM>                Search dotnet tools in nuget.org
+  restore                             Restore tools defined in the local tool manifest.
+

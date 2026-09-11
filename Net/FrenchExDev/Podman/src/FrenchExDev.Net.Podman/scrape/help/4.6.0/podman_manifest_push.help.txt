@@ -1,0 +1,24 @@
+Push a manifest list or image index to a registry
+
+Description:
+  Pushes manifest lists and image indexes to registries.
+
+Usage:
+  podman manifest push [options] LIST DESTINATION
+
+Examples:
+  podman manifest push mylist:v1.11 docker://quay.io/myuser/image:v1.11
+
+Options:
+      --all                           also push the images in the list (default true)
+      --authfile string               path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override
+      --compression-format string     compression format to use
+      --compression-level int         compression level to use
+      --creds [username[:password]]   use [username[:password]] for accessing the registry
+      --digestfile string             after copying the image, write the digest of the resulting digest to the file
+  -f, --format string                 manifest type (oci or v2s2) to attempt to use when pushing the manifest list (default is manifest type of source)
+  -q, --quiet                         don't output progress information when pushing lists
+      --remove-signatures             don't copy signatures when pushing images
+      --rm                            remove the manifest list if push succeeds
+      --tls-verify                    require HTTPS and verify certificates when accessing the registry (default true)
+

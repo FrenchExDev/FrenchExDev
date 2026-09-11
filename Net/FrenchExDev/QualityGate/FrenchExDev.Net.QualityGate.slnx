@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/FrenchExDev.Net.QualityGate/FrenchExDev.Net.QualityGate.csproj" />
+  <Project Path="src/FrenchExDev.Net.QualityGate.Cli/FrenchExDev.Net.QualityGate.Cli.csproj" />
+  <Project Path="src/FrenchExDev.Net.QualityGate.Html/FrenchExDev.Net.QualityGate.Html.csproj" />
+  <Project Path="test/FrenchExDev.Net.QualityGate.Tests/FrenchExDev.Net.QualityGate.Tests.csproj" />
+</Solution>

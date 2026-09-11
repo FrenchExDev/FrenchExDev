@@ -1,0 +1,139 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "vsphere",
+  "repo": "hashicorp/packer-plugin-vsphere",
+  "sourcePath": "post-processor/vsphere/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "cluster",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "datacenter",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "datastore",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "datastore_cluster",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_mode",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "esxi_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "insecure",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "options",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "overwrite",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "resource_pool",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_folder",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_network",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "hardware_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "max_retries",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

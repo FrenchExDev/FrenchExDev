@@ -1,0 +1,7 @@
+Usage: vagrant destroy [options] [name|id]
+
+Options:
+
+    -f, --force                      Destroy without confirmation.
+        --[no-]parallel              Enable or disable parallelism if provider supports it (automatically enables force)
+    -h, --help                       Print this help

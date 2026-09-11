@@ -1,0 +1,15 @@
+Remove all unused volumes
+
+Description:
+  Volumes that are not currently owned by a container will be removed.
+
+  The command prompts for confirmation which can be overridden with the --force flag.
+  Note all data will be destroyed.
+
+Usage:
+  podman volume prune [options]
+
+Options:
+      --filter stringArray   Provide filter values (e.g. 'label=<key>=<value>')
+  -f, --force                Do not prompt for confirmation
+

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Outbox\FrenchExDev.Net.Outbox.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Outbox.Testing\FrenchExDev.Net.Outbox.Testing.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Outbox.EntityFramework\FrenchExDev.Net.Outbox.EntityFramework.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,18 @@
+Usage: vagrant cloud provider create [options] organization/box-name provider-name version [url]
+
+Creates a provider entry on Vagrant Cloud
+
+Options:
+
+    -a, --architecture ARCH          Architecture of guest box (defaults to current host architecture)
+    -c, --checksum CHECKSUM_VALUE    Checksum of the box for this provider. --checksum-type option is required.
+    -C, --checksum-type TYPE         Type of checksum used (md5, sha1, sha256, sha384, sha512). --checksum option is required.
+        --[no-]default-architecture  Mark as default architecture for specific provider
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

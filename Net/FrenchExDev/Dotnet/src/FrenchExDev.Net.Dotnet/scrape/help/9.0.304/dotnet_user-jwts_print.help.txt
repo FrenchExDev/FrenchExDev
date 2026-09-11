@@ -1,0 +1,13 @@
+
+
+Usage: dotnet user-jwts print [arguments] [options]
+
+Arguments:
+  [id]  The ID of the JWT to print.
+
+Options:
+  -p|--project  The path of the project to operate on. Defaults to the project in the current directory.
+  -o|--output   The format to use for displaying output from the command. Can be one of 'default', 'token', or 'json'.
+  --show-all    Whether to show all details associated with the JWT.
+  -h|--help     Show help information
+

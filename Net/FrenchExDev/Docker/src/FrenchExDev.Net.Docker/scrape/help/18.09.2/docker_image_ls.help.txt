@@ -1,0 +1,15 @@
+
+Usage:	docker image ls [OPTIONS] [REPOSITORY[:TAG]]
+
+List images
+
+Aliases:
+  ls, images, list
+
+Options:
+  -a, --all             Show all images (default hides intermediate images)
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only show numeric IDs

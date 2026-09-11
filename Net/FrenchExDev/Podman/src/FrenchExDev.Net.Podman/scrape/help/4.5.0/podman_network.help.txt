@@ -1,0 +1,19 @@
+Manage networks
+
+Description:
+  Manage networks
+
+Usage:
+  podman network [command]
+
+Available Commands:
+  connect     network connect
+  create      network create
+  disconnect  network rm
+  exists      network exists
+  inspect     Inspect network
+  ls          network list
+  prune       network prune
+  rm          network rm
+  update      update an existing podman network
+

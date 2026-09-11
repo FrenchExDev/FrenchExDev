@@ -1,0 +1,11 @@
+Inspect an OCI artifact
+
+Description:
+  Provide details on an OCI artifact
+
+Usage:
+  podman artifact inspect [ARTIFACT...]
+
+Examples:
+  podman artifact inspect quay.io/myimage/myartifact:latest
+

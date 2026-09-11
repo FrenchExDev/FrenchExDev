@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder.Attributes\FrenchExDev.Net.Builder.Attributes.csproj" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder.SourceGenerator\FrenchExDev.Net.Builder.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Vagrantfile" />
+  </ItemGroup>
+
+</Project>

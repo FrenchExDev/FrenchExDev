@@ -1,0 +1,14 @@
+Description:
+
+Usage:
+  dotnet nuget verify <package-paths>... [options]
+
+Arguments:
+  <package-paths>
+
+Options:
+  --all                                                [default: False]
+  --certificate-fingerprint <certificate-fingerprint>
+  -v, --verbosity <LEVEL>                              Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. [default: normal]
+  -?, -h, --help                                       Show command line help.
+

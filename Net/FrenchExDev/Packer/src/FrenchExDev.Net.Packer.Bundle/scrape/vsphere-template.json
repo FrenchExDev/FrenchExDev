@@ -1,0 +1,109 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "vsphere-template",
+  "repo": "hashicorp/packer-plugin-vsphere",
+  "sourcePath": "post-processor/vsphere-template/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "insecure",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "datacenter",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "template_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "folder",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_enable",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "snapshot_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "reregister_vm",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "override",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

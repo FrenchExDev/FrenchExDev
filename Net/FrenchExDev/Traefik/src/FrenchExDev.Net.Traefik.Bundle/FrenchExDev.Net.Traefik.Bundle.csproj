@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FrenchExDev.Net.Traefik.Bundle</RootNamespace>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)$(Configuration)/$(TargetFramework)/Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>FrenchExDev.Net.Traefik.Bundle</PackageId>
+    <Description>Strongly-typed Traefik v3 static + dynamic configuration: source-generated models + builders, schema-validated YAML round-trip serializer, and a discriminated-union analyzer.</Description>
+    <PackageTags>traefik;reverse-proxy;config;source-generator;yaml;json-schema</PackageTags>
+    <Authors>FrenchExDev</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Traefik.Bundle.Attributes\FrenchExDev.Net.Traefik.Bundle.Attributes.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Traefik.Bundle.SourceGenerator\FrenchExDev.Net.Traefik.Bundle.SourceGenerator.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder.SourceGenerator.Lib\FrenchExDev.Net.Builder.SourceGenerator.Lib.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" />
+    <PackageReference Include="JsonSchema.Net" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="schemas\traefik-v*.json" />
+    <EmbeddedResource Include="schemas\traefik-v*.json" />
+  </ItemGroup>
+
+</Project>

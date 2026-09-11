@@ -1,0 +1,17 @@
+Usage: vagrant snapshot pop [options] [vm-name]
+
+Restore state that was pushed onto the snapshot stack
+with `vagrant snapshot push`.
+
+        --[no-]provision             Enable or disable provisioning
+        --provision-with x,y,z       Enable only certain provisioners, by type or by name.
+        --no-delete                  Don't delete the snapshot after the restore
+        --no-start                   Don't start the snapshot after the restore
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

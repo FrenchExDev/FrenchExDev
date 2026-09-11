@@ -1,0 +1,7 @@
+usage: git bugreport [-o|--output-directory <file>] [-s|--suffix <format>]
+
+    -o, --output-directory <path>
+                          specify a destination for the bugreport file
+    -s, --suffix <format>
+                          specify a strftime format suffix for the filename
+

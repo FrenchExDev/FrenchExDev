@@ -1,0 +1,16 @@
+
+  Search for code and resources in a GitLab project. (BETA)                                                             
+         
+  USAGE  
+         
+    glab search <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    semantic [--flags]  Search project code using natural language.
+         
+  FLAGS  
+         
+    -h --help           Show help for this command.
+    -R --repo           Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

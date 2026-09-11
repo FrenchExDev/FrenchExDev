@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Mediator/FrenchExDev.Net.Mediator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Mediator.Testing/FrenchExDev.Net.Mediator.Testing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Mediator.Tests/FrenchExDev.Net.Mediator.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,18 @@
+Verifies and displays information about your authentication state.               
+                                                                                   
+  This command tests the authentication states of all known GitLab instances in the
+  configuration file and reports issues, if any.
+
+USAGE
+  glab auth status [flags]
+
+FLAGS
+      --hostname string   Check a specific instance's authentication status.
+  -t, --show-token        Display the authentication token.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

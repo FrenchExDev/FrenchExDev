@@ -1,0 +1,44 @@
+
+  Demonstrating-proof-of-possession (DPoP) is a technique to                                                            
+  cryptographically bind personal access tokens to their owners. This command provides                                  
+  the tools to manage the client aspects of DPoP. It generates a DPoP proof JWT                                         
+  (JSON Web Token).                                                                                                     
+                                                                                                                        
+  Prerequisites:                                                                                                        
+                                                                                                                        
+  - You must have a SSH key pair in RSA, ed25519, or ECDSA format.                                                      
+  - You have enabled DPoP for your account.                                                                             
+                                                                                                                        
+  Use the JWT in combination with a Personal Access Token (PAT) to authenticate to                                      
+  the GitLab API. Your JWT remains valid for 5 minutes. After it expires, you must                                      
+  generate another token. Your SSH private key is then used to sign the JWT.                                            
+                                                                                                                        
+  This feature is an experiment and is not ready for production use.                                                    
+  It might be unstable or removed at any time.                                                                          
+  For more information, see                                                                                             
+  https://docs.gitlab.com/policy/development_stages_support/.                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab auth dpop-gen [--flags]                                                           
+            
+  EXAMPLES  
+            
+    # Generate a DPoP JWT for authentication to GitLab                                     
+    $ glab auth dpop-gen [flags]                                                           
+    $ glab auth dpop-gen --private-key "~/.ssh/id_rsa" --pat "glpat-xxxxxxxxxxxxxxxxxxxx"  
+                                                                                           
+    # No PAT required if you previously used the 'glab auth login' command with a PAT      
+    $ glab auth dpop-gen --private-key "~/.ssh/id_rsa"                                     
+                                                                                           
+    # Generate a DPoP JWT for a different GitLab instance                                  
+    $ glab auth dpop-gen --private-key "~/.ssh/id_rsa" --hostname "https://gitlab.com"     
+         
+  FLAGS  
+         
+    -h --help         Show help for this command.
+    --hostname        The hostname of the GitLab instance to authenticate with. Defaults to 'gitlab.com'. (gitlab.com)
+    --pat             Personal Access Token (PAT) to generate a DPoP proof for. Defaults to the token set with 'glab auth login'. Returns an error if both are empty.
+    -p --private-key  Location of the private SSH key on the local system.
+

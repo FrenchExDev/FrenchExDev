@@ -1,0 +1,6 @@
+usage: git multi-pack-index [<options>] (write|verify|expire|repack --batch-size=<size>)
+
+    --object-dir <file>   object directory containing set of packfile and pack-index pairs
+    --progress            force progress reporting
+    --batch-size <n>      during repack, collect pack-files of smaller size into a batch that is larger than this size
+

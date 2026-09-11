@@ -1,0 +1,30 @@
+
+  Download asset files from a GitLab release.                                                                           
+                                                                                                                        
+  If no tag is specified, downloads assets from the latest release.                                                     
+  To specify a file name to download from the release assets, use `--asset-name`.                                       
+  `--asset-name` flag accepts glob patterns.                                                                            
+                                                                                                                        
+         
+  USAGE  
+         
+    glab release download <tag> [--flags]                   
+            
+  EXAMPLES  
+            
+    # Download all assets from the latest release           
+    glab release download                                   
+                                                            
+    # Download all assets from the specified release tag    
+    glab release download v1.1.0                            
+                                                            
+    # Download assets with names matching the glob pattern  
+    glab release download v1.10.1 --asset-name="*.tar.gz"   
+         
+  FLAGS  
+         
+    -n --asset-name  Download only assets that match the name or a glob pattern.
+    -D --dir         Directory to download the release assets to. (.)
+    -h --help        Show help for this command.
+    -R --repo        Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

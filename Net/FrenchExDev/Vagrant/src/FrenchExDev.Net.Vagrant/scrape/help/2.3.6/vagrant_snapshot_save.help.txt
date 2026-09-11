@@ -1,0 +1,20 @@
+Usage: vagrant snapshot save [options] [vm-name] <name>
+
+Take a snapshot of the current state of the machine. The snapshot
+can be restored via `vagrant snapshot restore` at any point in the
+future to get back to this exact machine state.
+
+If no vm-name is given, Vagrant will take a snapshot of
+the entire environment with the same snapshot name.
+
+Snapshots are useful for experimenting in a machine and being able
+to rollback quickly.
+    -f, --force                      Replace snapshot without confirmation
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

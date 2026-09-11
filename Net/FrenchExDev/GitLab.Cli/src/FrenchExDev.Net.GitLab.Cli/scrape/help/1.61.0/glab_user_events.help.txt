@@ -1,0 +1,17 @@
+View user events.
+
+USAGE
+  glab user events [flags]
+
+FLAGS
+  -a, --all             Get events from all projects.
+  -F, --output string   Format output as: 'text', 'json'. (default "text")
+  -p, --page int        Page number. (default 1)
+  -P, --per-page int    Number of items to list per page. (default 30)
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

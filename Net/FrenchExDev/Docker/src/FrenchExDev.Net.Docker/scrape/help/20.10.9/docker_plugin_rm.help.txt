@@ -1,0 +1,10 @@
+
+Usage:  docker plugin rm [OPTIONS] PLUGIN [PLUGIN...]
+
+Remove one or more plugins
+
+Aliases:
+  rm, remove
+
+Options:
+  -f, --force   Force the removal of an active plugin

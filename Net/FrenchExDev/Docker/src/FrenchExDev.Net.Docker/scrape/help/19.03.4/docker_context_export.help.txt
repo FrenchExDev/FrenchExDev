@@ -1,0 +1,7 @@
+
+Usage:	docker context export [OPTIONS] CONTEXT [FILE|-]
+
+Export a context to a tar or kubeconfig file
+
+Options:
+      --kubeconfig   Export as a kubeconfig file

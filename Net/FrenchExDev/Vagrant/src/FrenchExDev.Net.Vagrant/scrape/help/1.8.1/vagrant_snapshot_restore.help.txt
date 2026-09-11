@@ -1,0 +1,4 @@
+Usage: vagrant snapshot restore [options] [vm-name] <name>
+
+Restore a snapshot taken previously with snapshot save.
+    -h, --help                       Print this help

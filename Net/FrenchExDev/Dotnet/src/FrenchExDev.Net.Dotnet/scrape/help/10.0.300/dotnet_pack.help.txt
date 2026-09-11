@@ -1,0 +1,28 @@
+Description:
+  .NET Core NuGet Package Packer
+
+Usage:
+  dotnet pack [<PROJECT | SOLUTION | FILE>...] [options]
+
+Arguments:
+  <PROJECT | SOLUTION | FILE>  The project or solution or C# (file-based program) file to operate on. If a file is not specified, the command will search the current directory for a project or solution.
+
+Options:
+  -o, --output <OUTPUT_DIR>            The output directory to place built packages in.
+  --artifacts-path <ARTIFACTS_DIR>     The artifacts path. All output from the project, including build, publish, and pack output, will go in subfolders under the specified path.
+  --no-build                           Do not build the project before packing. Implies --no-restore. [default: False]
+  --include-symbols                    Include packages with symbols in addition to regular packages in output directory. [default: False]
+  --include-source                     Include PDBs and source files. Source files go into the 'src' folder in the resulting nuget package. [default: False]
+  -s, --serviceable                    Set the serviceable flag in the package. See https://aka.ms/nupkgservicing for more information. [default: False]
+  -nologo, --no-logo                   Do not display the startup banner or the copyright message. [default: True]
+  --interactive                        Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  --no-restore                         Do not restore the project before building. [default: False]
+  -v, -verbosity <LEVEL>               Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  --version-suffix <VERSION_SUFFIX>    Set the value of the $(VersionSuffix) property to use when building the project.
+  --version <VERSION>                  The version of the package to create
+  -c, --configuration <CONFIGURATION>  The configuration to use for building the package. The default is 'Release'.
+  --disable-build-servers              Force the command to ignore any persistent build servers. [default: False]
+  --ucr, --use-current-runtime         Use current runtime as the target runtime. [default: False]
+  -r, --runtime <RUNTIME_IDENTIFIER>   The target runtime to build for.
+  -?, -h, --help                       Show command line help.
+

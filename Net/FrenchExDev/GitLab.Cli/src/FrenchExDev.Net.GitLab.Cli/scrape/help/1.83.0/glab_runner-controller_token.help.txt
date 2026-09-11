@@ -1,0 +1,25 @@
+
+  Manages runner controller tokens. This is an admin-only feature.                                                      
+                                                                                                                        
+  This feature is experimental. It might be broken or removed without any prior notice.                                 
+  Read more about what experimental features mean at                                                                    
+  https://docs.gitlab.com/policy/development_stages_support/                                                            
+                                                                                                                        
+  Use experimental features at your own risk.                                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner-controller token <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    create <controller-id> [--flags]             Create a token for a runner controller. (EXPERIMENTAL)
+    list <controller-id> [--flags]               List tokens of a runner controller. (EXPERIMENTAL)
+    revoke <controller-id> <token-id> [--flags]  Revoke a token from a runner controller. (EXPERIMENTAL)
+    rotate <controller-id> <token-id> [--flags]  Rotate a token for a runner controller. (EXPERIMENTAL)
+         
+  FLAGS  
+         
+    -h --help                                    Show help for this command.
+

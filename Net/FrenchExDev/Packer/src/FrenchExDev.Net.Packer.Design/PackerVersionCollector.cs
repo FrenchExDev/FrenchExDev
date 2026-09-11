@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FrenchExDev.Net.BinaryWrapper.Design;
+using FrenchExDev.Net.Wrapper.Versioning;
 
 namespace FrenchExDev.Net.Packer.Design;
 
@@ -43,6 +44,9 @@ public sealed class PackerVersionCollector : IVersionCollector
         versions.Sort(GitHubReleasesVersionCollector.CompareVersionStrings);
         return versions;
     }
+
+    public Task<IReadOnlyList<string>> CollectItemsAsync(CancellationToken cancellationToken = default)
+        => CollectVersionsAsync(cancellationToken);
 
     private static HttpClient CreateDefaultHttpClient()
     {

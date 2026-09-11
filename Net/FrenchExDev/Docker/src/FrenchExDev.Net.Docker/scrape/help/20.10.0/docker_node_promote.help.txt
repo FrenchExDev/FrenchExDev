@@ -1,0 +1,4 @@
+
+Usage:  docker node promote NODE [NODE...]
+
+Promote one or more nodes to manager in the swarm

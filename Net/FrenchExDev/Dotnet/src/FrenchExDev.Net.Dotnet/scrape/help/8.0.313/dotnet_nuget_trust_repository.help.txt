@@ -1,0 +1,18 @@
+Description:
+
+Usage:
+  dotnet nuget trust repository <NAME> <PACKAGE> [options]
+
+Arguments:
+  <NAME>
+  <PACKAGE>
+
+Options:
+  --allow-untrusted-root
+  --owners <owners>
+  --configfile <configfile>
+  -v, --verbosity <LEVEL>    Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help             Show command line help.
+
+
+

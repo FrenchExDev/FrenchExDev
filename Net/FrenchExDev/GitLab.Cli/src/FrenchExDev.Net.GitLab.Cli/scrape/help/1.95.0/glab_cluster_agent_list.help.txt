@@ -1,0 +1,15 @@
+
+  List GitLab Agents for Kubernetes in a project.                                                                       
+         
+  USAGE  
+         
+    glab cluster agent list [--flags]  
+         
+  FLAGS  
+         
+    -h --help      Show help for this command.
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (30)
+    -R --repo      Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

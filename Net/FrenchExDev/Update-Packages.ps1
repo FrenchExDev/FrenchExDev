@@ -98,140 +98,159 @@ $packages = @($xml.Project.ItemGroup.PackageVersion | ForEach-Object {
 
 # ── Check versions ───────────────────────────────────────────────────────────
 
-$cycleChars = @('⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏')
 $checkMark  = '✓'
 $upArrow    = '↑'
 $crossMark  = '✗'
 
 $updates  = [System.Collections.Generic.List[PSCustomObject]]::new()
 $errors   = [System.Collections.Generic.List[string]]::new()
-$maxLen   = ($packages | Measure-Object -Property Id -Maximum).Maximum.Length + 2
+$maxLen   = [int](($packages | ForEach-Object { $_.Id.Length } | Measure-Object -Maximum).Maximum) + 2
 $verColW  = 14
 $statColW = 22
 
 function Write-Row {
     param(
-        [int]$Y,
         [string]$Cycle,       [ConsoleColor]$CycleColor  = 'Gray',
         [string]$Version,
         [string]$Status,      [ConsoleColor]$StatusColor = 'Gray',
         [string]$Name
     )
-    [Console]::SetCursorPosition(0, $Y)
     Write-Host -NoNewline '  '
-    Write-Host -NoNewline $Cycle.PadRight(2)  -ForegroundColor $CycleColor
-    Write-Host -NoNewline $Version.PadRight($verColW)
-    Write-Host -NoNewline $Status.PadRight($statColW) -ForegroundColor $StatusColor
-    Write-Host $Name.PadRight($maxLen) -NoNewline
+    Write-Host -NoNewline ($Cycle.PadRight(1) + '  ') -ForegroundColor $CycleColor
+    Write-Host -NoNewline ($Version.PadRight($verColW) + '  ')
+    Write-Host -NoNewline ($Status.PadRight($statColW) + '  ') -ForegroundColor $StatusColor
+    Write-Host $Name
 }
 
 Write-Host ''
 Write-Host ("  {0}  {1}  {2}  {3}" -f ' ', 'Version'.PadRight($verColW), 'Status'.PadRight($statColW), 'Package') -ForegroundColor Cyan
 Write-Host ("  {0}  {1}  {2}  {3}" -f '─', ('─' * $verColW), ('─' * $statColW), ('─' * $maxLen)) -ForegroundColor DarkGray
 
-# Print placeholder rows
-foreach ($pkg in $packages) {
-    Write-Host ("  {0}  {1}  {2}  {3}" -f '·', $pkg.Current.PadRight($verColW), ''.PadRight($statColW), $pkg.Id) -ForegroundColor DarkGray
-}
+# Append completed rows instead of addressing console coordinates: tables may
+# exceed the buffer height, wrap in narrow terminals, or be redirected to a file.
 
-$tableStartY = [Console]::CursorTop - $packages.Count
+# ── Parallel fetch using curl.exe processes ───────────────────────────────────
 
-# ── Parallel fetch using runspace pool ────────────────────────────────────────
-
-$fetchScript = {
-    param([string]$PackageId, [string]$CurrentVersion, [bool]$IncludePrerelease)
-    $url = "https://api.nuget.org/v3-flatcontainer/$($PackageId.ToLower())/index.json"
-    for ($attempt = 1; $attempt -le 5; $attempt++) {
-        try {
-            $response = Invoke-RestMethod -Uri $url -TimeoutSec 10 -ErrorAction Stop
-            $versions = $response.versions
-            $currentIsPrerelease = $CurrentVersion -match '-'
-            $candidates = $versions | Where-Object {
-                if ($IncludePrerelease -or $currentIsPrerelease) { $true }
-                else { $_ -notmatch '-' }
-            }
-            return $candidates | Select-Object -Last 1
-        }
-        catch {
-            if ($attempt -lt 5) { Start-Sleep -Milliseconds (500 * $attempt) }
-        }
-    }
-    return $null
-}
-
-$pool = [RunspaceFactory]::CreateRunspacePool(1, $ParallelMax)
-$pool.Open()
-
-$jobs = [System.Collections.Generic.List[hashtable]]::new()
+# Build all jobs upfront — processes start as $null (launched in waves)
+$jobs = @()
 for ($i = 0; $i -lt $packages.Count; $i++) {
-    $pkg = $packages[$i]
-    $ps  = [PowerShell]::Create().AddScript($fetchScript).
-            AddArgument($pkg.Id).
-            AddArgument($pkg.Current).
-            AddArgument($IncludePrerelease.IsPresent)
-    $ps.RunspacePool = $pool
-    $jobs.Add(@{ Index = $i; PS = $ps; Handle = $ps.BeginInvoke(); Done = $false })
-}
-
-$spinFrame   = 0
-$pendingCount = $jobs.Count
-
-while ($pendingCount -gt 0) {
-    $spinFrame++
-
-    foreach ($job in $jobs) {
-        if ($job.Done) { continue }
-
-        $i   = $job.Index
-        $pkg = $packages[$i]
-        $row = $tableStartY + $i
-
-        if ($job.Handle.IsCompleted) {
-            $result = $job.PS.EndInvoke($job.Handle)
-            $latest = if ($result.Count -gt 0) { $result[$result.Count - 1] } else { $null }
-            $job.PS.Dispose()
-            $job.Done = $true
-            $pendingCount--
-
-            if ($null -eq $latest) {
-                Write-Row -Y $row `
-                    -Cycle $crossMark -CycleColor Red `
-                    -Version $pkg.Current `
-                    -Status 'fetch error' -StatusColor Red `
-                    -Name $pkg.Id
-                $errors.Add($pkg.Id)
-            }
-            elseif ((Compare-SemVer $pkg.Current $latest) -lt 0) {
-                Write-Row -Y $row `
-                    -Cycle ' ' `
-                    -Version $pkg.Current `
-                    -Status "$upArrow $latest" -StatusColor Yellow `
-                    -Name $pkg.Id
-                $updates.Add([PSCustomObject]@{ Id = $pkg.Id; Current = $pkg.Current; Latest = $latest })
-            }
-            else {
-                Write-Row -Y $row `
-                    -Cycle ' ' `
-                    -Version $pkg.Current `
-                    -Status $checkMark -StatusColor Green `
-                    -Name $pkg.Id
-            }
-        }
-        else {
-            # Animate spinner for in-progress rows
-            [Console]::SetCursorPosition(2, $row)
-            Write-Host -NoNewline $cycleChars[$spinFrame % $cycleChars.Count] -ForegroundColor Yellow
-        }
+    $jobs += @{
+        Index   = $i
+        Process = $null
+        TmpFile = [System.IO.Path]::GetTempFileName()
+        Done    = $false
+        Attempt = 0
+        Started = $false
     }
-
-    if ($pendingCount -gt 0) { Start-Sleep -Milliseconds 80 }
 }
 
-$pool.Close()
-$pool.Dispose()
+function Launch-Curl {
+    param([hashtable]$Job)
+    $pkg = $packages[$Job.Index]
+    $url = "https://api.nuget.org/v3-flatcontainer/$($pkg.Id.ToLower())/index.json"
+    $psi = [System.Diagnostics.ProcessStartInfo]::new()
+    $psi.FileName = 'curl.exe'
+    $psi.Arguments = "-s --connect-timeout 10 --max-time 15 -o `"$($Job.TmpFile)`" `"$url`""
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+    $Job.Process = [System.Diagnostics.Process]::Start($psi)
+    $Job.Attempt++
+    $Job.Started = $true
+}
 
-# Move cursor below the table
-[Console]::SetCursorPosition(0, $tableStartY + $packages.Count)
+$pendingCount = $packages.Count
+
+try {
+    while ($pendingCount -gt 0) {
+        Write-Progress -Id 1 -Activity 'Checking NuGet packages' -Status "$($packages.Count - $pendingCount) / $($packages.Count) completed" -PercentComplete ([int](100 * ($packages.Count - $pendingCount) / $packages.Count))
+
+        # Launch new jobs up to $ParallelMax active
+        $active = @($jobs | Where-Object { $_.Started -and -not $_.Done }).Count
+        foreach ($job in $jobs) {
+            if ($active -ge $ParallelMax) { break }
+            if (-not $job.Started) {
+                Launch-Curl -Job $job
+                $active++
+            }
+        }
+
+        # Poll all active jobs
+        foreach ($job in $jobs) {
+            if ($job.Done -or -not $job.Started) { continue }
+
+            $i   = $job.Index
+            $pkg = $packages[$i]
+
+            if ($job.Process.HasExited) {
+                $exitCode = $job.Process.ExitCode
+                $job.Process.Dispose()
+                $json = $null
+
+                if ($exitCode -eq 0 -and (Test-Path $job.TmpFile)) {
+                    $raw = [System.IO.File]::ReadAllText($job.TmpFile)
+                    if ($raw.Length -gt 0) { $json = $raw }
+                }
+
+                # Retry on failure (up to 3 attempts)
+                if ($null -eq $json -and $job.Attempt -lt 3) {
+                    Launch-Curl -Job $job
+                    continue
+                }
+
+                # Clean up temp file
+                if (Test-Path $job.TmpFile) { Remove-Item $job.TmpFile -Force }
+
+                $job.Done = $true
+                $pendingCount--
+
+                # Parse result
+                $latest = $null
+                if ($json) {
+                    try {
+                        $response = $json | ConvertFrom-Json
+                        $versions = $response.versions
+                        $currentIsPrerelease = $pkg.Current -match '-'
+                        $candidates = $versions | Where-Object {
+                            if ($IncludePrerelease -or $currentIsPrerelease) { $true }
+                            else { $_ -notmatch '-' }
+                        }
+                        $latest = $candidates | Select-Object -Last 1
+                    }
+                    catch { }
+                }
+
+                if ($null -eq $latest) {
+                    Write-Row `
+                        -Cycle $crossMark -CycleColor Red `
+                        -Version $pkg.Current `
+                        -Status 'fetch error' -StatusColor Red `
+                        -Name $pkg.Id
+                    $errors.Add($pkg.Id)
+                }
+                elseif ((Compare-SemVer $pkg.Current $latest) -lt 0) {
+                    Write-Row `
+                        -Cycle ' ' `
+                        -Version $pkg.Current `
+                        -Status "$upArrow $latest" -StatusColor Yellow `
+                        -Name $pkg.Id
+                    $updates.Add([PSCustomObject]@{ Id = $pkg.Id; Current = $pkg.Current; Latest = $latest })
+                }
+                else {
+                    Write-Row `
+                        -Cycle ' ' `
+                        -Version $pkg.Current `
+                        -Status $checkMark -StatusColor Green `
+                        -Name $pkg.Id
+                }
+            }
+        }
+
+        if ($pendingCount -gt 0) { Start-Sleep -Milliseconds 80 }
+    }
+}
+finally {
+    Write-Progress -Id 1 -Activity 'Checking NuGet packages' -Completed
+}
 
 Write-Host ""
 

@@ -1,0 +1,10 @@
+
+Usage:  docker trust key COMMAND
+
+Manage keys for signing Docker images
+
+Commands:
+  generate    Generate and load a signing key-pair
+  load        Load a private key file for signing
+
+Run 'docker trust key COMMAND --help' for more information on a command.

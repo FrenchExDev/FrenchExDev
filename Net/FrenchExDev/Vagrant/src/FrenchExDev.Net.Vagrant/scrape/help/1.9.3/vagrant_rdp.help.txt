@@ -1,0 +1,2 @@
+Usage: vagrant rdp [options] [name|id] [-- extra args]
+    -h, --help                       Print this help

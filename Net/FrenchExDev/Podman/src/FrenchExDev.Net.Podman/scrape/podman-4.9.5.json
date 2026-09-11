@@ -7158,7 +7158,7 @@
               },
               {
                 "longName": "sort",
-                "description": "Sort by repository, size, tag, created, id (default \u0022created\u0022)",
+                "description": "Sort by created, id, repository, size, tag (default \u0022created\u0022)",
                 "valueKind": "single",
                 "clrType": "string",
                 "isRequired": false
@@ -7312,79 +7312,7 @@
           {
             "name": "push",
             "description": "Push an image to a specified destination",
-            "options": [
-              {
-                "longName": "authfile",
-                "description": "Path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "compression-format",
-                "description": "compression format to use",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "compression-level",
-                "description": "compression level to use",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "creds",
-                "description": "Credentials           Credentials (USERNAME:PASSWORD) to use for authenticating to a registry",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "digestfile",
-                "description": "Write the digest of the pushed image to the specified file",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "disable-content-trust",
-                "description": "This is a Docker specific option and is a NOOP",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "force-compression",
-                "description": "Use the specified compression algorithm even if the destination contains a differently-compressed variant already",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "format",
-                "shortName": "f",
-                "description": "Manifest type (oci, v2s2, or v2s1) to use in the destination (default is manifest type of source, with fallbacks)",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "remove-signatures",
-                "description": "Discard any pre-existing signatures in the image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "Require HTTPS and verify certificates when contacting registries (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -7831,46 +7759,7 @@
           {
             "name": "apply",
             "description": "Deploy a podman container, pod, volume, or Kubernetes yaml to a Kubernetes cluster",
-            "options": [
-              {
-                "longName": "ca-cert-file",
-                "description": "Path to the CA cert file for the Kubernetes cluster.",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "file",
-                "shortName": "f",
-                "description": "Path to the Kubernetes yaml file to deploy.",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "kubeconfig",
-                "shortName": "k",
-                "description": "Path to the kubeconfig file for the Kubernetes cluster",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "ns",
-                "description": "The namespace to deploy the workload to on the Kubernetes cluster",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "service",
-                "shortName": "s",
-                "description": "Create a service object for the container being deployed.",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -7892,204 +7781,14 @@
           {
             "name": "generate",
             "description": "Generate Kubernetes YAML from containers, pods or volumes.",
-            "options": [
-              {
-                "longName": "filename",
-                "shortName": "f",
-                "description": "Write output to the specified path",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "no-trunc",
-                "description": "Don\u0027t truncate annotations to Kubernetes length (63 chars)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "podman-only",
-                "description": "Add podman-only reserved annotations to the generated YAML file (Cannot be used by Kubernetes)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "replicas",
-                "shortName": "r",
-                "description": "Set the replicas number for Deployment kind (default 1)",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "service",
-                "shortName": "s",
-                "description": "Generate YAML for a Kubernetes service object",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "type",
-                "shortName": "t",
-                "description": "Generate YAML for the given Kubernetes kind",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
           {
             "name": "play",
             "description": "Play a pod or volume based on Kubernetes YAML",
-            "options": [
-              {
-                "longName": "annotation",
-                "description": "Add annotations to pods (key=value)",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "authfile",
-                "description": "Path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "configmap",
-                "description": "Pathname    Pathname of a YAML file containing a kubernetes configmap",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "creds",
-                "description": "Credentials     Credentials (USERNAME:PASSWORD) to use for authenticating to a registry",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "force",
-                "description": "Remove volumes as part of --down",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "ip",
-                "description": "Static IP addresses to assign to the pods (default [])",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "log-driver",
-                "description": "Logging driver for the container",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "log-opt",
-                "description": "Logging driver options",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "mac-address",
-                "description": "Static MAC addresses to assign to the pods",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "network",
-                "description": "Connect pod to network(s) or network mode",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "no-hosts",
-                "description": "Do not create /etc/hosts within the pod\u0027s containers, instead use the version from the image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "no-trunc",
-                "description": "Use annotations that are not truncated to the Kubernetes maximum length of 63 characters",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "publish",
-                "description": "Publish a container\u0027s port, or a range of ports, to the host",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "publish-all",
-                "description": "Whether to publish all ports defined in the K8S YAML file (containerPort, hostPort), if false only hostPort will be published",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "quiet",
-                "shortName": "q",
-                "description": "Suppress output information when pulling images",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "replace",
-                "description": "Delete and recreate pods defined in the YAML file",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "start",
-                "description": "Start the pod after creating it (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "Require HTTPS and verify certificates when contacting registries (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "userns",
-                "description": "User namespace to use",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "wait",
-                "shortName": "w",
-                "description": "Clean up all objects created when a SIGTERM is received or pods exit",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           }
@@ -8299,16 +7998,7 @@
           {
             "name": "info",
             "description": "Display machine host info",
-            "options": [
-              {
-                "longName": "format",
-                "shortName": "f",
-                "description": "Change the output format to JSON or a Go template",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -8464,23 +8154,7 @@
             "description": "Manage a Podman virtual machine\u0027s OS",
             "options": [],
             "arguments": [],
-            "subCommands": [
-              {
-                "name": "apply",
-                "description": "Apply an OCI image to a Podman Machine\u0027s OS",
-                "options": [
-                  {
-                    "longName": "restart",
-                    "description": "Restart VM to apply changes",
-                    "valueKind": "flag",
-                    "clrType": "bool",
-                    "isRequired": false
-                  }
-                ],
-                "arguments": [],
-                "subCommands": []
-              }
-            ]
+            "subCommands": []
           },
           {
             "name": "rm",
@@ -8522,51 +8196,7 @@
           {
             "name": "set",
             "description": "Set a virtual machine setting",
-            "options": [
-              {
-                "longName": "cpus",
-                "description": "Number of CPUs",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "disk-size",
-                "description": "Disk size in GiB",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "memory",
-                "shortName": "m",
-                "description": "Memory in MiB",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "rootful",
-                "description": "Whether this machine should prefer rootful container execution",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "usb",
-                "description": "USBs bus=$1,devnum=$2 or vendor=$1,product=$2",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "user-mode-networking",
-                "description": "Whether this machine should use user-mode networking, routing traffic through a host user-space process",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -8626,165 +8256,21 @@
           {
             "name": "add",
             "description": "Add images to a manifest list or image index",
-            "options": [
-              {
-                "longName": "all",
-                "description": "add all of the list\u0027s images if the image is a list",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "annotation",
-                "description": "annotation         set an annotation for the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "arch",
-                "description": "architecture             override the architecture of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "authfile",
-                "description": "path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "creds",
-                "description": "use [username[:password]] for accessing the registry",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "features",
-                "description": "features             override the features of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "os",
-                "description": "override the OS of the specified image",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "os-version",
-                "description": "version            override the OS version of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "require HTTPS and verify certificates when accessing the registry (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "variant",
-                "description": "Variant               override the Variant of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
           {
             "name": "annotate",
             "description": "Add or update information about an entry in a manifest list or image index",
-            "options": [
-              {
-                "longName": "annotation",
-                "description": "annotation   set an annotation for the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "arch",
-                "description": "architecture       override the architecture of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "features",
-                "description": "features       override the features of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "os",
-                "description": "override the OS of the specified image",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "os-features",
-                "description": "features    override the OS features of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "os-version",
-                "description": "version      override the OS version of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "variant",
-                "description": "Variant         override the Variant of the specified image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
           {
             "name": "create",
             "description": "Create manifest list or image index",
-            "options": [
-              {
-                "longName": "all",
-                "description": "add all of the lists\u0027 images if the images to add are lists",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "amend",
-                "shortName": "a",
-                "description": "modify an existing list if one with the desired name already exists",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "require HTTPS and verify certificates when accessing the registry (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -8798,123 +8284,14 @@
           {
             "name": "inspect",
             "description": "Display the contents of a manifest list or image index",
-            "options": [
-              {
-                "longName": "authfile",
-                "description": "path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "require HTTPS and verify certificates when accessing the registry (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
           {
             "name": "push",
             "description": "Push a manifest list or image index to a registry",
-            "options": [
-              {
-                "longName": "add-compression",
-                "description": "add instances with selected compression while pushing",
-                "valueKind": "multiple",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "all",
-                "description": "also push the images in the list (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "authfile",
-                "description": "path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "compression-format",
-                "description": "compression format to use",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "compression-level",
-                "description": "compression level to use",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "creds",
-                "description": "use [username[:password]] for accessing the registry",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "digestfile",
-                "description": "after copying the image, write the digest of the resulting digest to the file",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "force-compression",
-                "description": "Use the specified compression algorithm even if the destination contains a differently-compressed variant already",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "format",
-                "shortName": "f",
-                "description": "manifest type (oci or v2s2) to attempt to use when pushing the manifest list (default is manifest type of source)",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "quiet",
-                "shortName": "q",
-                "description": "don\u0027t output progress information when pushing lists",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "remove-signatures",
-                "description": "don\u0027t copy signatures when pushing images",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "rm",
-                "description": "remove the manifest list if push succeeds",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "tls-verify",
-                "description": "require HTTPS and verify certificates when accessing the registry (default true)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "options": [],
             "arguments": [],
             "subCommands": []
           },

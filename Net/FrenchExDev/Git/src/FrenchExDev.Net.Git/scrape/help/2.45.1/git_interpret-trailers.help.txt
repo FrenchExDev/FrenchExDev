@@ -1,0 +1,21 @@
+usage: git interpret-trailers [--in-place] [--trim-empty]
+                              [(--trailer (<key>|<key-alias>)[(=|:)<value>])...]
+                              [--parse] [<file>...]
+
+    --[no-]in-place       edit files in place
+    --[no-]trim-empty     trim empty trailers
+    --[no-]where <placement>
+                          where to place the new trailer
+    --[no-]if-exists <action>
+                          action if trailer already exists
+    --[no-]if-missing <action>
+                          action if trailer is missing
+    --[no-]only-trailers  output only the trailers
+    --[no-]only-input     do not apply trailer.* configuration variables
+    --[no-]unfold         reformat multiline trailer values as single-line values
+    --parse               alias for --only-trailers --only-input --unfold
+    --no-divider          do not treat "---" as the end of input
+    --divider             opposite of --no-divider
+    --[no-]trailer <trailer>
+                          trailer(s) to add
+

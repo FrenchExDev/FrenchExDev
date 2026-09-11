@@ -1,0 +1,6 @@
+Usage: vagrant login
+
+    -c, --check                      Only checks if you're logged in
+    -k, --logout                     Logs you out if you're logged in
+    -t, --token TOKEN                Set the Atlas token
+    -h, --help                       Print this help

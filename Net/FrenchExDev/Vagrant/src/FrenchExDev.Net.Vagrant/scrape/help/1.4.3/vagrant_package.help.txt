@@ -1,0 +1,8 @@
+Usage: vagrant package [vm-name] [--base name] [--output name.box]
+                       [--include one,two,three] [--vagrantfile file]
+
+        --base NAME                  Name of a VM in virtualbox to package as a base box
+        --output NAME                Name of the file to output
+        --include x,y,z              Additional files to package with the box.
+        --vagrantfile file           Vagrantfile to package with the box.
+    -h, --help                       Print this help

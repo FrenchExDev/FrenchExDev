@@ -1,0 +1,23 @@
+Store up to 100 files for secure use in CI/CD pipelines. Secure files are stored 
+  outside of your project's repository, not in version control. It is safe to store
+  sensitive information in these files. Both plain text and binary files are       
+  supported, but they must be smaller than 5 MB.
+
+USAGE
+  glab securefile <command> [flags]
+
+CORE COMMANDS
+  create:     Create a new project secure file.
+  download:   Download a secure file for a project.
+  list:       List secure files for a project.
+  remove:     Remove a secure file.
+
+FLAGS
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

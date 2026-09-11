@@ -1,0 +1,30 @@
+
+  Edit a group or project milestone.                                                                                    
+         
+  USAGE  
+         
+    glab milestone edit [--flags]                                                                                     
+            
+  EXAMPLES  
+            
+    # Edit milestone for the current project                                                                          
+    glab milestone edit 123 --title='Example title' --due-date='2025-12-16'                                           
+                                                                                                                      
+    # Edit milestone for the specified project                                                                        
+    glab milestone edit 123 --title='Example group milestone' --due-date='2025-12-16' --project example-path/projec…  
+                                                                                                                      
+    # Edit milestone for the specified group                                                                          
+    glab milestone edit 123 --title='Example group milestone' --due-date='2025-12-16' --group 789                     
+         
+  FLAGS  
+         
+    --description  Description of the milestone.
+    --due-date     Due date for the milestone. Expected in ISO 8601 format (2025-04-15T08:00:00Z).
+    --group        The ID or URL-encoded path of the group.
+    -h --help      Show help for this command.
+    --project      The ID or URL-encoded path of the project.
+    -R --repo      Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --start-date   Start date for the milestone. Expected in ISO 8601 format (2025-04-15T08:00:00Z).
+    --state        State of the milestone. Can be 'activate' or 'close'.
+    --title        Title of the milestone.
+

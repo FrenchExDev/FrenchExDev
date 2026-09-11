@@ -1,0 +1,21 @@
+Manage Model Context Protocol server functionality for GitLab integration.                                          
+                                                                                                                      
+  The MCP server exposes GitLab functionality as tools that can be used by                                            
+  AI assistants like Claude Code to interact with GitLab projects, issues,                                            
+  merge requests, pipelines, and other resources.
+
+USAGE
+  glab mcp <command> [flags]
+
+CORE COMMANDS
+  serve:      Start MCP server with stdio transport
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  $ glab mcp serve
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

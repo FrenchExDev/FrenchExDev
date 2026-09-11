@@ -1,0 +1,2 @@
+usage: git hook run [--ignore-missing] [--to-stdin=<path>] <hook-name> [-- <hook-args>]
+

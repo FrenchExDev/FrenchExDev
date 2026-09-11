@@ -1,0 +1,26 @@
+
+  Get a milestones via an ID for a project or group.                                                                    
+         
+  USAGE  
+         
+    glab milestone get [--flags]                   
+            
+  EXAMPLES  
+            
+    # Get milestone for the current project        
+    glab milestone get 123                         
+                                                   
+    # Get milestone for the specified project      
+    glab milestone get 123 --project project-name  
+                                                   
+    # Get milestone for the specified group        
+    glab milestone get 123 --group group-name      
+         
+  FLAGS  
+         
+    --group      The ID or URL-encoded path of the group.
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+    --project    The ID or URL-encoded path of the project.
+    -R --repo    Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

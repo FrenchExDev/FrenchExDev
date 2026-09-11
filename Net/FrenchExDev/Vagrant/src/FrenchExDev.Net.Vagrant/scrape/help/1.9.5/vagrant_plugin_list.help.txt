@@ -1,0 +1,2 @@
+Usage: vagrant plugin list [-h]
+    -h, --help                       Print this help

@@ -1,0 +1,12 @@
+
+Usage:  docker config ls [OPTIONS]
+
+List configs
+
+Aliases:
+  ls, list
+
+Options:
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print configs using a Go template
+  -q, --quiet           Only display IDs

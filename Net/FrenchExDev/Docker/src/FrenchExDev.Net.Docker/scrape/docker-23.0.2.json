@@ -4082,15 +4082,8 @@
           },
           {
             "name": "sign",
-            "options": [
-              {
-                "longName": "local",
-                "description": "Sign a locally tagged image",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "description": "Sign an image",
+            "options": [],
             "arguments": [],
             "subCommands": []
           }

@@ -1,0 +1,12 @@
+{
+    "vagrant": {
+        "naming-pattern": "CI-WIN-#MACHINE-NAME#-#MACHINE-INSTANCE#"
+    },
+    "machines": {
+        "main": {
+            "ram_mb": 6096,
+            "vcpus": 8,
+            "instances": 1
+        }
+    }
+}

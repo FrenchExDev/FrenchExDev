@@ -1,0 +1,13 @@
+
+
+Usage: dotnet nuget add [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  client-cert  Adds a client certificate configuration that matches the given package source name.
+  source       Add a NuGet source.
+
+Use "add [command] --help" for more information about a command.
+

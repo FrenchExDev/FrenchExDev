@@ -1,0 +1,27 @@
+
+  Remove a secure file.                                                                                                 
+         
+  USAGE  
+         
+    glab securefile remove <fileID> [--flags]              
+            
+  EXAMPLES  
+            
+    # Remove a project's secure file using the file's ID.  
+    glab securefile remove 1                               
+                                                           
+    # Skip the confirmation prompt and force delete.       
+    glab securefile remove 1 -y                            
+                                                           
+    # Remove a project's secure file with 'rm' alias.      
+    glab securefile rm 1                                   
+                                                           
+    # Remove a project's secure file with 'delete' alias.  
+    glab securefile delete 1                               
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -y --yes   Skip the confirmation prompt.
+

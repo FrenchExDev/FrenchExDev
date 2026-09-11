@@ -1,0 +1,33 @@
+usage: git send-pack [--mirror] [--dry-run] [--force]
+                     [--receive-pack=<git-receive-pack>]
+                     [--verbose] [--thin] [--atomic]
+                     [--[no-]signed | --signed=(true|false|if-asked)]
+                     [<host>:]<directory> (--all | <ref>...)
+
+    -v, --[no-]verbose    be more verbose
+    -q, --[no-]quiet      be more quiet
+    --[no-]receive-pack <receive-pack>
+                          receive pack program
+    --[no-]exec <receive-pack>
+                          receive pack program
+    --[no-]remote <remote>
+                          remote name
+    --[no-]all            push all refs
+    -n, --[no-]dry-run    dry run
+    --[no-]mirror         mirror all refs
+    -f, --[no-]force      force updates
+    --[no-]signed[=(yes|no|if-asked)]
+                          GPG sign the push
+    --[no-]push-option <server-specific>
+                          option to transmit
+    --[no-]progress       force progress reporting
+    --[no-]thin           use thin pack
+    --[no-]atomic         request atomic transaction on remote side
+    --[no-]stateless-rpc  use stateless RPC protocol
+    --[no-]stdin          read refs from stdin
+    --[no-]helper-status  print status from remote helper
+    --[no-]force-with-lease[=<refname>:<expect>]
+                          require old value of ref to be at this value
+    --[no-]force-if-includes
+                          require remote updates to be integrated locally
+

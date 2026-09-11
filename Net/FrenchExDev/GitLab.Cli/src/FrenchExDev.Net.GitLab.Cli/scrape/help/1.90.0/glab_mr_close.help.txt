@@ -1,0 +1,26 @@
+
+  Close a merge request.                                                                                                
+         
+  USAGE  
+         
+    glab mr close [<id> | <branch>] [--flags]  
+            
+  EXAMPLES  
+            
+    glab mr close 1                            
+                                               
+    # Close multiple merge requests at once    
+    glab mr close 1 2 3 4                      
+                                               
+    # Use the checked-out branch               
+    glab mr close                              
+                                               
+    glab mr close branch                       
+    glab mr close username:branch              
+    glab mr close branch -R another/repo       
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

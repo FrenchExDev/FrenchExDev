@@ -1,0 +1,20 @@
+
+
+Usage: dotnet nuget trust [options] [command]
+
+Options:
+  --configfile    The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -h|--help       Show help information
+  -v|--verbosity  Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+
+Commands:
+  author       Adds a trusted signer with the given name, based on the author signature of the package.
+  certificate  Adds a trusted signer with the given name, based on the repository signature or countersignature of a signed package.
+  list         Lists all the trusted signers in the configuration.
+  remove       Removes any trusted signers that match the given name.
+  repository   Adds a trusted signer with the given name, based on the repository signature or countersignature of a signed package.
+  source       Adds a trusted signer based on a given package source.
+  sync         Deletes the current list of certificates and replaces them with an up-to-date list from the repository.
+
+Use "trust [command] --help" for more information about a command.
+

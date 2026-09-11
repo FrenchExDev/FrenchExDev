@@ -1,0 +1,10 @@
+Usage: vagrant snapshot save [options] [vm-name] <name>
+
+Take a snapshot of the current state of the machine. The snapshot
+can be restored via `vagrant snapshot restore` at any point in the
+future to get back to this exact machine state.
+
+Snapshots are useful for experimenting in a machine and being able
+to rollback quickly.
+    -f, --force                      Replace snapshot without confirmation
+    -h, --help                       Print this help

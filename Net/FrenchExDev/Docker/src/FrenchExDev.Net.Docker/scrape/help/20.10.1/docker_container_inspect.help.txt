@@ -1,0 +1,8 @@
+
+Usage:  docker container inspect [OPTIONS] CONTAINER [CONTAINER...]
+
+Display detailed information on one or more containers
+
+Options:
+  -f, --format string   Format the output using the given Go template
+  -s, --size            Display total file sizes

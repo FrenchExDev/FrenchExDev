@@ -1,0 +1,24 @@
+﻿solution: FrenchExDev.Net.Packer.Alpine.slnx
+
+coverage:
+  - "**/coverage.cobertura.xml"
+
+mutations:
+  - "**/mutation-report.json"
+
+output: .quality-gate/
+
+gates:
+  max-cyclomatic-complexity: 15
+  max-cognitive-complexity: 20
+  max-class-coupling: 70
+  max-inheritance-depth: 5
+  min-maintainability-index: 60
+  max-lcom: 50
+  max-distance-from-main-sequence: 1.0
+  max-duplication-percent: 5
+  min-test-quality-score: 1.0
+
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"

@@ -1,0 +1,17 @@
+Create manifest list or image index
+
+Description:
+  Creates manifest lists or image indexes.
+
+Usage:
+  podman manifest create [options] LIST [IMAGE...]
+
+Examples:
+  podman manifest create mylist:v1.11
+  podman manifest create mylist:v1.11 arch-specific-image-to-add
+  podman manifest create mylist:v1.11 arch-specific-image-to-add another-arch-specific-image-to-add
+  podman manifest create --all mylist:v1.11 transport:tagged-image-to-add
+
+Options:
+      --all   add all of the lists' images if the images to add are lists
+

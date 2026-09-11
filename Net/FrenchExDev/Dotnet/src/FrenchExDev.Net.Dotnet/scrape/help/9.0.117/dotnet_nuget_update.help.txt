@@ -1,0 +1,13 @@
+
+
+Usage: dotnet nuget update [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  client-cert  Updates the client certificate configuration that matches the given package source name.
+  source       Update a NuGet source.
+
+Use "update [command] --help" for more information about a command.
+

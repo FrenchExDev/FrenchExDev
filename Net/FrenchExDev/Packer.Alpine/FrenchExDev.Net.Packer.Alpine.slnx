@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Packer.Alpine/FrenchExDev.Net.Packer.Alpine.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Alpine.Cli/FrenchExDev.Net.Packer.Alpine.Cli.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Packer.Alpine.Tests/FrenchExDev.Net.Packer.Alpine.Tests.csproj" />
+  </Folder>
+</Solution>

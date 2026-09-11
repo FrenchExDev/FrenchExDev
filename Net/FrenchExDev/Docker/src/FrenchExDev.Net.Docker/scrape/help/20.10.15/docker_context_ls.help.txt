@@ -1,0 +1,11 @@
+
+Usage:  docker context ls [OPTIONS]
+
+List contexts
+
+Aliases:
+  ls, list
+
+Options:
+      --format string   Pretty-print contexts using a Go template
+  -q, --quiet           Only show context names

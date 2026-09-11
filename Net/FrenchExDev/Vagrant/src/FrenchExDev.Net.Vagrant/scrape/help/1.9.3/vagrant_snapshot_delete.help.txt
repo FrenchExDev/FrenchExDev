@@ -1,0 +1,4 @@
+Usage: vagrant snapshot delete [options] [vm-name] <name>
+
+Delete a snapshot taken previously with snapshot save.
+    -h, --help                       Print this help

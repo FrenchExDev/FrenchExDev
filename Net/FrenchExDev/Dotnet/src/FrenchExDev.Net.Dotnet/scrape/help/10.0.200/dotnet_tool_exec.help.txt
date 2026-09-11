@@ -1,0 +1,25 @@
+Description:
+  Executes a tool from source without permanently installing it.
+
+Usage:
+  dotnet tool execute <packageId> [<commandArguments>...] [options]
+
+Arguments:
+  <packageId>         Package reference in the form of a package identifier like 'dotnetsay' or package identifier and version separated by '@' like 'dotnetsay@2.1.7'.
+  <commandArguments>  Arguments forwarded to the tool
+
+Options:
+  --version <VERSION>       The version of the tool package to install.
+  -y, --yes                 Accept all confirmation prompts using "yes." [default: False]
+  --allow-roll-forward      Allow a .NET tool to roll forward to newer versions of the .NET runtime if the runtime it targets isn't installed. [default: False]
+  --prerelease              Include pre-release packages. [default: False]
+  --configfile <FILE>       The NuGet configuration file to use.
+  --source <SOURCE>         Replace all NuGet package sources to use during installation with these.
+  --add-source <ADDSOURCE>  Add an additional NuGet package source to use during installation.
+  -v, --verbosity <LEVEL>   Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. [default: normal]
+  --disable-parallel        Prevent restoring multiple projects in parallel. [default: False]
+  --ignore-failed-sources   Treat package source failures as warnings. [default: False]
+  --no-http-cache           Do not cache packages and http requests. [default: False]
+  --interactive             Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  -?, -h, --help            Show command line help.
+

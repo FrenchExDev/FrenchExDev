@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Ddd/FrenchExDev.Net.Ddd.csproj" />
+    <Project Path="src/FrenchExDev.Net.Ddd.Attributes/FrenchExDev.Net.Ddd.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Ddd.SourceGenerator/FrenchExDev.Net.Ddd.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Ddd.SourceGenerator.Lib/FrenchExDev.Net.Ddd.SourceGenerator.Lib.csproj" />
+    <Project Path="src/FrenchExDev.Net.Ddd.Testing/FrenchExDev.Net.Ddd.Testing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Ddd.Tests/FrenchExDev.Net.Ddd.Tests.csproj" />
+  </Folder>
+</Solution>

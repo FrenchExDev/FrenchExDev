@@ -1,0 +1,5 @@
+usage: git verify-commit [-v | --verbose] [--raw] <commit>...
+
+    -v, --verbose         print commit contents
+    --raw                 print raw gpg status output
+

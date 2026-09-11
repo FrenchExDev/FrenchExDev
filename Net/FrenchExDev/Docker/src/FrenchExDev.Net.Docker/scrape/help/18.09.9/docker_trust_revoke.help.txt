@@ -1,0 +1,7 @@
+
+Usage:	docker trust revoke [OPTIONS] IMAGE[:TAG]
+
+Remove trust for an image
+
+Options:
+  -y, --yes   Do not prompt for confirmation

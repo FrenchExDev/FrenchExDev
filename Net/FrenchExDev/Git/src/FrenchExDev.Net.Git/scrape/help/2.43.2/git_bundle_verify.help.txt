@@ -1,0 +1,4 @@
+usage: git bundle verify [-q | --quiet] <file>
+
+    -q, --[no-]quiet      do not show bundle details
+

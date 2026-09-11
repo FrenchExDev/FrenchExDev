@@ -1,0 +1,6 @@
+Usage: vagrant destroy [options] [name|id]
+
+Options:
+
+    -f, --force                      Destroy without confirmation.
+    -h, --help                       Print this help

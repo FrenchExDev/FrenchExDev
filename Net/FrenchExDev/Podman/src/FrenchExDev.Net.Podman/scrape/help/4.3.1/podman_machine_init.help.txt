@@ -1,0 +1,24 @@
+Initialize a virtual machine
+
+Description:
+  initialize a virtual machine 
+
+Usage:
+  podman machine init [options] [NAME]
+
+Examples:
+  podman machine init myvm
+
+Options:
+      --cpus uint              Number of CPUs (default 1)
+      --disk-size uint         Disk size in GB (default 100)
+      --ignition-path string   Path to ignition file
+      --image-path string      Path to qcow image (default "testing")
+  -m, --memory uint            Memory in MB (default 2048)
+      --now                    Start machine now
+      --rootful                Whether this machine should prefer rootful container execution
+      --timezone string        Set timezone (default "local")
+      --username string        Username used in qcow image (default "core")
+  -v, --volume stringArray     Volumes to mount, source:target (default [$HOME:$HOME])
+      --volume-driver string   Optional volume driver
+

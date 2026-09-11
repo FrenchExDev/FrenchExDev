@@ -1,0 +1,7 @@
+usage: git hook list [--allow-unknown-hook-name] [-z] [--show-scope] <hook-name>
+
+    -z                    use NUL as line terminator
+    --[no-]show-scope     show the config scope that defined each hook
+    --[no-]allow-unknown-hook-name
+                          allow running a hook with a non-native hook name
+

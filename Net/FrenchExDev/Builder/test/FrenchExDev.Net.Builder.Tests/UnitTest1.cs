@@ -1,4 +1,5 @@
 using FrenchExDev.Net.Builder;
+using FrenchExDev.Net.Builder.Attributes;
 using FrenchExDev.Net.Result;
 using Xunit;
 
@@ -554,5 +555,869 @@ public class BuilderTests
                     new InvalidOperationException("invalid"));
             return Task.FromResult(Result<ValidationResult>.Success(vr));
         }
+    }
+}
+
+// ── Reference ctor tests ─────────────────────────────────────────────────────
+
+public class ReferenceCtorTests
+{
+    [Fact]
+    public void Reference_ValueCtor_IsResolved()
+    {
+        var r = new Reference<string>("hello");
+        Assert.True(r.IsResolved);
+        Assert.Equal("hello", r.Resolved());
+    }
+}
+
+// ── ReferenceList tests ──────────────────────────────────────────────────────
+
+public class ReferenceListTests
+{
+    [Fact]
+    public void Ctor_WithReferences_StoresAll()
+    {
+        var refs = new[] { Reference<string>.Resolved("a"), Reference<string>.Resolved("b") };
+        var list = new ReferenceList<string>(refs);
+        Assert.Equal(2, list.Count);
+    }
+
+    [Fact]
+    public void DefaultCtor_CreatesEmptyList()
+    {
+        var list = new ReferenceList<string>();
+        Assert.Empty(list.AsEnumerable());
+    }
+
+    [Fact]
+    public void AsEnumerable_ReturnsResolvedItems()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("a"),
+            Reference<string>.Unresolved(),
+            Reference<string>.Resolved("b")
+        });
+        var items = list.AsEnumerable().ToList();
+        Assert.Equal(2, items.Count);
+        Assert.Contains("a", items);
+        Assert.Contains("b", items);
+    }
+
+    [Fact]
+    public void Contains_Instance_ReturnsTrueWhenPresent()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("x") });
+        #pragma warning disable xUnit2017
+        Assert.True(list.Contains("x"));
+        Assert.False(list.Contains("y"));
+        #pragma warning restore xUnit2017
+    }
+
+    [Fact]
+    public void ElementAt_ReturnsResolvedValue()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("val") });
+        Assert.Equal("val", list.ElementAt(0));
+    }
+
+    [Fact]
+    public void Any_WithPredicate_ReturnsTrueWhenMatch()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("abc") });
+        Assert.True(list.Any(s => s == "abc"));
+        Assert.False(list.Any(s => s == "xyz"));
+    }
+
+    [Fact]
+    public void Any_NoArgs_ReturnsTrueWhenResolved()
+    {
+        var empty = new ReferenceList<string>();
+        Assert.False(empty.Any());
+
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("a") });
+        Assert.True(list.Any());
+    }
+
+    [Fact]
+    public void All_ReturnsTrueWhenAllMatch()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("ab"),
+            Reference<string>.Resolved("abc")
+        });
+        Assert.True(list.All(s => s.Length >= 2));
+        Assert.False(list.All(s => s.Length >= 3));
+    }
+
+    [Fact]
+    public void Where_FiltersResolved()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("short"),
+            Reference<string>.Resolved("longer-string")
+        });
+        var filtered = list.Where(s => s.Length > 5).ToList();
+        Assert.Single(filtered);
+        Assert.Equal("longer-string", filtered[0]);
+    }
+
+    [Fact]
+    public void Select_MapsResolved()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("abc") });
+        var lengths = list.Select(s => s.Length).ToList();
+        Assert.Single(lengths);
+        Assert.Equal(3, lengths[0]);
+    }
+
+    [Fact]
+    public void IndexOf_ReturnsCorrectIndex()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("a"),
+            Reference<string>.Resolved("b")
+        });
+        Assert.Equal(1, list.IndexOf("b"));
+    }
+
+    [Fact]
+    public void IndexOf_ThrowsWhenNotFound()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("a") });
+        Assert.Throws<InvalidOperationException>(() => list.IndexOf("z"));
+    }
+
+    [Fact]
+    public void CopyTo_CopiesResolvedItems()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("x"),
+            Reference<string>.Resolved("y")
+        });
+        var arr = new string[3];
+        list.CopyTo(arr, 1);
+        Assert.Null(arr[0]);
+        Assert.Equal("x", arr[1]);
+        Assert.Equal("y", arr[2]);
+    }
+
+    [Fact]
+    public void Remove_RemovesMatchingItem()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("a"),
+            Reference<string>.Resolved("b")
+        });
+        Assert.True(list.Remove("a"));
+        Assert.Single(list.AsEnumerable());
+        Assert.False(list.Remove("z"));
+    }
+
+    [Fact]
+    public void IsReadOnly_ReturnsFalse()
+    {
+        var list = new ReferenceList<string>();
+        Assert.False(list.IsReadOnly);
+    }
+
+    [Fact]
+    public void Indexer_GetSet_Works()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("old") });
+        Assert.Equal("old", list[0]);
+        list[0] = "new";
+        Assert.Equal("new", list[0]);
+    }
+
+    [Fact]
+    public void Add_Reference_AddsToList()
+    {
+        var list = new ReferenceList<string>();
+        list.Add(Reference<string>.Resolved("added"));
+        Assert.Single(list.AsEnumerable());
+        Assert.Equal("added", list[0]);
+    }
+
+    [Fact]
+    public void Add_Instance_AddsResolvedReference()
+    {
+        var list = new ReferenceList<string>();
+        list.Add("direct");
+        Assert.Single(list.AsEnumerable());
+        Assert.Equal("direct", list[0]);
+    }
+
+    [Fact]
+    public void Insert_InsertsAtIndex()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("a") });
+        list.Insert(0, "b");
+        Assert.Equal("b", list[0]);
+        Assert.Equal("a", list[1]);
+    }
+
+    [Fact]
+    public void RemoveAt_RemovesAtIndex()
+    {
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("a"),
+            Reference<string>.Resolved("b")
+        });
+        list.RemoveAt(0);
+        Assert.Single(list.AsEnumerable().ToList());
+        Assert.Equal("b", list[0]);
+    }
+
+    [Fact]
+    public void Clear_RemovesAll()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("a") });
+        list.Clear();
+        Assert.Empty(list.AsEnumerable());
+    }
+
+    [Fact]
+    public void GetEnumerator_Enumerates()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("a") });
+        var items = new List<string>();
+        foreach (var item in list) items.Add(item);
+        Assert.Single(items);
+    }
+
+    [Fact]
+    public void Contains_Reference_Works()
+    {
+        var r = Reference<string>.Resolved("a");
+        var list = new ReferenceList<string>(new[] { r });
+        Assert.True(list.Contains(r));
+        var other = Reference<string>.Resolved("a");
+        // different Reference instance — Contains uses reference equality
+        Assert.False(list.Contains(other));
+    }
+
+    [Fact]
+    public void Queryable_Returns()
+    {
+        var list = new ReferenceList<string>(new[] { Reference<string>.Resolved("a") });
+        var q = list.Queryable;
+        Assert.Single(q);
+    }
+
+    // ── Mutation-killing tests ───────────────────────────────────────────────
+
+    [Fact]
+    public void All_ReturnsTrueForEmptyList()
+    {
+        // Kills L479 logical mutation: empty list → All returns true (vacuous truth)
+        var list = new ReferenceList<string>();
+        Assert.True(list.All(_ => false));
+    }
+
+    [Fact]
+    public void All_ReturnsFalseWhenUnresolved()
+    {
+        // Kills L479 mutation: unresolved ref should cause All to return false
+        var list = new ReferenceList<string>(new[] { Reference<string>.Unresolved() });
+        Assert.False(list.All(_ => true));
+    }
+
+    [Fact]
+    public void Where_SkipsUnresolved()
+    {
+        // Kills L493 logical mutation: unresolved refs must not appear in Where output
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("a"),
+            Reference<string>.Unresolved()
+        });
+        var result = list.Where(_ => true).ToList();
+        Assert.Single(result);
+        Assert.Equal("a", result[0]);
+    }
+
+    [Fact]
+    public void Select_SkipsUnresolved()
+    {
+        // Kills L507 logical mutation: unresolved refs must not appear in Select output
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("abc"),
+            Reference<string>.Unresolved()
+        });
+        var result = list.Select(s => s.Length).ToList();
+        Assert.Single(result);
+        Assert.Equal(3, result[0]);
+    }
+
+    [Fact]
+    public void IndexOf_ThrowsWithCorrectMessage()
+    {
+        // Kills L520 string mutation: error message must contain "Item not found"
+        var list = new ReferenceList<string>();
+        var ex = Assert.Throws<InvalidOperationException>(() => list.IndexOf("x"));
+        Assert.Equal("Item not found", ex.Message);
+    }
+
+    [Fact]
+    public void CopyTo_SkipsUnresolved()
+    {
+        // Kills L555 logical mutation: unresolved refs must not be copied
+        var list = new ReferenceList<string>(new[]
+        {
+            Reference<string>.Resolved("a"),
+            Reference<string>.Unresolved(),
+            Reference<string>.Resolved("b")
+        });
+        var arr = new string[2];
+        list.CopyTo(arr, 0);
+        Assert.Equal("a", arr[0]);
+        Assert.Equal("b", arr[1]);
+    }
+}
+
+// ── BuilderList tests ────────────────────────────────────────────────────────
+
+public class BuilderListTests
+{
+    [Fact]
+    public void AsReferenceList_ReturnsReferences()
+    {
+        var list = new BuilderList<string, StringTestBuilder>();
+        list.New(b => b.Value = "hello");
+        var refs = list.AsReferenceList();
+        #pragma warning disable xUnit2013
+        Assert.Equal(1, refs.Count); // reference exists but not yet resolved — can't use Assert.Single (unresolved)
+        #pragma warning restore xUnit2013
+    }
+
+    [Fact]
+    public void New_AddsAndConfiguresBuilder()
+    {
+        var list = new BuilderList<string, StringTestBuilder>();
+        var same = list.New(b => b.Value = "test");
+        Assert.Same(list, same);
+        Assert.Single(list);
+        Assert.Equal("test", list[0].Value);
+    }
+
+    public class StringTestBuilder : AbstractBuilder<string>, IBuilder<string>
+    {
+        public string? Value { get; set; }
+
+        protected override Task<Result<Reference<string>>> Instantiate(
+            Reference<string> reference, VisitedObjects visitedObjects,
+            CancellationToken cancellationToken = default)
+        {
+            reference.Resolve(Value ?? "");
+            return Task.FromResult(Result<Reference<string>>.Success(reference));
+        }
+
+        protected override Task<Result<ValidationResult>> ValidateAsync(
+            CancellationToken cancellationToken = default)
+            => Task.FromResult(Result<ValidationResult>.Success(new ValidationResult()));
+
+        protected override Exception BuildException(Result<ValidationResult> vr)
+            => new InvalidOperationException();
+    }
+}
+
+// ── DictionaryBuilder tests ──────────────────────────────────────────────────
+
+public class DictionaryBuilderTests
+{
+    // ── 2-param DictionaryBuilder<TKey, TValue> ──────────────────────────────
+
+    [Fact]
+    public void Build_ReturnsEmptyDictionary_WhenNoEntriesAdded()
+    {
+        var db = new DictionaryBuilder<string, int>();
+        var dict = db.Build();
+        Assert.NotNull(dict);
+        Assert.Empty(dict);
+    }
+
+    [Fact]
+    public void With_AddsSingleEntry()
+    {
+        var dict = new DictionaryBuilder<string, int>()
+            .With("a", 1)
+            .Build();
+
+        Assert.Single(dict);
+        Assert.Equal(1, dict["a"]);
+    }
+
+    [Fact]
+    public void With_AddsMultipleEntries()
+    {
+        var dict = new DictionaryBuilder<string, string>()
+            .With("x", "hello")
+            .With("y", "world")
+            .Build();
+
+        Assert.Equal(2, dict.Count);
+        Assert.Equal("hello", dict["x"]);
+        Assert.Equal("world", dict["y"]);
+    }
+
+    [Fact]
+    public void With_OverwritesSameKey()
+    {
+        var dict = new DictionaryBuilder<string, int>()
+            .With("a", 1)
+            .With("a", 2)
+            .Build();
+
+        Assert.Single(dict);
+        Assert.Equal(2, dict["a"]);
+    }
+
+    [Fact]
+    public void With_ReturnsSameInstance_ForFluency()
+    {
+        var db = new DictionaryBuilder<int, string>();
+        var same = db.With(1, "one");
+        Assert.Same(db, same);
+    }
+
+    // ── 3-param DictionaryBuilder<TKey, TValue, TValueBuilder> ───────────────
+
+    [Fact]
+    public async Task ThreeParam_WithDirectValue_AddsToDictionary()
+    {
+        var db = new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>();
+        var item = new SimpleItem("direct");
+        db.With("k1", item);
+
+        var dict = await db.BuildAsync(new VisitedObjects());
+        Assert.Single(dict);
+        Assert.Same(item, dict["k1"]);
+    }
+
+    [Fact]
+    public async Task ThreeParam_WithFunc_AddsBuilderToDictionary()
+    {
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .With("k1", b => b.WithName("built"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(dict);
+        Assert.Equal("built", dict["k1"].Name);
+    }
+
+    [Fact]
+    public async Task ThreeParam_WithBuilder_AddsBuilderToDictionary()
+    {
+        var builder = new SimpleItemBuilder().WithName("pre-configured");
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .With("k1", builder)
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(dict);
+        Assert.Equal("pre-configured", dict["k1"].Name);
+    }
+
+    [Fact]
+    public async Task ThreeParam_DirectValueOverridesBuilder()
+    {
+        var item = new SimpleItem("direct");
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .With("k1", b => b.WithName("from-builder"))
+            .With("k1", item) // direct value overrides builder
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(dict);
+        Assert.Same(item, dict["k1"]);
+    }
+
+    [Fact]
+    public async Task ThreeParam_BuilderOverridesDirectValue()
+    {
+        var item = new SimpleItem("direct");
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .With("k1", item)
+            .With("k1", b => b.WithName("from-builder")) // builder overrides direct
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(dict);
+        Assert.Equal("from-builder", dict["k1"].Name);
+    }
+
+    [Fact]
+    public async Task ThreeParam_MixedDirectAndBuilderEntries()
+    {
+        var item = new SimpleItem("direct");
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .With("a", item)
+            .With("b", b => b.WithName("built"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Equal(2, dict.Count);
+        Assert.Same(item, dict["a"]);
+        Assert.Equal("built", dict["b"].Name);
+    }
+
+    [Fact]
+    public async Task ThreeParam_BuildAsync_PassesVisitedObjects()
+    {
+        var visited = new VisitedObjects();
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .With("k1", b => b.WithName("test"))
+            .BuildAsync(visited);
+
+        Assert.Single(dict);
+        Assert.Equal("test", dict["k1"].Name);
+    }
+
+    [Fact]
+    public void ThreeParam_WithFunc_ReturnsFluently()
+    {
+        var db = new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>();
+        var same = db.With("k1", b => b.WithName("x"));
+        Assert.Same(db, same);
+    }
+
+    [Fact]
+    public void ThreeParam_WithBuilder_ReturnsFluently()
+    {
+        var db = new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>();
+        var same = db.With("k1", new SimpleItemBuilder());
+        Assert.Same(db, same);
+    }
+
+    [Fact]
+    public void ThreeParam_WithDirectValue_ReturnsFluently()
+    {
+        var db = new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>();
+        var same = db.With("k1", new SimpleItem("x"));
+        Assert.Same(db, same);
+    }
+
+    [Fact]
+    public async Task ThreeParam_EmptyBuilder_ReturnsEmptyDictionary()
+    {
+        var dict = await new DictionaryBuilder<string, SimpleItem, SimpleItemBuilder>()
+            .BuildAsync(new VisitedObjects());
+        Assert.NotNull(dict);
+        Assert.Empty(dict);
+    }
+
+    // ── Test helpers ─────────────────────────────────────────────────────────
+
+    public sealed class SimpleItem
+    {
+        public SimpleItem(string name) => Name = name;
+        public string Name { get; }
+    }
+
+    public sealed class SimpleItemBuilder : AbstractBuilder<SimpleItem>
+    {
+        private string? _name;
+
+        public SimpleItemBuilder WithName(string name) { _name = name; return this; }
+
+        protected override Task<Result<Reference<SimpleItem>>> Instantiate(
+            Reference<SimpleItem> reference, VisitedObjects visitedObjects,
+            CancellationToken cancellationToken = default)
+        {
+            reference.Resolve(new SimpleItem(_name ?? "default"));
+            return Task.FromResult(Result<Reference<SimpleItem>>.Success(reference));
+        }
+
+        protected override Task<Result<ValidationResult>> ValidateAsync(
+            CancellationToken cancellationToken = default)
+            => Task.FromResult(Result<ValidationResult>.Success(new ValidationResult()));
+
+        protected override Exception BuildException(Result<ValidationResult> vr)
+            => new InvalidOperationException(vr.ValueOrThrow().ToDataAnnotationsValidationResult().ErrorMessage);
+    }
+}
+
+// ── ListBuilder tests ───────────────────────────────────────────────────────
+
+public class ListBuilderTests
+{
+    [Fact]
+    public async Task BuildAsync_ReturnsEmptyList_WhenEmpty()
+    {
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .BuildAsync(new VisitedObjects());
+        Assert.NotNull(list);
+        Assert.Empty(list);
+    }
+
+    [Fact]
+    public async Task Add_DirectValue_AppearsInBuildOutput()
+    {
+        var item = new SimpleItem("direct");
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(item)
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(list);
+        Assert.Same(item, list[0]);
+    }
+
+    [Fact]
+    public async Task Add_WithAction_ConfiguresBuilderAndBuilds()
+    {
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(b => b.WithName("built"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(list);
+        Assert.Equal("built", list[0].Name);
+    }
+
+    [Fact]
+    public async Task Add_WithBuilder_AddsBuilderForDeferredBuild()
+    {
+        var builder = new SimpleItemBuilder().WithName("pre-configured");
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(builder)
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Single(list);
+        Assert.Equal("pre-configured", list[0].Name);
+    }
+
+    [Fact]
+    public async Task BuildAsync_MergesDirectAndBuiltValues()
+    {
+        var item = new SimpleItem("direct");
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(item)
+            .Add(b => b.WithName("built"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Equal(2, list.Count);
+        Assert.Same(item, list[0]);         // direct values first
+        Assert.Equal("built", list[1].Name); // built values after
+    }
+
+    [Fact]
+    public async Task BuildAsync_PassesVisitedObjects()
+    {
+        var visited = new VisitedObjects();
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(b => b.WithName("test"))
+            .BuildAsync(visited);
+
+        Assert.Single(list);
+        Assert.Equal("test", list[0].Name);
+    }
+
+    [Fact]
+    public void Add_DirectValue_ReturnsFluently()
+    {
+        var lb = new ListBuilder<SimpleItem, SimpleItemBuilder>();
+        var same = lb.Add(new SimpleItem("x"));
+        Assert.Same(lb, same);
+    }
+
+    [Fact]
+    public void Add_WithAction_ReturnsFluently()
+    {
+        var lb = new ListBuilder<SimpleItem, SimpleItemBuilder>();
+        var same = lb.Add(b => b.WithName("x"));
+        Assert.Same(lb, same);
+    }
+
+    [Fact]
+    public void Add_WithBuilder_ReturnsFluently()
+    {
+        var lb = new ListBuilder<SimpleItem, SimpleItemBuilder>();
+        var same = lb.Add(new SimpleItemBuilder());
+        Assert.Same(lb, same);
+    }
+
+    [Fact]
+    public async Task Add_MultipleItems_PreservesOrder()
+    {
+        var list = await new ListBuilder<SimpleItem, SimpleItemBuilder>()
+            .Add(new SimpleItem("a"))
+            .Add(new SimpleItem("b"))
+            .Add(b => b.WithName("c"))
+            .Add(b => b.WithName("d"))
+            .BuildAsync(new VisitedObjects());
+
+        Assert.Equal(4, list.Count);
+        Assert.Equal("a", list[0].Name);
+        Assert.Equal("b", list[1].Name);
+        Assert.Equal("c", list[2].Name);
+        Assert.Equal("d", list[3].Name);
+    }
+
+    // ── Test helpers (ListBuilder) ──────────────────────────────────────────
+
+    public sealed class SimpleItem
+    {
+        public SimpleItem(string name) => Name = name;
+        public string Name { get; }
+    }
+
+    public sealed class SimpleItemBuilder : AbstractBuilder<SimpleItem>
+    {
+        private string? _name;
+
+        public SimpleItemBuilder WithName(string name) { _name = name; return this; }
+
+        protected override Task<Result<Reference<SimpleItem>>> Instantiate(
+            Reference<SimpleItem> reference, VisitedObjects visitedObjects,
+            CancellationToken cancellationToken = default)
+        {
+            reference.Resolve(new SimpleItem(_name ?? "default"));
+            return Task.FromResult(Result<Reference<SimpleItem>>.Success(reference));
+        }
+
+        protected override Task<Result<ValidationResult>> ValidateAsync(
+            CancellationToken cancellationToken = default)
+            => Task.FromResult(Result<ValidationResult>.Success(new ValidationResult()));
+
+        protected override Exception BuildException(Result<ValidationResult> vr)
+            => new InvalidOperationException(vr.ValueOrThrow().ToDataAnnotationsValidationResult().ErrorMessage);
+    }
+}
+
+// ── Source-generated builder integration tests ──────────────────────────────
+
+// Tier 1 target: List<string> and Dictionary<string, int> (no nested builders)
+[Builder]
+public partial class ProductTarget
+{
+    public List<string>? Tags { get; set; }
+    public Dictionary<string, int>? Scores { get; set; }
+}
+
+// Tier 2 targets: List<T> where T has [Builder]
+[Builder]
+public partial class OrderItemTarget
+{
+    public string? Sku { get; set; }
+    public int? Quantity { get; set; }
+}
+
+[Builder]
+public partial class OrderTarget
+{
+    public List<OrderItemTarget>? Items { get; set; }
+}
+
+public class GeneratedBuilderTier1Tests
+{
+    [Fact]
+    public async Task WithTag_AccumulatesStringItems()
+    {
+        var result = await new ProductTargetBuilder()
+            .WithTag("electronics")
+            .WithTag("sale")
+            .BuildAsync();
+
+        var product = result.ValueOrThrow().Resolved();
+        Assert.NotNull(product.Tags);
+        Assert.Equal(2, product.Tags!.Count);
+        Assert.Equal("electronics", product.Tags[0]);
+        Assert.Equal("sale", product.Tags[1]);
+    }
+
+    [Fact]
+    public async Task WithScore_AccumulatesDictEntries()
+    {
+        var result = await new ProductTargetBuilder()
+            .WithScore("math", 95)
+            .WithScore("english", 88)
+            .BuildAsync();
+
+        var product = result.ValueOrThrow().Resolved();
+        Assert.NotNull(product.Scores);
+        Assert.Equal(2, product.Scores!.Count);
+        Assert.Equal(95, product.Scores["math"]);
+        Assert.Equal(88, product.Scores["english"]);
+    }
+
+    [Fact]
+    public async Task WithTags_DirectValue_StillWorks()
+    {
+        var tags = new List<string> { "a", "b" };
+        var result = await new ProductTargetBuilder()
+            .WithTags(tags)
+            .BuildAsync();
+
+        var product = result.ValueOrThrow().Resolved();
+        Assert.Same(tags, product.Tags);
+    }
+}
+
+public class GeneratedBuilderTier2Tests
+{
+    [Fact]
+    public async Task WithItem_BuilderAction_AccumulatesItems()
+    {
+        var result = await new OrderTargetBuilder()
+            .WithItem(b => b.WithSku("ABC").WithQuantity(2))
+            .WithItem(b => b.WithSku("DEF").WithQuantity(1))
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.NotNull(order.Items);
+        Assert.Equal(2, order.Items!.Count);
+        Assert.Equal("ABC", order.Items[0].Sku);
+        Assert.Equal(2, order.Items[0].Quantity);
+        Assert.Equal("DEF", order.Items[1].Sku);
+        Assert.Equal(1, order.Items[1].Quantity);
+    }
+
+    [Fact]
+    public async Task WithItem_DirectValue_AccumulatesItems()
+    {
+        var item = new OrderItemTarget { Sku = "PRE", Quantity = 5 };
+        var result = await new OrderTargetBuilder()
+            .WithItem(item)
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.NotNull(order.Items);
+        Assert.Single(order.Items!);
+        Assert.Equal("PRE", order.Items[0].Sku);
+    }
+
+    [Fact]
+    public async Task WithItems_BulkBuilder_ReplacesItems()
+    {
+        var result = await new OrderTargetBuilder()
+            .WithItems(items => items
+                .Add(b => b.WithSku("X").WithQuantity(10))
+                .Add(new OrderItemTarget { Sku = "Y", Quantity = 20 }))
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.NotNull(order.Items);
+        Assert.Equal(2, order.Items!.Count);
+        Assert.Equal("Y", order.Items[0].Sku);  // direct values first
+        Assert.Equal("X", order.Items[1].Sku);  // built values after
+    }
+
+    [Fact]
+    public async Task WithItems_DirectList_StillWorks()
+    {
+        var items = new List<OrderItemTarget>
+        {
+            new() { Sku = "A", Quantity = 1 }
+        };
+        var result = await new OrderTargetBuilder()
+            .WithItems(items)
+            .BuildAsync();
+
+        var order = result.ValueOrThrow().Resolved();
+        Assert.Same(items, order.Items);
     }
 }

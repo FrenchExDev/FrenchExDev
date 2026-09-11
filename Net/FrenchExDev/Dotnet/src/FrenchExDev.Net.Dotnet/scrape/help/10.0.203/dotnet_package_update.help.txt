@@ -1,0 +1,16 @@
+Description:
+  Update referenced packages in a project or solution.
+
+Usage:
+  dotnet package update [<packages>...] [options]
+
+Arguments:
+  <packages>  Package reference in the form of a package identifier like 'Newtonsoft.Json' or package identifier and version separated by '@' like 'Newtonsoft.Json@13.0.3'.
+
+Options:
+  --project <project>                                                      Path to a project or solution file, or a directory.
+  --vulnerable                                                             Upgrade packages with known vulnerabilities. [default: False]
+  --interactive                                                            Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  -v, --verbosity <d|detailed|diag|diagnostic|m|minimal|n|normal|q|quiet>  Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help                                                           Show command line help.
+

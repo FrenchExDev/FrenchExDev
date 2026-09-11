@@ -1,0 +1,17 @@
+
+  Mark a to-do item as done.                                                                                            
+         
+  USAGE  
+         
+    glab todo done [<id>] [--flags]  
+            
+  EXAMPLES  
+            
+    glab todo done 123               
+    glab todo done --all             
+         
+  FLAGS  
+         
+    --all      Mark all pending to-do items as done.
+    -h --help  Show help for this command.
+

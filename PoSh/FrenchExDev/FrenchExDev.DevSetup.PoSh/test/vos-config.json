@@ -1,0 +1,187 @@
+{
+    "format": {
+        "vagrant": "%04d",
+        "posh": "{0:d4}"
+    },
+    "vagrant": {
+        "prefix-with-dirbase": false,
+        "plugins": {
+            "vagrant-hostmanager": {
+                "enabled": true,
+                "config": {
+                    "enabled": true,
+                    "hostmanager.enabled": true,
+                    "hostmanager.manage_host": true,
+                    "hostmanager.manage_guest": true
+                }
+            },
+            "vagrant-vbguest": {
+                "enabled": false,
+                "config": {
+                    "enabled": false,
+                    "vbguest.auto_update": false,
+                    "vbguest.auto_reboot": false,
+                    "vbguest.installer_arguments": [
+                        "--no-x11"
+                    ]
+                }
+            },
+            "vagrant-env": {
+                "enabled": true
+            },
+            "vagrant-reload": {
+                "enabled": false
+            }
+        },
+        "vbox": {
+            "linked_clones": true,
+            "check_guest_additions ": true,
+            "manage": {
+                "cpuexecutioncap": 100,
+                "nicpromisc1": "allow-all",
+                "natdnshostresolver1": "on",
+                "natdnsproxy1": "on",
+                "ioapic": "on",
+                "hwvirtex": "on",
+                "hpet": "on",
+                "largepages": "on",
+                "vtxvpid": "on",
+                "vtxux": "on",
+                "pae": "on",
+                "chipset": "ich9",
+                "biosapic": "x2apic",
+                "vrde": "off",
+                "usb": "off",
+                "nested-hw-virt": "on",
+                "nestedpaging": "on",
+                "ostype": "Windows",
+                "vram": 128,
+                "accelerate3d": "on",
+                "graphicscontroller": "vboxsvga",
+                "clipboard": "bidirectional"
+            },
+            "setproperty": {
+                "hwvirtexclusive": "on"
+            },
+            "storagectl": [
+                ["--name", "SATA Controller", "--hostiocache", "on"]
+            ],
+            "storageattach": [
+                ["--storagectl", "SATA Controller", "--port", "0", "--nonrotational", "on"]
+            ]
+        }
+    },
+    "machine_types": {
+        "windows-host": {
+            "base": {
+                "instances": 1,
+                "ipv4_pattern": "10.100.2.#INSTANCE#",
+                "ipv4_start": 2,
+                "is_primary": true,
+                "box": "gusztavvargadr/windows-11-24h2-enterprise",
+                "box_version": "2402.0.2503",
+                "os_type": "Windows",
+                "enabled_3D": false,
+                "vram_mb": 128,
+                "ram_mb": 8192,
+                "vcpus": 6,
+                "gui": true,
+                "files": {},
+                "shared_folders": {
+                    "mkcert": {
+                        "enabled": true,
+                        "host_path": "C:/Users/serard/AppData/Local/mkcert",
+                        "guest_path": "/mkcert"
+                    }
+                },
+                "provisioning": {
+                    "winget.upgrade-app": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "winget.source-update": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "winget.remove-apps": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "winget.upgrade-all": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "winget.install-autohotkey": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "winget.install-apps": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "set.performances-mode": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "set.keyboard-layout": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    },
+                    "set.mkcert": {
+                        "enabled": true,
+                        "version": "1",
+                        "ext": "ps1",
+                        "reload:before": false,
+                        "reload:after": false,
+                        "privileged": true
+                    }
+                },
+                "provider": "vbox",
+                "commands": {
+                    "get-ip": "$(Get-NetIPConfiguration -InterfaceAlias '##INTERFACE-ALIAS##').IPv4Address.IPAddress"
+                },
+                "variables": {
+                    "interface-alias": "Ethernet 3"
+                }
+            }
+        }
+    },
+    "machines": {
+        "main": {
+            "is_enabled": true,
+            "machine_type_name": "windows-host"
+        }
+    }
+}

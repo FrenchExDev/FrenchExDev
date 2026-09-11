@@ -1,0 +1,4 @@
+
+Usage:	docker logout [SERVER]
+
+Log out from a Docker registry

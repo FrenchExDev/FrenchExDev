@@ -1,0 +1,17 @@
+
+  Deletes a single GPG key specified by the ID.                                                                         
+         
+  USAGE  
+         
+    glab gpg-key delete <key-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # Delete GPG key with ID as argument    
+    glab gpg-key delete 7750633             
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

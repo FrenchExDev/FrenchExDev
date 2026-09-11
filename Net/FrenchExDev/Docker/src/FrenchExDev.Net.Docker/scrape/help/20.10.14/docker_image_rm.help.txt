@@ -1,0 +1,11 @@
+
+Usage:  docker image rm [OPTIONS] IMAGE [IMAGE...]
+
+Remove one or more images
+
+Aliases:
+  rm, rmi, remove
+
+Options:
+  -f, --force      Force removal of the image
+      --no-prune   Do not delete untagged parents

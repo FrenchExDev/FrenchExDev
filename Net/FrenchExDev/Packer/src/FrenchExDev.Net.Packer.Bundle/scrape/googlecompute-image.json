@@ -1,0 +1,54 @@
+{
+  "pluginKind": "datasource",
+  "typeName": "googlecompute-image",
+  "repo": "hashicorp/packer-plugin-googlecompute",
+  "sourcePath": "datasource/image/data.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "project_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "filters",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "most_recent",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "universe_domain",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "custom_endpoints",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "creation_date",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "labels",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

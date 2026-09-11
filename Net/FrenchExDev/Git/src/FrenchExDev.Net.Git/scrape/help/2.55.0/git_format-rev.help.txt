@@ -1,0 +1,11 @@
+usage: (EXPERIMENTAL!) git format-rev --stdin-mode=<mode> --format=<pretty> [--[no-]notes=<ref>] [-z] [--[no-]null-output] [--[no-]null-input]
+
+    --[no-]format <format>
+                          pretty format to use
+    --[no-]stdin-mode <stdin-mode>
+                          how revs are processed
+    --[no-]notes <notes>  display notes for pretty format
+    -z, --null            Use NUL for input and output termination
+    --[no-]null-input     Use NUL for input termination
+    --[no-]null-output    Use NUL for output termination
+

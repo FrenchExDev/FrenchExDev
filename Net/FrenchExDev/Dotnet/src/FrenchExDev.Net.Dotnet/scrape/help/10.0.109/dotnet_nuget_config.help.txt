@@ -1,0 +1,15 @@
+Description:
+  NuGet configuration CLI
+
+Usage:
+  NuGet.CommandLine.XPlat config [command] [options]
+
+Options:
+  -?, -h, --help  Show help and usage information
+
+Commands:
+  paths                            Lists the paths to all NuGet configuration files that will be applied when invoking NuGet command in a specific directory
+  get <all-or-config-key>          Gets the NuGet configuration settings that will be applied.
+  set <config-key> <config-value>  Set the value of a specified NuGet configuration setting.
+  unset <config-key>               Removes the key-value pair from a specified NuGet configuration setting.
+

@@ -1,0 +1,27 @@
+Usage: vagrant cloud publish [options] organization/box-name version provider-name [provider-file]
+
+Create and release a new Vagrant Box on Vagrant Cloud
+
+Options:
+
+        --box-version VERSION        Version of box to create
+        --url URL                    Remote URL to download this provider (cannot be used with provider-file)
+    -d, --description DESCRIPTION    Full description of box
+        --version-description DESCRIPTION
+                                     Description of the version to create
+    -f, --[no-]force                 Disables confirmation to create or update box
+    -p, --[no-]private               Makes box private
+    -r, --[no-]release               Releases box
+    -s DESCRIPTION,                  Short description of the box
+        --short-description
+    -c, --checksum CHECKSUM_VALUE    Checksum of the box for this provider. --checksum-type option is required.
+    -C, --checksum-type TYPE         Type of checksum used (md5, sha1, sha256, sha384, sha512). --checksum option is required.
+        --[no-]direct-upload         Upload asset directly to backend storage
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

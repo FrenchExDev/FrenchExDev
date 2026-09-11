@@ -1,0 +1,19 @@
+Usage: vagrant box remove <name>
+
+Options:
+
+    -f, --force                      Remove without confirmation.
+    -a, --architecture ARCH          The specific architecture for the box to remove
+        --provider PROVIDER          The specific provider type for the box to remove
+        --box-version VERSION        The specific version of the box to remove
+        --all                        Remove all available versions of the box
+        --all-providers              Remove all providers within a version of the box
+        --all-architectures          Remove all architectures within a provider a version of the box
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

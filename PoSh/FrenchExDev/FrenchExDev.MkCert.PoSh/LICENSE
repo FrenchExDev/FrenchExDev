@@ -1,0 +1,60 @@
+# credit: https://github.com/0xBEN/PSProxmox/blob/master/PSProxmox.psm1
+
+if($IsLinux) {$env:USERPROFILE = $env:HOME}
+$directorySeparator = [System.IO.Path]::DirectorySeparatorChar
+$moduleName = $PSScriptRoot.Split($directorySeparator)[-1]
+$acmeName = $PSScriptRoot.Split($directorySeparator)[-2]
+$compilationPath = "$env:USERPROFILE/.posh.posh.compilations/$acmeName/$moduleName"
+
+if (!(test-path "$compilationPath/compiled.json")) {
+    $publicFunctions = Get-ChildItem -Path "$PSScriptRoot/src/Public" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
+    $privateFunctions = Get-ChildItem -Path "$PSScriptRoot/src/Private" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
+    $classes = Get-ChildItem -Path "$PSScriptRoot/src/Classes" -Recurse -Filter "*.ps1"  | Select-Object -ExpandProperty FullName
+    $completers = Get-ChildItem -Path "$PSScriptRoot/src/Completers" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
+
+    New-Item $compilationPath -ItemType Directory
+
+    $moduleData = [pscustomobject] @{
+        public     = $publicFunctions
+        private    = $privateFunctions
+        classes    = $classes
+        completers = $completers
+    }
+
+    $moduleData | ConvertTo-Json | Out-File $compilationPath/compiled.json -Encoding ascii
+}
+
+$moduleData = if ($null -eq $moduleData) { Get-Content "$compilationPath/compiled.json" | ConvertFrom-Json } else { $moduleData }
+
+$publicFunctions = $moduleData.public
+$privateFunctions = $moduleData.private
+$classes = $moduleData.classes
+$completers = $moduleData.completers
+
+$publicFunctions | ForEach-Object { 
+    if (![string]::IsNullOrEmpty($_)) { 
+        . $_ 
+    }
+}
+
+$privateFunctions | ForEach-Object { 
+    if (![string]::IsNullOrEmpty($_)) {
+        . $_ 
+    }
+}
+
+$classes | ForEach-Object { 
+    if (![string]::IsNullOrEmpty($_)) {
+        . $_
+    }
+}
+
+$completers | ForEach-Object { 
+    if (![string]::IsNullOrEmpty($_)) {
+        . $_
+    }
+}
+
+$publicFunctions | ForEach-Object {
+    Export-ModuleMember -Function $($(Split-Path $_ -Leaf).Replace('.ps1', '')) -ErrorAction Stop
+}

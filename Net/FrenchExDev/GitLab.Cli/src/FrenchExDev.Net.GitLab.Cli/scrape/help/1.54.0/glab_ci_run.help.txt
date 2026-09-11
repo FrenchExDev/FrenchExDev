@@ -1,0 +1,33 @@
+Create or run a new CI/CD pipeline.
+
+USAGE
+  glab ci run [flags]
+
+ALIASES
+  create
+
+FLAGS
+  -b, --branch string            Create pipeline on branch/ref <string>.
+      --variables strings        Pass variables to pipeline in format <key>:<value>.
+      --variables-env strings    Pass variables to pipeline in format <key>:<value>.
+      --variables-file strings   Pass file contents as a file variable to pipeline in format <key>:<filename>.
+  -f, --variables-from string    JSON file containing variables for pipeline execution.
+  -w, --web                      Open pipeline in a browser. Uses default browser, or browser specified in BROWSER environment variable.
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  glab ci run glab ci run --variables \"key1:value,with,comma\" glab ci run -b    
+    main                                                                            
+    glab ci run -b main --variables-env key1:val1 glab ci run -b main --variables-  
+    env                                                                             
+    key1:val1,key2:val2 glab ci run -b main --variables-env key1:val1 --variables-  
+    env                                                                             
+    key2:val2 glab ci run -b main --variables-file MYKEY:file1 --variables          
+    KEY2:some_value
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

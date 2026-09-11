@@ -1,0 +1,16 @@
+Publishes resources in the project.                                              
+                                                                                   
+  Currently only supports publishing CI/CD components to the catalog.
+
+USAGE
+  glab repo publish <command> [flags]
+
+CORE COMMANDS
+  catalog:    [EXPERIMENTAL] Publishes CI/CD components to the catalog.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

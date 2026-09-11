@@ -1,0 +1,9 @@
+{
+  "binaryName": "vagrant",
+  "root": {
+    "name": "vagrant",
+    "options": [],
+    "arguments": [],
+    "subCommands": []
+  }
+}

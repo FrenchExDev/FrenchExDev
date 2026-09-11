@@ -1,0 +1,11 @@
+
+  Delete an alias.                                                                                                      
+         
+  USAGE  
+         
+    glab alias delete <alias name> [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+

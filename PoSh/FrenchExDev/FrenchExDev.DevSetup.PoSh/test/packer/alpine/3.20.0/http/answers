@@ -1,0 +1,19 @@
+KEYMAPOPTS="us us"
+HOSTNAMEOPTS=alpine
+DEVDOPTS=mdev
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+auto eth0
+iface eth0 inet dhcp
+  hostname alpine
+  domain local
+"
+TIMEZONEOPTS="UTC"
+PROXYOPTS=none
+APKREPOSOPTS="-1"
+SSHDOPTS="-c openssh"
+NTPOPTS="-c openntpd"
+DISKOPTS="-m sys /dev/sda"
+LBUOPTS=none
+APKCACHEOPTS=none
+export ERASE_DISKS=/dev/sda

@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Dotnet/FrenchExDev.Net.Dotnet.csproj" />
+    <Project Path="src/FrenchExDev.Net.Dotnet.Design/FrenchExDev.Net.Dotnet.Design.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Dotnet.Tests/FrenchExDev.Net.Dotnet.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Dotnet.Design.Tests/FrenchExDev.Net.Dotnet.Design.Tests.csproj" />
+  </Folder>
+  <Project Path="../BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Design.Lib/FrenchExDev.Net.BinaryWrapper.Design.Lib.csproj" />
+  <Project Path="../BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Design/FrenchExDev.Net.BinaryWrapper.Design.csproj" />
+  <Project Path="../BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper.Testing/FrenchExDev.Net.BinaryWrapper.Testing.csproj" />
+  <Project Path="../BinaryWrapper/src/FrenchExDev.Net.BinaryWrapper/FrenchExDev.Net.BinaryWrapper.csproj" />
+  <Project Path="../Guard/src/FrenchExDev.Net.Guard/FrenchExDev.Net.Guard.csproj" />
+  <Project Path="../Result/src/FrenchExDev.Net.Result/FrenchExDev.Net.Result.csproj" />
+  <Project Path="../Wrapper.Versioning/src/FrenchExDev.Net.Wrapper.Versioning/FrenchExDev.Net.Wrapper.Versioning.csproj" />
+</Solution>

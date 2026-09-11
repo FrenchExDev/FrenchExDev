@@ -1,0 +1,23 @@
+Description:
+  Install one or more workloads.
+
+Usage:
+  dotnet workload install <workloadId>... [options]
+
+Arguments:
+  <WORKLOAD_ID>  The NuGet package ID of the workload to install.
+
+Options:
+  --configfile <FILE>      The NuGet configuration file to use.
+  -s, --source <SOURCE>    The NuGet package source to use during the restore. To specify multiple sources, repeat the option.
+  --include-previews       Allow prerelease workload manifests.
+  --skip-manifest-update   Skip updating the workload manifests.
+  --temp-dir <temp-dir>    Specify a temporary directory for this command to download and extract NuGet packages (must be secure).
+  --disable-parallel       Prevent restoring multiple projects in parallel.
+  --ignore-failed-sources  Treat package source failures as warnings.
+  --no-http-cache          Do not cache packages and http requests.
+  --interactive            Allows the command to stop and wait for user input or action (for example to complete authentication).
+  -v, --verbosity <LEVEL>  Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  --version <version>      Update to the specified workload version.
+  -?, -h, --help           Show command line help.
+

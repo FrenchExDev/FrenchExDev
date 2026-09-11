@@ -1,0 +1,144 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "googlecompute-export",
+  "repo": "hashicorp/packer-plugin-googlecompute",
+  "sourcePath": "post-processor/googlecompute-export/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "access_token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "account_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "credentials_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "credentials_json",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "impersonate_service_account",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vault_gcp_oauth_engine",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "scopes",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_size",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "machine_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "source_image_family",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "network",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "paths",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "subnetwork",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "zone",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "service_account_email",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "omit_external_ip",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "universe_domain",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "custom_endpoints",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

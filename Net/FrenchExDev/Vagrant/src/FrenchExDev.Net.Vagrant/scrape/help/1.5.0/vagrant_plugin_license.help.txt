@@ -1,0 +1,2 @@
+Usage: vagrant plugin license <name> <license-file> [-h]
+    -h, --help                       Print this help

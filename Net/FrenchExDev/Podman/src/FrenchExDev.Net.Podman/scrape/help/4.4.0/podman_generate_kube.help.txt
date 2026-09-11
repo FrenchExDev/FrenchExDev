@@ -1,0 +1,21 @@
+Generate Kubernetes YAML from containers, pods or volumes.
+
+Description:
+  Command generates Kubernetes Pod, Service or PersistenVolumeClaim YAML (v1 specification) from Podman containers, pods or volumes.
+
+  Whether the input is for a container or pod, Podman will always generate the specification as a pod.
+
+Usage:
+  podman generate kube [options] {CONTAINER...|POD...|VOLUME...}
+
+Examples:
+  podman kube generate ctrID
+  podman kube generate podID
+  podman kube generate --service podID
+  podman kube generate volumeName
+  podman kube generate ctrID podID volumeName --service
+
+Options:
+  -f, --filename string   Write output to the specified path
+  -s, --service           Generate YAML for a Kubernetes service object
+

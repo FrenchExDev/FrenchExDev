@@ -869,8 +869,8 @@ public sealed class ClientClassEmitterTests
     public void Emit_HasPerCommandMethods()
     {
         var source = ClientClassEmitter.Emit(MakeDescriptor(), MakeTree());
-        source.ShouldContain("public PackerBuildCommand Build(global::System.Action<PackerBuildCommandBuilder> configure)");
-        source.ShouldContain("public PackerValidateCommand Validate(global::System.Action<PackerValidateCommandBuilder> configure)");
+        source.ShouldContain("public async global::System.Threading.Tasks.Task<PackerBuildCommand> BuildAsync(global::System.Action<PackerBuildCommandBuilder> configure)");
+        source.ShouldContain("public async global::System.Threading.Tasks.Task<PackerValidateCommand> ValidateAsync(global::System.Action<PackerValidateCommandBuilder> configure)");
     }
 
     [Fact]
@@ -941,11 +941,11 @@ public sealed class ClientClassEmitterTests
         source.ShouldContain("public partial class PackerClientPluginsGroup");
 
         // Root-level build method
-        source.ShouldContain("public PackerBuildCommand Build(");
+        source.ShouldContain("BuildAsync(");
 
         // Nested install/remove methods
-        source.ShouldContain("public PackerPluginsInstallCommand Install(");
-        source.ShouldContain("public PackerPluginsRemoveCommand Remove(");
+        source.ShouldContain("InstallAsync(");
+        source.ShouldContain("RemoveAsync(");
     }
 
     [Fact]
