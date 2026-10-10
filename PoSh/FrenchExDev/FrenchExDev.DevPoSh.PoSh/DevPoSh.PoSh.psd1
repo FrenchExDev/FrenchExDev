@@ -9,13 +9,13 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-RootModule = 'DevPosh.PoSh.psm1'
+RootModule = 'DevPoSh.PoSh.psm1'
 
 # Version number of this module.
 ModuleVersion = '0.0.1'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('Core')
 
 # ID used to uniquely identify this module
 GUID = '63b60327-3f1c-4ed3-b257-3d2b074e62e8'
@@ -33,7 +33,7 @@ Copyright = '(c) FrenchExDev. All rights reserved.'
 # Description = ''
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '7.4'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -75,7 +75,7 @@ FunctionsToExport = @(
     "New-DevPoSh",
     "New-DevPoShoShConfigureScriptContent",
     "New-DevPoshPowershellInstallCommand",
-    "Set-DevPoShPowershellProfile"
+    "Set-DevPoShPowershellProfile", "Export-DevPoShCompilation", "Import-DevPoShModule"
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

@@ -1,0 +1,141 @@
+[
+  {
+    "Name": "Git",
+    "VerifiedVersion": "Git 2.55.0.windows.3, commandes locales vérifiées le 2026-10-10",
+    "IdentityMarkdown": "Git gère les commits, lʼindex et les modifications du répertoire de travail. Ces pompes sont en lecture seule et ne font aucun fetch : ahead/behind décrit uniquement les références locales connues.\n\nStatus utilise `--porcelain=v2 --branch -z --untracked-files=all`. Les chemins sont groupés par état (Staged, Unstaged, Untracked, Conflict) et les renommages conservent les deux noms. `Path` réduit le périmètre ; une capture trop large exige un chemin plus précis. Les branches détachées ou sans commit restent identifiables.\n\nDiff utilise `--numstat -z`, sans pager, textconv ni diff externe. `Staged` sélectionne lʼindex, `Revision` une base explicite. Les fichiers binaires nʼont pas de compteurs de lignes. Pour inspecter du contenu, `Get-PumpGitChanges` exige un chemin et renvoie des lignes changées structurées, pas le patch brut. Log demande un élément supplémentaire pour détecter la troncature ; le total de lʼhistorique peut rester inconnu. Les sujets sont assainis ; auteurs et emails ne sont pas exportés.",
+    "Module": "Git-OPumper.psm1",
+    "Id": "git",
+    "Commands": [
+      {
+        "Example": "Get-PumpGitStatus -WorkingDirectory $repo -MaxItems 10",
+        "When": "Branche, ahead/behind et chemins groupés.",
+        "Route": {
+          "Tokens": [
+            "status"
+          ],
+          "Multiple": true,
+          "Options": {},
+          "Executable": "git",
+          "Positional": "Path",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Path"
+        ],
+        "Function": "Get-PumpGitStatus",
+        "Id": "git.status"
+      },
+      {
+        "Example": "Get-PumpGitDiff -WorkingDirectory $repo -Path 'src/'",
+        "When": "Statistiques des changements par chemin.",
+        "Route": {
+          "Tokens": [
+            "diff"
+          ],
+          "Multiple": true,
+          "Options": {
+            "--cached": {
+              "Multiple": false,
+              "Parameter": "Staged",
+              "Integer": false,
+              "Switch": true
+            },
+            "--staged": {
+              "Multiple": false,
+              "Parameter": "Staged",
+              "Integer": false,
+              "Switch": true
+            }
+          },
+          "Executable": "git",
+          "Positional": "Path",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Path",
+          "Staged",
+          "Revision"
+        ],
+        "Function": "Get-PumpGitDiff",
+        "Id": "git.diff"
+      },
+      {
+        "Example": "Get-PumpGitChanges -WorkingDirectory $repo -Path 'src/app.cs'",
+        "When": "Lignes changées dʼun chemin ciblé.",
+        "Route": {
+          "Tokens": [
+            "diff",
+            "--patch"
+          ],
+          "Multiple": false,
+          "Options": {
+            "--cached": {
+              "Multiple": false,
+              "Parameter": "Staged",
+              "Integer": false,
+              "Switch": true
+            },
+            "--staged": {
+              "Multiple": false,
+              "Parameter": "Staged",
+              "Integer": false,
+              "Switch": true
+            }
+          },
+          "Executable": "git",
+          "Positional": "Path",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Path",
+          "Staged"
+        ],
+        "Function": "Get-PumpGitChanges",
+        "Id": "git.changes"
+      },
+      {
+        "Example": "Get-PumpGitLog -WorkingDirectory $repo -MaxItems 5",
+        "When": "Historique limité, sujets et dates.",
+        "Route": {
+          "Tokens": [
+            "log"
+          ],
+          "Multiple": true,
+          "Options": {
+            "--max-count": {
+              "Multiple": false,
+              "Parameter": "MaxItems",
+              "Integer": true,
+              "Switch": false
+            },
+            "-n": {
+              "Multiple": false,
+              "Parameter": "MaxItems",
+              "Integer": true,
+              "Switch": false
+            }
+          },
+          "Executable": "git",
+          "Positional": "Path",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Path",
+          "Revision"
+        ],
+        "Function": "Get-PumpGitLog",
+        "Id": "git.log"
+      }
+    ],
+    "Purpose": "État, changements et historique dʼun dépôt",
+    "Documentation": [
+      "https://git-scm.com/docs/git-status",
+      "https://git-scm.com/docs/git-diff",
+      "https://git-scm.com/docs/git-log"
+    ]
+  }
+]

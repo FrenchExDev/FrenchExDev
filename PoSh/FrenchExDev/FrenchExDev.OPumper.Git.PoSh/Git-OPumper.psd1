@@ -1,0 +1,14 @@
+@{
+    RootModule='Git-OPumper.psm1'
+    ModuleVersion='1.0.0'
+    GUID='289aba13-a140-4a80-8acf-f2153842b7b4'
+    Author='FrenchExDev'
+    PowerShellVersion='7.4'
+    CompatiblePSEditions=@('Core')
+    RequiredModules=@('OutputPump.PoSh')
+    FunctionsToExport=@('Get-PumpGitStatus','Get-PumpGitDiff','Get-PumpGitChanges','Get-PumpGitLog')
+    CmdletsToExport=@()
+    VariablesToExport=@()
+    AliasesToExport=@()
+    PrivateData=@{OutputPumps=@{Version=1;ProviderId='git';RegistrationScript='src/Setup-OutputPumps.ps1'}}
+}

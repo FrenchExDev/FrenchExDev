@@ -1,0 +1,14 @@
+@{
+    RootModule='Pnpm-OPumper.psm1'
+    ModuleVersion='1.0.0'
+    GUID='8c4e1586-835e-49cb-bbac-2e132f9a0086'
+    Author='FrenchExDev'
+    PowerShellVersion='7.4'
+    CompatiblePSEditions=@('Core')
+    RequiredModules=@('OutputPump.PoSh')
+    FunctionsToExport=@('Get-PumpPnpmDependencies')
+    CmdletsToExport=@()
+    VariablesToExport=@()
+    AliasesToExport=@()
+    PrivateData=@{OutputPumps=@{Version=1;ProviderId='pnpm';RegistrationScript='src/Setup-OutputPumps.ps1'}}
+}

@@ -1,0 +1,462 @@
+{
+  "Get-PumpGitStatus": {
+    "Route": {
+      "Tokens": [
+        "status"
+      ],
+      "Multiple": true,
+      "Options": {},
+      "Executable": "git",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "git.status"
+  },
+  "Get-PumpGitDiff": {
+    "Route": {
+      "Tokens": [
+        "diff"
+      ],
+      "Multiple": true,
+      "Options": {
+        "--cached": {
+          "Multiple": false,
+          "Parameter": "Staged",
+          "Integer": false,
+          "Switch": true
+        },
+        "--staged": {
+          "Multiple": false,
+          "Parameter": "Staged",
+          "Integer": false,
+          "Switch": true
+        }
+      },
+      "Executable": "git",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "git.diff"
+  },
+  "Get-PumpGitChanges": {
+    "Route": {
+      "Tokens": [
+        "diff",
+        "--patch"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--cached": {
+          "Multiple": false,
+          "Parameter": "Staged",
+          "Integer": false,
+          "Switch": true
+        },
+        "--staged": {
+          "Multiple": false,
+          "Parameter": "Staged",
+          "Integer": false,
+          "Switch": true
+        }
+      },
+      "Executable": "git",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "git.changes"
+  },
+  "Get-PumpGitLog": {
+    "Route": {
+      "Tokens": [
+        "log"
+      ],
+      "Multiple": true,
+      "Options": {
+        "--max-count": {
+          "Multiple": false,
+          "Parameter": "MaxItems",
+          "Integer": true,
+          "Switch": false
+        },
+        "-n": {
+          "Multiple": false,
+          "Parameter": "MaxItems",
+          "Integer": true,
+          "Switch": false
+        }
+      },
+      "Executable": "git",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "git.log"
+  },
+  "Find-PumpText": {
+    "Route": {
+      "Tokens": [],
+      "Multiple": true,
+      "Options": {
+        "--ignore-case": {
+          "Multiple": false,
+          "Parameter": "IgnoreCase",
+          "Integer": false,
+          "Switch": true
+        },
+        "--fixed-strings": {
+          "Multiple": false,
+          "Parameter": "Literal",
+          "Integer": false,
+          "Switch": true
+        },
+        "-i": {
+          "Multiple": false,
+          "Parameter": "IgnoreCase",
+          "Integer": false,
+          "Switch": true
+        },
+        "-g": {
+          "Multiple": true,
+          "Parameter": "Glob",
+          "Integer": false,
+          "Switch": false
+        },
+        "-F": {
+          "Multiple": false,
+          "Parameter": "Literal",
+          "Integer": false,
+          "Switch": true
+        },
+        "--glob": {
+          "Multiple": true,
+          "Parameter": "Glob",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "rg",
+      "Positional": "Path",
+      "FirstPositional": "Pattern"
+    },
+    "Id": "ripgrep.search"
+  },
+  "Find-PumpFiles": {
+    "Route": {
+      "Tokens": [
+        "--files"
+      ],
+      "Multiple": true,
+      "Options": {
+        "-g": {
+          "Multiple": true,
+          "Parameter": "Glob",
+          "Integer": false,
+          "Switch": false
+        },
+        "--glob": {
+          "Multiple": true,
+          "Parameter": "Glob",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "rg",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "ripgrep.files"
+  },
+  "Get-PumpDirectory": {
+    "Route": {
+      "Tokens": [
+        "directory"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--recurse": {
+          "Multiple": false,
+          "Parameter": "Recurse",
+          "Integer": false,
+          "Switch": true
+        },
+        "--force": {
+          "Multiple": false,
+          "Parameter": "Force",
+          "Integer": false,
+          "Switch": true
+        },
+        "--filter": {
+          "Multiple": false,
+          "Parameter": "Filter",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "pwsh",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "powershell.directory"
+  },
+  "Get-PumpFile": {
+    "Route": {
+      "Tokens": [
+        "file"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--line-count": {
+          "Multiple": false,
+          "Parameter": "LineCount",
+          "Integer": true,
+          "Switch": false
+        },
+        "--filter": {
+          "Multiple": false,
+          "Parameter": "Filter",
+          "Integer": false,
+          "Switch": false
+        },
+        "--tail": {
+          "Multiple": false,
+          "Parameter": "Tail",
+          "Integer": false,
+          "Switch": true
+        },
+        "--start-line": {
+          "Multiple": false,
+          "Parameter": "StartLine",
+          "Integer": true,
+          "Switch": false
+        }
+      },
+      "Executable": "pwsh",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "powershell.file"
+  },
+  "Get-PumpLog": {
+    "Route": {
+      "Tokens": [
+        "log"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--filter": {
+          "Multiple": false,
+          "Parameter": "Filter",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "pwsh",
+      "Positional": "Path",
+      "FirstPositional": null
+    },
+    "Id": "powershell.log"
+  },
+  "Invoke-PumpDotnetBuild": {
+    "Route": {
+      "Tokens": [
+        "build"
+      ],
+      "Multiple": false,
+      "Options": {
+        "-f": {
+          "Multiple": false,
+          "Parameter": "Framework",
+          "Integer": false,
+          "Switch": false
+        },
+        "--configuration": {
+          "Multiple": false,
+          "Parameter": "Configuration",
+          "Integer": false,
+          "Switch": false
+        },
+        "-c": {
+          "Multiple": false,
+          "Parameter": "Configuration",
+          "Integer": false,
+          "Switch": false
+        },
+        "--no-restore": {
+          "Multiple": false,
+          "Parameter": "NoRestore",
+          "Integer": false,
+          "Switch": true
+        },
+        "--framework": {
+          "Multiple": false,
+          "Parameter": "Framework",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "dotnet",
+      "Positional": "Target",
+      "FirstPositional": null
+    },
+    "Id": "dotnet.build"
+  },
+  "Invoke-PumpDotnetTest": {
+    "Route": {
+      "Tokens": [
+        "test"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--filter": {
+          "Multiple": false,
+          "Parameter": "Filter",
+          "Integer": false,
+          "Switch": false
+        },
+        "--framework": {
+          "Multiple": false,
+          "Parameter": "Framework",
+          "Integer": false,
+          "Switch": false
+        },
+        "--configuration": {
+          "Multiple": false,
+          "Parameter": "Configuration",
+          "Integer": false,
+          "Switch": false
+        },
+        "--no-restore": {
+          "Multiple": false,
+          "Parameter": "NoRestore",
+          "Integer": false,
+          "Switch": true
+        },
+        "--no-build": {
+          "Multiple": false,
+          "Parameter": "NoBuild",
+          "Integer": false,
+          "Switch": true
+        },
+        "-f": {
+          "Multiple": false,
+          "Parameter": "Framework",
+          "Integer": false,
+          "Switch": false
+        },
+        "-c": {
+          "Multiple": false,
+          "Parameter": "Configuration",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "dotnet",
+      "Positional": "Target",
+      "FirstPositional": null
+    },
+    "Id": "dotnet.test"
+  },
+  "Get-PumpPodmanContainers": {
+    "Route": {
+      "Tokens": [
+        "ps"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--all": {
+          "Multiple": false,
+          "Parameter": "All",
+          "Integer": false,
+          "Switch": true
+        },
+        "-a": {
+          "Multiple": false,
+          "Parameter": "All",
+          "Integer": false,
+          "Switch": true
+        },
+        "--filter": {
+          "Multiple": false,
+          "Parameter": "Filter",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "podman",
+      "Positional": null,
+      "FirstPositional": null
+    },
+    "Id": "podman.containers"
+  },
+  "Get-PumpPodmanImages": {
+    "Route": {
+      "Tokens": [
+        "images"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--filter": {
+          "Multiple": false,
+          "Parameter": "Filter",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "podman",
+      "Positional": null,
+      "FirstPositional": null
+    },
+    "Id": "podman.images"
+  },
+  "Get-PumpPodmanLog": {
+    "Route": {
+      "Tokens": [
+        "logs"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--since": {
+          "Multiple": false,
+          "Parameter": "Since",
+          "Integer": false,
+          "Switch": false
+        }
+      },
+      "Executable": "podman",
+      "Positional": "Container",
+      "FirstPositional": null
+    },
+    "Id": "podman.log"
+  },
+  "Get-PumpPnpmDependencies": {
+    "Route": {
+      "Tokens": [
+        "list"
+      ],
+      "Multiple": false,
+      "Options": {
+        "--depth": {
+          "Multiple": false,
+          "Parameter": "Depth",
+          "Integer": true,
+          "Switch": false
+        },
+        "-r": {
+          "Multiple": false,
+          "Parameter": "Recursive",
+          "Integer": false,
+          "Switch": true
+        },
+        "--recursive": {
+          "Multiple": false,
+          "Parameter": "Recursive",
+          "Integer": false,
+          "Switch": true
+        }
+      },
+      "Executable": "pnpm",
+      "Positional": "Package",
+      "FirstPositional": null
+    },
+    "Id": "pnpm.dependencies"
+  }
+}

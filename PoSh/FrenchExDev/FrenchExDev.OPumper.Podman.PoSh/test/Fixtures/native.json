@@ -1,0 +1,31 @@
+{
+  "Get-PumpPodmanImages": {
+    "Module": "Podman",
+    "Option": "images",
+    "Native": "podman",
+    "Stdout": "[{\"Id\":\"image1\",\"Names\":[\"alpine:latest\"],\"Size\":42,\"Created\":0}]",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 1,
+    "Arguments": {}
+  },
+  "Get-PumpPodmanLog": {
+    "Module": "Podman",
+    "Option": "logs",
+    "Native": "podman",
+    "Stdout": "2026-10-10T12:00:00Z ready",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 1,
+    "Arguments": {
+      "Container": "demo"
+    }
+  },
+  "Get-PumpPodmanContainers": {
+    "Module": "Podman",
+    "Option": "ps",
+    "Native": "podman",
+    "Stdout": "[{\"Id\":\"container1\",\"Names\":[\"demo\"],\"Image\":\"alpine\",\"State\":\"running\"}]",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 1,
+    "Arguments": {}
+  }
+}

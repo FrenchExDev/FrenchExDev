@@ -9,11 +9,11 @@ function New-DevPoShoShConfigureScriptContent {
             'sudo pwsh -Login -Command ''New-Item -ItemType Directory -Force $(split-path $profile -parent)'''
             'pwsh -Login -Command '''
             '   Import-Module /posh/FrenchExDev/DevPoSh.PoSh/DevPoSh.PoSh.psd1'
-            '   Set-DevPoShPowershellProfile -MyPoShPath /posh -LinuxShellProfile $profile'
+            '   Set-DevPoShPowershellProfile -Path $profile'
             '   '''
             'sudo pwsh -Login -Command '''
             '   Import-Module /posh/FrenchExDev/DevPoSh.PoSh/DevPoSh.PoSh.psd1'
-            '   Set-DevPoShPowershellProfile -MyPoShPath /posh -LinuxShellProfile $profile'
+            '   Set-DevPoShPowershellProfile -Path $profile'
             '   '''
         )
     }  

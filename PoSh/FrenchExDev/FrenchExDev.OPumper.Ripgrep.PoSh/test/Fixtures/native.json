@@ -1,0 +1,22 @@
+{
+  "Find-PumpText": {
+    "Module": "Ripgrep",
+    "Option": "--json",
+    "Native": "rg",
+    "Stdout": "{\"type\":\"match\",\"data\":{\"path\":{\"text\":\"a.txt\"},\"line_number\":3,\"lines\":{\"text\":\"hello\"}}}",
+    "Expected": "Data.Items.0.Line",
+    "Value": 3,
+    "Arguments": {
+      "Pattern": "hello"
+    }
+  },
+  "Find-PumpFiles": {
+    "Module": "Ripgrep",
+    "Option": "--files",
+    "Native": "rg",
+    "Stdout": "a.txt\u0000",
+    "Expected": "Data.Items.0.Path",
+    "Value": "a.txt",
+    "Arguments": {}
+  }
+}

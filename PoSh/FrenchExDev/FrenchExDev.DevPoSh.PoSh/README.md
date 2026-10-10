@@ -1,208 +1,46 @@
-## Table of Contents
+# DevPoSh
 
-- [Introduction](#introduction)
-- [Philosophy](#philosophy)
-  - [`FrenchExDev.PoSh` Powershell Module anatomy](#frenchexdevposh-powershell-module-anatomy)
-    - [`.psm1` anatomy](#psm1-anatomy)
-- [Cloning](#cloning)
-  - [Via SSH](#via-ssh)
-  - [Via HTTPS](#via-https)
-- [Installing](#installing)
-- [Import Posh Modules](#import-posh-modules)
-  - [Force import](#force-import)
-  - [Force import specific Acme](#force-import-specific-acme)
-  - [Force import specific Acme's Module](#force-import-specific-acmes-module)
-- [Cleaning caches](#cleaning-caches)
-  - [Cleaning caches for Acme](#cleaning-caches-for-acme)
-  - [Cleaning caches for Acme' module](#cleaning-caches-for-acme-module)
-- [Compile a Module](#compile-a-module)
-- [How do we write Modules](#how-do-we-write-modules)
-  - [Common main `Get-*` pattern](#common-main-get--pattern)
-
-# Introduction
-
-A `very opinionated` set of `PowerShell` `cmdlets` to support `PoSh` `module` development.
-
-It is meant to be plugged into a [`FrenchExDev.MyDevInfra.PoSh`](https://gitlab.frenchexdev.lab/FrenchExDev/MyDevInfra.PoSh) instance.
-
-`FrenchExDev.DevPosh.Posh` `Powershell` modules uses a defined setup to work.
-
-They also use a defined `.psm1` which compiles data on first use to faster the loading of profiles.
-
-It also means that while developing, we must be aware of this cache. 
-
-Thus a specific `cmdlet` is available to handle this case.
-
-# Philosophy
-
-It should be easy to start a new module.
-
-In a `very opinionated` world, this is something easy. Start off the shelf, rince, repeat, when you get something good enough, generalize it and template it.
-
-This is why `FrenchExDev.DevPoSh.PoSh`-made `Powershell`' `modules` are all following the very same pattern and use the very same `.psm1` to load module.
-
-## `FrenchExDev.PoSh` Powershell Module anatomy
-
-![image](doc/images/devposh-module-anatomy.png)
-
-| Folder                                          | Purpose                                                                           |
-|-------------------------------------------------|-----------------------------------------------------------------------------------|
-| `doc`                                             | documentation items such as markdown files, images, gifs                        |
-| `src`                                             | source folder                                                                   |
-| `test`                                            | test folder                                                                     |
-| `.psd1`                                           | `Powershell Module Definition` file, declarative                                |
-| `.psm1`                                           | `Powershell Module` file, module loader                                         |
-| `src/Classes/**.ps1`                              | `Powershell Classes`, these files are dot sourced by `.psm1`                    |
-| `src/Completers/**.ps1`                           | `Powershell Completers` registering, these files are dot sourced by `.psm1`     |
-| `src/Private/**.ps1`                              | Private `functions`, these files are dot sourced by `.psm1`                     |
-| `src/Public/**.ps1`                               | `this Module` public and exported `cmdlets`                                     |
-
-### `.psm1` anatomy
-
-[See source file](https://gitlab.frenchexdev.lab/FrenchExDev/DevPoSh.PoSh/-/blob/main/DevPoSh.PoSh.psm1?ref_type=heads)
-
-# Cloning
-
-_Adapt to your setup and will._
+Bibliothèque de projets PowerShell **7.4+ Core**, chargés depuis `src` en développement et depuis des artefacts explicites en Production.
 
 ```powershell
-$MyDevInfraClonePath = "c:/code/MyAcme.MyDevInfra.PoSh"
+Import-Module ./DevPoSh.PoSh.psd1
+$env:FRENCHEXDEV_MYDEVPOSH_PATH = 'C:/path/to/PoSh'
+Import-DevPoShModule
+Get-DevPoSh -Action CompileAll
+Set-DevPoShPowershellProfile -Path "$HOME/devposh-profile.ps1"
 ```
+
+La racine configurée contient les organisations et leurs projets. Le modèle unique [resources/profile.ps1.tpl](resources/profile.ps1.tpl) charge les sources lorsque `FRENCHEXDEV_DEVPOSH` est absent ; la valeur `Production` charge uniquement l’inventaire `$HOME/.posh.posh.compilations/startup.json`. Un démarrage ne reconstruit jamais les artefacts Production.
+
+## Copier le profil
 
 ```powershell
-$clonePath = "$MyDevInfraClonePath/PoSh/FrenchExDev/DevPoSh.PoSh"
+Set-DevPoShPowershellProfile -Path $PROFILE.CurrentUserAllHosts
+Set-DevPoShPowershellProfile -Path ./profile-export.ps1 -WhatIf
+Set-DevPoShPowershellProfile -Path ./profile-export.ps1 -Force
 ```
 
-## Via SSH
+`Path` est obligatoire et désigne un fichier. Une copie identique ne réécrit rien. Un fichier différent exige `Force` et fait l’objet d’une sauvegarde avant remplacement atomique. Le résultat contient `Path`, `Changed` et `Backup`. La copie n’importe ni n’exécute le fichier, ne compile rien et ne modifie aucune variable d’environnement.
+
+L’utilisateur choisit la destination et l’intégration à `$PROFILE`. Les anciens paramètres de génération ne sont plus acceptés. Après modification du modèle, recopier explicitement le profil. L’ancien `DevPoSh/profile.ps1` délègue à ce modèle ; aucun `Install-DevPoSh` n’est ajouté.
+
+## Compiler explicitement
 
 ```powershell
-git clone "ssh://git@gitlab.frenchexdev.lab:2222/FrenchExDev/FrenchExDev.PoSh.PoSh.git" $clonePath
+Get-DevPoSh -Action CompileAll
+Get-DevPoSh -Action CompileAll -Path ./Example.PoSh
+Get-DevPoSh -Action CompileAll -Path ./Organization -CompilationRoot ./artifacts
+Get-DevPoSh FrenchExDev Example.PoSh Compile
 ```
 
-## Via HTTPS
+Les appels historiques à un projet conservent `Acme`, `Name`, `Action` et le suffixe `Path`. `CompileAll` constitue un jeu de paramètres séparé et ne se combine pas avec les actions d’un projet. Sans sélection, il utilise la racine configurée.
 
-```powershell
-git clone https://gitlab.frenchexdev.lab/FrenchExDev/FrenchExDev.PoSh.PoSh.git $clonePath
-```
+Le compilateur respecte les frontières des modules, les dépendances, les variables, les classes et les ressources. Les sources sont embarquées avec des chemins virtuels permettant aux fonctions d’accéder à leurs ressources via `$PSScriptRoot`. Les ressources sont conservées dans des dossiers immuables identifiés par leur empreinte. Le JSON adjacent est un manifeste versionné ; le code exécutable est dans le `.psm1`.
 
-# Installing 
+`Export-DevPoShCompilation` fournit le moteur de compilation de code : verrou, validation d’import dans un processus neuf, publication atomique, conservation du dernier artefact valide et absence de réécriture à contenu identique. Les fournisseurs `FrenchExDev.OPumper.*.PoSh` sont compilés comme des modules ordinaires, avec identité, script `Setup-OutputPumps.ps1`, catalogue et ressources embarqués. OutputPumps prépare séparément un inventaire JSON sous `$HOME/.pwsh-pumps/registry.json`, sans dépendance à DevPoSh.
 
-* In an `Administrator`-privileged `Terminal`, run the following :
+Après le chargement normal des modules, le profil appelle `Setup-OutputPumps` s’il est disponible. Cette commande lit `$HOME/.pumps-config.yaml` et réutilise les fournisseurs déjà chargés. DevPoSh reste optionnel : le README OutputPumps fournit aussi le bloc de profil autonome. Les fournisseurs ne dépendent pas de DevPoSh à l’exécution.
 
-```powershell
-Import-Module "$clonePath/DevPoSh.PoSh.psm1"
-Set-DevPoShPowershellProfile -MyDevInfraClonePath $MyDevInfraClonePath
-```
+Une destination `CompilationRoot` personnalisée sert l’export ou les tests ; le profil standard lit l’emplacement utilisateur par défaut. Il ne cherche pas automatiquement des emplacements alternatifs.
 
-`PoShPowershellProfile` will inject `Powershell` code into your $profile to load your `MyAcme.MyDevInfra.PoSh`' `Powershell`' `modules`
-
-# Import Posh Modules
-
-```powershell
-Import-PoShModule
-```
-
-![_Will import modules_](./doc/images/import-poshmodules-result.png)
-
-## Force import
-
-```powershell
-Import-PoShModule -Force
-```
-
-## Force import specific Acme
-
-```powershell
-Import-PoShModule -Force -Acme FrenchExDev
-```
-
-## Force import specific Acme's Module
-
-```powershell
-Import-PoShModule -Force -Acme FrenchExDev -Module DevSetup.PoSh
-```
-
-# Cleaning caches
-
-```powershell
-Clean-PoShModuleCache
-```
-
-## Cleaning caches for Acme
-
-```powershell
-Clean-PoShModuleCache -Acme FrenchExDev
-```
-
-## Cleaning caches for Acme' module
-
-```powershell
-Clean-PoShModuleCache -Acme FrenchExDev -Module DevPoSh.PoSh
-```
-
-# Compile a Module
-
-```powershell
-Set-Location $MyFrenchExDevInfraClonePath
-Get-PoSh FrenchExDev DevSetup.PoSh -Action Compile
-```
-
-  * _Then_ reload your session
-
-
-# How do we write Modules
-
-`FrenchExDev`-made `Powershell`' modules are written in such a special way.
-
-We don't make lot of `Cmdlets`, instead we want to control objects in a given sequence of operations.
-
-Thus `Get-*` `cmdlets` in `singular form` are made to control an object.
-
-For example, `FrenchExDev.DevPoSh.PoSh` provides the `Get-PoSh` `cmdlet` which let you execute a controlled sequence of operations on the same object in one single call.
-
-## Common main `Get-*` pattern
-
-Whatever the verb is (it could be `Control-*` instead of `Get-*`), the way the main `cmdlet` is coded follows a pattern which is used widely accross `FrenchExDev.PoSh`-made modules:
-
-We iterate over the given -Action, giving user opportunity to control order of execution of Actions.
-Then we switch on the current action to actually execute current operation.
-
-```powershell
-# this is the Enum used so we get tab-completion over available Actions for Get-PoSh
-enum PoShAction {
-    Pwsh
-    Command
-    Ide
-    Compile
-}
-
-# we name the cmdlet according to the module
-function Get-PoSh {
-    [CmdletBinding()]
-    param(
-        [parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)] [string] $Acme,
-        [parameter(Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)] [string] $Name,
-        [parameter(Mandatory = $true, Position = 2, ValueFromPipelineByPropertyName = $true)] [PoShAction[]] $Action, # here we declare the -Action parameter as using the `PoShAction` enum array 
-        [string] $Command,
-        [string] $Ide,
-        [string] $Path
-    )
-
-    $projectDir = "./PoSh/$Acme/$Name/$Path"
-
-    # we loop over the given -Action in given order
-    foreach ($currentAction in $Action) {
-      # casting as we cannot cast into switch statement
-        [PoShAction] $currentActionEnum = $currentAction
-        # switching over enum value
-        switch ($currentActionEnum) {
-            # case block for ::Pwsh enum value
-            ([PoShAction]::Pwsh) {
-                # implementation here
-                pwsh -Login -WorkingDirectory $projectDir
-            }
-            # other cases...
-        }
-    }
-}
-```
+Les tests unitaires DevPoSh sont regroupés dans [test/Unit/DevPoSh](../FrenchExDev.OutputPumps.PoSh/test/Unit/DevPoSh), avec les intégrations communes. Voir le [README OutputPump](../FrenchExDev.OutputPumps.PoSh/README.md) pour leur exécution et le parcours complet.

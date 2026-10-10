@@ -1,0 +1,109 @@
+[
+  {
+    "Name": "ripgrep (rg)",
+    "VerifiedVersion": "ripgrep 15.2.0, commandes locales vérifiées le 2026-10-10",
+    "IdentityMarkdown": "Ripgrep recherche dans les fichiers en respectant par défaut les règles dʼignorance ; il évite normalement les fichiers cachés et binaires. Utiliser Path et Glob pour cibler le besoin, Literal pour une chaîne exacte et IgnoreCase si nécessaire.\n\nLa recherche lit `rg --json` : chemins, numéros de ligne et extraits sont sélectionnés. La découverte de fichiers utilise `--files --null` pour préserver les noms inhabituels. Code 0 : résultats ; 1 : aucun résultat, succès fonctionnel ; 2 : erreur, potentiellement accompagnée de résultats partiels. Une erreur de lecture ne prouve jamais lʼabsence de correspondance. Les événements à encodage non représentable sont omis et signalés. Les extraits longs ou sensibles sont limités et assainis.\n\nNe pas utiliser `--max-count` comme plafond global : cette option est par fichier. Les deux pompes analysent progressivement tous les enregistrements et attendent la fin du processus et des flux. MaxItems borne les extraits, sans arrêter la commande ni le comptage. Data.Complete certifie MatchLines ou FileCount ; un total exact devient nul si l’analyse est incomplète. Une ligne géante dépassant la limite d’enregistrement est signalée par RecordLimit. Aucun flux source n’est affiché.",
+    "Module": "Ripgrep-OPumper.psm1",
+    "Id": "ripgrep",
+    "Commands": [
+      {
+        "Example": "Find-PumpText -WorkingDirectory $repo -Pattern 'TODO' -Path 'src/' -MaxItems 10",
+        "When": "Correspondances structurées, filtres et compteurs.",
+        "Route": {
+          "Tokens": [],
+          "Multiple": true,
+          "Options": {
+            "--ignore-case": {
+              "Multiple": false,
+              "Parameter": "IgnoreCase",
+              "Integer": false,
+              "Switch": true
+            },
+            "--fixed-strings": {
+              "Multiple": false,
+              "Parameter": "Literal",
+              "Integer": false,
+              "Switch": true
+            },
+            "-i": {
+              "Multiple": false,
+              "Parameter": "IgnoreCase",
+              "Integer": false,
+              "Switch": true
+            },
+            "-g": {
+              "Multiple": true,
+              "Parameter": "Glob",
+              "Integer": false,
+              "Switch": false
+            },
+            "-F": {
+              "Multiple": false,
+              "Parameter": "Literal",
+              "Integer": false,
+              "Switch": true
+            },
+            "--glob": {
+              "Multiple": true,
+              "Parameter": "Glob",
+              "Integer": false,
+              "Switch": false
+            }
+          },
+          "Executable": "rg",
+          "Positional": "Path",
+          "FirstPositional": "Pattern"
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Pattern",
+          "Path",
+          "Glob",
+          "Literal",
+          "IgnoreCase"
+        ],
+        "Function": "Find-PumpText",
+        "Id": "ripgrep.search"
+      },
+      {
+        "Example": "Find-PumpFiles -WorkingDirectory $repo -Glob '*.cs' -Path 'src/'",
+        "When": "Chemins de fichiers ciblés.",
+        "Route": {
+          "Tokens": [
+            "--files"
+          ],
+          "Multiple": true,
+          "Options": {
+            "-g": {
+              "Multiple": true,
+              "Parameter": "Glob",
+              "Integer": false,
+              "Switch": false
+            },
+            "--glob": {
+              "Multiple": true,
+              "Parameter": "Glob",
+              "Integer": false,
+              "Switch": false
+            }
+          },
+          "Executable": "rg",
+          "Positional": "Path",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Path",
+          "Glob"
+        ],
+        "Function": "Find-PumpFiles",
+        "Id": "ripgrep.files"
+      }
+    ],
+    "Purpose": "Recherche de texte et découverte de fichiers",
+    "Documentation": [
+      "https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md",
+      "https://github.com/BurntSushi/ripgrep/blob/master/doc/rg.1.txt.tpl"
+    ]
+  }
+]

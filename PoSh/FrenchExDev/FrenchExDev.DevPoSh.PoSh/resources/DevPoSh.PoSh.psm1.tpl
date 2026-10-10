@@ -1,72 +1,17 @@
-# credit: https://github.com/0xBEN/PSProxmox/blob/master/PSProxmox.psm1
-
-if ($IsLinux) { $env:USERPROFILE = $env:HOME }
-$directorySeparator = [System.IO.Path]::DirectorySeparatorChar
-$moduleName = $PSScriptRoot.Split($directorySeparator)[-1]
-$acmeName = $PSScriptRoot.Split($directorySeparator)[-2]
-$compilationPath = "$env:USERPROFILE/.posh.posh.compilations/$acmeName/$moduleName"
-
-if (!(test-path "$compilationPath/compiled.json")) {
-    $publicFunctions = Get-ChildItem -Path "$PSScriptRoot/src/Public" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
-    $privateFunctions = Get-ChildItem -Path "$PSScriptRoot/src/Private" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
-    $classes = Get-ChildItem -Path "$PSScriptRoot/src/Classes" -Recurse -Filter "*.ps1"  | Select-Object -ExpandProperty FullName
-    $completers = Get-ChildItem -Path "$PSScriptRoot/src/Completers" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
-    $variables = Get-ChildItem -Path "$PSScriptRoot/src/Variables" -Recurse -Filter "*.ps1" | Select-Object -ExpandProperty FullName
-
-    New-Item $compilationPath -ItemType Directory
-
-    $moduleData = [pscustomobject] @{
-        public     = $publicFunctions
-        private    = $privateFunctions
-        classes    = $classes
-        completers = $completers
-        variables  = $variables
-    }
-
-    $moduleData | ConvertTo-Json | Out-File $compilationPath/compiled.json -Encoding ascii
-}
-
-$moduleData = if ($null -eq $moduleData) { Get-Content "$compilationPath/compiled.json" | ConvertFrom-Json } else { $moduleData }
-
-$publicFunctions = $moduleData.public
-$privateFunctions = $moduleData.private
-$classes = $moduleData.classes
-$completers = $moduleData.completers
-$variables = $moduleData.variables
-
-$publicFunctions | ForEach-Object { 
-    if (![string]::IsNullOrEmpty($_)) { 
-        . $_ 
+#requires -Version 7.4
+#requires -PSEdition Core
+# Development entrypoint. Production imports an explicit DevPoSh compilation.
+$script:DevPoShProjectRoot=$PSScriptRoot
+$publicFunctions=@()
+$variables=@()
+foreach($category in @('Classes','Private','Public','Completers','Variables')) {
+    $directory=Join-Path $PSScriptRoot "src/$category"
+    if(Test-Path -LiteralPath $directory) {
+        foreach($file in Get-ChildItem -LiteralPath $directory -Filter '*.ps1' -File -Recurse | Sort-Object FullName) {
+            . $file.FullName
+            if($category -eq 'Public'){$publicFunctions+=$file.BaseName}
+            if($category -eq 'Variables'){$variables+=$file.BaseName}
+        }
     }
 }
-
-$privateFunctions | ForEach-Object { 
-    if (![string]::IsNullOrEmpty($_)) {
-        . $_ 
-    }
-}
-
-$classes | ForEach-Object { 
-    if (![string]::IsNullOrEmpty($_)) {
-        . $_
-    }
-}
-
-$completers | ForEach-Object { 
-    if (![string]::IsNullOrEmpty($_)) {
-        . $_
-    }
-}
-
-$publicFunctions | ForEach-Object {
-    if (![string]::IsNullOrEmpty($_)) {
-        Export-ModuleMember -Function $($(Split-Path $_ -Leaf).Replace('.ps1', '')) -ErrorAction Stop
-    }
-}
-
-$variables | ForEach-Object {
-    if (![string]::IsNullOrEmpty($_)) {
-        . $_
-        Export-ModuleMember -Variable $($(Split-Path $_ -Leaf).Replace('.ps1', '')) -ErrorAction Stop
-    }
-}
+Export-ModuleMember -Function $publicFunctions -Variable $variables

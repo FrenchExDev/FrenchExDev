@@ -1,0 +1,14 @@
+@{
+    RootModule='Dotnet-OPumper.psm1'
+    ModuleVersion='1.0.0'
+    GUID='c369d299-671e-46cf-aca7-3f2add5f6c06'
+    Author='FrenchExDev'
+    PowerShellVersion='7.4'
+    CompatiblePSEditions=@('Core')
+    RequiredModules=@('OutputPump.PoSh')
+    FunctionsToExport=@('Invoke-PumpDotnetBuild','Invoke-PumpDotnetTest')
+    CmdletsToExport=@()
+    VariablesToExport=@()
+    AliasesToExport=@()
+    PrivateData=@{OutputPumps=@{Version=1;ProviderId='dotnet';RegistrationScript='src/Setup-OutputPumps.ps1'}}
+}

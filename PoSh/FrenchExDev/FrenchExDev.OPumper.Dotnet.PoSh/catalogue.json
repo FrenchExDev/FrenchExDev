@@ -1,0 +1,141 @@
+[
+  {
+    "Name": ".NET CLI",
+    "VerifiedVersion": "SDK 11.0.100-rc.1.26425.128 ; profils VSTest/MTP, vérifié le 2026-10-10",
+    "IdentityMarkdown": "La CLI .NET sélectionne le SDK selon le répertoire de travail et global.json. Toujours donner Target et WorkingDirectory explicitement. Les pompes nʼajoutent pas de parallélisme ; build et test peuvent écrire leurs artefacts habituels. NoRestore et NoBuild ne sont activés que sur demande.\n\nBuild désactive lʼaffichage terminal dynamique (`--tl:off`) et conserve les diagnostics de compilateur structurés : chemin, ligne, sévérité, code, message. Les compteurs portent sur les diagnostics uniques capturés ; un format de diagnostic inconnu nʼest pas transformé en log de secours. Ce profil suppose un SDK supportant `--tl:off`.\n\nTests : détecter DOTNET_TEST_RUNNER, puis le global.json le plus proche, sinon VSTest. Les arguments diffèrent entre VSTest et Microsoft.Testing.Platform. Le profil MTP demande une extension TRX disponible ; son absence produit Unsupported. Les rapports sont isolés par invocation, lus puis supprimés. Seuls compteurs et échecs utiles sont rendus. Aucun rapport, rapport trop grand ou malformé : aucun succès supposé et aucun compteur inventé. Un rapport sans test nʼest pas une preuve de tests réussis.\n\nUne commande personnalisée (`dotnet run`, QualityGate, mutation testing…) nécessite sa propre pompe adaptée à son rapport. Un résultat de tests ordinaires ne prouve pas la couverture ni la mutation.",
+    "Module": "Dotnet-OPumper.psm1",
+    "Id": "dotnet",
+    "Commands": [
+      {
+        "Example": "Invoke-PumpDotnetBuild -WorkingDirectory $repo -Target 'app.csproj'",
+        "When": "Compiler une cible et sélectionner les diagnostics.",
+        "Route": {
+          "Tokens": [
+            "build"
+          ],
+          "Multiple": false,
+          "Options": {
+            "-f": {
+              "Multiple": false,
+              "Parameter": "Framework",
+              "Integer": false,
+              "Switch": false
+            },
+            "--configuration": {
+              "Multiple": false,
+              "Parameter": "Configuration",
+              "Integer": false,
+              "Switch": false
+            },
+            "-c": {
+              "Multiple": false,
+              "Parameter": "Configuration",
+              "Integer": false,
+              "Switch": false
+            },
+            "--no-restore": {
+              "Multiple": false,
+              "Parameter": "NoRestore",
+              "Integer": false,
+              "Switch": true
+            },
+            "--framework": {
+              "Multiple": false,
+              "Parameter": "Framework",
+              "Integer": false,
+              "Switch": false
+            }
+          },
+          "Executable": "dotnet",
+          "Positional": "Target",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "Target",
+          "WorkingDirectory",
+          "Configuration",
+          "Framework",
+          "NoRestore"
+        ],
+        "Function": "Invoke-PumpDotnetBuild",
+        "Id": "dotnet.build"
+      },
+      {
+        "Example": "Invoke-PumpDotnetTest -WorkingDirectory $repo -Target 'tests.csproj'",
+        "When": "Exécuter des tests avec compteurs TRX. Sous MTP, fournir MtpFilterOption avec Filter selon la documentation du framework.",
+        "Route": {
+          "Tokens": [
+            "test"
+          ],
+          "Multiple": false,
+          "Options": {
+            "--filter": {
+              "Multiple": false,
+              "Parameter": "Filter",
+              "Integer": false,
+              "Switch": false
+            },
+            "--framework": {
+              "Multiple": false,
+              "Parameter": "Framework",
+              "Integer": false,
+              "Switch": false
+            },
+            "--configuration": {
+              "Multiple": false,
+              "Parameter": "Configuration",
+              "Integer": false,
+              "Switch": false
+            },
+            "--no-restore": {
+              "Multiple": false,
+              "Parameter": "NoRestore",
+              "Integer": false,
+              "Switch": true
+            },
+            "--no-build": {
+              "Multiple": false,
+              "Parameter": "NoBuild",
+              "Integer": false,
+              "Switch": true
+            },
+            "-f": {
+              "Multiple": false,
+              "Parameter": "Framework",
+              "Integer": false,
+              "Switch": false
+            },
+            "-c": {
+              "Multiple": false,
+              "Parameter": "Configuration",
+              "Integer": false,
+              "Switch": false
+            }
+          },
+          "Executable": "dotnet",
+          "Positional": "Target",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "Target",
+          "WorkingDirectory",
+          "Configuration",
+          "Framework",
+          "Filter",
+          "MtpFilterOption",
+          "NoRestore",
+          "NoBuild"
+        ],
+        "Function": "Invoke-PumpDotnetTest",
+        "Id": "dotnet.test"
+      }
+    ],
+    "Purpose": "Build et tests avec diagnostics et résultats structurés",
+    "Documentation": [
+      "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build",
+      "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test",
+      "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test-vstest",
+      "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test-mtp"
+    ]
+  }
+]
