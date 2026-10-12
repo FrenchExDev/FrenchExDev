@@ -2,7 +2,7 @@
 
 **Ask your AI agent to turn command output into useful answers using scripts it builds and runs locally.**
 
-[PROMPT.md](PROMPT.md) contains the instructions to give the agent. For each CLI invocation, it asks the agent to prepare or reuse a **companion script** in **PowerShell Core 7.4+** or **Bash**. This script runs the intended command, consumes its output, and returns a common result object with a **freely defined `.Data` property**.
+[SKILL](skills/quiet-cli/SKILL.md) contains the instructions to give the agent. For each CLI invocation, it asks the agent to prepare or reuse a **companion script** in **PowerShell Core 7.4+** or **Bash**. This script runs the intended command, consumes its output, and returns a common result object with a **freely defined `.Data` property**.
 
 The AI reads the compact execution result. Local code handles logs, progress, and intermediate data.
 
