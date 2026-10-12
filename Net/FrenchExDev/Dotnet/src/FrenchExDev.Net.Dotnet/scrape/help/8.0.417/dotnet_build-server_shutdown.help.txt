@@ -1,0 +1,13 @@
+Description:
+  Shuts down build servers that are started from dotnet. By default, all servers are shut down.
+
+Usage:
+  dotnet build-server shutdown [options]
+
+Options:
+  --msbuild       Shut down the MSBuild build server.
+  --vbcscompiler  Shut down the VB/C# compiler build server.
+  --razor         Shut down the Razor build server.
+  -?, -h, --help  Show command line help.
+
+

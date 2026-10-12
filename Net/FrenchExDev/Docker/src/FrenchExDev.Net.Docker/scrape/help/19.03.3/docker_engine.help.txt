@@ -1,0 +1,11 @@
+
+Usage:	docker engine COMMAND
+
+Manage the docker engine
+
+Commands:
+  activate    Activate Enterprise Edition
+  check       Check for available engine updates
+  update      Update a local engine
+
+Run 'docker engine COMMAND --help' for more information on a command.

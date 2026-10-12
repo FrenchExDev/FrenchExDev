@@ -1,0 +1,4 @@
+Usage: vagrant snapshot pop [options] [vm-name]
+
+Restore state that was pushed with `vagrant snapshot push`.
+    -h, --help                       Print this help

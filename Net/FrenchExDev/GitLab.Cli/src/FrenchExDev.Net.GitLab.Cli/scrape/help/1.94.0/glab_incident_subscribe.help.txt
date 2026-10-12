@@ -1,0 +1,18 @@
+
+  Subscribe to an incident.                                                                                             
+         
+  USAGE  
+         
+    glab incident subscribe <id> [--flags]                                       
+            
+  EXAMPLES  
+            
+    glab incident subscribe 123                                                  
+    glab incident sub 123                                                        
+    glab incident subscribe https://gitlab.com/OWNER/REPO/-/issues/incident/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

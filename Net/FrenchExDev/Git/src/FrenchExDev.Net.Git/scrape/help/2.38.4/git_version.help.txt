@@ -1,0 +1,4 @@
+usage: git version [<options>]
+
+    --build-options       also print build options
+

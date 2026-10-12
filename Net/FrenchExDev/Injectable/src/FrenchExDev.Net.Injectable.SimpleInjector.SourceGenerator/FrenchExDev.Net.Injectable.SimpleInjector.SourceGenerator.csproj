@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Include Lib source files directly (linked) — avoids analyzer assembly loading issues -->
+  <ItemGroup>
+    <Compile Include="..\FrenchExDev.Net.Injectable.SourceGenerator.Lib\InjectableEmitter.cs" Link="Lib\InjectableEmitter.cs" />
+    <Compile Include="..\FrenchExDev.Net.Injectable.SourceGenerator.Lib\InjectableEmitModel.cs" Link="Lib\InjectableEmitModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Injectable.SourceGenerator.Lib\InjectableServiceModel.cs" Link="Lib\InjectableServiceModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Injectable.SourceGenerator.Lib\InjectableDecoratorModel.cs" Link="Lib\InjectableDecoratorModel.cs" />
+    <Compile Include="..\FrenchExDev.Net.Injectable.SourceGenerator.Lib\InterfaceContractModel.cs" Link="Lib\InterfaceContractModel.cs" />
+  </ItemGroup>
+</Project>

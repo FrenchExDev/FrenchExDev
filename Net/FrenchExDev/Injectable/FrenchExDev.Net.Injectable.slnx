@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Injectable.Attributes/FrenchExDev.Net.Injectable.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Injectable.SourceGenerator.Lib/FrenchExDev.Net.Injectable.SourceGenerator.Lib.csproj" />
+    <Project Path="src/FrenchExDev.Net.Injectable.Microsoft.SourceGenerator/FrenchExDev.Net.Injectable.Microsoft.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Injectable.DryIoc.SourceGenerator/FrenchExDev.Net.Injectable.DryIoc.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Injectable.SimpleInjector.SourceGenerator/FrenchExDev.Net.Injectable.SimpleInjector.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Injectable.Microsoft.Tests/FrenchExDev.Net.Injectable.Microsoft.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Injectable.DryIoc.Tests/FrenchExDev.Net.Injectable.DryIoc.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Injectable.SimpleInjector.Tests/FrenchExDev.Net.Injectable.SimpleInjector.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Injectable.SourceGenerator.Lib.Tests/FrenchExDev.Net.Injectable.SourceGenerator.Lib.Tests.csproj" />
+  </Folder>
+</Solution>

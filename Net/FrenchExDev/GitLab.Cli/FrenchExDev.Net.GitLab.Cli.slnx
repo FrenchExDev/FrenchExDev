@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.GitLab.Cli/FrenchExDev.Net.GitLab.Cli.csproj" />
+    <Project Path="src/FrenchExDev.Net.GitLab.Cli.Design/FrenchExDev.Net.GitLab.Cli.Design.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.GitLab.Cli.Tests/FrenchExDev.Net.GitLab.Cli.Tests.csproj" />
+  </Folder>
+</Solution>

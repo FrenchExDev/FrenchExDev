@@ -1,0 +1,22 @@
+
+  Subscribe to a merge request.                                                                                         
+         
+  USAGE  
+         
+    glab mr subscribe [<id> | <branch>] [--flags]  
+            
+  EXAMPLES  
+            
+    # Subscribe to a merge request                 
+    glab mr subscribe 123                          
+    glab mr sub 123                                
+    glab mr subscribe branch                       
+                                                   
+    # Subscribe to multiple merge requests         
+    glab mr subscribe 123 branch                   
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

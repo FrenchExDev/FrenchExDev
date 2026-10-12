@@ -1,0 +1,17 @@
+Usage: packer plugins install [OPTIONS...] <plugin> [<version constraint>]
+
+  This command will install the most recent compatible Packer plugin matching
+  version constraint.
+  When the version constraint is omitted, the most recent version will be
+  installed.
+
+  Ex: packer plugins install github.com/hashicorp/happycloud v1.2.3
+      packer plugins install --path ./packer-plugin-happycloud "github.com/hashicorp/happycloud"
+
+Options:
+  -path <path>                  Install the plugin from a locally-sourced plugin binary.
+                                This installs the plugin where a normal invocation would, but will
+                                not try to download it from a remote location, and instead
+                                install the binary in the Packer plugins path. This option cannot
+                                be specified with a version constraint.
+  -force                        Forces reinstallation of plugins, even if already installed.

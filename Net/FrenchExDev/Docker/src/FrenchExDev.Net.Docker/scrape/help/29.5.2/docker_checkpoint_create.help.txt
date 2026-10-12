@@ -1,0 +1,7 @@
+Usage:  docker checkpoint create [OPTIONS] CONTAINER CHECKPOINT
+
+Create a checkpoint from a running container
+
+Options:
+      --checkpoint-dir string   Use a custom checkpoint storage directory
+      --leave-running           Leave the container running after checkpoint

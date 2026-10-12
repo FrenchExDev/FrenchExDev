@@ -1,0 +1,17 @@
+View project issue board.
+
+USAGE
+  glab issue board view [flags]
+
+FLAGS
+  -a, --assignee string    Filter board issues by assignee username.
+  -l, --labels strings     Filter board issues by labels, comma separated.
+  -m, --milestone string   Filter board issues by milestone.
+
+INHERITED FLAGS
+      --help          Show help for this command.
+  -R, --repo string   Select another repository using the OWNER/REPO format or the project ID. Supports group namespaces
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

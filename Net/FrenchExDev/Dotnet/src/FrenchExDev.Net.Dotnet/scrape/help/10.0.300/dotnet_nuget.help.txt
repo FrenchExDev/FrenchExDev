@@ -1,0 +1,22 @@
+Description:
+
+Usage:
+  dotnet nuget [command] [options] [[--] <additional arguments>...]]
+
+Options:
+  --version                    [default: False]
+  -v, --verbosity <verbosity>
+  -?, -h, --help               Show command line help.
+
+Commands:
+  delete <package-paths>
+  locals <all|global-packages|http-cache|plugins-cache|temp>
+  push <package-paths>
+  verify <package-paths>
+  trust
+  sign <package-paths>
+  why <PROJECT|SOLUTION|FILE> <PACKAGE>                       Shows the dependency graph for a particular package for a given project or solution.
+
+Additional Arguments:
+  Arguments passed to the application that is being run.
+

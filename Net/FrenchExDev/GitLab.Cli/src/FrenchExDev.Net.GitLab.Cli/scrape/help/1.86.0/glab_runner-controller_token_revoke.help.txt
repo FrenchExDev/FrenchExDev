@@ -1,0 +1,20 @@
+
+  Revoke a token from a runner controller. (EXPERIMENTAL)                                                               
+         
+  USAGE  
+         
+    glab runner-controller token revoke <controller-id> <token-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # Revoke token 1 from runner controller 42 (with confirmation prompt)     
+    $ glab runner-controller token revoke 42 1                                
+                                                                              
+    # Revoke without confirmation                                             
+    $ glab runner-controller token revoke 42 1 --force                        
+         
+  FLAGS  
+         
+    -f --force  Skip confirmation prompt.
+    -h --help   Show help for this command.
+

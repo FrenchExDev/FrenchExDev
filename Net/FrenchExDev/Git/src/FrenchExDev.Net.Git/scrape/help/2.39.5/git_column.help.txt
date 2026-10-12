@@ -1,0 +1,10 @@
+usage: git column [<options>]
+
+    --command <name>      lookup config vars
+    --mode[=<style>]      layout to use
+    --raw-mode <n>        layout to use
+    --width <n>           maximum width
+    --indent <string>     padding space on left border
+    --nl <string>         padding space on right border
+    --padding <n>         padding space between columns
+

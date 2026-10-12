@@ -1,0 +1,14 @@
+Generate terminal commands from natural language.
+
+USAGE
+  glab duo <command> prompt [flags]
+
+CORE COMMANDS
+  ask:        Generate Git commands from natural language.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

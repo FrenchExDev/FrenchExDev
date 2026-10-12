@@ -1,0 +1,9 @@
+Usage:  docker trust signer COMMAND
+
+Manage entities who can sign Docker images
+
+Commands:
+  add         Add a signer
+  remove      Remove a signer
+
+Run 'docker trust signer COMMAND --help' for more information on a command.

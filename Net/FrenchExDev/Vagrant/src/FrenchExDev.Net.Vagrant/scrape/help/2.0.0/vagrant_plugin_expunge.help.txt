@@ -1,0 +1,4 @@
+Usage: vagrant plugin expunge [-h]
+        --force                      Do not prompt for confirmation
+        --reinstall                  Reinstall current plugins after expunge
+    -h, --help                       Print this help

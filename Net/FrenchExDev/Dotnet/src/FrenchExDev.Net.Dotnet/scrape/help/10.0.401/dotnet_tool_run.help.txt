@@ -1,0 +1,14 @@
+Description:
+  Run a local tool. Note that this command cannot be used to run a global tool. 
+
+Usage:
+  dotnet tool run <commandName> [<toolArguments>...] [options]
+
+Arguments:
+  <COMMAND_NAME>   The command name of the tool to run.
+  <toolArguments>  Arguments forwarded to the tool
+
+Options:
+  --allow-roll-forward  Allow a .NET tool to roll forward to newer versions of the .NET runtime if the runtime it targets isn't installed. [default: False]
+  -?, -h, --help        Show command line help.
+

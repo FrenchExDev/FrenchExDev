@@ -1,0 +1,14 @@
+@{
+    RootModule='PowerShell-OPumper.psm1'
+    ModuleVersion='1.0.0'
+    GUID='c7885aa9-1fc0-48b4-8717-3333d16eaf0e'
+    Author='FrenchExDev'
+    PowerShellVersion='7.4'
+    CompatiblePSEditions=@('Core')
+    RequiredModules=@('OutputPump.PoSh')
+    FunctionsToExport=@('Get-PumpDirectory','Get-PumpFile','Get-PumpLog')
+    CmdletsToExport=@()
+    VariablesToExport=@()
+    AliasesToExport=@()
+    PrivateData=@{OutputPumps=@{Version=1;ProviderId='powershell';RegistrationScript='src/Setup-OutputPumps.ps1'}}
+}

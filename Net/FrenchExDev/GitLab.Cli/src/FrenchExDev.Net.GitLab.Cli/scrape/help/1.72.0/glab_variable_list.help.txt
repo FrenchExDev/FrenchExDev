@@ -1,0 +1,29 @@
+List variables for a project or group.
+
+USAGE
+  glab variable list [flags]
+
+ALIASES
+  ls
+
+FLAGS
+  -g, --group string      Select a group or subgroup. Ignored if a repository argument is set.
+  -i, --instance          Display instance variables.
+  -F, --output string     Format output as: text, json. (default "text")
+  -p, --page int          Page number. (default 1)
+  -P, --per-page int      Number of items to list per page. (default 20)
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  $ glab variable list                                                                                                
+    $ glab variable list -i                                                                                             
+    $ glab variable list --per-page 100 --page 1                                                                        
+    $ glab variable list --group gitlab-org                                                                             
+    $ glab variable list --group gitlab-org --per-page 100
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

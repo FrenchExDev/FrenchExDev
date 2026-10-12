@@ -1,0 +1,14 @@
+Description:
+  List configured NuGet sources.
+
+Usage:
+  NuGet.CommandLine.XPlat list [command] [options]
+
+Options:
+  -?, -h, --help          Show help and usage information
+  --force-english-output  Forces the application to run using an invariant, English-based culture.
+
+Commands:
+  source       Lists all configured NuGet sources.
+  client-cert  Lists all the client certificates in the configuration.
+

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Admin.Lists.Attributes\FrenchExDev.Net.Diem.Admin.Lists.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Admin.Forms.Attributes\FrenchExDev.Net.Diem.Admin.Forms.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Admin.Actions.Attributes\FrenchExDev.Net.Diem.Admin.Actions.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Admin.Lists\FrenchExDev.Net.Diem.Admin.Lists.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Admin.Forms\FrenchExDev.Net.Diem.Admin.Forms.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Admin.Actions\FrenchExDev.Net.Diem.Admin.Actions.csproj" />
+  </ItemGroup>
+</Project>

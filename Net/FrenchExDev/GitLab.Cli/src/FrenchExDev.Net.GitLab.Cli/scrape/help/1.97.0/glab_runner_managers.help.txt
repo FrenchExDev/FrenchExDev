@@ -1,0 +1,22 @@
+
+  Lists the managers of a runner.                                                                                       
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner managers <runner-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # List managers for runner 1                
+    glab runner managers 1                      
+                                                
+    # List managers as JSON                     
+    glab runner managers 1 --output json        
+         
+  FLAGS  
+         
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+    -R --repo    Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

@@ -1,0 +1,17 @@
+Display the running processes of a container
+
+Description:
+  Display the running processes of a container.
+
+  The top command extends the ps(1) compatible AIX descriptors with container-specific ones as shown below.  In the presence of ps(1) specific flags (e.g, -eo), Podman will execute ps(1) inside the container.
+
+
+Usage:
+  podman container top [options] CONTAINER [FORMAT-DESCRIPTORS|ARGS...]
+
+Examples:
+  podman container top ctrID
+podman container top --latest
+podman container top ctrID pid seccomp args %C
+podman container top ctrID -eo user,pid,comm
+

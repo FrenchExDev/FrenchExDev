@@ -1,3 +1,4 @@
+using FrenchExDev.Net.Builder.SourceGenerator.Lib;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -12,6 +13,7 @@ namespace FrenchExDev.Net.Builder.SourceGenerator;
 public sealed class BuilderGenerator : IIncrementalGenerator
 {
     private const string AttributeFullName = "FrenchExDev.Net.Builder.Attributes.BuilderAttribute";
+    private const string AttributeFullNameGlobal = "global::" + AttributeFullName;
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -24,63 +26,124 @@ public sealed class BuilderGenerator : IIncrementalGenerator
 
         context.RegisterSourceOutput(models, static (ctx, model) =>
         {
-            var source = GenerateSource(model!);
-            ctx.AddSource($"{model!.ClassName}Builder.g.cs", SourceText.From(source, Encoding.UTF8));
+            var source = BuilderEmitter.Emit(model!);
+            ctx.AddSource($"{model!.TargetClassName}Builder.g.cs", SourceText.From(source, Encoding.UTF8));
         });
     }
 
-    // ── Model extraction ──────────────────────────────────────────────────────
+    // ── Model extraction (Roslyn → BuilderEmitModel) ─────────────────────────
 
-    private static BuilderModel? GetModel(GeneratorAttributeSyntaxContext ctx, CancellationToken ct)
+    private static BuilderEmitModel? GetModel(GeneratorAttributeSyntaxContext ctx, CancellationToken ct)
     {
         if (ctx.TargetSymbol is not INamedTypeSymbol classSymbol)
             return null;
 
         ct.ThrowIfCancellationRequested();
 
-        // Read optional Exception named argument from [Builder(Exception = typeof(...))]
-        string? exceptionFull = null;
-        var attr = ctx.Attributes[0];
-        foreach (var arg in attr.NamedArguments)
-        {
-            if (arg.Key == "Exception" && arg.Value.Value is INamedTypeSymbol exType)
-            {
-                exceptionFull = exType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                break;
-            }
-        }
+        var (exceptionFull, instantiation) = ReadBuilderAttributeArgs(ctx.Attributes[0]);
 
-        // Collect public, non-static, settable instance properties
-        var properties = new List<PropertyModel>();
+        var properties = new List<BuilderPropertyModel>();
         foreach (var member in classSymbol.GetMembers())
         {
             ct.ThrowIfCancellationRequested();
-            if (member is not IPropertySymbol prop) continue;
-            if (prop.IsStatic || prop.IsAbstract || prop.IsIndexer) continue;
-            if (prop.DeclaredAccessibility != Accessibility.Public) continue;
-            if (prop.SetMethod is null) continue;
-            if (prop.SetMethod.DeclaredAccessibility != Accessibility.Public) continue;
-            if (prop.GetMethod is null) continue;
-
-            var typeFull = prop.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            var nullableTypeFull = GetNullableTypeFull(prop.Type, typeFull);
-            var (isCollection, itemTypeFull) = GetCollectionInfo(prop.Type);
-
-            properties.Add(new PropertyModel(prop.Name, typeFull, nullableTypeFull, isCollection, itemTypeFull));
+            var model = TryClassifyProperty(member);
+            if (model is not null)
+                properties.Add(model);
         }
 
         var ns = classSymbol.ContainingNamespace is { IsGlobalNamespace: false } nsSym
             ? nsSym.ToDisplayString()
             : string.Empty;
 
-        return new BuilderModel(ns, classSymbol.Name, exceptionFull, properties);
+        return new BuilderEmitModel(
+            ns,
+            classSymbol.Name,
+            classSymbol.Name + "Builder",
+            properties,
+            exceptionFull,
+            instantiation);
     }
+
+    private static (string? ExceptionFull, string Instantiation) ReadBuilderAttributeArgs(AttributeData attr)
+    {
+        string? exceptionFull = null;
+        var instantiation = "init";
+        foreach (var arg in attr.NamedArguments)
+        {
+            if (arg.Key == "Exception" && arg.Value.Value is INamedTypeSymbol exType)
+                exceptionFull = exType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            else if (arg.Key == "Instantiation" && arg.Value.Value is string instStr)
+                instantiation = instStr;
+        }
+        return (exceptionFull, instantiation);
+    }
+
+    // ── Property classification ─────────────────────────────────────────────
+
+    private static BuilderPropertyModel? TryClassifyProperty(ISymbol member)
+    {
+        if (member is not IPropertySymbol prop) return null;
+        if (prop.IsStatic || prop.IsAbstract || prop.IsIndexer) return null;
+        if (prop.DeclaredAccessibility != Accessibility.Public) return null;
+        if (prop.SetMethod is null || prop.SetMethod.DeclaredAccessibility != Accessibility.Public) return null;
+        if (prop.GetMethod is null) return null;
+
+        var typeFull = prop.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        var nullableTypeFull = GetNullableTypeFull(prop.Type, typeFull);
+        var (isCollection, itemTypeFull, itemSymbol) = GetCollectionInfo(prop.Type);
+        var (isDict, dictKeyFull, dictValueFull, dictValueSymbol) = GetDictionaryInfo(prop.Type);
+
+        var (itemBuilderClassName, collectionSingularName) = ResolveCollectionOverload(prop.Type, prop.Name, isCollection, itemTypeFull, itemSymbol);
+        var (dictValueBuilderClassName, dictSingularName) = ResolveDictionaryOverload(prop.Name, isDict, dictValueSymbol);
+
+        return new BuilderPropertyModel(
+            prop.Name, typeFull, nullableTypeFull,
+            isCollection, itemTypeFull,
+            isDictionary: isDict,
+            dictKeyTypeFull: dictKeyFull,
+            dictValueTypeFull: dictValueFull,
+            dictValueBuilderClassName: dictValueBuilderClassName,
+            dictSingularName: dictSingularName,
+            itemBuilderClassName: itemBuilderClassName,
+            collectionSingularName: collectionSingularName);
+    }
+
+    private static (string? ItemBuilderClassName, string? CollectionSingularName) ResolveCollectionOverload(
+        ITypeSymbol propertyType, string propertyName, bool isCollection, string? itemTypeFull, ITypeSymbol? itemSymbol)
+    {
+        if (!isCollection || itemTypeFull is null)
+            return (null, null);
+
+        string? itemBuilderClassName = null;
+        if (itemSymbol is not null && HasBuilderAttribute(itemSymbol))
+            itemBuilderClassName = itemSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "Builder";
+
+        // Tier 1 (simple Add) requires mutable collection; Tier 2 (ListBuilder) works for all
+        var isMutable = IsMutableCollection(propertyType);
+        var singularName = (itemBuilderClassName is not null || isMutable) ? Singularize(propertyName) : null;
+
+        return (itemBuilderClassName, singularName);
+    }
+
+    private static (string? DictValueBuilderClassName, string? DictSingularName) ResolveDictionaryOverload(
+        string propertyName, bool isDict, ITypeSymbol? dictValueSymbol)
+    {
+        if (!isDict)
+            return (null, null);
+
+        string? dictValueBuilderClassName = null;
+        if (dictValueSymbol is not null && HasBuilderAttribute(dictValueSymbol))
+            dictValueBuilderClassName = dictValueSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + "Builder";
+
+        return (dictValueBuilderClassName, Singularize(propertyName));
+    }
+
+    // ── Type analysis helpers ───────────────────────────────────────────────
 
     private static string GetNullableTypeFull(ITypeSymbol type, string typeFull)
     {
         if (type.IsValueType)
         {
-            // Already Nullable<T> (e.g. int?) — keep as-is
             if (type is INamedTypeSymbol nt &&
                 nt.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
                 return typeFull;
@@ -88,265 +151,78 @@ public sealed class BuilderGenerator : IIncrementalGenerator
             return typeFull + "?";
         }
 
-        // Reference type or array → add ?
         return typeFull + "?";
     }
 
-    private static (bool IsCollection, string? ItemTypeFull) GetCollectionInfo(ITypeSymbol type)
+    private static readonly HashSet<string> CollectionMetadataNames = new()
+    {
+        "IEnumerable`1", "ICollection`1", "IList`1",
+        "List`1", "IReadOnlyList`1", "IReadOnlyCollection`1"
+    };
+
+    private static (bool IsCollection, string? ItemTypeFull, ITypeSymbol? ItemSymbol) GetCollectionInfo(ITypeSymbol type)
     {
         if (type is IArrayTypeSymbol arr)
-            return (true, arr.ElementType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+            return (true, arr.ElementType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), arr.ElementType);
 
-        if (type is INamedTypeSymbol named && named.IsGenericType && named.TypeArguments.Length == 1)
+        if (type is INamedTypeSymbol named && named.IsGenericType && named.TypeArguments.Length == 1 &&
+            IsSystemCollectionsGeneric(named) && CollectionMetadataNames.Contains(named.OriginalDefinition.MetadataName))
         {
-            var ns = named.OriginalDefinition.ContainingNamespace?.ToDisplayString() ?? string.Empty;
+            var itemSymbol = named.TypeArguments[0];
+            return (true, itemSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat), itemSymbol);
+        }
+
+        return (false, null, null);
+    }
+
+    private static (bool IsDictionary, string? KeyTypeFull, string? ValueTypeFull, ITypeSymbol? ValueSymbol) GetDictionaryInfo(ITypeSymbol type)
+    {
+        if (type is INamedTypeSymbol named && named.IsGenericType && named.TypeArguments.Length == 2)
+        {
             var meta = named.OriginalDefinition.MetadataName;
-
-            if (ns == "System.Collections.Generic" &&
-                (meta == "IEnumerable`1" || meta == "ICollection`1" || meta == "IList`1" ||
-                 meta == "List`1" || meta == "IReadOnlyList`1" || meta == "IReadOnlyCollection`1"))
+            if (IsSystemCollectionsGeneric(named) &&
+                (meta == "Dictionary`2" || meta == "IDictionary`2" || meta == "IReadOnlyDictionary`2"))
             {
-                return (true, named.TypeArguments[0].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+                var keyFull = named.TypeArguments[0].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                var valueFull = named.TypeArguments[1].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                return (true, keyFull, valueFull, named.TypeArguments[1]);
             }
         }
 
-        return (false, null);
+        return (false, null, null, null);
     }
 
-    // ── Code generation ───────────────────────────────────────────────────────
+    private static bool IsSystemCollectionsGeneric(INamedTypeSymbol type)
+        => type.OriginalDefinition.ContainingNamespace?.ToDisplayString() == "System.Collections.Generic";
 
-    private static string GenerateSource(BuilderModel model)
+    private static bool IsMutableCollection(ITypeSymbol type)
     {
-        var sb = new StringBuilder(4096);
-
-        sb.AppendLine("// <auto-generated/>");
-        sb.AppendLine("#nullable enable");
-        sb.AppendLine();
-
-        if (!string.IsNullOrEmpty(model.Namespace))
-        {
-            sb.AppendLine($"namespace {model.Namespace};");
-            sb.AppendLine();
-        }
-
-        var classRef = string.IsNullOrEmpty(model.Namespace)
-            ? $"global::{model.ClassName}"
-            : $"global::{model.Namespace}.{model.ClassName}";
-
-        var baseClass = model.ExceptionFullName is not null
-            ? $"global::FrenchExDev.Net.Builder.AbstractBuilder<{classRef}, {model.ExceptionFullName}>"
-            : $"global::FrenchExDev.Net.Builder.AbstractBuilder<{classRef}>";
-
-        sb.AppendLine($"public partial class {model.ClassName}Builder : {baseClass}");
-        sb.AppendLine("{");
-
-        AppendInputProperties(sb, model);
-        AppendValidationMethods(sb, model);
-        AppendValidateAsync(sb, model);
-        AppendBuildException(sb, model);
-        AppendInstantiate(sb, model, classRef);
-
-        sb.AppendLine("}");
-
-        return sb.ToString();
+        if (type is not INamedTypeSymbol named) return false;
+        if (!IsSystemCollectionsGeneric(named)) return false;
+        var meta = named.OriginalDefinition.MetadataName;
+        return meta == "List`1" || meta == "IList`1" || meta == "ICollection`1";
     }
 
-    private static void AppendInputProperties(StringBuilder sb, BuilderModel model)
+    private static bool HasBuilderAttribute(ITypeSymbol type)
     {
-        var builderName = $"{model.ClassName}Builder";
-        sb.AppendLine("    // ── Input properties ─────────────────────────────────────────────");
-        foreach (var prop in model.Properties)
+        if (type is INamedTypeSymbol { IsGenericType: true } nullable &&
+            nullable.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
         {
-            sb.AppendLine($"    protected {prop.NullableTypeFull} {prop.Name} {{ get; private set; }}");
-            sb.AppendLine($"    public {builderName} With{prop.Name}({prop.NullableTypeFull} value) {{ {prop.Name} = value; return this; }}");
+            type = nullable.TypeArguments[0];
         }
-        sb.AppendLine();
+
+        foreach (var a in type.GetAttributes())
+        {
+            if (a.AttributeClass?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == AttributeFullNameGlobal)
+                return true;
+        }
+        return false;
     }
 
-    private static void AppendValidationMethods(StringBuilder sb, BuilderModel model)
+    private static string? Singularize(string name)
     {
-        if (model.Properties.Count == 0) return;
-
-        sb.AppendLine("    // ── Per-property validation (virtual, overridable) ────────────────");
-        foreach (var prop in model.Properties)
-        {
-            sb.AppendLine(
-                $"    protected virtual global::System.Collections.Generic.IEnumerable<global::System.Exception>?" +
-                $" Validate{prop.Name}({prop.NullableTypeFull} value) => null;");
-
-            if (prop.IsCollection && prop.ItemTypeFull is not null)
-                sb.AppendLine(
-                    $"    protected virtual global::System.Collections.Generic.IEnumerable<global::System.Exception>?" +
-                    $" Validate{prop.Name}Item({prop.ItemTypeFull} item, int index) => null;");
-        }
-        sb.AppendLine();
+        if (name.Length > 1 && name.EndsWith("s"))
+            return name.Substring(0, name.Length - 1);
+        return null;
     }
-
-    private static void AppendValidateAsync(StringBuilder sb, BuilderModel model)
-    {
-        const string VR = "global::FrenchExDev.Net.Builder.ValidationResult";
-        const string ResultVR = "global::FrenchExDev.Net.Result.Result<global::FrenchExDev.Net.Builder.ValidationResult>";
-        const string EmptyErr = "global::System.Array.Empty<global::System.Exception>()";
-        const string MemberName = "global::FrenchExDev.Net.Builder.MemberName";
-
-        sb.AppendLine("    // ── ValidateAsync ─────────────────────────────────────────────────");
-        sb.AppendLine($"    protected override global::System.Threading.Tasks.Task<{ResultVR}> ValidateAsync(");
-        sb.AppendLine("        global::System.Threading.CancellationToken cancellationToken = default)");
-        sb.AppendLine("    {");
-        sb.AppendLine($"        var __result = new {VR}();");
-        sb.AppendLine($"        var __type = typeof({model.ClassName}Builder);");
-
-        if (model.Properties.Count > 0)
-            sb.AppendLine();
-
-        foreach (var prop in model.Properties)
-        {
-            sb.AppendLine(
-                $"        foreach (var __err in Validate{prop.Name}({prop.Name}) ?? {EmptyErr})");
-            sb.AppendLine(
-                $"            __result.AddError(new {MemberName}(nameof({prop.Name}), __type), __err);");
-
-            if (prop.IsCollection && prop.ItemTypeFull is not null)
-            {
-                var idxVar = $"__{prop.Name}Idx";
-                var itemVar = $"__{prop.Name}Item";
-                sb.AppendLine($"        if ({prop.Name} is not null)");
-                sb.AppendLine("        {");
-                sb.AppendLine($"            var {idxVar} = 0;");
-                sb.AppendLine($"            foreach (var {itemVar} in {prop.Name})");
-                sb.AppendLine("            {");
-                sb.AppendLine(
-                    $"                foreach (var __err in Validate{prop.Name}Item({itemVar}, {idxVar}) ?? {EmptyErr})");
-                // Produces: $"{nameof(Prop)}[{__PropIdx}]"
-                sb.AppendLine(
-                    $"                    __result.AddError(new {MemberName}(" +
-                    "$\"" + $"{{nameof({prop.Name})}}[{{{idxVar}}}]" + "\", __type), __err);");
-                sb.AppendLine($"                {idxVar}++;");
-                sb.AppendLine("            }");
-                sb.AppendLine("        }");
-            }
-
-            sb.AppendLine();
-        }
-
-        sb.AppendLine(
-            $"        return global::System.Threading.Tasks.Task.FromResult(");
-        sb.AppendLine(
-            $"            global::FrenchExDev.Net.Result.Result<{VR}>.Success(__result));");
-        sb.AppendLine("    }");
-        sb.AppendLine();
-    }
-
-    private static void AppendBuildException(StringBuilder sb, BuilderModel model)
-    {
-        const string ResultVR = "global::FrenchExDev.Net.Result.Result<global::FrenchExDev.Net.Builder.ValidationResult>";
-
-        sb.AppendLine("    // ── BuildException ───────────────────────────────────────────────");
-
-        if (model.ExceptionFullName is not null)
-        {
-            sb.AppendLine($"    protected override {model.ExceptionFullName} TypedBuildException(");
-            sb.AppendLine($"        {ResultVR} validationResult)");
-            sb.AppendLine("        => new(validationResult.ValueOrThrow().ToDataAnnotationsValidationResult().ErrorMessage);");
-        }
-        else
-        {
-            sb.AppendLine("    protected override global::System.Exception BuildException(");
-            sb.AppendLine($"        {ResultVR} validationResult)");
-            sb.AppendLine("        => new global::System.InvalidOperationException(");
-            sb.AppendLine("            validationResult.ValueOrThrow().ToDataAnnotationsValidationResult().ErrorMessage);");
-        }
-
-        sb.AppendLine();
-    }
-
-    private static void AppendInstantiate(StringBuilder sb, BuilderModel model, string classRef)
-    {
-        var refT = $"global::FrenchExDev.Net.Builder.Reference<{classRef}>";
-        var resultRefT = $"global::FrenchExDev.Net.Result.Result<{refT}>";
-
-        sb.AppendLine("    // ── Instantiate (sealed bridge — hides Reference<T>) ─────────────");
-        sb.AppendLine($"    protected sealed override async global::System.Threading.Tasks.Task<{resultRefT}> Instantiate(");
-        sb.AppendLine($"        {refT} reference,");
-        sb.AppendLine("        global::FrenchExDev.Net.Builder.VisitedObjects visitedObjects,");
-        sb.AppendLine("        global::System.Threading.CancellationToken cancellationToken = default)");
-        sb.AppendLine("    {");
-
-        if (model.ExceptionFullName is not null)
-        {
-            sb.AppendLine("        var __res = await InstantiateAsync(cancellationToken).ConfigureAwait(false);");
-            sb.AppendLine("        if (__res.IsFailure)");
-            sb.AppendLine($"            return {resultRefT}.Failure(");
-            sb.AppendLine("                new global::System.ComponentModel.DataAnnotations.ValidationResult(__res.Error!.Message));");
-            sb.AppendLine("        reference.Resolve(__res.Value!);");
-        }
-        else
-        {
-            sb.AppendLine("        var __value = await CreateAsync(cancellationToken).ConfigureAwait(false);");
-            sb.AppendLine("        reference.Resolve(__value);");
-        }
-
-        sb.AppendLine($"        return {resultRefT}.Success(reference);");
-        sb.AppendLine("    }");
-        sb.AppendLine();
-
-        // Developer-facing partial method
-        sb.AppendLine("    // ── Developer must implement ─────────────────────────────────────");
-        if (model.ExceptionFullName is not null)
-        {
-            var resultT = $"global::FrenchExDev.Net.Result.Result<{classRef}, {model.ExceptionFullName}>";
-            sb.AppendLine($"    protected override partial global::System.Threading.Tasks.Task<{resultT}> InstantiateAsync(");
-            sb.AppendLine("        global::System.Threading.CancellationToken cancellationToken = default);");
-        }
-        else
-        {
-            sb.AppendLine($"    protected partial global::System.Threading.Tasks.Task<{classRef}> CreateAsync(");
-            sb.AppendLine("        global::System.Threading.CancellationToken cancellationToken = default);");
-        }
-    }
-}
-
-// ── Internal models ───────────────────────────────────────────────────────────
-
-internal sealed class BuilderModel
-{
-    public BuilderModel(
-        string ns,
-        string className,
-        string? exceptionFullName,
-        IReadOnlyList<PropertyModel> properties)
-    {
-        Namespace = ns;
-        ClassName = className;
-        ExceptionFullName = exceptionFullName;
-        Properties = properties;
-    }
-
-    public string Namespace { get; }
-    public string ClassName { get; }
-    public string? ExceptionFullName { get; }
-    public IReadOnlyList<PropertyModel> Properties { get; }
-}
-
-internal sealed class PropertyModel
-{
-    public PropertyModel(
-        string name,
-        string typeFull,
-        string nullableTypeFull,
-        bool isCollection,
-        string? itemTypeFull)
-    {
-        Name = name;
-        TypeFull = typeFull;
-        NullableTypeFull = nullableTypeFull;
-        IsCollection = isCollection;
-        ItemTypeFull = itemTypeFull;
-    }
-
-    public string Name { get; }
-    public string TypeFull { get; }
-    public string NullableTypeFull { get; }
-    public bool IsCollection { get; }
-    public string? ItemTypeFull { get; }
 }

@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "Root",
+			"path": "./"
+		},
+		{
+			"name": "Infra",
+			"path": "./Infra"
+		},
+		{
+			"name": "FrenchExDev.PoSh",
+			"path": "./PoSh/FrenchExDev"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "Infra"
+	}
+}

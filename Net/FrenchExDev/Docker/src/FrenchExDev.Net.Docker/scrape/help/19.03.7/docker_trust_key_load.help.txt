@@ -1,0 +1,7 @@
+
+Usage:	docker trust key load [OPTIONS] KEYFILE
+
+Load a private key file for signing
+
+Options:
+      --name string   Name for the loaded key (default "signer")

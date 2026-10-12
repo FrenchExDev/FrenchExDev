@@ -1,0 +1,132 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# Vos — Vagrant On Steroids
+# Static Vagrantfile — reads config-vos.yaml at runtime
+
+VAGRANT_VERSION = 2
+
+ENV["LC_ALL"] = "en_US.UTF-8"
+debug = ENV["VOS_DEBUG"] == "true"
+
+require 'pathname'
+require 'yaml'
+
+dir = File.dirname(File.expand_path(__FILE__))
+
+config_vos = YAML.load_file(File.join(dir, "config-vos.yaml"))
+local_path = File.join(dir, "local", "config-vos-local.yaml")
+if File.exist?(local_path)
+  local_config = YAML.load_file(local_path)
+  config_vos = Vagrant::Util::DeepMerge.deep_merge(config_vos, local_config)
+end
+
+Vagrant.configure(VAGRANT_VERSION) do |config|
+
+  if config_vos['vagrant'] && config_vos['vagrant']['plugins']
+    plugins = config_vos['vagrant']['plugins']
+
+    if Vagrant.has_plugin?('vagrant-hostmanager') && plugins.dig('vagrant-hostmanager', 'enabled')
+      pc = plugins['vagrant-hostmanager']['config'] || {}
+      config.hostmanager.enabled       = pc['hostmanager.enabled'] || false
+      config.hostmanager.manage_host   = pc['hostmanager.manage_host'] || false
+      config.hostmanager.manage_guest  = pc['hostmanager.manage_guest'] || false
+    end
+
+    if Vagrant.has_plugin?('vagrant-vbguest') && plugins.dig('vagrant-vbguest', 'enabled')
+      pc = plugins['vagrant-vbguest']['config'] || {}
+      config.vbguest.auto_update = pc['vbguest.auto_update'] || false
+      config.vbguest.auto_reboot = pc['vbguest.auto_reboot'] || false
+    end
+  end
+
+  vbox_defaults = config_vos.dig('vagrant', 'virtualbox') || {}
+
+  (config_vos['machines'] || {}).each do |machine_name, machine|
+    next unless machine['enabled']
+
+    type_name = machine['machine_type']
+    mt = (config_vos['machine_types'] || {})[type_name]
+    raise "Machine '#{machine_name}' references unknown type '#{type_name}'" unless mt
+
+    merged = Vagrant::Util::DeepMerge.deep_merge(vbox_defaults, mt)
+
+    (machine['instances'] || []).each do |instance|
+      vm_name = instance['name']
+      puts "Defining VM: #{vm_name}" if debug
+
+      config.vm.define vm_name, primary: false do |srv|
+        srv.vm.hostname = instance['hostname'] || vm_name
+        srv.vm.box = merged['box']
+        srv.vm.box_version = merged['box_version'] if merged['box_version']
+        config.vm.box_check_update = false
+
+        (instance['networking'] || []).each do |net|
+          if net['kind'] == 'private'
+            opts = { ip: net['ip'] }
+            opts[:mac] = net['mac'] if net['mac']
+            srv.vm.network 'private_network', **opts
+          elsif net['kind'] == 'public'
+            opts = {}
+            opts[:bridge] = net['bridge'] if net['bridge']
+            opts[:mac] = net['mac'] if net['mac']
+            srv.vm.network 'public_network', **opts
+          end
+        end
+
+        (merged['disks'] || {}).each do |disk_name, disk|
+          srv.vm.disk :disk, name: disk_name, size: disk['size'], primary: disk['primary'] || false
+        end
+
+        provider = merged.dig('provider', 'type') || 'virtualbox'
+        if provider == 'virtualbox'
+          srv.vm.provider "virtualbox" do |vb|
+            vb.memory = instance['memory'] || merged.dig('provider', 'memory') || 2048
+            vb.cpus   = instance['cpus'] || merged.dig('provider', 'cpus') || 2
+            vb.gui    = merged.dig('provider', 'gui') || false
+            vb.linked_clone = merged.fetch('linked_clones', true)
+            vb.check_guest_additions = merged.fetch('check_guest_additions', false)
+
+            (merged['manage'] || {}).each do |key, value|
+              vb.customize ["modifyvm", :id, "--#{key}", value.to_s]
+            end
+
+            (merged.dig('provider', 'vboxmanage') || []).each do |cmd|
+              resolved = cmd.map { |arg| arg.to_s.gsub("{{ .Name }}", ":id") }
+              vb.customize resolved
+            end
+
+            (merged['storagectl'] || []).each { |args| vb.customize ["storagectl", :id] + args }
+            (merged['storageattach'] || []).each { |args| vb.customize ["storageattach", :id] + args }
+          end
+        end
+
+        (merged['files'] || {}).each do |_, f|
+          next if f['enabled'] == false
+          srv.vm.provision "file", source: f['source'], destination: f['destination']
+        end
+
+        (merged['shared_folders'] || {}).each do |_, sf|
+          next if sf['enabled'] == false
+          srv.vm.synced_folder sf['host_path'], sf['guest_path'],
+            type: sf['type'], disabled: sf['disabled'] || false
+        end
+
+        prov_path = merged['provisioning_path'] || 'provisioning'
+        (merged['provisioning'] || {}).each do |key, step|
+          next if step['enabled'] == false
+          puts "  Provisioning: #{key}" if debug
+
+          ext = step['extension'] || 'sh'
+          version = step['version']
+          path = version ? "./#{prov_path}/#{version}/#{key}.#{ext}" : "./#{prov_path}/#{key}.#{ext}"
+
+          srv.vm.provision :reload if step['reload_before']
+          srv.vm.provision "shell", name: key, path: path,
+            env: step['env'] || {}, privileged: step['privileged'] || false
+          srv.vm.provision :reload if step['reload_after']
+        end
+
+      end
+    end
+  end
+end

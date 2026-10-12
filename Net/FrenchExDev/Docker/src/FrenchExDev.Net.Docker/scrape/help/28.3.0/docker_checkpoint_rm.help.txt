@@ -1,0 +1,9 @@
+Usage:  docker checkpoint rm [OPTIONS] CONTAINER CHECKPOINT
+
+Remove a checkpoint
+
+Aliases:
+  docker checkpoint rm, docker checkpoint remove
+
+Options:
+      --checkpoint-dir string   Use a custom checkpoint storage directory

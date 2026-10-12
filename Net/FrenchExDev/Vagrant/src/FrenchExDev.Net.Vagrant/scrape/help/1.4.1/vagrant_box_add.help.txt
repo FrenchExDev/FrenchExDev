@@ -1,0 +1,11 @@
+Usage: vagrant box add <name> <url> [--provider provider] [-h]
+
+        --checksum VALUE             Checksum
+        --checksum-type VALUE        Checksum type
+    -c, --clean                      Remove old temporary download if it exists.
+    -f, --force                      Overwrite an existing box if it exists.
+        --insecure                   If set, SSL certs will not be validated.
+        --cacert certfile            CA certificate
+        --cert certfile              The client SSL cert
+        --provider provider          The provider that backs the box.
+    -h, --help                       Print this help

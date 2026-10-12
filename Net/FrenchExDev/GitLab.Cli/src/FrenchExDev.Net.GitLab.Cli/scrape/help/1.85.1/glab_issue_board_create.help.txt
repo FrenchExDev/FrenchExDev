@@ -1,0 +1,13 @@
+
+  Create a project issue board.                                                                                         
+         
+  USAGE  
+         
+    glab issue board create [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -n --name  The name of the new board
+    -R --repo  Select another repository using the OWNER/REPO format or the project ID. Supports group namespaces.
+

@@ -1,0 +1,686 @@
+{
+  "pluginKind": "builder",
+  "typeName": "googlecompute",
+  "repo": "hashicorp/packer-plugin-googlecompute",
+  "sourcePath": "builder/googlecompute/config.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "access_token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "account_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "credentials_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "credentials_json",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "impersonate_service_account",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vault_gcp_oauth_engine",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "communicator",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "pause_before_connecting",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_keypair_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_key_pair_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_key_pair_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_key_pair_bits",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_ciphers",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_clear_authorized_keys",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_key_exchange_algorithms",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_private_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_certificate_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_pty",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_wait_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_agent_auth",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_disable_agent_forwarding",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_handshake_attempts",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_agent_auth",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_interactive",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_private_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_certificate_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_file_transfer_method",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_keep_alive_interval",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_read_write_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_remote_tunnels",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_local_tunnels",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_public_key",
+      "ctyType": "cty.List(cty.Number)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_private_key",
+      "ctyType": "cty.List(cty.Number)",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_no_proxy",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_use_ssl",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_insecure",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_use_ntlm",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "project_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "accelerator_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "accelerator_count",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "address",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "disable_default_service_account",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_size",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "enable_nested_virtualization",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "enable_secure_boot",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "enable_vtpm",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "enable_integrity_monitoring",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_iap",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "iap_localhost_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "iap_hashbang",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "iap_ext",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "iap_tunnel_launch_wait",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_create_image",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_architecture",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_family",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_labels",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_licenses",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_guest_os_features",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_project_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_signatures_db",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_platform_key",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_key_exchange_key",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_forbidden_signatures_db",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_storage_locations",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "instance_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "labels",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "machine_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "metadata",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "metadata_files",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "min_cpu_platform",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "network",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "network_project_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "omit_external_ip",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "on_host_maintenance",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "max_run_duration_in_seconds",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "instance_termination_action",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "preemptible",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "state_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "region",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "scopes",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "service_account_email",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "source_image",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "source_image_family",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "source_image_project_id",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "startup_script_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "windows_password_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "wrap_startup_script",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "subnetwork",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "tags",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "resource_manager_tags",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_internal_ip",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_os_login",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "network_ip",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "oslogin_ssh_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "oslogin_ssh_key_expire_after",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "wait_to_add_ssh_keys",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "zone",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "deprecate_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "obsolete_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "delete_at",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "universe_domain",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "custom_endpoints",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": [
+    {
+      "hclName": "disk_attachment",
+      "nestedTypeName": "disk_attachment"
+    },
+    {
+      "hclName": "node_affinity",
+      "nestedTypeName": "node_affinity"
+    },
+    {
+      "hclName": "disk_encryption_key",
+      "nestedTypeName": "disk_encryption_key"
+    },
+    {
+      "hclName": "image_encryption_key",
+      "nestedTypeName": "image_encryption_key"
+    }
+  ]
+}

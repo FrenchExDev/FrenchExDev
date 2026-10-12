@@ -1,0 +1,13 @@
+Description:
+  Uninstall one or more workloads.
+
+Usage:
+  dotnet workload uninstall <workloadId>... [options]
+
+Arguments:
+  <WORKLOAD_ID>  The NuGet package ID of the workload to install.
+
+Options:
+  -v, --verbosity <LEVEL>  Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. [default: normal]
+  -?, -h, --help           Show command line help.
+

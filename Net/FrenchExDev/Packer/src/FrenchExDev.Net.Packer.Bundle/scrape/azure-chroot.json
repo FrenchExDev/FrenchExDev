@@ -1,0 +1,239 @@
+{
+  "pluginKind": "builder",
+  "typeName": "azure-chroot",
+  "repo": "hashicorp/packer-plugin-azure",
+  "sourcePath": "builder/azure/chroot/builder.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_create_image",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "cloud_environment_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "metadata_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "client_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "client_secret",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "client_cert_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "client_cert_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "client_jwt",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "object_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "tenant_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "subscription_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "oidc_request_token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "oidc_request_url",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_azure_cli_auth",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "from_scratch",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "source",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "command_wrapper",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "manual_mount_command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "pre_mount_commands",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_options",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_partition",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "post_mount_commands",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_mounts",
+      "ctyType": "cty.List(cty.List(cty.String))",
+      "isRequired": false
+    },
+    {
+      "hclName": "copy_files",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "os_disk_size_gb",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "os_disk_storage_account_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "os_disk_cache_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "data_disk_storage_account_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "data_disk_cache_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_hyperv_generation",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_os_disk_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_os_disk_snapshot_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_data_disk_id_prefix",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_data_disk_snapshot_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_cleanup",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_resource_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": [
+    {
+      "hclName": "shared_image_destination",
+      "nestedTypeName": "shared_image_destination"
+    }
+  ]
+}

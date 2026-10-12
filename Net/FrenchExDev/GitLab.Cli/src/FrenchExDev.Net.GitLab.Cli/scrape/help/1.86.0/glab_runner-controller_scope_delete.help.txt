@@ -1,0 +1,30 @@
+
+  Deletes a scope from a runner controller. This is an administrator-only feature.                                      
+                                                                                                                        
+  Only instance-level scopes are supported. Use the `--instance` flag                                                   
+  to remove an instance-level scope from the runner controller.                                                         
+                                                                                                                        
+  This feature is an experiment and is not ready for production use.                                                    
+  It might be unstable or removed at any time.                                                                          
+  For more information, see                                                                                             
+  https://docs.gitlab.com/policy/development_stages_support/.                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner-controller scope delete <controller-id> [--flags]                   
+            
+  EXAMPLES  
+            
+    # Remove an instance-level scope from runner controller 42 (with confirmation)  
+    $ glab runner-controller scope delete 42 --instance                             
+                                                                                    
+    # Remove an instance-level scope without confirmation                           
+    $ glab runner-controller scope delete 42 --instance --force                     
+         
+  FLAGS  
+         
+    -f --force  Skip confirmation prompt.
+    -h --help   Show help for this command.
+    --instance  Remove an instance-level scope.
+

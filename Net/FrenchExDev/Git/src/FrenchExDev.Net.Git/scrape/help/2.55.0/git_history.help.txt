@@ -1,0 +1,4 @@
+usage: git history fixup <commit> [--dry-run] [--update-refs=(branches|head)] [--reedit-message] [--empty=(drop|keep|abort)]
+   or: git history reword <commit> [--dry-run] [--update-refs=(branches|head)]
+   or: git history split <commit> [--dry-run] [--update-refs=(branches|head)] [--] [<pathspec>...]
+

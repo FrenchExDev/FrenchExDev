@@ -1,0 +1,12 @@
+
+  List eligible approvers for merge requests in any state.                                                              
+         
+  USAGE  
+         
+    glab mr approvers [<id> | <branch>] [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

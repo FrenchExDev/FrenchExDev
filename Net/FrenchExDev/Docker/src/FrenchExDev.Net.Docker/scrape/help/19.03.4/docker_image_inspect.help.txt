@@ -1,0 +1,7 @@
+
+Usage:	docker image inspect [OPTIONS] IMAGE [IMAGE...]
+
+Display detailed information on one or more images
+
+Options:
+  -f, --format string   Format the output using the given Go template

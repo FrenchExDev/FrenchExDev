@@ -1,0 +1,11 @@
+Usage: vagrant snapshot <subcommand> [<args>]
+
+Available subcommands:
+     delete
+     list
+     pop
+     push
+     restore
+     save
+
+For help on any individual subcommand run `vagrant snapshot <subcommand> -h`

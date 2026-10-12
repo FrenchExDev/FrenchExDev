@@ -1,0 +1,20 @@
+
+  Work with GitLab Duo directly in your terminal. Receive AI-native assistance                                          
+  across the software development lifecycle, without switching contexts.                                                
+                                                                                                                        
+  Retrieve forgotten Git commands and get guidance on Git operations, or interact                                       
+  with the GitLab Duo Agent Platform through the GitLab Duo CLI (Beta).                                                 
+                                                                                                                        
+         
+  USAGE  
+         
+    glab duo <command> prompt [command] [--flags]  
+            
+  COMMANDS  
+            
+    cli [command] [--flags]  Run the GitLab Duo CLI (Beta)
+         
+  FLAGS  
+         
+    -h --help                Show help for this command.
+

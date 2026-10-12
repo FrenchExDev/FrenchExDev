@@ -1,0 +1,24 @@
+solution: FrenchExDev.Net.Traefik.slnx
+
+coverage:
+  - "**/coverage.cobertura.xml"
+
+output: .quality-gate/
+
+gates:
+  # Relaxed thresholds — generated builders (ValidateAsync) have high CC/Cognitive
+  # due to many properties (worst: TraefikHeadersMiddlewareBuilder with ~40 props)
+  max-cyclomatic-complexity: 100
+  max-cognitive-complexity: 200
+  max-class-coupling: 200
+  max-inheritance-depth: 5
+  min-maintainability-index: 20
+  max-lcom: 40
+  max-distance-from-main-sequence: 1.0
+  max-duplication-percent: 5
+  min-test-quality-score: 0.03
+
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"
+  - "**/Generated/**"

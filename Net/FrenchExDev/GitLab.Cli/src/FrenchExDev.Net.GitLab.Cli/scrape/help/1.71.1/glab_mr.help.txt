@@ -1,0 +1,47 @@
+Create, view, and manage merge requests.
+
+USAGE
+  glab mr <command> [flags]
+
+CORE COMMANDS
+  approve:    Approve merge requests.
+  approvers:  List eligible approvers for merge requests in any state.
+  checkout:   Check out an open merge request.
+  close:      Close a merge request.
+  create:     Create a new merge request.
+  delete:     Delete a merge request.
+  diff:       View changes in a merge request.
+  for:        Create a new merge request for an issue.
+  issues:     Get issues related to a particular merge request.
+  list:       List merge requests.
+  merge:      Merge or accept a merge request.
+  note:       Add a comment or note to a merge request.
+  rebase:     Rebase the source branch of a merge request against its target branch.
+  reopen:     Reopen a merge request.
+  revoke:     Revoke approval on a merge request.
+  subscribe:  Subscribe to a merge request.
+  todo:       Add a to-do item to merge request.
+  unsubscribe: Unsubscribe from a merge request.
+  update:     Update a merge request.
+  view:       Display the title, body, and other information about a merge request.
+
+FLAGS
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+ARGUMENTS
+  A merge request can be supplied as argument in any of the following formats:
+  - by number, e.g. "123"; or
+  - by the name of its source branch, e.g. "patch-1" or "OWNER:patch-1"; or
+  - by URL, e.g. "https://gitlab.com/gitlab-org/cli/-/merge_requests/123".
+
+EXAMPLES
+  $ glab mr create --fill --label bugfix                                                                              
+    $ glab mr merge 123                                                                                                 
+    $ glab mr note -m "needs to do X before it can be merged" branch-foo
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

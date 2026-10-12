@@ -1,0 +1,13 @@
+
+
+Usage: dotnet nuget list [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  client-cert  Lists all the client certificates in the configuration.
+  source       Lists all configured NuGet sources.
+
+Use "list [command] --help" for more information about a command.
+

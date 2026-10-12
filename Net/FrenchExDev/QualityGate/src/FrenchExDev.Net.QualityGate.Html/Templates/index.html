@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quality Gate Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <h1>Quality Gate Dashboard</h1>
+</header>
+
+<div id="app">
+  <div class="container">
+
+    <section id="run-list">
+      <h2 class="section-title">Runs</h2>
+      <div id="runs-table-container">
+        <p class="loading">Loading runs&hellip;</p>
+      </div>
+    </section>
+
+    <section id="diff-viewer" class="hidden">
+      <h2 class="section-title">Diff Viewer</h2>
+      <div class="diff-controls">
+        <button id="btn-diff" class="btn" disabled>Compare Selected Runs</button>
+        <button id="btn-clear-diff" class="btn btn-secondary hidden">Clear Diff</button>
+      </div>
+      <div id="diff-content"></div>
+    </section>
+
+    <section id="trend-charts" class="hidden">
+      <h2 class="section-title">Trends</h2>
+      <div id="trend-container"></div>
+    </section>
+
+    <section id="detail-panel" class="hidden">
+      <h2 class="section-title">Run Details</h2>
+      <div id="detail-content"></div>
+    </section>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+usage: git hook run [--allow-unknown-hook-name] [--ignore-missing] [--to-stdin=<path>] <hook-name> [-- <hook-args>]
+   or: git hook list [--allow-unknown-hook-name] [-z] [--show-scope] <hook-name>
+

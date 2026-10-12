@@ -1,0 +1,18 @@
+
+Usage:	docker engine activate [OPTIONS]
+
+Activate Enterprise Edition
+
+Options:
+      --containerd string        override default location of containerd
+                                 endpoint
+      --display-only             only display license information and exit
+      --engine-image string      Specify engine image
+      --format string            Pretty-print licenses using a Go template
+      --license string           License File
+      --quiet                    Only display available licenses by ID
+      --registry-prefix string   Override the default location where
+                                 engine images are pulled (default
+                                 "docker.io/store/docker")
+      --version string           Specify engine version (default is to
+                                 use currently running version)

@@ -1,0 +1,17 @@
+
+
+Usage: dotnet dev-certs https [options]
+
+Options:
+  -ep|--export-path  Full path to the exported certificate
+  -p|--password      Password to use when exporting the certificate with the private key into a pfx file or to encrypt the Pem exported key
+  -np|--no-password  Explicitly request that you don't use a password for the key when exporting a certificate to a PEM format
+  -c|--check         Check for the existence of the certificate but do not perform any action
+  --clean            Cleans all HTTPS development certificates from the machine.
+  -i|--import        Imports the provided HTTPS development certificate into the machine. All other HTTPS developer certificates will be cleared out
+  --format           Export the certificate in the given format. Valid values are Pfx and Pem. Pfx is the default.
+  -t|--trust         Trust the certificate on the current platform. When combined with the --check option, validates that the certificate is trusted.
+  -v|--verbose       Display more debug information.
+  -q|--quiet         Display warnings and errors only.
+  -h|--help          Show help information
+

@@ -1,0 +1,9 @@
+
+Usage:	docker builder COMMAND
+
+Manage builds
+
+Commands:
+  prune       Remove build cache
+
+Run 'docker builder COMMAND --help' for more information on a command.

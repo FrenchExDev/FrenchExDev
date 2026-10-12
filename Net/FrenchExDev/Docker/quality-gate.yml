@@ -1,0 +1,21 @@
+solution: FrenchExDev.Net.Docker.slnx
+
+coverage:
+  - "**/coverage.cobertura.xml"
+
+output: .quality-gate/
+
+gates:
+  max-cyclomatic-complexity: 15
+  max-cognitive-complexity: 20
+  max-class-coupling: 70
+  max-inheritance-depth: 5
+  min-maintainability-index: 55
+  max-lcom: 25
+  max-distance-from-main-sequence: 1.0
+  max-duplication-percent: 5
+  min-test-quality-score: 0.85
+
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"

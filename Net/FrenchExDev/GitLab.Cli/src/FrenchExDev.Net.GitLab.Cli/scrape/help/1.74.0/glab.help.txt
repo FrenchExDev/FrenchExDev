@@ -1,0 +1,46 @@
+
+  GLab is an open source GitLab CLI tool that brings GitLab to your command line.                                       
+         
+  USAGE  
+         
+    glab <command> <subcommand> [command] [--flags]  
+            
+  COMMANDS  
+            
+    alias [command] [--flags]                 Create, list, and delete aliases.
+    api <endpoint> [--flags]                  Make an authenticated request to the GitLab API.
+    auth <command> [command]                  Manage glab's authentication state.
+    changelog <command> [command] [--flags]   Interact with the changelog API.
+    check-update                              Check for latest glab releases.
+    ci <command> [command] [--flags]          Work with GitLab CI/CD pipelines and jobs.
+    cluster <command> [command] [--flags]     Manage GitLab Agents for Kubernetes and their clusters.
+    completion [--flags]                      Generate shell completion scripts.
+    config [command] [--flags]                Manage glab settings.
+    deploy-key <command> [command] [--flags]  Manage deploy keys.
+    duo <command> prompt [command]            Work with GitLab Duo
+    help [command]                            Help about any command
+    incident [command] [--flags]              Work with GitLab incidents.
+    issue [command] [--flags]                 Work with GitLab issues.
+    iteration <command> [command] [--flags]   Retrieve iteration information.
+    job <command> [command] [--flags]         Work with GitLab CI/CD jobs.
+    label <command> [command] [--flags]       Manage labels on remote.
+    mcp <command> [command]                   Work with a Model Context Protocol (MCP) server. (EXPERIMENTAL)
+    mr <command> [command] [--flags]          Create, view, and manage merge requests.
+    opentofu <command> [command] [--flags]    Work with the OpenTofu or Terraform integration.
+    release <command> [command] [--flags]     Manage GitLab releases.
+    repo <command> [command] [--flags]        Work with GitLab repositories and projects.
+    schedule <command> [command] [--flags]    Work with GitLab CI/CD schedules.
+    securefile <command> [command] [--flags]  Manage secure files for a project.
+    snippet <command> [command] [--flags]     Create, view and manage snippets.
+    ssh-key <command> [command] [--flags]     Manage SSH keys registered with your GitLab account.
+    stack <command> [command] [--flags]       Create, manage, and work with stacked diffs. (EXPERIMENTAL)
+    token [command] [--flags]                 Manage personal, project, or group tokens
+    user <command> [command] [--flags]        Interact with a GitLab user account.
+    variable [command] [--flags]              Manage variables for a GitLab project or group.
+    version                                   Show version information for glab.
+         
+  FLAGS  
+         
+    -h --help                                 Show help for this command.
+    -v --version                              Show glab version information
+

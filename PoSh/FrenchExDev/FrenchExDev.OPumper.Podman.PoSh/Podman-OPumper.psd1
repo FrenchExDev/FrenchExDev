@@ -1,0 +1,14 @@
+@{
+    RootModule='Podman-OPumper.psm1'
+    ModuleVersion='1.0.0'
+    GUID='41c57f87-d121-4b30-a5fa-cb434247d156'
+    Author='FrenchExDev'
+    PowerShellVersion='7.4'
+    CompatiblePSEditions=@('Core')
+    RequiredModules=@('OutputPump.PoSh')
+    FunctionsToExport=@('Get-PumpPodmanContainers','Get-PumpPodmanImages','Get-PumpPodmanLog')
+    CmdletsToExport=@()
+    VariablesToExport=@()
+    AliasesToExport=@()
+    PrivateData=@{OutputPumps=@{Version=1;ProviderId='podman';RegistrationScript='src/Setup-OutputPumps.ps1'}}
+}

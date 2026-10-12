@@ -1,0 +1,6 @@
+Usage: vagrant powershell [-- extra powershell args]
+
+Options:
+
+    -c, --command COMMAND            Execute a powershell command directly
+    -h, --help                       Print this help

@@ -1,0 +1,2 @@
+Usage: vagrant version
+    -h, --help                       Print this help

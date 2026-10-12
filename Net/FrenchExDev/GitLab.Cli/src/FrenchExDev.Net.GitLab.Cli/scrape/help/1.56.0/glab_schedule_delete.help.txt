@@ -1,0 +1,15 @@
+Delete the schedule with the specified ID.
+
+USAGE
+  glab schedule delete <id> [flags]
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  • glab schedule delete 10
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

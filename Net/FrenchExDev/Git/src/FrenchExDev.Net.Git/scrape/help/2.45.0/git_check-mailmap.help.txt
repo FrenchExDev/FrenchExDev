@@ -1,0 +1,4 @@
+usage: git check-mailmap [<options>] <contact>...
+
+    --[no-]stdin          also read contacts from stdin
+

@@ -1,0 +1,12 @@
+
+  Revoke a token of an agent.                                                                                           
+         
+  USAGE  
+         
+    glab cluster agent token revoke <agent-id> <token-id> [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

@@ -1,0 +1,17 @@
+
+
+Usage: dotnet nuget update client-cert [options]
+
+Options:
+  -s|--package-source             Package source name.
+  --path                          Path to certificate file.
+  --password                      Password for the certificate, if needed.
+  --store-password-in-clear-text  Enables storing password for the certificate by disabling password encryption.
+  --store-location                Certificate store location (see docs).
+  --store-name                    Certificate store name (see docs).
+  --find-by                       Search method to find certificate in certificate store (see docs).
+  --find-value                    Search the certificate store for the supplied value. Used with FindValue (see docs).
+  -f|--force                      Skip certificate validation.
+  --configfile                    The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -h|--help                       Show help information
+

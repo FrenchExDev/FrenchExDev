@@ -1,0 +1,6 @@
+Usage:  docker trust sign IMAGE:TAG
+
+Sign an image
+
+Options:
+      --local   Sign a locally tagged image

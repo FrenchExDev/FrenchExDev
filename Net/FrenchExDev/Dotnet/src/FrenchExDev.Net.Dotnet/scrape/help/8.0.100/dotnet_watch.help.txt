@@ -1,0 +1,57 @@
+Description:
+  
+  Environment variables:
+  
+    DOTNET_USE_POLLING_FILE_WATCHER
+    When set to '1' or 'true', dotnet-watch will poll the file system for
+    changes. This is required for some file systems, such as network shares,
+    Docker mounted volumes, and other virtual file systems.
+  
+    DOTNET_WATCH
+    dotnet-watch sets this variable to '1' on all child processes launched.
+  
+    DOTNET_WATCH_ITERATION
+    dotnet-watch sets this variable to '1' and increments by one each time
+    a file is changed and the command is restarted.
+  
+    DOTNET_WATCH_SUPPRESS_EMOJIS
+    When set to '1' or 'true', dotnet-watch will not show emojis in the 
+    console output.
+  
+  Remarks:
+    The special option '--' is used to delimit the end of the options and
+    the beginning of arguments that will be passed to the child dotnet process.
+  
+    For example: dotnet watch -- --verbose run
+  
+    Even though '--verbose' is an option dotnet-watch supports, the use of '--'
+    indicates that '--verbose' should be treated instead as an argument for
+    dotnet-run.
+  
+  Examples:
+    dotnet watch run
+    dotnet watch test
+  
+
+Usage:
+  dotnet-watch [<forwardedArgs>...] [options]
+
+Arguments:
+  <forwardedArgs>  Arguments to pass to the child dotnet process.
+
+Options:
+  -?, -h, --help         Show help and usage information
+  --version              Show version information
+  -q, --quiet            Suppresses all output except warnings and errors
+  -v, --verbose          Show verbose output
+  --no-hot-reload        Suppress hot reload for supported apps.
+  --non-interactive      Runs dotnet-watch in non-interactive mode. This option is only supported when running with Hot Reload enabled. Use this option to prevent console input from being captured.
+  --project              The project to watch
+  -lp, --launch-profile  The launch profile to start the project with (case-sensitive).
+  --no-launch-profile    Do not attempt to use launchSettings.json to configure the application.
+  -f, --framework        The target framework to run for. The target framework must also be specified in the project file.
+  --property             Properties to be passed to MSBuild.
+  --list                 Lists all discovered files without starting the watcher.
+
+
+

@@ -1,0 +1,22 @@
+
+  Search for GitLab repositories and projects by name.                                                                  
+         
+  USAGE  
+         
+    glab repo search [--flags]      
+            
+  EXAMPLES  
+            
+    glab project search -s "title"  
+    glab repo search -s "title"     
+    glab project find -s "title"    
+    glab project lookup -s "title"  
+         
+  FLAGS  
+         
+    -h --help      Show help for this command.
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (20)
+    -s --search    A string contained in the project name.
+

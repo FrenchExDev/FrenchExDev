@@ -1,0 +1,25 @@
+
+  Delete a group or project milestone.                                                                                  
+         
+  USAGE  
+         
+    glab milestone delete [--flags]                   
+            
+  EXAMPLES  
+            
+    # Delete milestone for the current project        
+    glab milestone delete 123                         
+                                                      
+    # Delete milestone for the specified project      
+    glab milestone delete 123 --project project-name  
+                                                      
+    # Delete milestone for the specified group        
+    glab milestone delete 123 --group group-name      
+         
+  FLAGS  
+         
+    --group    The ID or URL-encoded path of the group.
+    -h --help  Show help for this command.
+    --project  The ID or URL-encoded path of the project.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

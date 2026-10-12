@@ -1,0 +1,19 @@
+Run the specified scheduled pipeline.
+
+USAGE
+  glab schedule run <id> [flags]
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # Run a scheduled pipeline with ID 1                                             
+                                                                                     
+    $ glab schedule run 1                                                            
+                                                                                     
+    | Started schedule with ID 1
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

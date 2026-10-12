@@ -1,0 +1,23 @@
+Push an image to a specified destination
+
+Description:
+  Pushes a source image to a specified destination.
+
+	The Image "DESTINATION" uses a "transport":"details" format. See podman-push(1) section "DESTINATION" for the expected format.
+
+Usage:
+  podman image push [options] IMAGE [DESTINATION]
+
+Examples:
+  podman image push imageID docker://registry.example.com/repository:tag
+		podman image push imageID oci-archive:/path/to/layout:image:tag
+
+Options:
+      --authfile string             Path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override
+      --compression-format string   compression format to use
+      --creds Credentials           Credentials (USERNAME:PASSWORD) to use for authenticating to a registry
+      --disable-content-trust       This is a Docker specific option and is a NOOP
+  -f, --format string               Manifest type (oci, v2s2, or v2s1) to use in the destination (default is manifest type of source, with fallbacks)
+      --remove-signatures           Discard any pre-existing signatures in the image
+      --tls-verify                  Require HTTPS and verify certificates when contacting registries (default true)
+

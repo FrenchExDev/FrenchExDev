@@ -1,0 +1,18 @@
+
+  Reopen a resolved incident.                                                                                           
+         
+  USAGE  
+         
+    glab incident reopen [<id> | <url>] [--flags]                                   
+            
+  EXAMPLES  
+            
+    $ glab incident reopen 123                                                      
+    $ glab incident open 123                                                        
+    $ glab incident reopen https://gitlab.com/NAMESPACE/REPO/-/issues/incident/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

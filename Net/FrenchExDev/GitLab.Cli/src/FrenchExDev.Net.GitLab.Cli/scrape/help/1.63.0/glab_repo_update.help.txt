@@ -1,0 +1,34 @@
+Update an existing GitLab project or repository.
+
+USAGE
+  glab repo update [path] [flags]
+
+FLAGS
+      --archive                Whether the project should be archived.
+      --defaultBranch string   New default branch for the project.
+  -d, --description string     New description for the project.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+EXAMPLES
+  # Update the description for my-project.                                         
+                                                                                     
+    $ glab repo update my-project --description "This project is cool."              
+                                                                                     
+    # Update the default branch for my-project.                                      
+                                                                                     
+    $ glab repo update my-project --defaultBranch main                               
+                                                                                     
+    # Archive my-project.                                                            
+                                                                                     
+    $ glab repo update my-project --archive $ glab repo update my-project --         
+    archive=true                                                                     
+                                                                                     
+    # Unarchive my-project.                                                          
+                                                                                     
+    $ glab repo update my-project --archive=false
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

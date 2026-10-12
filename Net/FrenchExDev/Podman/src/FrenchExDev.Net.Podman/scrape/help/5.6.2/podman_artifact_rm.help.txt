@@ -1,0 +1,18 @@
+Remove an OCI artifact
+
+Description:
+  Remove an OCI artifact from local storage
+
+Usage:
+  podman artifact rm [options] ARTIFACT
+
+Aliases:
+  rm, remove
+
+Examples:
+  podman artifact rm quay.io/myimage/myartifact:latest
+podman artifact rm -a
+
+Options:
+  -a, --all   Remove all artifacts
+

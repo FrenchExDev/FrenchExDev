@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio" />
+		<PackageReference Include="Shouldly" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\FrenchExDev.Net.Alpine.Version\FrenchExDev.Net.Alpine.Version.csproj" />
+		<ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+		<ProjectReference Include="..\..\..\HttpClient\src\FrenchExDev.Net.HttpClient\FrenchExDev.Net.HttpClient.csproj" />
+		<ProjectReference Include="..\..\..\HttpClient\src\FrenchExDev.Net.HttpClient.Testing\FrenchExDev.Net.HttpClient.Testing.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+		<Using Include="FrenchExDev.Net.Alpine.Version" />
+		<Using Include="FrenchExDev.Net.HttpClient" />
+		<Using Include="FrenchExDev.Net.HttpClient.Testing" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+Pull an OCI artifact
+
+Description:
+  Pulls an artifact from a registry and stores it locally.
+
+Usage:
+  podman artifact pull [options] ARTIFACT
+
+Examples:
+  podman artifact pull quay.io/myimage/myartifact:latest
+
+Options:
+      --authfile string      Path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override
+      --creds Credentials    Credentials (USERNAME:PASSWORD) to use for authenticating to a registry
+  -q, --quiet                Suppress output information when pulling images
+      --retry uint           number of times to retry in case of failure when performing pull
+      --retry-delay string   delay between retries in case of pull failures
+      --tls-verify           Require HTTPS and verify certificates when contacting registries (default true)
+

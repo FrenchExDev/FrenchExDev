@@ -1,0 +1,119 @@
+{
+  "pluginKind": "datasource",
+  "typeName": "vsphere-virtualmachine",
+  "repo": "hashicorp/packer-plugin-vsphere",
+  "sourcePath": "datasource/virtualmachine/data.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "vcenter_server",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "insecure_connection",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "datacenter",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "name_regex",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "template",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "latest",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "category",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": [
+    {
+      "hclName": "tag",
+      "nestedTypeName": "tag"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+usage: git update-server-info [-f | --force]
+
+    -f, --[no-]force      update the info files from scratch
+

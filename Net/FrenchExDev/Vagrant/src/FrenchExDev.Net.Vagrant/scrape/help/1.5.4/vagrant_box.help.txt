@@ -1,0 +1,11 @@
+Usage: vagrant box <subcommand> [<args>]
+
+Available subcommands:
+     add
+     list
+     outdated
+     remove
+     repackage
+     update
+
+For help on any individual subcommand run `vagrant box <subcommand> -h`

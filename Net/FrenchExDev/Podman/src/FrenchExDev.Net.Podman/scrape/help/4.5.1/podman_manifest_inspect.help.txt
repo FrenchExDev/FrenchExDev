@@ -1,0 +1,14 @@
+Display the contents of a manifest list or image index
+
+Description:
+  Display the contents of a manifest list or image index.
+
+Usage:
+  podman manifest inspect [options] IMAGE
+
+Examples:
+  podman manifest inspect localhost/list
+
+Options:
+      --tls-verify   require HTTPS and verify certificates when accessing the registry (default true)
+

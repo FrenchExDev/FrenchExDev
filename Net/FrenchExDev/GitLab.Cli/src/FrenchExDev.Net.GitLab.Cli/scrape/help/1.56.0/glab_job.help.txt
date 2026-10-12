@@ -1,0 +1,17 @@
+Work with GitLab CI/CD jobs.
+
+USAGE
+  glab job <command> [flags]
+
+CORE COMMANDS
+  artifact:   Download all artifacts from the last pipeline.
+
+FLAGS
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

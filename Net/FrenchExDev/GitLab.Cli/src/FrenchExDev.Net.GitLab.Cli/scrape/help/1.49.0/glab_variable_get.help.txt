@@ -1,0 +1,22 @@
+Get a variable for a project or group.
+
+USAGE
+  glab variable get <key> [flags]
+
+FLAGS
+  -g, --group string    Get variable for a group.
+  -F, --output string   Format output as: text, json. (default "text")
+  -s, --scope string    The environment_scope of the variable. Values: all (*), or specific environments. (default "*")
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  glab variable get VAR_KEY
+  glab variable get -g GROUP VAR_KEY
+  glab variable get -s SCOPE VAR_KEY
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

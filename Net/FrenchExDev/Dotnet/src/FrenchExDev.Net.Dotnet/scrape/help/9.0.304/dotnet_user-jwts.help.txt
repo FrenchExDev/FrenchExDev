@@ -1,0 +1,19 @@
+
+
+Usage: dotnet user-jwts [options] [command]
+
+Options:
+  -p|--project  The path of the project to operate on. Defaults to the project in the current directory.
+  -o|--output   The format to use for displaying output from the command. Can be one of 'default', 'token', or 'json'.
+  -h|--help     Show help information
+
+Commands:
+  clear   Remove all issued JWTs for a project
+  create  Issue a new JSON Web Token
+  key     Display or reset the signing key used to issue JWTs
+  list    Lists the JWTs issued for the project
+  print   Print the details of a given JWT
+  remove  Remove a given JWT
+
+Use "dotnet user-jwts [command] --help" for more information about a command.
+

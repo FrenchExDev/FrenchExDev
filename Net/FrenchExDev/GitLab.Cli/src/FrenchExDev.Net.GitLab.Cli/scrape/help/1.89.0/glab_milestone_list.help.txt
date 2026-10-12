@@ -1,0 +1,34 @@
+
+  Get a list of milestones for a project or group.                                                                      
+         
+  USAGE  
+         
+    glab milestone list [--flags]                               
+            
+  EXAMPLES  
+            
+    # List milestones for a given project                       
+    $ glab milestone list --project 123                         
+    $ glab milestone list --project example-group/project-path  
+                                                                
+    # List milestones for a group                               
+    $ glab milestone list --group example-group                 
+                                                                
+    # List only active milestones for a given group             
+    $ glab milestone list --group example-group --state active  
+         
+  FLAGS  
+         
+    --group              The ID or URL-encoded path of the group.
+    -h --help            Show help for this command.
+    --include-ancestors  Include milestones from all parent groups.
+    -F --output          Format output as: text, json. (text)
+    -p --page            Page number. (1)
+    -P --per-page        Number of items to list per page. (20)
+    --project            The ID or URL-encoded path of the project.
+    -R --repo            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --search             Return only milestones with a title or description matching the provided string.
+    --show-id            Show IDs in table output.
+    --state              Return only 'active' or 'closed' milestones.
+    --title              Return only the milestones having the given title.
+

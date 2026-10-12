@@ -1,0 +1,10 @@
+
+Usage:	docker stack rm [OPTIONS] STACK [STACK...]
+
+Remove one or more stacks
+
+Aliases:
+  rm, remove, down
+
+Options:
+      --orchestrator string   Orchestrator to use (swarm|kubernetes|all)

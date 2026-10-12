@@ -1,0 +1,8 @@
+Usage: vagrant login
+
+    -c, --check                      Only checks if you're logged in
+    -d, --description DESCRIPTION    Description for the Vagrant Cloud token
+    -k, --logout                     Logs you out if you're logged in
+    -t, --token TOKEN                Set the Vagrant Cloud token
+    -u, --username USERNAME_OR_EMAIL Specify your Vagrant Cloud username or email address
+    -h, --help                       Print this help

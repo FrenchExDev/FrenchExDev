@@ -73,6 +73,7 @@ public sealed class FakeCommand : ICliCommand
 {
     public IReadOnlyList<string> CommandPath { get; init; } = ["test"];
     public IReadOnlyList<string> Args { get; init; } = [];
+    public IReadOnlyDictionary<string, string> Environment { get; init; } = new Dictionary<string, string>();
     public IReadOnlyList<string> ToArguments() => Args;
 }
 

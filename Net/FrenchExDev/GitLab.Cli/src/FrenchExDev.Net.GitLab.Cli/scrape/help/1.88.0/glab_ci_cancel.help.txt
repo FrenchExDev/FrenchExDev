@@ -1,0 +1,17 @@
+
+  Cancel a running pipeline or job.                                                                                     
+         
+  USAGE  
+         
+    glab ci cancel <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    job <id> [--flags]       Cancel CI/CD jobs.
+    pipeline <id> [--flags]  Cancel CI/CD pipelines.
+         
+  FLAGS  
+         
+    -h --help                Show help for this command.
+    -R --repo                Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

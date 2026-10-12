@@ -1,0 +1,25 @@
+View information about a GitLab release.
+
+Without an explicit tag name argument, shows the latest release in the project.
+
+
+USAGE
+  glab release view <tag> [flags]
+
+FLAGS
+  -w, --web   Open the release in the browser.
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # View the latest release of a GitLab repository
+  $ glab release view
+  
+  # View a release with specified tag name
+  $ glab release view v1.0.1
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

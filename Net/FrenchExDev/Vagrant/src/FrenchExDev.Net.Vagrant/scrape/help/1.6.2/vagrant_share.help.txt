@@ -1,0 +1,27 @@
+Usage: vagrant share
+
+Allows anyone in the world with an internet connection to access
+your Vagrant environment by giving you a globally accessible
+URL. 
+
+If the person wanting to connect to your environment also has
+Vagrant installed, they can use `vagrant connect` to connect to
+open any TCP stream to your Vagrant machine.
+
+Vagrant will attempt to auto-discover your HTTP port and enable
+that. If you want to disable HTTP, specify the --disable-http flag
+directly. If you want HTTPS, specify the --https flag directly.
+
+If the --ssh flag is specified, others can easily SSH into your
+Vagrant environment by using `vagrant connect --ssh`. We generate
+a new SSH key for this that you can encrypt with a password.
+When --ssh is specified, all other SSH flags are optional.
+
+        --disable-http               Disable publicly visible HTTP endpoint
+        --http VALUE                 Local HTTP port to forward to
+        --https VALUE                Local HTTPS port to forward to
+        --ssh                        Allow 'vagrant connect --ssh' access
+        --ssh-no-password            Key won't be encrypted with --ssh
+        --ssh-port PORT              Specific port for SSH when using --ssh
+        --ssh-once                   Allow 'vagrant connect --ssh' only one time
+    -h, --help                       Print this help

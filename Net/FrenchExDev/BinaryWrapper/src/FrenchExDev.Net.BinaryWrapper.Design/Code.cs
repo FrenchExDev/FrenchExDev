@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FrenchExDev.Net.Wrapper.Versioning;
 
 namespace FrenchExDev.Net.BinaryWrapper.Design;
 
@@ -364,7 +365,7 @@ $"""
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>{wrapperNs}</RootNamespace>
@@ -401,7 +402,7 @@ $"""
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -594,7 +595,7 @@ public sealed class StandardHelpParser : IHelpParser
             var end = current.Length;
             for (var i = 2; i < current.Length; i++)
             {
-                if (current[i] == ' ' || current[i] == '=')
+                if (!IsValidOptionNameChar(current[i]))
                 {
                     end = i;
                     break;
@@ -678,6 +679,9 @@ public sealed class StandardHelpParser : IHelpParser
         }
         return true;
     }
+
+    internal static bool IsValidOptionNameChar(char c)
+        => char.IsLetterOrDigit(c) || c is '-' or '_' or '[' or ']';
 }
 
 // ── Packer Help Parser ──────────────────────────────────────────────────────
@@ -1005,7 +1009,7 @@ public sealed class CobraHelpParser : IHelpParser
             var end = current.Length;
             for (var i = 2; i < current.Length; i++)
             {
-                if (current[i] == ' ' || current[i] == '=')
+                if (!StandardHelpParser.IsValidOptionNameChar(current[i]))
                 {
                     end = i;
                     break;
@@ -1086,6 +1090,613 @@ public sealed class CobraHelpParser : IHelpParser
     }
 }
 
+// ── Argparse Help Parser ────────────────────────────────────────────────────
+
+/// <summary>
+/// Parser for Python argparse-generated help output.
+/// Recognises the <c>{cmd1,cmd2,...}</c> subcommand notation, the
+/// <c>options:</c> / <c>optional arguments:</c> section headers, and
+/// metavar-based value detection.
+/// </summary>
+public sealed class ArgparseHelpParser : IHelpParser
+{
+    private enum Section { None, Usage, Options, Commands, PositionalArguments }
+
+    private readonly HashSet<string> _skippedCommands;
+
+    public ArgparseHelpParser(IEnumerable<string>? skippedCommands = null)
+    {
+        _skippedCommands = skippedCommands is not null
+            ? new(skippedCommands, StringComparer.OrdinalIgnoreCase)
+            : new(["help"], StringComparer.OrdinalIgnoreCase);
+    }
+
+    public CommandNode? Parse(string helpText, string commandName)
+    {
+        if (string.IsNullOrWhiteSpace(helpText))
+            return null;
+
+        var builder = new CommandNodeBuilder(commandName);
+        var lines = helpText.Split('\n');
+        var section = Section.None;
+        string? description = null;
+        OptionDefinition? pendingOption = null;
+
+        foreach (var rawLine in lines)
+        {
+            var line = rawLine.TrimEnd('\r');
+            var trimmed = line.Trim();
+
+            if (string.IsNullOrWhiteSpace(trimmed))
+            {
+                FlushPendingOption(builder, ref pendingOption);
+                continue;
+            }
+
+            // Detect section headers (unindented or minimal-indent labels ending with ':')
+            if (TryMatchHeader(trimmed, out var newSection))
+            {
+                FlushPendingOption(builder, ref pendingOption);
+                section = newSection;
+                continue;
+            }
+
+            // Lines that don't start with whitespace reset the section (unless usage continuation)
+            if (!line.StartsWith(' ') && !line.StartsWith('\t') && section != Section.Usage)
+            {
+                FlushPendingOption(builder, ref pendingOption);
+                if (section == Section.None)
+                    description ??= trimmed;
+                section = Section.None;
+                continue;
+            }
+
+            switch (section)
+            {
+                case Section.Commands:
+                    FlushPendingOption(builder, ref pendingOption);
+                    ParseCommandLine(trimmed, builder);
+                    break;
+                case Section.Options:
+                    ParseOptionLine(trimmed, builder, ref pendingOption);
+                    break;
+                case Section.PositionalArguments:
+                    FlushPendingOption(builder, ref pendingOption);
+                    ParsePositionalLine(trimmed, builder);
+                    break;
+            }
+        }
+
+        FlushPendingOption(builder, ref pendingOption);
+        builder.Description = description;
+        return builder.Build();
+    }
+
+    private static bool TryMatchHeader(string trimmed, out Section section)
+    {
+        section = Section.None;
+
+        if (MatchesHeader(trimmed, "options") ||
+            MatchesHeader(trimmed, "optional arguments"))
+        {
+            section = Section.Options;
+            return true;
+        }
+
+        if (MatchesHeader(trimmed, "command") ||
+            MatchesHeader(trimmed, "commands") ||
+            MatchesHeader(trimmed, "subcommands"))
+        {
+            section = Section.Commands;
+            return true;
+        }
+
+        if (MatchesHeader(trimmed, "positional arguments"))
+        {
+            section = Section.PositionalArguments;
+            return true;
+        }
+
+        if (MatchesHeader(trimmed, "usage"))
+        {
+            section = Section.Usage;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool MatchesHeader(string trimmed, string header)
+    {
+        return trimmed.StartsWith(header, StringComparison.OrdinalIgnoreCase) &&
+               trimmed.Length > header.Length && trimmed[header.Length] == ':';
+    }
+
+    private void ParseCommandLine(string trimmed, CommandNodeBuilder builder)
+    {
+        // Skip {cmd1,cmd2,...} brace-list header lines
+        if (trimmed.StartsWith('{') || trimmed.StartsWith("[{"))
+            return;
+
+        var parts = trimmed.Split([' ', '\t'], 2, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0) return;
+
+        var name = parts[0];
+        if (_skippedCommands.Contains(name))
+            return;
+
+        var desc = parts.Length > 1 ? parts[1].Trim() : null;
+        builder.SubCommands.Add(new CommandNode { Name = name, Description = desc });
+    }
+
+    private static void ParseOptionLine(string trimmed, CommandNodeBuilder builder, ref OptionDefinition? pendingOption)
+    {
+        // Continuation line: doesn't start with '-'
+        if (!trimmed.StartsWith('-'))
+        {
+            // Append to pending option's description
+            if (pendingOption is not null && !string.IsNullOrWhiteSpace(trimmed))
+            {
+                pendingOption = pendingOption with
+                {
+                    Description = pendingOption.Description is null
+                        ? trimmed
+                        : pendingOption.Description + " " + trimmed
+                };
+            }
+            return;
+        }
+
+        // Flush previous option before starting a new one
+        FlushPendingOption(builder, ref pendingOption);
+
+        // Split into definition part and description part using 2+ consecutive spaces
+        string defPart;
+        string? descPart;
+        SplitDefinitionAndDescription(trimmed, out defPart, out descPart);
+
+        string? shortName = null;
+        string? longName = null;
+        var valueKind = OptionValueKind.Flag;
+
+        var tokens = defPart.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries).ToList();
+        var idx = 0;
+
+        // Parse short flag: -X or -X METAVAR
+        if (idx < tokens.Count && tokens[idx].StartsWith('-') && !tokens[idx].StartsWith("--"))
+        {
+            var shortToken = tokens[idx];
+            // Remove trailing comma if present (e.g., "-f,")
+            shortName = shortToken.TrimStart('-').TrimEnd(',');
+            idx++;
+
+            // Check for comma as separate token
+            if (idx < tokens.Count && tokens[idx] == ",")
+                idx++;
+            // If next token is NOT a flag, it's a short metavar — skip it (long flag will have its own)
+            else if (idx < tokens.Count && !tokens[idx].StartsWith('-') && tokens[idx] != ",")
+            {
+                // Short metavar — skip, but note this means the option takes a value
+                idx++;
+            }
+
+            // Skip comma between short and long
+            if (idx < tokens.Count && tokens[idx] == ",")
+                idx++;
+        }
+
+        // Parse long flag: --long-name
+        if (idx < tokens.Count && tokens[idx].StartsWith("--"))
+        {
+            longName = tokens[idx].TrimStart('-');
+            idx++;
+
+            // Check for metavar: next non-flag token
+            if (idx < tokens.Count && !tokens[idx].StartsWith('-'))
+            {
+                // It's a metavar — this option takes a value
+                valueKind = OptionValueKind.Single;
+                // idx++; // consume metavar — already at end of defPart tokens
+            }
+        }
+
+        // If only short flag found with no long flag, check if short metavar indicates a value
+        if (longName is null && shortName is not null)
+        {
+            // Re-check: if defPart had tokens after the short flag that aren't flags
+            if (idx < tokens.Count && !tokens[idx].StartsWith('-'))
+                valueKind = OptionValueKind.Single;
+        }
+
+        if (longName is null && shortName is null)
+            return;
+
+        pendingOption = new OptionDefinition
+        {
+            LongName = longName ?? shortName!,
+            ShortName = shortName,
+            Description = descPart,
+            ValueKind = valueKind,
+            ClrType = valueKind == OptionValueKind.Flag ? "bool" : "string"
+        };
+    }
+
+    private static void SplitDefinitionAndDescription(string line, out string defPart, out string? descPart)
+    {
+        // Find the first occurrence of 2+ consecutive spaces after the initial flag
+        // This separates the flag+metavar definition from the description
+        var i = 0;
+        // Skip leading whitespace
+        while (i < line.Length && line[i] == ' ') i++;
+        // Skip the first token (flag)
+        while (i < line.Length && line[i] != ' ') i++;
+
+        // Now look for 2+ consecutive spaces
+        while (i < line.Length)
+        {
+            if (i + 1 < line.Length && line[i] == ' ' && line[i + 1] == ' ')
+            {
+                defPart = line[..i].Trim();
+                descPart = line[(i + 1)..].Trim();
+                if (string.IsNullOrWhiteSpace(descPart))
+                    descPart = null;
+                return;
+            }
+            i++;
+        }
+
+        defPart = line.Trim();
+        descPart = null;
+    }
+
+    private static void ParsePositionalLine(string trimmed, CommandNodeBuilder builder)
+    {
+        // Skip {cmd1,cmd2,...} brace-list lines (subcommands, not real positional args)
+        if (trimmed.StartsWith('{') || trimmed.StartsWith("[{"))
+            return;
+
+        // Split definition from description using 2+ spaces
+        SplitDefinitionAndDescription(trimmed, out var defPart, out var desc);
+
+        var isVariadic = defPart.Contains("...");
+        var isOptional = defPart.StartsWith('[');
+        var name = defPart.Trim('[', ']', '<', '>').Replace("...", "").Trim();
+
+        if (string.IsNullOrWhiteSpace(name)) return;
+
+        builder.Arguments.Add(new ArgumentDefinition
+        {
+            Name = name,
+            Position = builder.Arguments.Count,
+            Description = desc,
+            IsRequired = !isOptional,
+            IsVariadic = isVariadic
+        });
+    }
+
+    private static void FlushPendingOption(CommandNodeBuilder builder, ref OptionDefinition? pendingOption)
+    {
+        if (pendingOption is not null)
+        {
+            builder.Options.Add(pendingOption);
+            pendingOption = null;
+        }
+    }
+}
+
+// ── GitHub CLI-style Help Parser ──────────────────────────────────────────
+
+/// <summary>
+/// Parser for CLIs using the GitHub CLI (<c>gh</c>) help template. This custom Cobra
+/// template was created by the GitHub CLI team and subsequently forked by glab and
+/// potentially other CLIs. It differs from standard Cobra output in several ways:
+/// <list type="bullet">
+///   <item>ALL-CAPS section headers without colons: <c>COMMANDS</c>, <c>CORE COMMANDS</c>,
+///     <c>FLAGS</c>, <c>INHERITED FLAGS</c>, <c>USAGE</c>, <c>EXAMPLES</c></item>
+///   <item>Flags use space or comma as short/long separator: <c>-v --version</c> or
+///     <c>-v, --version</c> (varies by tool/version)</item>
+///   <item>No inline type hints — value kind is inferred from description heuristics:
+///     <c>(default)</c> suffix, <c>&lt;placeholder&gt;</c> patterns, "comma-separated" keywords</item>
+///   <item>Command entries may use colon suffix: <c>alias:</c> (older glab) or argument hints:
+///     <c>alias [command] [--flags]</c> (newer glab, gh)</item>
+/// </list>
+/// </summary>
+public sealed class GhStyleHelpParser : IHelpParser
+{
+    private enum Section { None, Usage, Commands, Flags, Examples, Aliases }
+
+    private readonly HashSet<string> _skippedCommands;
+    private readonly string? _binaryName;
+
+    /// <param name="skippedCommands">Commands to skip during parsing. Defaults to <c>help</c>,
+    /// <c>completion</c>, and <c>check-update</c>.</param>
+    /// <param name="binaryName">Optional binary name to filter out example/continuation lines
+    /// that start with the binary name (e.g., <c>"glab"</c> to skip lines like
+    /// <c>glab repo clone -g &lt;group&gt;</c>). If null, no binary-name filtering is applied.</param>
+    public GhStyleHelpParser(IEnumerable<string>? skippedCommands = null, string? binaryName = null)
+    {
+        _skippedCommands = skippedCommands is not null
+            ? new(skippedCommands, StringComparer.OrdinalIgnoreCase)
+            : new(["help", "completion", "check-update"], StringComparer.OrdinalIgnoreCase);
+        _binaryName = binaryName;
+    }
+
+    // ── Description heuristic helpers (no Regex dependency) ─────────────────
+
+    public CommandNode? Parse(string helpText, string commandName)
+    {
+        if (string.IsNullOrWhiteSpace(helpText))
+            return null;
+
+        var builder = new CommandNodeBuilder(commandName);
+        var lines = helpText.Split('\n');
+        var section = Section.None;
+        string? description = null;
+
+        foreach (var rawLine in lines)
+        {
+            var line = rawLine.TrimEnd('\r');
+            var trimmed = line.Trim();
+
+            if (string.IsNullOrWhiteSpace(trimmed))
+                continue;
+
+            // Detect ALL-CAPS section headers
+            if (IsSectionHeader(trimmed, out var newSection))
+            {
+                section = newSection;
+                continue;
+            }
+
+            // Content lines must be indented (gh-style uses leading spaces for all content)
+            if (section != Section.None && !line.StartsWith(' ') && !line.StartsWith('\t'))
+            {
+                section = Section.None;
+                // Fall through — might be a description line
+            }
+
+            if (section == Section.None)
+            {
+                // First non-empty, non-header line is the description
+                description ??= trimmed;
+                continue;
+            }
+
+            switch (section)
+            {
+                case Section.Commands:
+                    ParseCommandLine(trimmed, builder);
+                    break;
+                case Section.Flags:
+                    ParseFlagLine(trimmed, builder);
+                    break;
+                // Usage, Examples, Aliases — skip content
+            }
+        }
+
+        builder.Description = description;
+        return builder.Build();
+    }
+
+    private static bool IsSectionHeader(string trimmed, out Section section)
+    {
+        section = Section.None;
+
+        // gh-style uses ALL-CAPS headers. The header name varies by tool:
+        //   "CORE COMMANDS", "COMMANDS", "OTHER COMMANDS", "ADDITIONAL COMMANDS"
+        if (trimmed.EndsWith("COMMANDS") && trimmed == trimmed.ToUpperInvariant())
+        { section = Section.Commands; return true; }
+
+        if (trimmed is "FLAGS" or "INHERITED FLAGS")
+        { section = Section.Flags; return true; }
+
+        if (trimmed is "USAGE")
+        { section = Section.Usage; return true; }
+
+        if (trimmed is "EXAMPLES")
+        { section = Section.Examples; return true; }
+
+        if (trimmed is "ALIASES")
+        { section = Section.Aliases; return true; }
+
+        // Skip known non-command/non-flag sections
+        if (trimmed is "ENVIRONMENT VARIABLES" or "LEARN MORE" or "FEEDBACK"
+            or "ARGUMENTS" or "JSON FIELDS" or "HELP TOPICS")
+        { section = Section.None; return true; }
+
+        return false;
+    }
+
+    private void ParseCommandLine(string line, CommandNodeBuilder builder)
+    {
+        // Two formats:
+        //   Colon style:  "alias:       Create, list, and delete aliases."
+        //   Args style:   "alias [command] [--flags]   Create, list, and delete aliases."
+        // Split on first run of 2+ spaces to separate command from description
+        var (commandPart, desc2) = SplitOnDoubleSpace(line);
+        if (commandPart is null || desc2 is null) return;
+
+        var commandName = commandPart.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+
+        // Strip trailing colon (older format: "alias:")
+        commandName = commandName.TrimEnd(':');
+
+        if (string.IsNullOrEmpty(commandName)) return;
+        if (_skippedCommands.Contains(commandName)) return;
+
+        // Skip lines starting with the binary name — these are example/continuation lines
+        if (_binaryName is not null && string.Equals(commandName, _binaryName, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        if (string.IsNullOrEmpty(desc2)) return;
+
+        builder.SubCommands.Add(new CommandNode { Name = commandName, Description = desc2 });
+    }
+
+    private static void ParseFlagLine(string line, CommandNodeBuilder builder)
+    {
+        // Formats:
+        //   "-v, --version   show version information"   (comma-separated)
+        //   "-v --version    show version information"    (space-separated)
+        //   "    --help      Show help for this command." (long-only)
+
+        string? shortName = null;
+        string? longName = null;
+
+        var current = line.AsSpan().Trim();
+
+        // Parse optional short flag: -X or -X, (with optional comma)
+        if (current.StartsWith("-") && !current.StartsWith("--"))
+        {
+            var spaceIdx = current.IndexOf(' ');
+            if (spaceIdx > 0)
+            {
+                shortName = current[1..spaceIdx].Trim().ToString();
+                current = current[spaceIdx..].Trim();
+            }
+            else
+            {
+                shortName = current[1..].ToString();
+                current = ReadOnlySpan<char>.Empty;
+            }
+
+            // Strip trailing comma: "v," → "v"
+            shortName = shortName.TrimEnd(',');
+
+            // Skip comma-only separator that might remain
+            if (current.StartsWith(","))
+                current = current[1..].Trim();
+        }
+
+        // Parse --long-name
+        if (current.StartsWith("--"))
+        {
+            var end = current.Length;
+            for (var i = 2; i < current.Length; i++)
+            {
+                if (!IsValidOptionNameChar(current[i]))
+                {
+                    end = i;
+                    break;
+                }
+            }
+            longName = current[2..end].ToString();
+            current = end < current.Length ? current[end..].Trim() : ReadOnlySpan<char>.Empty;
+        }
+
+        if (longName is null && shortName is null)
+            return;
+
+        // Everything remaining is the description
+        var description = current.Length > 0 ? current.ToString().Trim() : null;
+
+        // Determine value kind from description heuristics
+        var valueKind = OptionValueKind.Flag;
+        var clrType = "bool";
+        string? defaultValue = null;
+
+        if (description is not null)
+        {
+            // Check for default value in parentheses at end: "(created_at)", "(30)"
+            if (TryExtractTrailingDefault(description, out var defVal, out var trimmedDesc))
+            {
+                defaultValue = defVal;
+                description = trimmedDesc;
+                valueKind = OptionValueKind.Single;
+                clrType = int.TryParse(defaultValue, out _) ? "integer" : "string";
+            }
+
+            // Check for multiple-value indicators
+            if (ContainsMultipleValueHint(description))
+            {
+                valueKind = OptionValueKind.Multiple;
+                clrType = "string";
+            }
+            // Check for placeholder indicating a value parameter
+            else if (valueKind == OptionValueKind.Flag && ContainsPlaceholder(description))
+            {
+                valueKind = OptionValueKind.Single;
+                clrType = "string";
+            }
+        }
+
+        builder.Options.Add(new OptionDefinition
+        {
+            LongName = longName ?? shortName!,
+            ShortName = shortName,
+            Description = description,
+            ValueKind = valueKind,
+            ClrType = clrType,
+            DefaultValue = defaultValue
+        });
+    }
+
+    private static bool IsValidOptionNameChar(char c) =>
+        char.IsLetterOrDigit(c) || c == '-' || c == '_';
+
+    /// <summary>Splits a line on the first run of 2+ spaces. Returns (left, right) or (null, null).</summary>
+    private static (string? Left, string? Right) SplitOnDoubleSpace(string line)
+    {
+        for (var i = 0; i < line.Length - 1; i++)
+        {
+            if (line[i] == ' ' && line[i + 1] == ' ')
+            {
+                var left = line[..i].Trim();
+                var right = line[(i + 1)..].Trim();
+                if (left.Length > 0 && right.Length > 0)
+                    return (left, right);
+            }
+        }
+        return (null, null);
+    }
+
+    /// <summary>Extracts a trailing "(value)" default from a description string.</summary>
+    private static bool TryExtractTrailingDefault(string desc, out string value, out string trimmed)
+    {
+        var s = desc.AsSpan().TrimEnd();
+        if (s.Length > 2 && s[^1] == ')')
+        {
+            var openIdx = s.LastIndexOf('(');
+            if (openIdx > 0)
+            {
+                value = s[(openIdx + 1)..^1].ToString();
+                trimmed = s[..openIdx].TrimEnd().ToString();
+                return true;
+            }
+        }
+        value = "";
+        trimmed = desc;
+        return false;
+    }
+
+    /// <summary>Checks if description contains &lt;placeholder&gt; patterns.</summary>
+    private static bool ContainsPlaceholder(string desc)
+    {
+        var i = desc.IndexOf('<');
+        while (i >= 0 && i < desc.Length - 2)
+        {
+            var j = desc.IndexOf('>', i + 1);
+            if (j > i + 1)
+            {
+                var c = desc[i + 1];
+                if (char.IsLetter(c))
+                    return true;
+            }
+            i = desc.IndexOf('<', i + 1);
+        }
+        return false;
+    }
+
+    /// <summary>Checks if description contains multiple-value keywords.</summary>
+    private static bool ContainsMultipleValueHint(string desc)
+    {
+        return desc.Contains("comma-separated", StringComparison.OrdinalIgnoreCase)
+            || desc.Contains("comma separated", StringComparison.OrdinalIgnoreCase)
+            || desc.Contains("repeating the flag", StringComparison.OrdinalIgnoreCase)
+            || desc.Contains("multiple ", StringComparison.OrdinalIgnoreCase);
+    }
+}
+
 // ── Help Parser Registry ───────────────────────────────────────────────────
 
 /// <summary>
@@ -1100,6 +1711,8 @@ public static class HelpParsers
         ["standard"] = () => new StandardHelpParser(),
         ["packer"] = () => new PackerHelpParser(),
         ["cobra"] = () => new CobraHelpParser(),
+        ["argparse"] = () => new ArgparseHelpParser(),
+        ["gh"] = () => new GhStyleHelpParser(),
     };
 
     public static IHelpParser Create(string strategy)
@@ -1124,14 +1737,21 @@ public sealed class HelpScraper
     private readonly Func<string[], Task<string>> _runHelp;
     private readonly int _maxDepth;
     private readonly string _helpFlag;
+    private readonly string? _helpDumpDir;
+    private readonly int _maxConcurrency;
+    private readonly Action? _onCommandScraped;
 
     public HelpScraper(IHelpParser parser, Func<string[], Task<string>> runHelp,
-        int maxDepth = 10, string helpFlag = "--help")
+        int maxDepth = 10, string helpFlag = "--help", string? helpDumpDir = null,
+        int maxConcurrency = 4, Action? onCommandScraped = null)
     {
         _parser = parser;
         _runHelp = runHelp;
         _maxDepth = maxDepth;
         _helpFlag = helpFlag;
+        _helpDumpDir = helpDumpDir;
+        _maxConcurrency = Math.Max(1, maxConcurrency);
+        _onCommandScraped = onCommandScraped;
     }
 
     public async Task<CommandTree> ScrapeAsync(string binaryName,
@@ -1139,14 +1759,16 @@ public sealed class HelpScraper
     {
         try
         {
-            var rootNode = await ScrapeNodeAsync([binaryName, _helpFlag], binaryName, 0, ct);
+            // One limit for the whole traversal, independent of other ScrapeAsync calls.
+            using var semaphore = new SemaphoreSlim(_maxConcurrency, _maxConcurrency);
+            var rootNode = await ScrapeNodeAsync([binaryName, _helpFlag], binaryName, 0, semaphore, ct);
             return new CommandTree
             {
                 BinaryName = binaryName,
                 Root = rootNode ?? new CommandNode { Name = binaryName }
             };
         }
-        catch
+        catch (Exception ex) when (ex is not ContainerRuntimeException)
         {
             return new CommandTree
             {
@@ -1157,7 +1779,7 @@ public sealed class HelpScraper
     }
 
     private async Task<CommandNode?> ScrapeNodeAsync(string[] helpArgs, string commandName,
-        int depth, CancellationToken ct)
+        int depth, SemaphoreSlim semaphore, CancellationToken ct)
     {
         if (depth > _maxDepth || ct.IsCancellationRequested)
             return null;
@@ -1165,33 +1787,53 @@ public sealed class HelpScraper
         string helpText;
         try
         {
-            helpText = await _runHelp(helpArgs);
+            await semaphore.WaitAsync(ct);
+            try
+            {
+                helpText = await _runHelp(helpArgs);
+            }
+            finally
+            {
+                // Release before parsing or awaiting descendants to avoid recursive deadlocks.
+                semaphore.Release();
+            }
         }
-        catch
+        catch (Exception ex) when (ex is not ContainerRuntimeException)
         {
             return null;
+        }
+
+        // Dump raw help text for debugging and test data
+        if (_helpDumpDir is not null)
+        {
+            var commandPath = string.Join("_", helpArgs[..^1]); // all args except help flag
+            var dumpPath = Path.Combine(_helpDumpDir, $"{commandPath}.help.txt");
+            Directory.CreateDirectory(_helpDumpDir);
+            await File.WriteAllTextAsync(dumpPath, helpText);
         }
 
         var node = _parser.Parse(helpText, commandName);
         if (node is null) return null;
 
+        _onCommandScraped?.Invoke();
+
         if (node.SubCommands.Count == 0)
             return node;
 
         var scrapedSubs = new CommandNode?[node.SubCommands.Count];
-        for (var i = 0; i < node.SubCommands.Count; i++)
+        var tasks = node.SubCommands.Select(async (sub, i) =>
         {
-            var sub = node.SubCommands[i];
-            var subArgs = helpArgs[..^1].Append(sub.Name).Append(_helpFlag).ToArray();
             try
             {
-                scrapedSubs[i] = await ScrapeNodeAsync(subArgs, sub.Name, depth + 1, ct);
+                var subArgs = helpArgs[..^1].Append(sub.Name).Append(_helpFlag).ToArray();
+                scrapedSubs[i] = await ScrapeNodeAsync(subArgs, sub.Name, depth + 1, semaphore, ct);
             }
-            catch
+            catch (Exception ex) when (ex is not ContainerRuntimeException)
             {
                 scrapedSubs[i] = null;
             }
-        }
+        }).ToArray();
+        await Task.WhenAll(tasks);
 
         return ReconstructWithScrapedSubCommands(node, scrapedSubs);
     }
@@ -1263,7 +1905,16 @@ public class ProcessRunnerContainerRuntime : IContainerRuntime
     public Task RemoveImageAsync(string tag, CancellationToken cancellationToken = default)
         => _runProcess([_runtimeBinary, "rmi", "-f", tag]);
 
-    public static async Task<string> RunProcessAsync(string[] args)
+    public static Task<string> RunProcessAsync(string[] args)
+        => RunProcessAsync(args, null, null);
+
+    /// <summary>Streams complete output lines while retaining the captured process output.</summary>
+    public static Task<string> RunProcessAsync(string[] args,
+        Action<string>? onStandardOutput, Action<string>? onStandardError)
+        => ContainerProcessThrottle.RunAsync(args[0], () => RunProcessCoreAsync(args, onStandardOutput, onStandardError));
+
+    private static async Task<string> RunProcessCoreAsync(string[] args,
+        Action<string>? onStandardOutput, Action<string>? onStandardError)
     {
         var psi = new System.Diagnostics.ProcessStartInfo
         {
@@ -1278,9 +1929,41 @@ public class ProcessRunnerContainerRuntime : IContainerRuntime
 
         using var proc = System.Diagnostics.Process.Start(psi);
         if (proc is null) return "";
-        var stdout = await proc.StandardOutput.ReadToEndAsync();
-        var stderr = await proc.StandardError.ReadToEndAsync();
+        // Drain both streams concurrently, even if an output observer fails.
+        Exception? observerError = null;
+        async Task<string> ReadAsync(StreamReader reader, Action<string>? observer)
+        {
+            if (observer is null) return await reader.ReadToEndAsync();
+            var output = new System.Text.StringBuilder();
+            var pendingLine = new System.Text.StringBuilder();
+            var buffer = new char[4096];
+            void NotifyLine()
+            {
+                var line = pendingLine.ToString().TrimEnd('\r');
+                pendingLine.Clear();
+                try { observer(line); }
+                catch (Exception ex) { Interlocked.CompareExchange(ref observerError, ex, null); }
+            }
+            int read;
+            while ((read = await reader.ReadAsync(buffer.AsMemory())) != 0)
+            {
+                output.Append(buffer, 0, read);
+                for (var i = 0; i < read; i++)
+                {
+                    if (buffer[i] == '\n') NotifyLine();
+                    else pendingLine.Append(buffer[i]);
+                }
+            }
+            if (pendingLine.Length > 0) NotifyLine();
+            return output.ToString();
+        }
+        var stdoutTask = ReadAsync(proc.StandardOutput, onStandardOutput);
+        var stderrTask = ReadAsync(proc.StandardError, onStandardError);
         await proc.WaitForExitAsync();
+        var stdout = await stdoutTask;
+        var stderr = await stderrTask;
+        if (observerError is not null)
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(observerError).Throw();
         if (proc.ExitCode != 0)
             throw new InvalidOperationException(
                 $"Process '{args[0]}' exited with code {proc.ExitCode}: {stderr}");
@@ -1315,241 +1998,6 @@ public sealed class ContainerBuildError(string message, string buildOutput) : Sc
 public sealed class ContainerRunError(string message) : ScrapeError(message);
 
 public sealed class ParseError(string message) : ScrapeError(message);
-
-// ── Version Collector ───────────────────────────────────────────────────────
-
-public interface IVersionCollector
-{
-    Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default);
-}
-
-public sealed class StaticVersionCollector : IVersionCollector
-{
-    private readonly IReadOnlyList<string> _versions;
-
-    public StaticVersionCollector(IEnumerable<string> versions) =>
-        _versions = versions.ToList();
-
-    public Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default)
-        => Task.FromResult(_versions);
-}
-
-public sealed class GitHubReleasesVersionCollector : IVersionCollector
-{
-    private readonly string _owner;
-    private readonly string _repo;
-    private readonly HttpClient _httpClient;
-    private readonly Func<string, string> _tagToVersion;
-
-    public GitHubReleasesVersionCollector(
-        string owner, string repo,
-        HttpClient? httpClient = null,
-        Func<string, string>? tagToVersion = null)
-    {
-        _owner = owner;
-        _repo = repo;
-        _httpClient = httpClient ?? CreateDefaultHttpClient();
-        _tagToVersion = tagToVersion ?? DefaultTagToVersion;
-    }
-
-    public async Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default)
-    {
-        var versions = new List<string>();
-        var url = $"https://api.github.com/repos/{_owner}/{_repo}/releases?per_page=100";
-
-        while (url is not null)
-        {
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = await _httpClient.SendAsync(request, cancellationToken);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var releases = JsonSerializer.Deserialize<JsonElement>(json);
-
-            if (releases.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var release in releases.EnumerateArray())
-                {
-                    if (!release.TryGetProperty("tag_name", out var tagProp))
-                        continue;
-                    var tag = tagProp.GetString();
-                    if (tag is null)
-                        continue;
-                    if (release.TryGetProperty("prerelease", out var pre) && pre.GetBoolean())
-                        continue;
-
-                    var version = _tagToVersion(tag);
-                    if (!string.IsNullOrEmpty(version))
-                        versions.Add(version);
-                }
-            }
-
-            url = ParseNextLink(response.Headers);
-        }
-
-        versions.Sort(CompareVersionStrings);
-        return versions;
-    }
-
-    private static string? ParseNextLink(System.Net.Http.Headers.HttpResponseHeaders headers)
-    {
-        if (!headers.TryGetValues("Link", out var linkValues))
-            return null;
-
-        foreach (var link in linkValues)
-        {
-            foreach (var part in link.Split(','))
-            {
-                var trimmed = part.Trim();
-                if (trimmed.EndsWith("rel=\"next\"", StringComparison.Ordinal))
-                {
-                    var start = trimmed.IndexOf('<');
-                    var end = trimmed.IndexOf('>');
-                    if (start >= 0 && end > start)
-                        return trimmed[(start + 1)..end];
-                }
-            }
-        }
-        return null;
-    }
-
-    private static string DefaultTagToVersion(string tag) =>
-        tag.StartsWith('v') ? tag[1..] : tag;
-
-    private static HttpClient CreateDefaultHttpClient()
-    {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("User-Agent", "FrenchExDev-BinaryWrapper");
-        client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
-        return client;
-    }
-
-    public static int CompareVersionStrings(string a, string b)
-    {
-        var aParts = a.Split('.', '-');
-        var bParts = b.Split('.', '-');
-        var len = Math.Max(aParts.Length, bParts.Length);
-        for (var i = 0; i < len; i++)
-        {
-            var aVal = i < aParts.Length ? aParts[i] : "0";
-            var bVal = i < bParts.Length ? bParts[i] : "0";
-            if (int.TryParse(aVal, out var ai) && int.TryParse(bVal, out var bi))
-            {
-                var cmp = ai.CompareTo(bi);
-                if (cmp != 0) return cmp;
-            }
-            else
-            {
-                var cmp = string.Compare(aVal, bVal, StringComparison.Ordinal);
-                if (cmp != 0) return cmp;
-            }
-        }
-        return 0;
-    }
-}
-
-/// <summary>
-/// Collects versions from GitHub repository tags (not releases).
-/// Use this when a repository publishes version tags but not GitHub Releases.
-/// </summary>
-public sealed class GitHubTagsVersionCollector : IVersionCollector
-{
-    private readonly string _owner;
-    private readonly string _repo;
-    private readonly HttpClient _httpClient;
-    private readonly Func<string, string?> _tagToVersion;
-
-    public GitHubTagsVersionCollector(
-        string owner, string repo,
-        HttpClient? httpClient = null,
-        Func<string, string?>? tagToVersion = null)
-    {
-        _owner = owner;
-        _repo = repo;
-        _httpClient = httpClient ?? CreateDefaultHttpClient();
-        _tagToVersion = tagToVersion ?? DefaultTagToVersion;
-    }
-
-    public async Task<IReadOnlyList<string>> CollectVersionsAsync(CancellationToken cancellationToken = default)
-    {
-        var versions = new List<string>();
-        var url = $"https://api.github.com/repos/{_owner}/{_repo}/tags?per_page=100";
-
-        while (url is not null)
-        {
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = await _httpClient.SendAsync(request, cancellationToken);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var tags = JsonSerializer.Deserialize<JsonElement>(json);
-
-            if (tags.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var tag in tags.EnumerateArray())
-                {
-                    if (!tag.TryGetProperty("name", out var nameProp))
-                        continue;
-                    var name = nameProp.GetString();
-                    if (name is null)
-                        continue;
-
-                    var version = _tagToVersion(name);
-                    if (!string.IsNullOrEmpty(version))
-                        versions.Add(version);
-                }
-            }
-
-            url = ParseNextLink(response.Headers);
-        }
-
-        versions.Sort(GitHubReleasesVersionCollector.CompareVersionStrings);
-        return versions;
-    }
-
-    private static string? ParseNextLink(System.Net.Http.Headers.HttpResponseHeaders headers)
-    {
-        if (!headers.TryGetValues("Link", out var linkValues))
-            return null;
-
-        foreach (var link in linkValues)
-        {
-            foreach (var part in link.Split(','))
-            {
-                var trimmed = part.Trim();
-                if (trimmed.EndsWith("rel=\"next\"", StringComparison.Ordinal))
-                {
-                    var start = trimmed.IndexOf('<');
-                    var end = trimmed.IndexOf('>');
-                    if (start >= 0 && end > start)
-                        return trimmed[(start + 1)..end];
-                }
-            }
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// Default tag-to-version mapping: strips leading 'v' prefix and
-    /// excludes pre-release tags (those containing '-', e.g. v1.0.0-rc.1).
-    /// </summary>
-    private static string? DefaultTagToVersion(string tag)
-    {
-        var version = tag.StartsWith('v') ? tag[1..] : tag;
-        // Exclude pre-release tags
-        if (version.Contains('-'))
-            return null;
-        return version;
-    }
-
-    private static HttpClient CreateDefaultHttpClient()
-    {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("User-Agent", "FrenchExDev-BinaryWrapper");
-        client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
-        return client;
-    }
-}
 
 // ── Multi-Version Scraper ───────────────────────────────────────────────────
 
@@ -1651,6 +2099,9 @@ public sealed class ScrapePipeline
     private readonly List<ICommandTreeTransformer> _transformers = [];
 
     private Func<string[], Task<string>>? _runHelp;
+    private string? _helpDumpDir;
+    private int _scrapeParallelism = 4;
+    private Action? _onCommandScraped;
 
     public ScrapePipeline Binary(string name) { _binaryName = name; return this; }
     public ScrapePipeline HelpFlag(string flag) { _helpFlag = flag; return this; }
@@ -1679,6 +2130,15 @@ public sealed class ScrapePipeline
 
     public ScrapePipeline UseTransformer(ICommandTreeTransformer transformer)
     { _transformers.Add(transformer); return this; }
+
+    public ScrapePipeline DumpHelpTo(string dir)
+    { _helpDumpDir = dir; return this; }
+
+    public ScrapePipeline ScrapeParallelism(int n)
+    { _scrapeParallelism = n; return this; }
+
+    public ScrapePipeline OnCommandScraped(Action callback)
+    { _onCommandScraped = callback; return this; }
 
     public string GenerateDockerfile()
     {
@@ -1740,7 +2200,7 @@ public sealed class ScrapePipeline
         IHelpParser parser, Func<string[], Task<string>> runHelp,
         CancellationToken ct)
     {
-        var scraper = new HelpScraper(parser, runHelp, _maxDepth, _helpFlag);
+        var scraper = new HelpScraper(parser, runHelp, _maxDepth, _helpFlag, _helpDumpDir, _scrapeParallelism, _onCommandScraped);
         var tree = await scraper.ScrapeAsync(_binaryName!, ct);
 
         tree = ApplyTransforms(tree);

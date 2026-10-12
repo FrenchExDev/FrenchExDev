@@ -1,0 +1,109 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "vagrant-cloud",
+  "repo": "hashicorp/packer-plugin-vagrant",
+  "sourcePath": "post-processor/vagrant-cloud/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "box_tag",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "version_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "no_release",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "architecture",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "default_architecture",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "access_token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vagrant_cloud_url",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "insecure_skip_tls_verify",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "box_download_url",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "no_direct_upload",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "box_checksum",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

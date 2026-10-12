@@ -1,0 +1,23 @@
+Description:
+
+Usage:
+  dotnet nuget push <package-paths>... [options]
+
+Arguments:
+  <package-paths>
+
+Options:
+  --force-english-output                  [default: False]
+  -s, --source <source>
+  -ss, --symbol-source <symbol-source>
+  -t, --timeout <timeout>
+  -k, --api-key <api-key>
+  -sk, --symbol-api-key <symbol-api-key>
+  -d, --disable-buffering                 [default: False]
+  -n, --no-symbols                        [default: False]
+  --no-service-endpoint                   [default: False]
+  --interactive                           Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  --skip-duplicate                        [default: False]
+  --configfile <configfile>
+  -?, -h, --help                          Show command line help.
+

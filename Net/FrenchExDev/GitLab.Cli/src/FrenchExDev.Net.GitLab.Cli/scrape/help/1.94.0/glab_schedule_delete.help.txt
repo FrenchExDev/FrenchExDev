@@ -1,0 +1,18 @@
+
+  Delete the schedule with the specified ID.                                                                            
+         
+  USAGE  
+         
+    glab schedule delete <id> [--flags]       
+            
+  EXAMPLES  
+            
+    # Delete a scheduled pipeline with ID 10  
+    $ glab schedule delete 10                 
+    Deleted schedule with ID 10               
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

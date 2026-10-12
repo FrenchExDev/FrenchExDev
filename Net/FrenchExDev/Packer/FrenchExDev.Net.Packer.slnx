@@ -1,9 +1,15 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/FrenchExDev.Net.Packer/FrenchExDev.Net.Packer.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Bundle/FrenchExDev.Net.Packer.Bundle.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Bundle.Attributes/FrenchExDev.Net.Packer.Bundle.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Bundle.SourceGenerator/FrenchExDev.Net.Packer.Bundle.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib/FrenchExDev.Net.Packer.Bundle.SourceGenerator.Lib.csproj" />
+    <Project Path="src/FrenchExDev.Net.Packer.Bundle.Design/FrenchExDev.Net.Packer.Bundle.Design.csproj" />
     <Project Path="src/FrenchExDev.Net.Packer.Design/FrenchExDev.Net.Packer.Design.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/FrenchExDev.Net.Packer.Tests/FrenchExDev.Net.Packer.Tests.csproj" />
+    <Project Path="test/FrenchExDev.Net.Packer.Bundle.Tests/FrenchExDev.Net.Packer.Bundle.Tests.csproj" />
   </Folder>
 </Solution>

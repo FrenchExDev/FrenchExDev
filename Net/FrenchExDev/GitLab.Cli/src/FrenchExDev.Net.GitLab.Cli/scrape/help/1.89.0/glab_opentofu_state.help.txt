@@ -1,0 +1,20 @@
+
+  Work with the OpenTofu or Terraform states.                                                                           
+         
+  USAGE  
+         
+    glab opentofu state <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    delete <state> [<serial>] [--flags]  Delete the given state or if the serial is provided only that version of the given state.
+    download <state> [<serial>]          Download the given state and output as JSON to stdout.
+    list [--flags]                       List states.
+    lock <state>                         Lock the given state.
+    unlock <state>                       Unlock the given state.
+         
+  FLAGS  
+         
+    -h --help                            Show help for this command.
+    -R --repo                            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

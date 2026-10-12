@@ -1,0 +1,8 @@
+
+Usage:  docker trust signer remove [OPTIONS] NAME REPOSITORY [REPOSITORY...]
+
+Remove a signer
+
+Options:
+  -f, --force   Do not prompt for confirmation before removing the most
+                recent signer

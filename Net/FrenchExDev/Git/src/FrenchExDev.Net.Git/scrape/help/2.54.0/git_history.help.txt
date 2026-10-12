@@ -1,0 +1,3 @@
+usage: git history reword <commit> [--dry-run] [--update-refs=(branches|head)]
+   or: git history split <commit> [--dry-run] [--update-refs=(branches|head)] [--] [<pathspec>...]
+

@@ -1,0 +1,21 @@
+Generate Git commands from natural language.
+
+USAGE
+  glab duo ask <prompt> [flags]
+
+FLAGS
+  --git   Ask a question about Git. (default true)
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  $ glab duo ask list last 10 commit titles                                                                           
+                                                                                                                        
+    | A list of Git commands to show the titles of the latest 10 commits with an explanation and an option to execute   
+    the                                                                                                                 
+    | commands.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

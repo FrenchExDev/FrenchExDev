@@ -1,0 +1,14 @@
+Description:
+  Gets the NuGet configuration settings that will be applied.
+
+Usage:
+  nuget config get <all-or-config-key> [options]
+
+Arguments:
+  <all-or-config-key>  ALL: Get all merged NuGet configuration settings from multiple NuGet configuration files that will be applied, when invoking NuGet command from the working directory path.  CONFIG_KEY: Get the effective value of the specified configuration settings of the config section.
+
+Options:
+  --working-directory  Specifies the directory to start from when listing configuration files. If not specified, the current directory is used.
+  --show-path          Indicate that the NuGet configuration file path will be shown beside the configuration settings.
+  -?, -h, --help       Show help and usage information
+

@@ -1,0 +1,6 @@
+Usage:  docker trust inspect IMAGE[:TAG] [IMAGE[:TAG]...]
+
+Return low-level information about keys and signatures
+
+Options:
+      --pretty   Print the information in a human friendly format

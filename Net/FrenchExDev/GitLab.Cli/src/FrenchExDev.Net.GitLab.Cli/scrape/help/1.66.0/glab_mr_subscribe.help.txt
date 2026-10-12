@@ -1,0 +1,26 @@
+Subscribe to a merge request.
+
+USAGE
+  glab mr subscribe [<id> | <branch>] [flags]
+
+ALIASES
+  sub
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  Subscribe to a merge request                                                     
+                                                                                     
+    • glab mr subscribe 123                                                          
+    • glab mr sub 123                                                                
+    • glab mr subscribe branch                                                       
+                                                                                     
+    Subscribe to multiple merge requests                                             
+                                                                                     
+    • glab mr subscribe 123 branch
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

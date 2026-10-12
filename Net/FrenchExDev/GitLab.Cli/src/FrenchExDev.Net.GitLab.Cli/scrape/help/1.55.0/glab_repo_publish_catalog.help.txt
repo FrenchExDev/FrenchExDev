@@ -1,0 +1,36 @@
+[EXPERIMENTAL] Publishes CI/CD components in the project to the CI/CD catalog   
+  using the provided tag name.                                                    
+                                                                                  
+  Requires the feature flag ci_release_cli_catalog_publish_option to be enabled   
+  for this project in your GitLab instance.                                       
+                                                                                  
+  Requires the same user as the release author.                                   
+                                                                                  
+  • It retrieves components from the current repository by searching for          
+  yml files within the "templates" directory and its subdirectories.              
+  • It fails if the feature flag ci_release_cli_catalog_publish_option            
+  is not enabled for this project in your GitLab instance.                        
+                                                                                  
+  Components can be defined:                                                      
+                                                                                  
+  • In single files ending in .yml for each component, like templates/secret-     
+  detection.yml.                                                                  
+  • In subdirectories containing template.yml files as entry points,              
+  for components that bundle together multiple related files. For example,        
+  templates/secret-detection/template.yml.
+
+USAGE
+  glab repo publish catalog <tag-name> [flags]
+
+FLAGS
+  -t, --tag string   An existing tag that should be published.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+EXAMPLES
+  glab repo publish catalog v1.2.3
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

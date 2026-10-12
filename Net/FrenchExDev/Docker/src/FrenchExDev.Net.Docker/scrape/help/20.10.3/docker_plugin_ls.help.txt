@@ -1,0 +1,13 @@
+
+Usage:  docker plugin ls [OPTIONS]
+
+List plugins
+
+Aliases:
+  ls, list
+
+Options:
+  -f, --filter filter   Provide filter values (e.g. 'enabled=true')
+      --format string   Pretty-print plugins using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only display plugin IDs

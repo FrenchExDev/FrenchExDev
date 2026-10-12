@@ -1,0 +1,2 @@
+Usage: vagrant push [strategy] [options]
+    -h, --help                       Print this help

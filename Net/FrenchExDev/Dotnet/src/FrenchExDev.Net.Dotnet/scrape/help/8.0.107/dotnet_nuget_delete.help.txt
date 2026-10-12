@@ -1,0 +1,16 @@
+
+
+Usage: dotnet nuget delete [arguments] [options]
+
+Arguments:
+  [root]  The Package Id and version.
+
+Options:
+  -h|--help               Show help information
+  --force-english-output  Forces the application to run using an invariant, English-based culture.
+  -s|--source <source>    Package source (URL, UNC/folder path or package source name) to use. Defaults to DefaultPushSource if specified in NuGet.Config.
+  --non-interactive       Do not prompt for user input or confirmations.
+  -k|--api-key <apiKey>   The API key for the server.
+  --no-service-endpoint   Does not append "api/v2/package" to the source URL.
+  --interactive           Allow the command to block and require manual action for operations like authentication.
+

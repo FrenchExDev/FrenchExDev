@@ -1,0 +1,8 @@
+
+Usage:  docker config inspect [OPTIONS] CONFIG [CONFIG...]
+
+Display detailed information on one or more configs
+
+Options:
+  -f, --format string   Format the output using the given Go template
+      --pretty          Print the information in a human friendly format

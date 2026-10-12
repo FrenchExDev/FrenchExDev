@@ -1,0 +1,24 @@
+
+  Rotate a token for a runner controller. (EXPERIMENTAL)                                                                
+         
+  USAGE  
+         
+    glab runner-controller token rotate <controller-id> <token-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # Rotate token 1 for runner controller 42 (with confirmation prompt)      
+    $ glab runner-controller token rotate 42 1                                
+                                                                              
+    # Rotate without confirmation                                             
+    $ glab runner-controller token rotate 42 1 --force                        
+                                                                              
+    # Rotate and output as JSON                                               
+    $ glab runner-controller token rotate 42 1 --force --output json          
+         
+  FLAGS  
+         
+    -f --force   Skip confirmation prompt.
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+

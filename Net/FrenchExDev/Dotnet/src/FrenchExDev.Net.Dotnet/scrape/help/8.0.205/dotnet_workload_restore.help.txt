@@ -1,0 +1,24 @@
+Description:
+  Restore workloads required for a project.
+
+Usage:
+  dotnet workload restore [<PROJECT | SOLUTION>...] [options]
+
+Arguments:
+  <PROJECT | SOLUTION>  The project or solution file to operate on. If a file is not specified, the command will search the current directory for one.
+
+Options:
+  --configfile <FILE>      The NuGet configuration file to use.
+  -s, --source <SOURCE>    The NuGet package source to use during the restore. To specify multiple sources, repeat the option.
+  --include-previews       Allow prerelease workload manifests.
+  --skip-manifest-update   Skip updating the workload manifests.
+  --temp-dir <temp-dir>    Specify a temporary directory for this command to download and extract NuGet packages (must be secure).
+  --disable-parallel       Prevent restoring multiple projects in parallel.
+  --ignore-failed-sources  Treat package source failures as warnings.
+  --no-cache               Do not cache packages and http requests.
+  --interactive            Allows the command to stop and wait for user input or action (for example to complete authentication).
+  -v, --verbosity <LEVEL>  Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help           Show command line help.
+
+
+

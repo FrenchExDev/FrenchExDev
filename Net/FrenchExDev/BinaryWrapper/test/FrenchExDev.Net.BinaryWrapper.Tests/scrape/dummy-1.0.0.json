@@ -1,0 +1,136 @@
+{
+  "binaryName": "dummy",
+  "root": {
+    "name": "dummy",
+    "description": "A dummy CLI for testing the source generator pipeline",
+    "options": [
+      {
+        "longName": "verbose",
+        "shortName": "v",
+        "description": "Enable verbose output",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      },
+      {
+        "longName": "output",
+        "shortName": "o",
+        "description": "Output directory",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      }
+    ],
+    "arguments": [],
+    "subCommands": [
+      {
+        "name": "run",
+        "description": "Run a task",
+        "options": [
+          {
+            "longName": "detach",
+            "shortName": "d",
+            "description": "Run in background",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "name",
+            "shortName": "n",
+            "description": "Name of the task",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "env",
+            "shortName": "e",
+            "description": "Environment variables",
+            "valueKind": "multiple",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "retries",
+            "description": "Number of retries",
+            "valueKind": "single",
+            "clrType": "integer",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "list",
+        "description": "List tasks",
+        "options": [
+          {
+            "longName": "all",
+            "shortName": "a",
+            "description": "Show all tasks",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "format",
+            "shortName": "f",
+            "description": "Output format",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "config",
+        "description": "Configuration management",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "get",
+            "description": "Get a config value",
+            "options": [
+              {
+                "longName": "key",
+                "description": "Config key to retrieve",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "set",
+            "description": "Set a config value",
+            "options": [
+              {
+                "longName": "key",
+                "description": "Config key",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              },
+              {
+                "longName": "value",
+                "description": "Config value",
+                "valueKind": "single",
+                "clrType": "string",
+                "isRequired": false
+              }
+            ],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      }
+    ]
+  }
+}

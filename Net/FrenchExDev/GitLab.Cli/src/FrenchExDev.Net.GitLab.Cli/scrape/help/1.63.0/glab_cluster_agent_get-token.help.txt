@@ -1,0 +1,20 @@
+Create and return a k8s_proxy-scoped personal access token to authenticate with a
+  GitLab Agents for Kubernetes.                                                    
+                                                                                   
+  This command creates a personal access token that is valid until the end of the  
+  current day. You might receive an email from your GitLab instance that a new     
+  personal access token has been created.
+
+USAGE
+  glab cluster agent get-token [flags]
+
+FLAGS
+  -a, --agent int   The numerical Agent ID to connect to.
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

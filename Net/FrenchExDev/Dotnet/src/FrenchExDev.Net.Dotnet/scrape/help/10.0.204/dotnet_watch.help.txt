@@ -1,0 +1,66 @@
+Description:
+  
+  
+  Environment variables:
+  
+    DOTNET_USE_POLLING_FILE_WATCHER
+    When set to '1' or 'true', dotnet-watch will poll the file system for
+    changes. This is required for some file systems, such as network shares,
+    Docker mounted volumes, and other virtual file systems.
+  
+    DOTNET_WATCH
+    dotnet-watch sets this variable to '1' on all child processes launched.
+  
+    DOTNET_WATCH_ITERATION
+    dotnet-watch sets this variable to '1' and increments by one each time
+    a file is changed and the command is restarted.
+  
+    DOTNET_WATCH_SUPPRESS_EMOJIS
+    When set to '1' or 'true', dotnet-watch will not show emojis in the 
+    console output.
+  
+  Remarks:
+    The special option '--' is used to delimit the end of the options and
+    the beginning of arguments that will be passed to the child dotnet process.
+  
+    For example: dotnet watch -- --verbose run
+  
+    Even though '--verbose' is an option dotnet-watch supports, the use of '--'
+    indicates that '--verbose' should be treated instead as an argument for
+    dotnet-run.
+  
+  Examples:
+    dotnet watch run
+    dotnet watch test
+  
+      
+
+Usage:
+  dotnet-watch [options] [[--] <additional arguments>...]]
+
+Options:
+  -q, --quiet                          Suppresses all output except warnings and errors
+  --verbose                            Show verbose output
+  --list                               Lists all discovered files without starting the watcher.
+  --no-hot-reload                      Suppress hot reload for supported apps.
+  --non-interactive                    Runs dotnet-watch in non-interactive mode. This option is only supported when running with Hot Reload enabled.
+                                             Use this option to prevent console input from being captured.
+  -c, --configuration <CONFIGURATION>  The configuration to run for. The default for most projects is 'Debug'.
+  -f, --framework <FRAMEWORK>          The target framework to run for. The target framework must also be specified in the project file.
+  --interactive                        Allows the command to stop and wait for user input or action (for example to complete authentication).
+  --no-restore                         Do not restore the project before building.
+  --sc, --self-contained               Publish the .NET runtime with your application so the runtime doesn't need to be installed on the target machine.
+                                       The default is 'false.' However, when targeting .NET 7 or lower, the default is 'true' if a runtime identifier is specified.
+  --no-self-contained                  Publish your application as a framework dependent application. A compatible .NET runtime must be installed on the target machine to run your application.
+  -v, -verbosity <LEVEL>               Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -r, --runtime <RUNTIME_IDENTIFIER>   The target runtime to run for.
+  -a, --arch <ARCH>                    The target architecture.
+  --os <OS>                            The target operating system.
+  --disable-build-servers              Force the command to ignore any persistent build servers.
+  --artifacts-path <ARTIFACTS_DIR>     The artifacts path. All output from the project, including build, publish, and pack output, will go in subfolders under the specified path.
+  -?, -h, --help                       Show help and usage information
+  --version                            Show version information
+
+Additional Arguments:
+  Arguments passed to the application that is being run.
+

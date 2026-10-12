@@ -1,0 +1,11 @@
+{
+  "Get-PumpPnpmDependencies": {
+    "Module": "Pnpm",
+    "Option": "--json",
+    "Native": "/mock/pnpm.exe",
+    "Stdout": "[{\"name\":\"app\",\"dependencies\":{\"package-a\":{\"version\":\"1.2.3\"}}}]",
+    "Expected": "Data.Items.0.Version",
+    "Value": "1.2.3",
+    "Arguments": {}
+  }
+}

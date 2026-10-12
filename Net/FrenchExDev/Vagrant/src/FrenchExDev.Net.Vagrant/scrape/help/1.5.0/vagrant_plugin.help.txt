@@ -1,0 +1,10 @@
+Usage: vagrant plugin <command> [<args>]
+
+Available subcommands:
+     install
+     license
+     list
+     uninstall
+     update
+
+For help on any individual command run `vagrant plugin COMMAND -h`

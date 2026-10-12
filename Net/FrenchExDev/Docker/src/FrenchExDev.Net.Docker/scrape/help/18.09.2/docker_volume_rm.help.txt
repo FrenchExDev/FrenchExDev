@@ -1,0 +1,16 @@
+
+Usage:	docker volume rm [OPTIONS] VOLUME [VOLUME...]
+
+Remove one or more volumes
+
+Aliases:
+  rm, remove
+
+Examples:
+
+$ docker volume rm hello
+hello
+
+
+Options:
+  -f, --force   Force the removal of one or more volumes

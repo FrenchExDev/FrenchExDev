@@ -1,0 +1,5 @@
+usage: git prune-packed [-n | --dry-run] [-q | --quiet]
+
+    -n, --[no-]dry-run    dry run
+    -q, --[no-]quiet      be quiet
+

@@ -1,0 +1,22 @@
+
+  Create labels for a repository or project.                                                                            
+         
+  USAGE  
+         
+    glab label create [--flags]        
+            
+  EXAMPLES  
+            
+    $ glab label create                
+    $ glab label new                   
+    $ glab label create -R owner/repo  
+         
+  FLAGS  
+         
+    -c --color        Color of the label, in plain or HEX code. (#428BCA)
+    -d --description  Label description.
+    -h --help         Show help for this command.
+    -n --name         Name of the label.
+    -p --priority     Label priority.
+    -R --repo         Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

@@ -1,0 +1,29 @@
+Trigger a manual CI/CD job.
+
+USAGE
+  glab ci trigger <job-id> [flags]
+
+FLAGS
+  -b, --branch string     The branch to search for the job. (default current branch)
+  -p, --pipeline-id int   The pipeline ID to search for the job.
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # Interactively select a job to trigger                                                                             
+                                                                                                                        
+    $ glab ci trigger                                                                                                   
+                                                                                                                        
+    # Trigger manual job with id 224356863                                                                              
+                                                                                                                        
+    $ glab ci trigger 224356863                                                                                         
+                                                                                                                        
+    # Trigger manual job with name lint                                                                                 
+                                                                                                                        
+    $ glab ci trigger lint
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

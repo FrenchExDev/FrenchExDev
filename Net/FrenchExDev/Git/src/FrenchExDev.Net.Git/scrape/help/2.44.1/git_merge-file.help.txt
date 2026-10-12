@@ -1,0 +1,16 @@
+usage: git merge-file [<options>] [-L <name1> [-L <orig> [-L <name2>]]] <file1> <orig-file> <file2>
+
+    -p, --[no-]stdout     send results to standard output
+    --[no-]object-id      use object IDs instead of filenames
+    --[no-]diff3          use a diff3 based merge
+    --[no-]zdiff3         use a zealous diff3 based merge
+    --[no-]ours           for conflicts, use our version
+    --[no-]theirs         for conflicts, use their version
+    --[no-]union          for conflicts, use a union version
+    --diff-algorithm <algorithm>
+                          choose a diff algorithm
+    --[no-]marker-size <n>
+                          for conflicts, use this marker size
+    -q, --[no-]quiet      do not warn about conflicts
+    -L <name>             set labels for file1/orig-file/file2
+

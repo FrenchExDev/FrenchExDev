@@ -1,0 +1,11 @@
+
+  List the available aliases.                                                                                           
+         
+  USAGE  
+         
+    glab alias list [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+

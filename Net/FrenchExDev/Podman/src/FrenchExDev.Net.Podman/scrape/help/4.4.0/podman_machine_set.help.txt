@@ -1,0 +1,17 @@
+Sets a virtual machine setting
+
+Description:
+  Sets an updatable virtual machine setting
+
+Usage:
+  podman machine set [options] [NAME]
+
+Examples:
+  podman machine set --rootful=false
+
+Options:
+      --cpus uint        Number of CPUs
+      --disk-size uint   Disk size in GB
+  -m, --memory uint      Memory in MB
+      --rootful          Whether this machine should prefer rootful container execution
+

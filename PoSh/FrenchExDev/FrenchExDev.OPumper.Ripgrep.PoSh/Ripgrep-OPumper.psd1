@@ -1,0 +1,14 @@
+@{
+    RootModule='Ripgrep-OPumper.psm1'
+    ModuleVersion='1.0.0'
+    GUID='2762a681-b551-4bfc-90f3-2125c54aae27'
+    Author='FrenchExDev'
+    PowerShellVersion='7.4'
+    CompatiblePSEditions=@('Core')
+    RequiredModules=@('OutputPump.PoSh')
+    FunctionsToExport=@('Find-PumpText','Find-PumpFiles')
+    CmdletsToExport=@()
+    VariablesToExport=@()
+    AliasesToExport=@()
+    PrivateData=@{OutputPumps=@{Version=1;ProviderId='ripgrep';RegistrationScript='src/Setup-OutputPumps.ps1'}}
+}

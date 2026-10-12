@@ -1,0 +1,21 @@
+
+  Creates a new GPG key owned by the currently authenticated user.                                                      
+                                                                                                                        
+         
+  USAGE  
+         
+    glab gpg-key add [key-file] [--flags]               
+            
+  EXAMPLES  
+            
+    # Read GPG key from stdin and upload.               
+    glab gpg-key add                                    
+                                                        
+    # Read GPG key from specified key file and upload.  
+    glab gpg-key add ~/.gnupg/pubkey.asc                
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

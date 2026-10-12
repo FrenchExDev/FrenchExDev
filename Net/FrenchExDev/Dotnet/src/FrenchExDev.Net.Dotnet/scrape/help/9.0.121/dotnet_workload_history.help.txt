@@ -1,0 +1,9 @@
+Description:
+  Shows a history of workload installation actions.
+
+Usage:
+  dotnet workload history [options]
+
+Options:
+  -?, -h, --help  Show command line help.
+

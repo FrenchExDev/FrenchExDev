@@ -1,0 +1,6 @@
+Usage: vagrant ssh-config [options] [name]
+
+Options:
+
+        --host NAME                  Name the host for the config
+    -h, --help                       Print this help

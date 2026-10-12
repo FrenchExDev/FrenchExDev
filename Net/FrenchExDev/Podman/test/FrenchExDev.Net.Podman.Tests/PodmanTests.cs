@@ -257,10 +257,10 @@ public sealed class GeneratedCodeTests
     // ── Top-level leaf commands via client ──
 
     [Fact]
-    public void Client_Run_ReturnsCommand()
+    public async Task Client_Run_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Run(b => b.WithDetach(true).WithName("test"));
+        var cmd = await client.RunAsync(b => b.WithDetach(true).WithName("test"));
         cmd.ShouldNotBeNull();
         cmd.ShouldBeOfType<PodmanRunCommand>();
         cmd.Detach.ShouldBe(true);
@@ -268,134 +268,134 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Ps_ReturnsCommand()
+    public async Task Client_Ps_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Ps(b => b.WithAll(true).WithFormat("json"));
+        var cmd = await client.PsAsync(b => b.WithAll(true).WithFormat("json"));
         cmd.All.ShouldBe(true);
         cmd.Format.ShouldBe("json");
     }
 
     [Fact]
-    public void Client_Build_ReturnsCommand()
+    public async Task Client_Build_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Build(b => b.WithFile(true));
+        var cmd = await client.BuildAsync(b => b.WithFile(true));
         cmd.ShouldNotBeNull();
         cmd.File.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Exec_ReturnsCommand()
+    public async Task Client_Exec_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Exec(b => b.WithDetach(true));
+        var cmd = await client.ExecAsync(b => b.WithDetach(true));
         cmd.Detach.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Pull_ReturnsCommand()
+    public async Task Client_Pull_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Pull(b => b.WithQuiet(true));
+        var cmd = await client.PullAsync(b => b.WithQuiet(true));
         cmd.Quiet.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Push_ReturnsCommand()
+    public async Task Client_Push_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Push(b => b.WithTlsVerify(true));
+        var cmd = await client.PushAsync(b => b.WithTlsVerify(true));
         cmd.TlsVerify.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Images_ReturnsCommand()
+    public async Task Client_Images_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Images(b => b.WithAll(true));
+        var cmd = await client.ImagesAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Inspect_ReturnsCommand()
+    public async Task Client_Inspect_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Inspect(b => b.WithFormat("json"));
+        var cmd = await client.InspectAsync(b => b.WithFormat("json"));
         cmd.Format.ShouldBe("json");
     }
 
     [Fact]
-    public void Client_Info_ReturnsCommand()
+    public async Task Client_Info_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Info(b => b.WithFormat("json"));
+        var cmd = await client.InfoAsync(b => b.WithFormat("json"));
         cmd.Format.ShouldBe("json");
     }
 
     [Fact]
-    public void Client_Kill_ReturnsCommand()
+    public async Task Client_Kill_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Kill(b => b.WithAll(true));
+        var cmd = await client.KillAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Rm_ReturnsCommand()
+    public async Task Client_Rm_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Rm(b => b.WithForce(true));
+        var cmd = await client.RmAsync(b => b.WithForce(true));
         cmd.Force.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Rmi_ReturnsCommand()
+    public async Task Client_Rmi_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Rmi(b => b.WithForce(true));
+        var cmd = await client.RmiAsync(b => b.WithForce(true));
         cmd.Force.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Stop_ReturnsCommand()
+    public async Task Client_Stop_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Stop(b => b.WithAll(true));
+        var cmd = await client.StopAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Start_ReturnsCommand()
+    public async Task Client_Start_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Start(b => b.WithAll(true));
+        var cmd = await client.StartAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
     }
 
     [Fact]
-    public void Client_Logs_ReturnsCommand()
+    public async Task Client_Logs_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Logs(b => b.WithFollow(true));
+        var cmd = await client.LogsAsync(b => b.WithFollow(true));
         cmd.Follow.ShouldBe(true);
     }
 
     // ── No-option commands ──
 
     [Fact]
-    public void Client_Run_NoProperties_ViaBuilder()
+    public async Task Client_Run_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Run(b => { });
+        var cmd = await client.RunAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
     }
 
     [Fact]
-    public void Client_Ps_NoProperties_ViaBuilder()
+    public async Task Client_Ps_NoProperties_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Ps(b => { });
+        var cmd = await client.PsAsync(b => { });
         cmd.ToArguments().Count.ShouldBe(0);
         cmd.CommandPath.ShouldBe(new[] { "ps" });
     }
@@ -411,10 +411,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Container_List_ReturnsCommand()
+    public async Task Client_Container_List_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Container.List(b => b.WithAll(true));
+        var cmd = await client.Container.ListAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
         cmd.CommandPath.ShouldBe(new[] { "container", "list" });
     }
@@ -428,10 +428,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Image_List_ReturnsCommand()
+    public async Task Client_Image_List_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Image.List(b => b.WithAll(true));
+        var cmd = await client.Image.ListAsync(b => b.WithAll(true));
         cmd.All.ShouldBe(true);
         cmd.CommandPath.ShouldBe(new[] { "image", "list" });
     }
@@ -445,10 +445,10 @@ public sealed class GeneratedCodeTests
     }
 
     [Fact]
-    public void Client_Network_Ls_ReturnsCommand()
+    public async Task Client_Network_Ls_ReturnsCommand()
     {
         var client = CreateClient();
-        var cmd = client.Network.Ls(b => b.WithQuiet(true));
+        var cmd = await client.Network.LsAsync(b => b.WithQuiet(true));
         cmd.Quiet.ShouldBe(true);
         cmd.CommandPath.ShouldBe(new[] { "network", "ls" });
     }
@@ -547,10 +547,10 @@ public sealed class GeneratedCodeTests
     // ── Run with many options via builder ──
 
     [Fact]
-    public void Client_Run_AllCommonOptions_ViaBuilder()
+    public async Task Client_Run_AllCommonOptions_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Run(b => b
+        var cmd = await client.RunAsync(b => b
             .WithDetach(true)
             .WithName("mycontainer")
             .WithTty(true)
@@ -577,10 +577,10 @@ public sealed class GeneratedCodeTests
     // ── Ps with all options via builder ──
 
     [Fact]
-    public void Client_Ps_AllOptions_ViaBuilder()
+    public async Task Client_Ps_AllOptions_ViaBuilder()
     {
         var client = CreateClient();
-        var cmd = client.Ps(b => b
+        var cmd = await client.PsAsync(b => b
             .WithAll(true)
             .WithFormat("json")
             .WithQuiet(true)

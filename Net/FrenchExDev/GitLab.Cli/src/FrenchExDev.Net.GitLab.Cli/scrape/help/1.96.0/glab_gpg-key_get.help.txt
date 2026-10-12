@@ -1,0 +1,18 @@
+
+  Returns a single GPG key specified by the ID.                                                                         
+         
+  USAGE  
+         
+    glab gpg-key get <key-id> [--flags]  
+            
+  EXAMPLES  
+            
+    # Get GPG key with ID as argument    
+    glab gpg-key get 7750633             
+         
+  FLAGS  
+         
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. (text)
+    -R --repo    Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

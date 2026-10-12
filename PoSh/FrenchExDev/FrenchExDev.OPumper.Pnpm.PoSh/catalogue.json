@@ -1,0 +1,57 @@
+[
+  {
+    "Name": "pnpm",
+    "VerifiedVersion": "pnpm 12.8.1, exécutable direct et list --json vérifiés le 2026-10-10",
+    "IdentityMarkdown": "pnpm gère les dépendances et workspaces Node. Cette première pompe inspecte les dépendances installées avec `list --json --depth`, sans installation, réparation ou modification du lockfile.\n\nWorkingDirectory choisit le projet ; Package filtre les noms ; Recursive parcourt les projets du workspace. Depth vaut 0 par défaut, maximum 5 pour éviter une expansion incontrôlée. La sortie contient nom/version/type/projet/profondeur, sans chemins internes du store ni configuration dʼauthentification.\n\nSous Windows, invoquer directement pnpm.exe. Si Get-Command résout un launcher pnpm.ps1, chercher son exécutable pnpm voisin ; ne pas utiliser de couche cmd ou modifier lʼExecutionPolicy. Un exécutable direct introuvable produit Unsupported. Une dépendance absente ou un store déplacé ne déclenche aucune réinstallation automatique.\n\nLes commandes install, run et exec nécessitent des pompes adaptées. Un script pnpm lançant un runner de tests doit fournir le rapport structuré de ce runner ; ne pas présenter son log comme un résultat de tests analysé.",
+    "Module": "Pnpm-OPumper.psm1",
+    "Id": "pnpm",
+    "Commands": [
+      {
+        "Example": "Get-PumpPnpmDependencies -WorkingDirectory $repo -Depth 0 -MaxItems 10",
+        "When": "Dépendances installées et versions sélectionnées.",
+        "Route": {
+          "Tokens": [
+            "list"
+          ],
+          "Multiple": false,
+          "Options": {
+            "--depth": {
+              "Multiple": false,
+              "Parameter": "Depth",
+              "Integer": true,
+              "Switch": false
+            },
+            "-r": {
+              "Multiple": false,
+              "Parameter": "Recursive",
+              "Integer": false,
+              "Switch": true
+            },
+            "--recursive": {
+              "Multiple": false,
+              "Parameter": "Recursive",
+              "Integer": false,
+              "Switch": true
+            }
+          },
+          "Executable": "pnpm",
+          "Positional": "Package",
+          "FirstPositional": null
+        },
+        "Parameters": [
+          "WorkingDirectory",
+          "Package",
+          "Recursive",
+          "Depth",
+          "Environment"
+        ],
+        "Function": "Get-PumpPnpmDependencies",
+        "Id": "pnpm.dependencies"
+      }
+    ],
+    "Purpose": "Inventaire limité des dépendances Node",
+    "Documentation": [
+      "https://pnpm.io/cli/list"
+    ]
+  }
+]

@@ -1,0 +1,109 @@
+{
+  "Get-PumpGitStatus": {
+    "Module": "Git",
+    "Option": "--porcelain=v2",
+    "Native": "git",
+    "Stdout": "# branch.oid abc\u0000# branch.head main\u00001 .M N... 100644 100644 100644 abc abc src/a.txt\u0000",
+    "Expected": "Data.Branch",
+    "Value": "main",
+    "Arguments": {}
+  },
+  "Get-PumpGitDiff": {
+    "Module": "Git",
+    "Option": "--numstat",
+    "Native": "git",
+    "Stdout": "2\t1\tsrc/a.txt\u0000",
+    "Expected": "Data.Items.0.Added",
+    "Value": 2,
+    "Arguments": {}
+  },
+  "Get-PumpGitChanges": {
+    "Module": "Git",
+    "Option": "--unified=0",
+    "Native": "git",
+    "Stdout": "diff --git a/src/a.txt b/src/a.txt\n--- a/src/a.txt\n+++ b/src/a.txt\n@@ -1 +1 @@\n-old\n+new\n",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 2,
+    "Arguments": {
+      "Path": "src/a.txt"
+    }
+  },
+  "Get-PumpGitLog": {
+    "Module": "Git",
+    "Option": "--format=%H%x00%aI%x00%s%x00",
+    "Native": "git",
+    "Stdout": "abc\u00002026-10-10\u0000subject\u0000",
+    "Expected": "Data.Items.0.Subject",
+    "Value": "subject",
+    "Arguments": {}
+  },
+  "Find-PumpText": {
+    "Module": "Ripgrep",
+    "Option": "--json",
+    "Native": "rg",
+    "Stdout": "{\"type\":\"match\",\"data\":{\"path\":{\"text\":\"a.txt\"},\"line_number\":3,\"lines\":{\"text\":\"hello\"}}}",
+    "Expected": "Data.Items.0.Line",
+    "Value": 3,
+    "Arguments": {
+      "Pattern": "hello"
+    }
+  },
+  "Find-PumpFiles": {
+    "Module": "Ripgrep",
+    "Option": "--files",
+    "Native": "rg",
+    "Stdout": "a.txt\u0000",
+    "Expected": "Data.Items.0.Path",
+    "Value": "a.txt",
+    "Arguments": {}
+  },
+  "Invoke-PumpDotnetBuild": {
+    "Module": "Dotnet",
+    "Option": "build",
+    "Native": "dotnet",
+    "Stdout": "src/a.cs(3,4): warning CS1234: diagnostic [app.csproj]",
+    "Expected": "Data.Items.0.Code",
+    "Value": "CS1234",
+    "Arguments": {
+      "Target": "app.csproj"
+    }
+  },
+  "Get-PumpPodmanContainers": {
+    "Module": "Podman",
+    "Option": "ps",
+    "Native": "podman",
+    "Stdout": "[{\"Id\":\"container1\",\"Names\":[\"demo\"],\"Image\":\"alpine\",\"State\":\"running\"}]",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 1,
+    "Arguments": {}
+  },
+  "Get-PumpPodmanImages": {
+    "Module": "Podman",
+    "Option": "images",
+    "Native": "podman",
+    "Stdout": "[{\"Id\":\"image1\",\"Names\":[\"alpine:latest\"],\"Size\":42,\"Created\":0}]",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 1,
+    "Arguments": {}
+  },
+  "Get-PumpPodmanLog": {
+    "Module": "Podman",
+    "Option": "logs",
+    "Native": "podman",
+    "Stdout": "2026-10-10T12:00:00Z ready",
+    "Expected": "Truncation.ReturnedCount",
+    "Value": 1,
+    "Arguments": {
+      "Container": "demo"
+    }
+  },
+  "Get-PumpPnpmDependencies": {
+    "Module": "Pnpm",
+    "Option": "--json",
+    "Native": "/mock/pnpm.exe",
+    "Stdout": "[{\"name\":\"app\",\"dependencies\":{\"package-a\":{\"version\":\"1.2.3\"}}}]",
+    "Expected": "Data.Items.0.Version",
+    "Value": "1.2.3",
+    "Arguments": {}
+  }
+}

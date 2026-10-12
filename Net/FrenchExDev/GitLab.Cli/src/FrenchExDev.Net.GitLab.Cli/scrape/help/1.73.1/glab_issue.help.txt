@@ -1,0 +1,38 @@
+Work with GitLab issues.
+
+USAGE
+  glab issue [command] [flags]
+
+CORE COMMANDS
+  board:      Work with GitLab issue boards in the given project.
+  close:      Close an issue.
+  create:     Create an issue.
+  delete:     Delete an issue.
+  list:       List project issues.
+  note:       Comment on an issue in GitLab.
+  reopen:     Reopen a closed issue.
+  subscribe:  Subscribe to an issue.
+  unsubscribe: Unsubscribe from an issue.
+  update:     Update issue
+  view:       Display the title, body, and other information about an issue.
+
+FLAGS
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+ARGUMENTS
+  An issue can be supplied as argument in any of the following formats:
+  - by number, like "123"
+  - by URL, like "https://gitlab.com/NAMESPACE/REPO/-/issues/123"
+
+EXAMPLES
+  $ glab issue list                                                                                                   
+    $ glab issue create --label --confidential                                                                          
+    $ glab issue view --web 123                                                                                         
+    $ glab issue note -m "closing because !123 was merged"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

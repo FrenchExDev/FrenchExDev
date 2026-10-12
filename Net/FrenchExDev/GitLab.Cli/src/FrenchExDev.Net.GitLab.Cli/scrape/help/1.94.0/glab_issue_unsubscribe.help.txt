@@ -1,0 +1,18 @@
+
+  Unsubscribe from an issue.                                                                                            
+         
+  USAGE  
+         
+    glab issue unsubscribe <id> [--flags]                              
+            
+  EXAMPLES  
+            
+    glab issue unsubscribe 123                                         
+    glab issue unsub 123                                               
+    glab issue unsubscribe https://gitlab.com/OWNER/REPO/-/issues/123  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

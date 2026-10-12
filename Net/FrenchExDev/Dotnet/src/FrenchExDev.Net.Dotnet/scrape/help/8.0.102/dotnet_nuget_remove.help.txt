@@ -1,0 +1,13 @@
+
+
+Usage: dotnet nuget remove [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  client-cert  Removes the client certificate configuration that matches the given package source name.
+  source       Remove a NuGet source.
+
+Use "remove [command] --help" for more information about a command.
+

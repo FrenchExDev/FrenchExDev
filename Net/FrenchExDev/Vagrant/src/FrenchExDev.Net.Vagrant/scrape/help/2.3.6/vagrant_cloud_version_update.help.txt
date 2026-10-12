@@ -1,0 +1,15 @@
+Usage: vagrant cloud version update [options] organization/box-name version
+
+Updates a version entry on Vagrant Cloud
+
+Options:
+
+    -d, --description DESCRIPTION    A description for this version
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

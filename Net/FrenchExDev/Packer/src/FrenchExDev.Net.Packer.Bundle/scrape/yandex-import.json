@@ -1,0 +1,134 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "yandex-import",
+  "repo": "hashicorp/packer-plugin-yandex",
+  "sourcePath": "post-processor/yandex-import/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "endpoint",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "service_account_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "token",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "max_retries",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "folder_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "service_account_id",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_family",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_labels",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_min_disk_size_gb",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_product_ids",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_pooled",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_create_image",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "bucket",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "object_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_clean",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

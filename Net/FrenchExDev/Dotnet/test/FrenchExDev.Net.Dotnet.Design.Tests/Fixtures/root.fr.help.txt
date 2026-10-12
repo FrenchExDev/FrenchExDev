@@ -1,0 +1,58 @@
+Utilisation: dotnet [runtime-options] [path-to-application] [arguments]
+
+Exécutez une application .NET.
+
+runtime-options:
+  --additionalprobingpath <path>   Chemin contenant la stratégie de collecte et les assemblys à collecter.
+  --additional-deps <path>         Chemin du fichier deps.json supplémentaire.
+  --depsfile                       Chemin du fichier <application>.deps.json.
+  --fx-version <version>           Version du framework partagé installé à utiliser pour exécuter l'application.
+  --roll-forward <setting>         Restaurer par progression la version du framework (LatestPatch, Minor, LatestMinor, Major, LatestMajor, Disable).
+  --runtimeconfig                  Chemin du fichier <application>.runtimeconfig.json.
+
+path-to-application:
+  Chemin d'un fichier .dll d'application à exécuter.
+
+Utilisation: dotnet [sdk-options] [command] [command-options] [arguments]
+
+Exécutez une commande du kit SDK .NET.
+
+sdk-options:
+  -d|--diagnostics  Activez la sortie des diagnostics.
+  -h|--help         Affichez l'aide de la ligne de commande.
+  --info            Affichez les informations sur .NET.
+  --list-runtimes   Affichez les runtimes installés.
+  --list-sdks       Affichez les SDK installés.
+  --version         Affichez la version utilisée du kit SDK .NET.
+
+Commandes du SDK:
+  build             Générez un projet .NET.
+  build-server      Interagissez avec les serveurs démarrés par une build.
+  clean             Nettoyez les sorties de build d'un projet .NET.
+  format            Appliquez les préférences de style à un projet ou une solution.
+  help              Ouvre la page de référence dans un navigateur pour la commande spécifiée.
+  msbuild           Exécutez des commandes MSBuild (Microsoft Build Engine).
+  new               Créez un fichier ou projet .NET.
+  nuget             Fournit des commandes NuGet supplémentaires.
+  pack              Créez un package NuGet.
+  package           Recherchez, ajoutez, supprimez ou répertoriez des PackageReferences pour un projet .NET.
+  publish           Publiez un projet .NET à des fins de déploiement.
+  reference         Ajoutez, supprimez ou répertoriez des ProjectReferences pour un projet .NET.
+  restore           Restaurez les dépendances spécifiées dans un projet .NET.
+  run               Générez et exécutez une sortie de projet .NET.
+  sdk               Gérer l'installation du kit SDK .NET.
+  solution          Modifiez les fichiers solution Visual Studio.
+  store             Stockez les assemblys spécifiés dans le magasin de packages de runtime.
+  test              Exécutez des tests unitaires à l'aide du programme Test Runner spécifié dans un projet .NET.
+  tool              Installez ou gérez les outils qui étendent l'expérience .NET.
+  vstest            Exécutez des commandes VSTest (Microsoft Test Engine).
+  workload          Gérez les charges de travail facultatives.
+
+Commandes supplémentaires d'outils groupés :
+  dev-certs         Créez et gérez des certificats de développement.
+  fsi               Démarrer F# Interactive / exécuter les scripts F#.
+  user-jwts         Gérer les jetons Web JSON en développement.
+  user-secrets      Gérez les secrets d'utilisateur de développement.
+  watch             Démarrez un observateur de fichier qui exécute une commande quand les fichiers changent.
+
+Pour plus d'informations sur une commande, exécutez 'dotnet [commande] --help'.

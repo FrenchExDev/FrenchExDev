@@ -1,0 +1,17 @@
+
+  Add or remove members from a GitLab project.                                                                          
+                                                                                                                        
+         
+  USAGE  
+         
+    glab repo members <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    add [--flags]     Add a member to the project.
+    remove [--flags]  Remove a member from the project.
+         
+  FLAGS  
+         
+    -h --help         Show help for this command.
+

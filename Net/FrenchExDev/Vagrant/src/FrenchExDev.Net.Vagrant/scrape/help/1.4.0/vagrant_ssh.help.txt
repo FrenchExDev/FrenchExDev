@@ -1,0 +1,5 @@
+Usage: vagrant ssh [vm-name] [-c command] [-- extra ssh args]
+
+    -c, --command COMMAND            Execute an SSH command directly.
+    -p, --plain                      Plain mode, leaves authentication up to user.
+    -h, --help                       Print this help

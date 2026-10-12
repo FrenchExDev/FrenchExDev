@@ -1,0 +1,14 @@
+Description:
+
+Usage:
+  dotnet nuget locals <folders> [options]
+
+Arguments:
+  <all|global-packages|http-cache|plugins-cache|temp>
+
+Options:
+  --force-english-output  [default: False]
+  -c, --clear             [default: False]
+  -l, --list              [default: False]
+  -?, -h, --help          Show command line help.
+

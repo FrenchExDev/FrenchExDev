@@ -1,0 +1,35 @@
+usage: git fast-export [<rev-list-opts>]
+
+    --[no-]progress <n>   show progress after <n> objects
+    --[no-]signed-tags <mode>
+                          select handling of signed tags
+    --[no-]signed-commits <mode>
+                          select handling of signed commits
+    --[no-]tag-of-filtered-object <mode>
+                          select handling of tags that tag filtered objects
+    --[no-]reencode <mode>
+                          select handling of commit messages in an alternate encoding
+    --[no-]export-marks <file>
+                          dump marks to this file
+    --[no-]import-marks <file>
+                          import marks from this file
+    --[no-]import-marks-if-exists <file>
+                          import marks from this file if it exists
+    --[no-]fake-missing-tagger
+                          fake a tagger when tags lack one
+    --[no-]full-tree      output full tree for each commit
+    --[no-]use-done-feature
+                          use the done feature to terminate the stream
+    --no-data             skip output of blob data
+    --data                opposite of --no-data
+    --[no-]refspec <refspec>
+                          apply refspec to exported refs
+    --[no-]anonymize      anonymize output
+    --anonymize-map <from:to>
+                          convert <from> to <to> in anonymized output
+    --[no-]reference-excluded-parents
+                          reference parents which are not in fast-export stream by object id
+    --[no-]show-original-ids
+                          show original object ids of blobs/commits
+    --[no-]mark-tags      label tags with mark ids
+

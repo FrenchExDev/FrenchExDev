@@ -1,0 +1,21 @@
+
+  Downloads the latest serial version if no serial is specified.                                                        
+                                                                                                                        
+         
+  USAGE  
+         
+    glab opentofu state download <state> [<serial>] [--flags]  
+            
+  EXAMPLES  
+            
+    # Download the latest serial of the state production       
+    glab opentofu state download production                    
+                                                               
+    # Download the serial 42 of the state production           
+    glab opentofu state download production 42                 
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

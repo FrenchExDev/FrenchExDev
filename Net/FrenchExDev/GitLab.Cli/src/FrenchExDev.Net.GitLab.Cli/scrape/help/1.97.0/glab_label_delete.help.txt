@@ -1,0 +1,17 @@
+
+  Delete labels for a repository or project.                                                                            
+         
+  USAGE  
+         
+    glab label delete [--flags]          
+            
+  EXAMPLES  
+            
+    glab label delete foo                
+    glab label delete -R owner/repo foo  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

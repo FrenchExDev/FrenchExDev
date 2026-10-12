@@ -1,0 +1,22 @@
+Moves to the next diff in the stack, and checks out that branch.
+
+This feature is experimental. It might be broken or removed without any prior notice.
+Read more about what experimental features mean at
+<https://docs.gitlab.com/ee/policy/experiment-beta-support.html>
+
+Use experimental features at your own risk.
+
+
+USAGE
+  glab stack next [flags]
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  glab stack next
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

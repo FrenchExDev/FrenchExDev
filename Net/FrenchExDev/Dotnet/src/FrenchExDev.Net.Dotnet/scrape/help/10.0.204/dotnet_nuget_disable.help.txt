@@ -1,0 +1,12 @@
+
+
+Usage: dotnet nuget disable [options] [command]
+
+Options:
+  -h|--help  Show help information
+
+Commands:
+  source  Disable a NuGet source.
+
+Use "disable [command] --help" for more information about a command.
+

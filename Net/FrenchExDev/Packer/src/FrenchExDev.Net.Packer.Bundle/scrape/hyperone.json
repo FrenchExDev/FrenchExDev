@@ -1,0 +1,463 @@
+{
+  "pluginKind": "builder",
+  "typeName": "hyperone",
+  "repo": "hashicorp/packer-plugin-hyperone",
+  "sourcePath": "builder/hyperone/config.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "communicator",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "pause_before_connecting",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_keypair_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_key_pair_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_key_pair_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "temporary_key_pair_bits",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_ciphers",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_clear_authorized_keys",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_key_exchange_algorithms",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_private_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_certificate_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_pty",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_wait_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_agent_auth",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_disable_agent_forwarding",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_handshake_attempts",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_agent_auth",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_interactive",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_private_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_bastion_certificate_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_file_transfer_method",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_proxy_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_keep_alive_interval",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_read_write_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_remote_tunnels",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_local_tunnels",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_public_key",
+      "ctyType": "cty.List(cty.Number)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_private_key",
+      "ctyType": "cty.List(cty.Number)",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_username",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_password",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_host",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_no_proxy",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_use_ssl",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_insecure",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "winrm_use_ntlm",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "api_url",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "location",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "project",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "state_timeout",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "source_image",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_description",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_tags",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "image_service",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vm_tags",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "disk_size",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "network",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "private_ip",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "public_ip",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_device",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_disk",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_disk_size",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_disk_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_mount_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_mounts",
+      "ctyType": "cty.List(cty.List(cty.String))",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_copy_files",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "chroot_command_wrapper",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_options",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "mount_partition",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "pre_mount_commands",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "post_mount_commands",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_keys",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "user_data",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": [
+    {
+      "hclName": "image_tag",
+      "nestedTypeName": "image_tag"
+    },
+    {
+      "hclName": "vm_tag",
+      "nestedTypeName": "vm_tag"
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "binaryName": "packer",
+  "root": {
+    "name": "packer",
+    "options": [],
+    "arguments": [],
+    "subCommands": [
+      {
+        "name": "build",
+        "options": [
+          {
+            "longName": "color",
+            "description": "Disable color output. (Default: color)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "debug",
+            "description": "Debug mode enabled for builds.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "except",
+            "description": "Run all builds and post-processors other than these.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "only",
+            "description": "Build only the specified builds.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "force",
+            "description": "Force a build to continue if artifacts exist, deletes existing artifacts.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Produce machine-readable output.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "on-error",
+            "description": "If the build fails do: clean up (default), abort, ask, or run-cleanup-provisioner.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "parallel-builds",
+            "description": "Number of builds to run in parallel. 1 disables parallelization. 0 means no limit (Default: 0)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamp-ui",
+            "description": "Enable prefixing of each ui output with an RFC3339 timestamp.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "var",
+            "description": "\u0027key=value\u0027              Variable for templates, can be used multiple times.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "var-file",
+            "description": "JSON or HCL2 file containing user variables, can be used multiple times.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "warn-on-undeclared-var",
+            "description": "Display warnings for user variable files containing undeclared variables.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "console",
+        "options": [
+          {
+            "longName": "var",
+            "description": "\u0027key=value\u0027       Variable for templates, can be used multiple times.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "var-file",
+            "description": "JSON or HCL2 file containing user variables.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "fix",
+        "description": "iso-md5                    Replaces \u0022iso_md5\u0022 in builders with \u0022iso_checksum\u0022",
+        "options": [
+          {
+            "longName": "validate",
+            "description": "If true (default), validates the fixed template.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "fmt",
+        "options": [
+          {
+            "longName": "check",
+            "description": "Check if the input is formatted. Exit status will be 0 if all",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "diff",
+            "description": "Display diffs of formatting change",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "write",
+            "description": "Don\u0027t write to source files",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "recursive",
+            "description": "Also process files in subdirectories. By default, only the",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "hcl2_upgrade",
+        "options": [
+          {
+            "longName": "output-file",
+            "description": "Set output file name. By default this will be the",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "with-annotations",
+            "description": "Add helper annotation comments to the file to help new",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "init",
+        "options": [
+          {
+            "longName": "upgrade",
+            "description": "On top of installing missing plugins, update",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "inspect",
+        "options": [
+          {
+            "longName": "machine-readable",
+            "description": "Machine-readable output",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "plugins",
+        "description": "- \u0022packer init \u003Cpath\u003E\u0022 will install all plugins required by a config.",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "install",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "installed",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "remove",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "required",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "validate",
+        "options": [
+          {
+            "longName": "syntax-only",
+            "description": "Only check syntax. Do not verify config of the template.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "except",
+            "description": "Validate all builds other than these.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "only",
+            "description": "Validate only these builds.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "machine-readable",
+            "description": "Produce machine-readable output.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "var",
+            "description": "\u0027key=value\u0027              Variable for templates, can be used multiple times.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "var-file",
+            "description": "JSON or HCL2 file containing user variables, can be used multiple times.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "no-warn-undeclared-var",
+            "description": "Disable warnings for user variable files containing undeclared variables.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "evaluate-datasources",
+            "description": "Evaluate data sources during validation (HCL2 only, may incur costs); Defaults to false.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "version",
+        "description": "Prints the Packer version, and checks for new release.",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      }
+    ]
+  }
+}

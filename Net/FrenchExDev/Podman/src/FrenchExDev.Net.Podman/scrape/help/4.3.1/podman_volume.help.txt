@@ -1,0 +1,17 @@
+Manage volumes
+
+Description:
+  Volumes are created in and can be shared between containers
+
+Usage:
+  podman volume [command]
+
+Available Commands:
+  create      Create a new volume
+  exists      Volume exists
+  inspect     Display detailed information on one or more volumes
+  ls          List volumes
+  prune       Remove all unused volumes
+  reload      reload all volumes from volume plugins
+  rm          Remove one or more volumes
+

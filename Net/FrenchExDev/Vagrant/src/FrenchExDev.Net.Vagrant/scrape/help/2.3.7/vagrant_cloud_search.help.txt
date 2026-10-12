@@ -1,0 +1,23 @@
+Usage: vagrant cloud search [options] query
+
+Search for boxes managed by a specific
+user/organization on Vagrant Cloud
+
+Options:
+
+    -j, --json                       Formats results in JSON
+        --page PAGE                  The page to display Default: 1
+    -s, --short                      Shows a simple list of box names
+    -o, --order ORDER                Order to display results ('desc' or 'asc') Default: 'desc'
+    -l, --limit LIMIT                Max number of search results Default: 25
+    -p, --provider PROVIDER          Filter search results to a single provider. Defaults to all.
+        --sort-by SORT               Field to sort results on (created, downloads, updated) Default: downloads
+        --[no-]auth                  Authenticate with Vagrant Cloud if required before searching
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

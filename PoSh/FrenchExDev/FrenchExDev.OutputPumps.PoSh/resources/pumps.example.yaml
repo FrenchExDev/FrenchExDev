@@ -1,0 +1,6 @@
+version: 1
+sources:
+  - path: 'C:/path/to/FrenchExDev.OutputPumps.PoSh'
+    enabled: true
+pumps:
+  git.status: true

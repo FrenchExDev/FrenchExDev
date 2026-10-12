@@ -1,0 +1,25 @@
+Get the list of schedules.
+
+USAGE
+  glab schedule list [flags]
+
+FLAGS
+  -p, --page int       Page number. (default 1)
+  -P, --per-page int   Number of items to list per page. (default 30)
+
+INHERITED FLAGS
+      --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # List all scheduled pipelines                                                   
+                                                                                     
+    $ glab schedule list                                                             
+                                                                                     
+    | Showing schedules for project gitlab-org/cli ID  Description                   
+    | Cron            Ref    Active 1   Daily build                   0 0 * * *      
+    | main   true 2   Weekly deployment             0 0 * * 0       main   true
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

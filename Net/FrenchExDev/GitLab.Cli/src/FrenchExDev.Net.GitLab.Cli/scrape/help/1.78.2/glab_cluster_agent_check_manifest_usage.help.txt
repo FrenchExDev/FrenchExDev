@@ -1,0 +1,27 @@
+
+  Checks the descendants of a group for registered agents with configuration files that rely on the deprecated GitOps   
+  manifests settings.                                                                                                   
+  The output can be piped to a tab-separated value (TSV) file.                                                          
+                                                                                                                        
+  This feature is experimental. It might be broken or removed without any prior notice.                                 
+  Read more about what experimental features mean at                                                                    
+  <https://docs.gitlab.com/policy/development_stages_support/>                                                          
+                                                                                                                        
+  Use experimental features at your own risk.                                                                           
+                                                                                                                        
+         
+  USAGE  
+         
+    glab cluster agent check_manifest_usage [--flags]  
+         
+  FLAGS  
+         
+    -a --agent-page      Page number for projects. (1)
+    -A --agent-per-page  Number of projects to list per page. (30)
+    -g --group           Group ID to check.
+    -h --help            Show help for this command.
+    -p --page            Page number for projects. (1)
+    -P --per-page        Number of projects to list per page. (30)
+    -r --recursive       Recursively check subgroups.
+    -R --repo            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

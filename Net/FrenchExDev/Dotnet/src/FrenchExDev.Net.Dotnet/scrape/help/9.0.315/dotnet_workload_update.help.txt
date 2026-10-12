@@ -1,0 +1,23 @@
+Description:
+  Update all installed workloads.
+
+Usage:
+  dotnet workload update [options]
+
+Options:
+  --configfile <FILE>                The NuGet configuration file to use.
+  -s, --source <SOURCE>              The NuGet package source to use during the restore. To specify multiple sources, repeat the option.
+  --include-previews                 Allow prerelease workload manifests.
+  --temp-dir <temp-dir>              Specify a temporary directory for this command to download and extract NuGet packages (must be secure).
+  --from-previous-sdk                Include workloads installed with earlier SDK versions in update.
+  --advertising-manifests-only       Only update advertising manifests.
+  --version <version>                A workload version to display or one or more workloads and their versions joined by the '@' character.
+  --disable-parallel                 Prevent restoring multiple projects in parallel.
+  --ignore-failed-sources            Treat package source failures as warnings.
+  --no-http-cache                    Do not cache packages and http requests.
+  --interactive                      Allows the command to stop and wait for user input or action (for example to complete authentication).
+  -v, --verbosity <LEVEL>            Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  --from-history <from-history>      Update workloads to a previous version specified by the argument. Use the 'dotnet workload history' to see available workload history records.
+  --manifests-only <manifests-only>  Update to the workload versions specified in the history without changing which workloads are installed. Currently installed workloads will be updated to match the specified history version.
+  -?, -h, --help                     Show command line help.
+

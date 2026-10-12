@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FrenchExDev.Net.GitLab.Ci.Yaml.Design</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Wrapper.Versioning\src\FrenchExDev.Net.Wrapper.Versioning\FrenchExDev.Net.Wrapper.Versioning.csproj" />
+  </ItemGroup>
+
+</Project>

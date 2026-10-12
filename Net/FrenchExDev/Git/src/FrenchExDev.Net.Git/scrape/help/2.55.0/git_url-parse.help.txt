@@ -1,0 +1,5 @@
+usage: git url-parse [-c <component>] [--] <url>...
+
+    -c, --[no-]component <component>
+                          which URL component to extract
+

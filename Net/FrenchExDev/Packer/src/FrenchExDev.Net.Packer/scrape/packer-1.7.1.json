@@ -1,0 +1,9 @@
+{
+  "binaryName": "packer",
+  "root": {
+    "name": "packer",
+    "options": [],
+    "arguments": [],
+    "subCommands": []
+  }
+}

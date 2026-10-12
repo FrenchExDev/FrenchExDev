@@ -1,0 +1,23 @@
+
+  Remove a member from the project.                                                                                     
+                                                                                                                        
+         
+  USAGE  
+         
+    glab repo members remove [--flags]            
+            
+  EXAMPLES  
+            
+    # Remove a user by username                   
+    glab repo members remove --username=john.doe  
+                                                  
+    # Remove a user by ID                         
+    glab repo members remove --user-id=123        
+         
+  FLAGS  
+         
+    -h --help     Show help for this command.
+    -R --repo     Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -u --user-id  User ID instead of username
+    --username    Username instead of user-id
+

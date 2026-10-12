@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FrenchExDev.Net.GitLab.DockerCompose</RootNamespace>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)$(Configuration)/$(TargetFramework)/Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder\FrenchExDev.Net.Builder.csproj" />
+    <ProjectReference Include="..\..\..\DockerCompose\src\FrenchExDev.Net.DockerCompose.Bundle\FrenchExDev.Net.DockerCompose.Bundle.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.GitLab.DockerCompose.SourceGenerator\FrenchExDev.Net.GitLab.DockerCompose.SourceGenerator.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Builder\src\FrenchExDev.Net.Builder.SourceGenerator.Lib\FrenchExDev.Net.Builder.SourceGenerator.Lib.csproj"
+                      OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\resources\gitlab-*.rb" />
+  </ItemGroup>
+
+</Project>

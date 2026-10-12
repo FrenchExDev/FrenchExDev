@@ -1,9 +1,5 @@
-enum ClaudeVmAction {
-    Restart
-    Reset
-}
 param(
-    [ClaudeVmAction]$Action = "Restart"
+    [ValidateSet("Restart", "Reset")] [string]$Action = "Restart"
 )
 
 function Restart-ClaudeVm {
@@ -13,8 +9,6 @@ function Restart-ClaudeVm {
     net start CoworkVMService
 }
 
-Export-ModuleMember -function Restart-ClaudeVm
-
 function Reset-ClaudeVm {
     net stop CoworkVMService
 
@@ -23,7 +17,6 @@ function Reset-ClaudeVm {
 
     net start CoworkVMService
 }
-Export-ModuleMember -function Reset-ClaudeVm
 
 switch ($Action) {
     'Restart' { Restart-ClaudeVm }

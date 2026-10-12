@@ -1,2 +1,18 @@
 .claude
 .vs
+**/obj
+**/bin
+**/TestResults
+**/packages
+*.user
+*.suo
+*.cache
+*.log
+.quality-gate
+coverage-results
+.env
+
+.fake
+
+# Generated BinaryWrapper image recipes and local cache metadata
+.images/

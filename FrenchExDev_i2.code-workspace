@@ -18,23 +18,25 @@
 			"appsettings",
 			"Ardalis",
 			"combinators",
+			"homelab",
 			"netstandard",
+			"NETSDK",
 			"notnull",
+			"slnx",
 			"Wlaschin",
 			"xunit"
 		],
 		"search.exclude": {
 			".vs/": true,
 			"**/bin/": true,
-			"**/obj/": true,
 			"**/node_modules/": true,
 		},
 		"files.exclude": {
 			"**/.vs/": true,
 			"**/bin/": true,
-			"**/obj/": true,
 			"**/node_modules/": true,
 		},
-		"powershell.cwd": "Root"
+		"powershell.cwd": "Root",
+		"dotnet.defaultSolution": "Net/Dotnet/FrenchExDev.Net.Dotnet.slnx"
 	}
 }

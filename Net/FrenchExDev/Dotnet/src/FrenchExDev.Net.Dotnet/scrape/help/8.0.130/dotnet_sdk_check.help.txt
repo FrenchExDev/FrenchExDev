@@ -1,0 +1,10 @@
+Description:
+  .NET SDK Check Command
+
+Usage:
+  dotnet sdk check [options]
+
+Options:
+  -?, -h, --help  Show command line help.
+
+

@@ -1,0 +1,8 @@
+Usage: vagrant init [options] [name [url]]
+
+Options:
+
+    -f, --force                      Overwrite existing Vagrantfile
+    -m, --minimal                    Create minimal Vagrantfile (no help comments)
+        --output FILE                Output path for the box. '-' for stdout
+    -h, --help                       Print this help

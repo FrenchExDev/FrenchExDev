@@ -1,0 +1,6 @@
+Usage: vagrant halt [options] [name]
+
+Options:
+
+    -f, --force                      Force shut down (equivalent of pulling power)
+    -h, --help                       Print this help

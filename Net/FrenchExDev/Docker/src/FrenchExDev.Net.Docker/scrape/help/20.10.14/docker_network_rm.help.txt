@@ -1,0 +1,7 @@
+
+Usage:  docker network rm NETWORK [NETWORK...]
+
+Remove one or more networks
+
+Aliases:
+  rm, remove

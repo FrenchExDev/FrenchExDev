@@ -1,0 +1,19 @@
+Description:
+  Downloads a NuGet package to a local folder without requiring a project file.
+
+Usage:
+  dotnet package download <packages>... [options]
+
+Arguments:
+  <packages>  Package reference in the form of a package identifier like 'Newtonsoft.Json' or package identifier and version separated by '@' like 'Newtonsoft.Json@13.0.3'.
+
+Options:
+  --allow-insecure-connections                                             Allows downloading from HTTP (non-HTTPS) package sources. [default: False]
+  --configfile <configfile>                                                The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  --interactive                                                            Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  -o, --output <output>                                                    Directory where the package will be placed. Defaults to the current working directory.
+  --prerelease                                                             Allows prerelease packages to be installed. [default: False]
+  -s, --source <source>                                                    Specifies one or more NuGet package sources to use.
+  -v, --verbosity <d|detailed|diag|diagnostic|m|minimal|n|normal|q|quiet>  Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help                                                           Show command line help.
+

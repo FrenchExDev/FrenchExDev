@@ -1,0 +1,45 @@
+
+  Create a new merge request.                                                                                           
+         
+  USAGE  
+         
+    glab mr create [--flags]                            
+            
+  EXAMPLES  
+            
+    $ glab mr new                                       
+    $ glab mr create -a username -t "fix annoying bug"  
+    $ glab mr create -f --draft --label RFC             
+    $ glab mr create --fill --web                       
+    $ glab mr create --fill --fill-commit-body --yes    
+         
+  FLAGS  
+         
+    --allow-collaboration   Allow commits from other members.
+    -a --assignee           Assign merge request to people by their `usernames`. Multiple usernames can be comma-separated or specified by repeating the flag.
+    --copy-issue-labels     Copy labels from issue to the merge request. Used with --related-issue.
+    --create-source-branch  Create a source branch if it does not exist.
+    -d --description        Supply a description for the merge request. Set to "-" to open an editor.
+    --draft                 Mark merge request as a draft.
+    -f --fill               Do not prompt for title or description, and just use commit info. Sets `push` to `true`, and pushes the branch.
+    --fill-commit-body      Fill description with each commit body when multiple commits. Can only be used with --fill.
+    -H --head               Select another head repository using the `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format, the project ID, or the full URL.
+    -h --help               Show help for this command.
+    -l --label              Add label by name. Multiple labels can be comma-separated or specified by repeating the flag.
+    -m --milestone          The global ID or title of a milestone to assign.
+    --no-editor             Don't open editor to enter a description. If true, uses prompt. Defaults to false.
+    --push                  Push committed changes after creating merge request. Make sure you have committed changes.
+    --recover               Save the options to a file if the merge request creation fails. If the file exists, the options are loaded from the recovery file. (EXPERIMENTAL)
+    -i --related-issue      Create a merge request for an issue. If --title is not provided, uses the issue title.
+    --remove-source-branch  Remove source branch on merge.
+    -R --repo               Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --reviewer              Request review from users by their `usernames`. Multiple usernames can be comma-separated or specified by repeating the flag.
+    --signoff               Append a DCO signoff to the merge request description.
+    -s --source-branch      Create a merge request from this branch. Default is the current branch.
+    --squash-before-merge   Squash commits into a single commit when merging.
+    -b --target-branch      The target or base branch into which you want your code merged into.
+    -t --title              Supply a title for the merge request.
+    -w --web                Continue merge request creation in a browser.
+    --wip                   Mark merge request as a draft. Alternative to --draft.
+    -y --yes                Skip submission confirmation prompt. Use --fill to skip all optional prompts.
+

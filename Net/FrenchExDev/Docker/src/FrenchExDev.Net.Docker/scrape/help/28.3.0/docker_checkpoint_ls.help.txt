@@ -1,0 +1,9 @@
+Usage:  docker checkpoint ls [OPTIONS] CONTAINER
+
+List checkpoints for a container
+
+Aliases:
+  docker checkpoint ls, docker checkpoint list
+
+Options:
+      --checkpoint-dir string   Use a custom checkpoint storage directory

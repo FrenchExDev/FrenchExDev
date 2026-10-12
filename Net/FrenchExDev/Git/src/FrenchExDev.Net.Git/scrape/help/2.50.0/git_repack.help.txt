@@ -1,0 +1,47 @@
+usage: git repack [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m]
+       [--window=<n>] [--depth=<n>] [--threads=<n>] [--keep-pack=<pack-name>]
+       [--write-midx] [--name-hash-version=<n>]
+
+    -a                    pack everything in a single pack
+    -A                    same as -a, and turn unreachable objects loose
+    --[no-]cruft          same as -a, pack unreachable cruft objects separately
+    --[no-]cruft-expiration <approxidate>
+                          with --cruft, expire objects older than this
+    --combine-cruft-below-size <n>
+                          with --cruft, only repack cruft packs smaller than this
+    --max-cruft-size <n>  with --cruft, limit the size of new cruft packs
+    -d                    remove redundant packs, and run git-prune-packed
+    -f                    pass --no-reuse-delta to git-pack-objects
+    -F                    pass --no-reuse-object to git-pack-objects
+    --[no-]name-hash-version <n>
+                          specify the name hash version to use for grouping similar objects by path
+    -n                    do not run git-update-server-info
+    -q, --[no-]quiet      be quiet
+    -l, --[no-]local      pass --local to git-pack-objects
+    -b, --[no-]write-bitmap-index
+                          write bitmap index
+    -i, --[no-]delta-islands
+                          pass --delta-islands to git-pack-objects
+    --[no-]unpack-unreachable <approxidate>
+                          with -A, do not loosen objects older than this
+    -k, --[no-]keep-unreachable
+                          with -a, repack unreachable objects
+    --[no-]window <n>     size of the window used for delta compression
+    --[no-]window-memory <bytes>
+                          same as the above, but limit memory size instead of entries count
+    --[no-]depth <n>      limits the maximum delta depth
+    --[no-]threads <n>    limits the maximum number of threads
+    --max-pack-size <n>   maximum size of each packfile
+    --[no-]filter <args>  object filtering
+    --[no-]pack-kept-objects
+                          repack objects in packs marked with .keep
+    --[no-]keep-pack <name>
+                          do not repack this pack
+    -g, --[no-]geometric <n>
+                          find a geometric progression with factor <N>
+    -m, --[no-]write-midx write a multi-pack index of the resulting packs
+    --[no-]expire-to <dir>
+                          pack prefix to store a pack containing pruned objects
+    --[no-]filter-to <dir>
+                          pack prefix to store a pack containing filtered out objects
+

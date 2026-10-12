@@ -1,0 +1,2 @@
+Usage: vagrant box remove <name> <provider>
+    -h, --help                       Print this help

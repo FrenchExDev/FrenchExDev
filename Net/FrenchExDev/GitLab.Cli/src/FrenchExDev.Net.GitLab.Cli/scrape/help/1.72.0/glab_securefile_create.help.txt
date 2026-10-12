@@ -1,0 +1,24 @@
+Create a new project secure file.
+
+USAGE
+  glab securefile create <fileName> <inputFilePath> [flags]
+
+ALIASES
+  upload
+
+INHERITED FLAGS
+  -h, --help              Show help for this command.
+  -R, --repo OWNER/REPO   Select another repository. Can use either OWNER/REPO or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+
+EXAMPLES
+  # Create a project secure file with the given name using the contents of the given path.                            
+                                                                                                                        
+    $ glab securefile create "newfile.txt" "securefiles/localfile.txt"                                                  
+                                                                                                                        
+    # Create a project secure file using the 'upload' alias.                                                            
+                                                                                                                        
+    $ glab securefile upload "newfile.txt" "securefiles/localfile.txt"
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

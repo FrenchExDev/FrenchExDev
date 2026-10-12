@@ -1,0 +1,11 @@
+Delete an alias.
+
+USAGE
+  glab alias delete <alias name> [flags]
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

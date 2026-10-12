@@ -1,0 +1,29 @@
+Work with GitLab repositories and projects.
+
+USAGE
+  glab repo <command> [flags]
+
+ALIASES
+  project
+
+CORE COMMANDS
+  archive:     Get an archive of the repository.
+  clone:       Clone a GitLab repository or project.
+  contributors: Get repository contributors list.
+  create:      Create a new GitLab project/repository.
+  delete:      Delete an existing repository on GitLab.
+  fork:        Fork a GitLab repository.
+  list:        Get list of repositories.
+  mirror:      Mirror a project or repository to the specified location, using pull or push methods.
+  publish:     Publishes resources in the project.
+  search:      Search for GitLab repositories and projects by name.
+  transfer:    Transfer a repository to a new namespace.
+  update:      Update an existing GitLab project or repository.
+  view:        View a project or repository.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

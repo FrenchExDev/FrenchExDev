@@ -1,0 +1,19 @@
+Description:
+  Deletes a package from the server.
+
+Usage:
+  NuGet.CommandLine.XPlat delete <PackageId> <PackageVersion> [options]
+
+Arguments:
+  <PackageId>       The Package Id and version.
+  <PackageVersion>  The Package Id and version.
+
+Options:
+  -s, --source <source>    Package source (URL, UNC/folder path or package source name) to use. Defaults to DefaultPushSource if specified in NuGet.Config.
+  --non-interactive        Do not prompt for user input or confirmations.
+  -k, --api-key <api-key>  The API key for the server. If not set, the NUGET_API_KEY environment variable is read.
+  --no-service-endpoint    Does not append "api/v2/package" to the source URL.
+  --interactive            Allow the command to block and require manual action for operations like authentication.
+  -?, -h, --help           Show help and usage information
+  --force-english-output   Forces the application to run using an invariant, English-based culture.
+

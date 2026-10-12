@@ -1,0 +1,4 @@
+Usage: vagrant global-status
+
+        --prune                      Prune invalid entries.
+    -h, --help                       Print this help

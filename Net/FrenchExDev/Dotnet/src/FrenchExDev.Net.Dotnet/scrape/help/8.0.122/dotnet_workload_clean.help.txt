@@ -1,0 +1,11 @@
+Description:
+  Removes workload components that may have been left behind from previous updates and uninstallations.
+
+Usage:
+  dotnet workload clean [options]
+
+Options:
+  --all           Causes clean to remove and uninstall all workload components from all SDK versions.
+  -?, -h, --help  Show command line help.
+
+

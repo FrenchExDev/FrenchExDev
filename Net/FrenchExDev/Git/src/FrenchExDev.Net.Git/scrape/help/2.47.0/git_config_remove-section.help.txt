@@ -1,0 +1,11 @@
+usage: git config remove-section [<file-option>] <name>
+
+Config file location
+    --[no-]global         use global config file
+    --[no-]system         use system config file
+    --[no-]local          use repository config file
+    --[no-]worktree       use per-worktree config file
+    -f, --[no-]file <file>
+                          use given config file
+    --[no-]blob <blob-id> read config from given blob object
+

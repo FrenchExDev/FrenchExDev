@@ -1,0 +1,14 @@
+Description:
+  Shows the dependency graph for a particular package for a given project or solution.
+
+Usage:
+  dotnet nuget why [<PROJECT|SOLUTION>... <PACKAGE>] [options]
+
+Arguments:
+  <PROJECT|SOLUTION>  A path to a project, solution file, or directory.
+  <PACKAGE>           The package name to lookup in the dependency graph.
+
+Options:
+  -f, --framework <framework>  The target framework(s) for which dependency graphs are shown.
+  -?, -h, --help               Show help and usage information
+

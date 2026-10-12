@@ -1,0 +1,17 @@
+View the fully expanded CI/CD configuration.
+
+USAGE
+  glab ci config compile [flags]
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  # Uses .gitlab-ci.yml in the current directory                                   
+                                                                                     
+    $ glab ci config compile $ glab ci config compile .gitlab-ci.yml $ glab ci config
+    compile path/to/.gitlab-ci.yml
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

@@ -1,0 +1,4 @@
+Usage: vagrant destroy [vm-name]
+
+    -f, --force                      Destroy without confirmation.
+    -h, --help                       Print this help

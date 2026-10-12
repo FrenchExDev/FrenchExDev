@@ -1,0 +1,25 @@
+
+  Update a runner controller. (EXPERIMENTAL)                                                                            
+         
+  USAGE  
+         
+    glab runner-controller update <id> [--flags]                                 
+            
+  EXAMPLES  
+            
+    # Update a runner controller's description                                   
+    glab runner-controller update 42 --description "Updated description"         
+                                                                                 
+    # Update a runner controller's state                                         
+    glab runner-controller update 42 --state enabled                             
+                                                                                 
+    # Update both description and state                                          
+    glab runner-controller update 42 --description "Production" --state enabled  
+         
+  FLAGS  
+         
+    -d --description  Description of the runner controller.
+    -h --help         Show help for this command.
+    -F --output       Format output as: text, json. (text)
+    --state           State of the runner controller: disabled, enabled, dry_run.
+

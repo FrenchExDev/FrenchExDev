@@ -1,0 +1,26 @@
+
+  Display the title, body, and other information about an issue.                                                        
+         
+  USAGE  
+         
+    glab issue view <id> [--flags]                                  
+            
+  EXAMPLES  
+            
+    glab issue view 123                                             
+    glab issue show 123                                             
+    glab issue view --web 123                                       
+    glab issue view --comments 123                                  
+    glab issue view https://gitlab.com/NAMESPACE/REPO/-/issues/123  
+         
+  FLAGS  
+         
+    -c --comments     Show issue comments and activities.
+    -h --help         Show help for this command.
+    -F --output       Format output as: text, json. (text)
+    -p --page         Page number. (1)
+    -P --per-page     Number of items to list per page. (20)
+    -R --repo         Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+    -s --system-logs  Show system activities and logs.
+    -w --web          Open issue in a browser. Uses the default browser, or the browser specified in the $BROWSER variable.
+

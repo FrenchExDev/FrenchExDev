@@ -1,0 +1,13 @@
+Description:
+
+Usage:
+  dotnet nuget trust remove <NAME> [options]
+
+Arguments:
+  <NAME>
+
+Options:
+  --configfile <configfile>
+  -v, --verbosity <LEVEL>    Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. [default: normal]
+  -?, -h, --help             Show command line help.
+

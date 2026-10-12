@@ -1,0 +1,17 @@
+Generate and display a GitLab Duo access token required for Claude Code authentication.                             
+                                                                                                                      
+  This token allows Claude Code to authenticate with GitLab AI services.                                              
+  The token is automatically used when running 'glab duo claude'.
+
+USAGE
+  glab duo claude token [flags]
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  $ glab duo claude token
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

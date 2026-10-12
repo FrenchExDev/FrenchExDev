@@ -1,0 +1,32 @@
+usage: git config set [<file-option>] [--type=<type>] [--comment=<message>] [--all] [--value=<value>] [--fixed-value] <name> <value>
+
+Config file location
+    --[no-]global         use global config file
+    --[no-]system         use system config file
+    --[no-]local          use repository config file
+    --[no-]worktree       use per-worktree config file
+    -f, --[no-]file <file>
+                          use given config file
+    --[no-]blob <blob-id> read config from given blob object
+
+Type
+    -t, --[no-]type <type>
+                          value is given this type
+    --bool                value is "true" or "false"
+    --int                 value is decimal number
+    --bool-or-int         value is --bool or --int
+    --bool-or-str         value is --bool or string
+    --path                value is a path (file or directory name)
+    --expiry-date         value is an expiry date
+
+Filter
+    --[no-]all            replace multi-valued config option with new value
+    --[no-]value <pattern>
+                          show config with values matching the pattern
+    --[no-]fixed-value    use string equality when comparing values to value pattern
+
+Other
+    --[no-]comment <value>
+                          human-readable comment string (# will be prepended as needed)
+    --[no-]append         add a new line without altering any existing values
+

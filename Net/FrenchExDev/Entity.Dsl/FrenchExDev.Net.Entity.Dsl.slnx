@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Entity.Dsl.Attributes/FrenchExDev.Net.Entity.Dsl.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Entity.Dsl.Abstractions/FrenchExDev.Net.Entity.Dsl.Abstractions.csproj" />
+    <Project Path="src/FrenchExDev.Net.Entity.Dsl.SourceGenerator/FrenchExDev.Net.Entity.Dsl.SourceGenerator.csproj" />
+    <Project Path="src/FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib/FrenchExDev.Net.Entity.Dsl.SourceGenerator.Lib.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Entity.Dsl.Tests/FrenchExDev.Net.Entity.Dsl.Tests.csproj" />
+  </Folder>
+</Solution>

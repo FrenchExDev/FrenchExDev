@@ -1,0 +1,22 @@
+
+  Manages GitLab CI/CD runners for projects, groups, or the entire instance.                                            
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    assign <runner-id> [--flags]    Assign a runner to a project.
+    delete <runner-id> [--flags]    Delete a runner.
+    jobs <runner-id> [--flags]      List jobs processed by a runner.
+    list [--flags]                  List runners.
+    managers <runner-id> [--flags]  List runner managers.
+    unassign <runner-id> [--flags]  Unassign a runner from a project.
+    update <runner-id> [--flags]    Update a runner.
+         
+  FLAGS  
+         
+    -h --help                       Show help for this command.
+

@@ -1,0 +1,144 @@
+{
+  "pluginKind": "provisioner",
+  "typeName": "ansible-local",
+  "repo": "hashicorp/packer-plugin-ansible",
+  "sourcePath": "provisioner/ansible-local/provisioner.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "extra_arguments",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "group_vars",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "host_vars",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "playbook_dir",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "playbook_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "playbook_files",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "playbook_paths",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "role_paths",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "collection_paths",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "staging_directory",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "clean_staging_directory",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "inventory_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "inventory_groups",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_force_install",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_roles_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_collections_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

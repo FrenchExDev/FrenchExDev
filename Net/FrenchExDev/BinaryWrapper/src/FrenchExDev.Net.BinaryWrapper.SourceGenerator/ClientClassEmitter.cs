@@ -34,6 +34,7 @@ internal static class ClientClassEmitter
 
         // ── Static entry point class ────────────────────────────────────
         sb.AppendLine($"/// <summary>Static entry point for the {NamingHelper.ToPascalCase(binaryName)} binary wrapper.</summary>");
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public static partial class {entryClassName}");
         sb.AppendLine("{");
         sb.AppendLine($"    /// <summary>Detects the installed binary and returns a typed client.</summary>");
@@ -46,6 +47,7 @@ internal static class ClientClassEmitter
 
         // ── Client class ────────────────────────────────────────────────
         sb.AppendLine($"/// <summary>Typed client for the {NamingHelper.ToPascalCase(binaryName)} binary.</summary>");
+        sb.AppendLine("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
         sb.AppendLine($"public partial class {clientClassName}");
         sb.AppendLine("{");
         sb.AppendLine("    private readonly global::FrenchExDev.Net.BinaryWrapper.BinaryBinding _binding;");
@@ -92,7 +94,7 @@ internal static class ClientClassEmitter
             if (cmd.UntilVersion is not null)
                 sb.AppendLine($"{indent}[global::FrenchExDev.Net.BinaryWrapper.UntilVersion(\"{cmd.UntilVersion}\")]");
 
-            sb.AppendLine($"{indent}public {commandClassName} {methodName}(global::System.Action<{builderClassName}> configure)");
+            sb.AppendLine($"{indent}public async global::System.Threading.Tasks.Task<{commandClassName}> {methodName}Async(global::System.Action<{builderClassName}> configure)");
             sb.AppendLine($"{indent}{{");
 
             // Version guard on command
@@ -108,7 +110,7 @@ internal static class ClientClassEmitter
 
             sb.AppendLine($"{indent}    var __builder = new {builderClassName}(_detectedVersion);");
             sb.AppendLine($"{indent}    configure(__builder);");
-            sb.AppendLine($"{indent}    return __builder.BuildAsync().GetAwaiter().GetResult().ValueOrThrow().Resolved();");
+            sb.AppendLine($"{indent}    return (await __builder.BuildAsync()).ValueOrThrow().Resolved();");
             sb.AppendLine($"{indent}}}");
             sb.AppendLine();
         }
@@ -125,6 +127,7 @@ internal static class ClientClassEmitter
             sb.AppendLine();
 
             // Emit inner class
+            sb.AppendLine($"{indent}[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
             sb.AppendLine($"{indent}public partial class {innerClassName}");
             sb.AppendLine($"{indent}{{");
             sb.AppendLine($"{indent}    private readonly {clientClassName} _client;");

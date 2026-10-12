@@ -1,0 +1,22 @@
+Fork a GitLab repository.
+
+USAGE
+  glab repo fork <repo> [flags]
+
+FLAGS
+  -c, --clone         Clone the fork. Options: true, false.
+  -n, --name string   The name assigned to the new project after forking.
+  -p, --path string   The path assigned to the new project after forking.
+      --remote        Add a remote for the fork. Options: true, false.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+EXAMPLES
+  glab repo fork
+  glab repo fork namespace/repo
+  glab repo fork namespace/repo --clone
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

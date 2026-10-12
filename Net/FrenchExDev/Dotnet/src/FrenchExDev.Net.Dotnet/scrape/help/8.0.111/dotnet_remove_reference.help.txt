@@ -1,0 +1,16 @@
+Description:
+  Remove a project-to-project reference from the project.
+
+Usage:
+  dotnet remove [<PROJECT>] reference <PROJECT_PATH>... [options]
+
+Arguments:
+  <PROJECT>       The project file to operate on. If a file is not specified, the command will search the current directory for one. [default: /]
+  <PROJECT_PATH>  The paths to the referenced projects to remove.
+
+Options:
+  -f, --framework <FRAMEWORK>  Remove the reference only when targeting a specific framework.
+  -?, -h, --help               Show command line help.
+
+
+

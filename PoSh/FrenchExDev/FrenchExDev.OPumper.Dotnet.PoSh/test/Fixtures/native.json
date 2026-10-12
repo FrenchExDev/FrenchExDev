@@ -1,0 +1,13 @@
+{
+  "Invoke-PumpDotnetBuild": {
+    "Module": "Dotnet",
+    "Option": "build",
+    "Native": "dotnet",
+    "Stdout": "src/a.cs(3,4): warning CS1234: diagnostic [app.csproj]",
+    "Expected": "Data.Items.0.Code",
+    "Value": "CS1234",
+    "Arguments": {
+      "Target": "app.csproj"
+    }
+  }
+}

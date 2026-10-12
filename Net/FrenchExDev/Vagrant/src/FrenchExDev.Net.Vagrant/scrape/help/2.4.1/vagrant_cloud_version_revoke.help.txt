@@ -1,0 +1,15 @@
+Usage: vagrant cloud version revoke [options] organization/box-name version
+
+Revokes a version entry on Vagrant Cloud
+
+Options:
+
+    -f, --[no-]force                 Force revocation without confirmation
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

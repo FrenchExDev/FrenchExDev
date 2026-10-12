@@ -1,0 +1,104 @@
+{
+  "pluginKind": "builder",
+  "typeName": "lxd",
+  "repo": "hashicorp/packer-plugin-lxd",
+  "sourcePath": "builder/lxd/config.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "output_image",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "container_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "publish_remote_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "command_wrapper",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "image",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "profile",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "init_sleep",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "publish_properties",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "launch_config",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "virtual_machine",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_publish",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

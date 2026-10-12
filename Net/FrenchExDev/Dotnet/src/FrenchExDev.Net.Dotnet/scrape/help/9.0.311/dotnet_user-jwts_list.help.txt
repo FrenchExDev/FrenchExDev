@@ -1,0 +1,10 @@
+
+
+Usage: dotnet user-jwts list [options]
+
+Options:
+  -p|--project   The path of the project to operate on. Defaults to the project in the current directory.
+  -o|--output    The format to use for displaying output from the command. Can be one of 'default', 'token', or 'json'.
+  --show-tokens  Indicates whether JWT base64 strings should be shown.
+  -h|--help      Show help information
+

@@ -1,0 +1,27 @@
+Usage: vagrant box update [options]
+
+Updates the box that is in use in the current Vagrant environment,
+if there any updates available. This does not destroy/recreate the
+machine, so you'll have to do that to see changes.
+
+To update a specific box (not tied to a Vagrant environment), use the
+--box flag.
+
+Options:
+
+        --box BOX                    Update a specific box
+        --architecture ARCHITECTURE  Update box with specific architecture
+        --provider PROVIDER          Update box with specific provider
+    -f, --force                      Overwrite an existing box if it exists
+        --insecure                   Do not validate SSL certificates
+        --cacert FILE                CA certificate for SSL download
+        --capath DIR                 CA certificate directory for SSL download
+        --cert FILE                  A client SSL cert, if needed
+        --[no-]color                 Enable or disable color output
+        --machine-readable           Enable machine readable output
+    -v, --version                    Display Vagrant version
+        --debug                      Enable debug output
+        --timestamp                  Enable timestamps on log output
+        --debug-timestamp            Enable debug output with timestamps
+        --no-tty                     Enable non-interactive output
+    -h, --help                       Print this help

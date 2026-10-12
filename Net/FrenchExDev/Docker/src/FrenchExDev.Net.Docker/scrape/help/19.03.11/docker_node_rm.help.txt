@@ -1,0 +1,10 @@
+
+Usage:	docker node rm [OPTIONS] NODE [NODE...]
+
+Remove one or more nodes from the swarm
+
+Aliases:
+  rm, remove
+
+Options:
+  -f, --force   Force remove a node from the swarm

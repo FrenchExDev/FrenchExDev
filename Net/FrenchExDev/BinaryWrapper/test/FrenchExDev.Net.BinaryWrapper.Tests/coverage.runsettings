@@ -4,7 +4,12 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
-          <Exclude>[FrenchExDev.Net.Result]*</Exclude>
+          <!-- Only measure the BinaryWrapper library -->
+          <Include>[FrenchExDev.Net.BinaryWrapper]*</Include>
+          <!-- Exclude compiler-generated and polyfill types -->
+          <ExcludeByAttribute>System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+          <!-- Exclude source-generated files -->
+          <ExcludeByFile>**/obj/Generated/**</ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>

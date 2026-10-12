@@ -1,0 +1,17 @@
+Description:
+
+Usage:
+  dotnet nuget delete <package-paths>... [options]
+
+Arguments:
+  <package-paths>
+
+Options:
+  --force-english-output   [default: False]
+  -s, --source <source>
+  --non-interactive        [default: False]
+  -k, --api-key <api-key>
+  --no-service-endpoint    [default: False]
+  --interactive            Allows the command to stop and wait for user input or action (for example to complete authentication). [default: False]
+  -?, -h, --help           Show command line help.
+

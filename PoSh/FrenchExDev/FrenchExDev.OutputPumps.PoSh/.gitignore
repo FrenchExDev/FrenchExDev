@@ -1,0 +1,6 @@
+.catalogue.lock
+.pump-write-*
+.cache/
+test/Artifacts/
+*.lock
+.stage-*/

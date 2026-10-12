@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Lib.Abstractions\FrenchExDev.Net.Vos.Lib.Abstractions.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Abstractions\FrenchExDev.Net.Vos.Abstractions.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.VosFile\FrenchExDev.Net.Vos.VosFile.csproj" />
+    <ProjectReference Include="..\FrenchExDev.Net.Vos.Bundle\FrenchExDev.Net.Vos.Bundle.csproj" />
+    <ProjectReference Include="..\..\..\Injectable\src\FrenchExDev.Net.Injectable.Attributes\FrenchExDev.Net.Injectable.Attributes.csproj" />
+    <ProjectReference Include="..\..\..\Injectable\src\FrenchExDev.Net.Injectable.Microsoft.SourceGenerator\FrenchExDev.Net.Injectable.Microsoft.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+</Project>

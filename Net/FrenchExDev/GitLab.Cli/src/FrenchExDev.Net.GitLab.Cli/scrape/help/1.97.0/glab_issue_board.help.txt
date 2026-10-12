@@ -1,0 +1,17 @@
+
+  Work with GitLab issue boards in the given project.                                                                   
+         
+  USAGE  
+         
+    glab issue board [command] [--flags]  
+            
+  COMMANDS  
+            
+    create [--flags]  Create a project issue board.
+    view [--flags]    View project issue board.
+         
+  FLAGS  
+         
+    -h --help         Show help for this command.
+    -R --repo         Select another repository using the OWNER/REPO format or the project ID. Supports group namespaces.
+

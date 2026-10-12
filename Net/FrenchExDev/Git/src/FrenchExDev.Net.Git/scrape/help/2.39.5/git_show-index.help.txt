@@ -1,0 +1,5 @@
+usage: git show-index [--object-format=<hash-algorithm>]
+
+    --object-format <hash-algorithm>
+                          specify the hash algorithm to use
+

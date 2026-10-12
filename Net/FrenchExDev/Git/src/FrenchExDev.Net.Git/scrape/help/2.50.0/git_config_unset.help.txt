@@ -1,0 +1,17 @@
+usage: git config unset [<file-option>] [--all] [--value=<value>] [--fixed-value] <name>
+
+Config file location
+    --[no-]global         use global config file
+    --[no-]system         use system config file
+    --[no-]local          use repository config file
+    --[no-]worktree       use per-worktree config file
+    -f, --[no-]file <file>
+                          use given config file
+    --[no-]blob <blob-id> read config from given blob object
+
+Filter
+    --[no-]all            replace multi-valued config option with new value
+    --[no-]value <pattern>
+                          show config with values matching the pattern
+    --[no-]fixed-value    use string equality when comparing values to value pattern
+

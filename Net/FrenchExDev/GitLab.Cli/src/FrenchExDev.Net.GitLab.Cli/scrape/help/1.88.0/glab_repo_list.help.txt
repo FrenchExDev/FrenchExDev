@@ -1,0 +1,28 @@
+
+  Get list of repositories.                                                                                             
+         
+  USAGE  
+         
+    glab repo list [--flags]  
+            
+  EXAMPLES  
+            
+    $ glab repo list          
+         
+  FLAGS  
+         
+    -a --all                List all projects on the instance.
+    --archived              Limit by archived status. Use 'false' to exclude archived repositories. Used with the '--group' flag.
+    -g --group              Return repositories in only the given group.
+    -h --help               Show help for this command.
+    -G --include-subgroups  Include projects in subgroups of this group. Default is false. Used with the '--group' flag.
+    --member                List only projects of which you are a member.
+    -m --mine               List only projects you own. Default if no filters are provided.
+    -o --order              Return repositories ordered by id, name, path, created_at, updated_at, similarity, star_count, last_activity_at. (last_activity_at)
+    -F --output             Format output as: text, json. (text)
+    -p --page               Page number. (1)
+    -P --per-page           Number of items to list per page. (30)
+    -s --sort               Sort direction for --order field: asc or desc.
+    --starred               List only starred projects.
+    -u --user               List user projects.
+

@@ -1,0 +1,17 @@
+Description:
+  Add a project-to-project reference to the project.
+
+Usage:
+  dotnet add [<PROJECT>] reference <PROJECT_PATH>... [options]
+
+Arguments:
+  <PROJECT>       The project file to operate on. If a file is not specified, the command will search the current directory for one. [default: /]
+  <PROJECT_PATH>  The paths to the projects to add as references.
+
+Options:
+  -f, --framework <FRAMEWORK>  Add the reference only when targeting a specific framework.
+  --interactive                Allows the command to stop and wait for user input or action (for example to complete authentication).
+  -?, -h, --help               Show command line help.
+
+
+

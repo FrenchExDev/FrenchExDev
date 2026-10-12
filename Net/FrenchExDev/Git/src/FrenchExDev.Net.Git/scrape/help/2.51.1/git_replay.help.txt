@@ -1,0 +1,8 @@
+usage: (EXPERIMENTAL!) git replay ([--contained] --onto <newbase> | --advance <branch>) <revision-range>...
+
+    --[no-]advance <branch>
+                          make replay advance given branch
+    --[no-]onto <revision>
+                          replay onto given commit
+    --[no-]contained      advance all branches contained in revision-range
+

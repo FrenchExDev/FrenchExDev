@@ -1,0 +1,19 @@
+http:
+  routers:
+    my-router:
+      rule: "Host(`example.com`)"
+      service: my-service
+      entryPoints:
+        - websecure
+      middlewares:
+        - my-headers
+  services:
+    my-service:
+      loadBalancer:
+        servers:
+          - url: "http://backend:8080"
+  middlewares:
+    my-headers:
+      headers:
+        customResponseHeaders:
+          X-Custom-Header: "hello"

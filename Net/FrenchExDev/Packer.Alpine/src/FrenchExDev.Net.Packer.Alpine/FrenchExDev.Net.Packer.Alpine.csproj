@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FrenchExDev.Net.Packer.Alpine</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Packer\src\FrenchExDev.Net.Packer.Bundle\FrenchExDev.Net.Packer.Bundle.csproj" />
+    <ProjectReference Include="..\..\..\Packer\src\FrenchExDev.Net.Packer\FrenchExDev.Net.Packer.csproj" />
+    <ProjectReference Include="..\..\..\Result\src\FrenchExDev.Net.Result\FrenchExDev.Net.Result.csproj" />
+  </ItemGroup>
+
+</Project>

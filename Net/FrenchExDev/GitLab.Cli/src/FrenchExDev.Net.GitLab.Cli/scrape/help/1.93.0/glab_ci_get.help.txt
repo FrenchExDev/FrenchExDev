@@ -1,0 +1,22 @@
+
+  Get JSON of a running CI/CD pipeline on the current or other specified branch.                                        
+         
+  USAGE  
+         
+    glab ci get [--flags]             
+            
+  EXAMPLES  
+            
+    glab ci get                       
+    glab ci -R some/project -p 12345  
+         
+  FLAGS  
+         
+    -b --branch            Check pipeline status for a branch. (default current branch)
+    -h --help              Show help for this command.
+    -F --output            Format output. Options: text, json. (text)
+    -p --pipeline-id       Provide pipeline ID.
+    -R --repo              Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -d --with-job-details  Show extended job information.
+    --with-variables       Show variables in pipeline. Requires the Maintainer role.
+

@@ -1,0 +1,18 @@
+
+  Generate Git commands from natural language.                                                                          
+                                                                                                                        
+         
+  USAGE  
+         
+    glab duo ask <prompt> [--flags]                                                                                   
+            
+  EXAMPLES  
+            
+    $ glab duo ask list last 10 commit titles                                                                         
+    > A list of Git commands to show the titles of the latest 10 commits with an explanation and an option to execu…  
+         
+  FLAGS  
+         
+    --git      Ask a question about Git. (true)
+    -h --help  Show help for this command.
+

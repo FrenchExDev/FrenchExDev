@@ -1,0 +1,14 @@
+Description:
+  Remove a NuGet package reference from the project.
+
+Usage:
+  dotnet package remove <PACKAGE_NAME>... [options]
+
+Arguments:
+  <PACKAGE_NAME>  The package reference to remove.
+
+Options:
+  --interactive        Allows the command to stop and wait for user input or action (for example to complete authentication).
+  --project <project>
+  -?, -h, --help       Show command line help.
+

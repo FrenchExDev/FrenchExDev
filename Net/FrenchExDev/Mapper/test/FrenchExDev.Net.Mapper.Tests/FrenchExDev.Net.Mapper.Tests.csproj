@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Mapper\FrenchExDev.Net.Mapper.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Mapper.Attributes\FrenchExDev.Net.Mapper.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Mapper.Testing\FrenchExDev.Net.Mapper.Testing.csproj" />
+  </ItemGroup>
+
+</Project>

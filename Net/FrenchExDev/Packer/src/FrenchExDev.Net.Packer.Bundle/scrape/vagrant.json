@@ -1,0 +1,89 @@
+{
+  "pluginKind": "post-processor",
+  "typeName": "vagrant",
+  "repo": "hashicorp/packer-plugin-vagrant",
+  "sourcePath": "post-processor/vagrant/post-processor.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "compression_level",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "include",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "output",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "override",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "vagrantfile_template",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "vagrantfile_template_generated",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "provider_override",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "architecture",
+      "ctyType": "cty.String",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

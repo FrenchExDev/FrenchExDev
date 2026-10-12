@@ -1,0 +1,150 @@
+{
+  "binaryName": "vagrant",
+  "root": {
+    "name": "vagrant",
+    "options": [],
+    "arguments": [],
+    "subCommands": [
+      {
+        "name": "box",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "add",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "list",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "remove",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "repackage",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "destroy",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "halt",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "init",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "package",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "plugin",
+        "options": [],
+        "arguments": [],
+        "subCommands": [
+          {
+            "name": "install",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "license",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "list",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "uninstall",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          },
+          {
+            "name": "update",
+            "options": [],
+            "arguments": [],
+            "subCommands": []
+          }
+        ]
+      },
+      {
+        "name": "provision",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "reload",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "resume",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "ssh",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "ssh-config",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "status",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "suspend",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "up",
+        "options": [],
+        "arguments": [],
+        "subCommands": []
+      }
+    ]
+  }
+}

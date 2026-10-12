@@ -1,0 +1,14 @@
+Usage: vagrant box update [options]
+
+Updates the box that is in use in the current Vagrant environment,
+if there any updates available. This does not destroy/recreate the
+machine, so you'll have to do that to see changes.
+
+To update a specific box (not tied to a Vagrant environment), use the
+--box flag.
+
+Options:
+
+        --box BOX                    Update a specific box
+        --provider PROVIDER          Update box with specific provider
+    -h, --help                       Print this help

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://json.schemastore.org/traefik-v3.1-file-provider.json",
+  "$comment": "Synthetic v3.1 delta. Exercises the multi-version merge path: only adds a single new property (httpRouter.observability) on top of v3 to prove the SinceVersion stamping works end to end. Real v3.1 deltas should replace this stub.",
+  "additionalProperties": false,
+  "definitions": {
+    "httpRouter": {
+      "type": "object",
+      "description": "Synthetic httpRouter delta for v3.1. Adds the observability property; rule, service, etc. are inherited from v3.",
+      "properties": {
+        "rule": {
+          "type": "string",
+          "description": "Routing rule (carried over from v3)."
+        },
+        "observability": {
+          "type": "string",
+          "description": "v3.1: enables per-router observability hooks. Synthetic — exists only to verify the multi-version pipeline."
+        }
+      }
+    }
+  }
+}

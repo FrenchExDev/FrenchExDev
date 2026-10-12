@@ -1,0 +1,10 @@
+Usage: vagrant box outdated [options]
+
+Checks if there is a new version available for the box
+that are you are using. If you pass in the --global flag,
+all boxes will be checked for updates.
+
+Options:
+
+        --global                     Check all boxes installed
+    -h, --help                       Print this help

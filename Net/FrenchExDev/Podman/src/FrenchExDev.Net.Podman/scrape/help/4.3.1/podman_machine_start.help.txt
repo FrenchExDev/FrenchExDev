@@ -1,0 +1,11 @@
+Start an existing machine
+
+Description:
+  Start a managed virtual machine 
+
+Usage:
+  podman machine start [MACHINE]
+
+Examples:
+  podman machine start myvm
+

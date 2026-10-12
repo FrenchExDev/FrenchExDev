@@ -1,0 +1,2 @@
+usage: git refs migrate --ref-format=<format> [--dry-run]
+

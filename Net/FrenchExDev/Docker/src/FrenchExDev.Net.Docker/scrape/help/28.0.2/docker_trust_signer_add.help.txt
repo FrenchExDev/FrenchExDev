@@ -1,0 +1,6 @@
+Usage:  docker trust signer add OPTIONS NAME REPOSITORY [REPOSITORY...] 
+
+Add a signer
+
+Options:
+      --key list   Path to the signer's public key file

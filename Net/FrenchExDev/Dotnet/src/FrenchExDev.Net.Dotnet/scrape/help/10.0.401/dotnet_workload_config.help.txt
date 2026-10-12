@@ -1,0 +1,11 @@
+Description:
+  Modify or display workload configuration values.
+  To display a value, specify the corresponding command-line option without providing a value.  For example: "dotnet workload config --update-mode"
+
+Usage:
+  dotnet workload config [options]
+
+Options:
+  --update-mode <manifests|workload-set>  Controls whether updates should look for workload sets or the latest version of each individual manifest.
+  -?, -h, --help                          Show command line help.
+

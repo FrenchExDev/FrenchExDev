@@ -1,0 +1,2 @@
+Usage: vagrant status [machine-name]
+    -h, --help                       Print this help

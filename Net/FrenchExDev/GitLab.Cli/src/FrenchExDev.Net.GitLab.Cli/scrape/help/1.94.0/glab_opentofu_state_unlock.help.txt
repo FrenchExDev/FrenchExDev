@@ -1,0 +1,12 @@
+
+  Unlock the given state.                                                                                               
+         
+  USAGE  
+         
+    glab opentofu state unlock <state> [--flags]  
+         
+  FLAGS  
+         
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

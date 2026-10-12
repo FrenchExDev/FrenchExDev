@@ -1,0 +1,1260 @@
+{
+  "binaryName": "podman-compose",
+  "root": {
+    "name": "podman-compose",
+    "options": [
+      {
+        "longName": "help",
+        "shortName": "h",
+        "description": "show this help message and exit",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      },
+      {
+        "longName": "version",
+        "shortName": "v",
+        "description": "show version",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      },
+      {
+        "longName": "in-pod",
+        "description": "Specify pod usage: \u0027true\u0027   - create/use a pod named pod_\u003Cproject name\u003E \u0027false\u0027  - do not use a pod \u0027\u003Cname\u003E\u0027 - create/use a custom pod with the given name",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "pod-args",
+        "description": "custom arguments to be passed to \u0060podman pod\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "env-file",
+        "description": "Specify an alternate environment file",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "file",
+        "shortName": "f",
+        "description": "Specify an compose file (default: docker-compose.yml) or \u0027-\u0027 to read from stdin.",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "profile",
+        "description": "Specify a profile to enable",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "project-name",
+        "shortName": "p",
+        "description": "Specify an alternate project name (default: directory name)",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-path",
+        "description": "Specify an alternate path to podman (default: use location in $PATH variable)",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-args",
+        "description": "custom global arguments to be passed to \u0060podman\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-pull-args",
+        "description": "custom arguments to be passed to \u0060podman pull\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-push-args",
+        "description": "custom arguments to be passed to \u0060podman push\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-build-args",
+        "description": "custom arguments to be passed to \u0060podman build\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-inspect-args",
+        "description": "custom arguments to be passed to \u0060podman inspect\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-run-args",
+        "description": "custom arguments to be passed to \u0060podman run\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-start-args",
+        "description": "custom arguments to be passed to \u0060podman start\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-stop-args",
+        "description": "custom arguments to be passed to \u0060podman stop\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-rm-args",
+        "description": "custom arguments to be passed to \u0060podman rm\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "podman-volume-args",
+        "description": "custom arguments to be passed to \u0060podman volume\u0060",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "no-ansi",
+        "description": "Do not print ANSI control characters",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      },
+      {
+        "longName": "no-cleanup",
+        "description": "Do not stop and remove existing pod \u0026 containers",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      },
+      {
+        "longName": "dry-run",
+        "description": "No action; perform a simulation of commands",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      },
+      {
+        "longName": "parallel",
+        "valueKind": "single",
+        "clrType": "string",
+        "isRequired": false
+      },
+      {
+        "longName": "verbose",
+        "description": "Print debugging output",
+        "valueKind": "flag",
+        "clrType": "bool",
+        "isRequired": false
+      }
+    ],
+    "arguments": [],
+    "subCommands": [
+      {
+        "name": "version",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "format",
+            "shortName": "f",
+            "description": "Format the output",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "short",
+            "description": "Shows only Podman Compose\u0027s version number",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "wait",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "systemd",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "action",
+            "shortName": "a",
+            "description": "create systemd unit file or register compose stack to it",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "pull",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "force-local",
+            "description": "Also pull unprefixed images for services which have a build section",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "services to pull",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "push",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "ignore-push-failures",
+            "description": "Push what it can and ignores images with push failures. (not implemented)",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "services to push",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "build",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "pull",
+            "description": "attempt to pull a newer version of the image",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "pull-always",
+            "description": "attempt to pull a newer version of the image, Raise an error even if the image is present locally.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "build-arg",
+            "description": "Set build-time variables for services.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "no-cache",
+            "description": "Do not use cache when building the image.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "affected services",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "up",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "detach",
+            "shortName": "d",
+            "description": "Detached mode: Run container in the background, print new container name. Incompatible with --abort-on- container-exit and --abort-on-container-failure.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-color",
+            "description": "Produce monochrome output.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "quiet-pull",
+            "description": "Pull without printing progress information.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-deps",
+            "description": "Don\u0027t start linked services.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "force-recreate",
+            "description": "Recreate containers even if their configuration and image haven\u0027t changed.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "always-recreate-deps",
+            "description": "Recreate dependent containers. Incompatible with --no- recreate.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-recreate",
+            "description": "If containers already exist, don\u0027t recreate them. Incompatible with --force-recreate and -V.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-build",
+            "description": "Don\u0027t build an image, even if it\u0027s missing.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-start",
+            "description": "Don\u0027t start the services after creating them.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "build",
+            "description": "Build images before starting containers.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "abort-on-container-exit",
+            "description": "Stops all containers if any container was stopped. Incompatible with -d and --abort-on-container-failure.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "abort-on-container-failure",
+            "description": "Stops all containers if any container stops with a non-zero exit code. Incompatible with -d and --abort- on-container-exit.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timeout",
+            "shortName": "t",
+            "description": "Use this timeout in seconds for container shutdown when attached or when containers are already running. (default: 10)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "renew-anon-volumes",
+            "shortName": "V",
+            "description": "Recreate anonymous volumes instead of retrieving data from the previous containers.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "remove-orphans",
+            "description": "Remove containers for services not defined in the Compose file.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "scale",
+            "description": "Scale SERVICE to NUM instances. Overrides the \u0060scale\u0060 setting in the Compose file if present.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "exit-code-from",
+            "description": "Return the exit code of the selected service container. Implies --abort-on-container-exit.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "pull",
+            "description": "attempt to pull a newer version of the image",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "pull-always",
+            "description": "attempt to pull a newer version of the image, Raise an error even if the image is present locally.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "build-arg",
+            "description": "Set build-time variables for services.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "no-cache",
+            "description": "Do not use cache when building the image.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "affected services",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "down",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "volumes",
+            "shortName": "v",
+            "description": "Remove named volumes declared in the \u0060volumes\u0060 section of the Compose file and anonymous volumes attached to containers.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "remove-orphans",
+            "description": "Remove containers for services not defined in the Compose file.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "rmi",
+            "description": "Remove images used by services. \u0060local\u0060 remove only images that don\u0027t have a custom tag. (\u0060local\u0060 or \u0060all\u0060)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "timeout",
+            "shortName": "t",
+            "description": "Specify a shutdown timeout in seconds.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "affected services",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "ps",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "quiet",
+            "shortName": "q",
+            "description": "Only display container IDs",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "format",
+            "shortName": "f",
+            "description": "Pretty-print container statistics to JSON or using a Go template",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "run",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "build",
+            "description": "Build images before starting containers.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "detach",
+            "shortName": "d",
+            "description": "Detached mode: Run container in the background, print new container name.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "name",
+            "description": "Assign a name to the container",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "entrypoint",
+            "description": "Override the entrypoint of the image.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "env",
+            "shortName": "e",
+            "description": "Set an environment variable (can be used multiple times)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "label",
+            "shortName": "l",
+            "description": "Add or override a label (can be used multiple times)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "user",
+            "shortName": "u",
+            "description": "Run as specified username or uid",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "no-deps",
+            "description": "Don\u0027t start linked services",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "rm",
+            "description": "Remove container after run. Ignored in detached mode.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "publish",
+            "shortName": "p",
+            "description": "Publish a container\u0027s port(s) to the host (can be used multiple times)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "service-ports",
+            "description": "Run command with the service\u0027s ports enabled and mapped to the host.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "volume",
+            "shortName": "v",
+            "description": "Bind mount a volume (can be used multiple times)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "T",
+            "shortName": "T",
+            "description": "Disable pseudo-tty allocation. By default \u0060podman- compose run\u0060 allocates a TTY.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "workdir",
+            "shortName": "w",
+            "description": "Working directory inside the container",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "service",
+            "position": 0,
+            "description": "service name",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          },
+          {
+            "name": "command",
+            "position": 1,
+            "description": "command and its arguments",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "exec",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "detach",
+            "shortName": "d",
+            "description": "Detached mode: Run container in the background, print new container name.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "privileged",
+            "description": "Give the process extended Linux capabilities inside the container",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "user",
+            "shortName": "u",
+            "description": "Run as specified username or uid",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "T",
+            "shortName": "T",
+            "description": "Disable pseudo-tty allocation. By default \u0060podman- compose run\u0060 allocates a TTY.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "index",
+            "description": "Index of the container if there are multiple instances of a service",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "env",
+            "shortName": "e",
+            "description": "Set an environment variable (can be used multiple times)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "workdir",
+            "shortName": "w",
+            "description": "Working directory inside the container",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "service",
+            "position": 0,
+            "description": "service name",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          },
+          {
+            "name": "command",
+            "position": 1,
+            "description": "command and its arguments",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "start",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "affected services",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "stop",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timeout",
+            "shortName": "t",
+            "description": "Specify a shutdown timeout in seconds.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "affected services",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "restart",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "timeout",
+            "shortName": "t",
+            "description": "Specify a shutdown timeout in seconds.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "affected services",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "logs",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "follow",
+            "shortName": "f",
+            "description": "Follow log output. The default is false",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "latest",
+            "shortName": "l",
+            "description": "Act on the latest container podman is aware of",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "names",
+            "shortName": "n",
+            "description": "Output the container name in the log",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "since",
+            "description": "Show logs since TIMESTAMP",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "timestamps",
+            "shortName": "t",
+            "description": "Show timestamps.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "tail",
+            "description": "Number of lines to show from the end of the logs for each container.",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "until",
+            "description": "Show logs until TIMESTAMP",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "service names",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "config",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-normalize",
+            "description": "Don\u0027t normalize compose model.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "services",
+            "description": "Print the service names, one per line.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "quiet",
+            "shortName": "q",
+            "description": "Do not print config, only parse.",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      },
+      {
+        "name": "port",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "index",
+            "description": "index of the container if there are multiple instances of a service",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "protocol",
+            "description": "tcp or udp",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "service",
+            "position": 0,
+            "description": "service name",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          },
+          {
+            "name": "private_port",
+            "position": 1,
+            "description": "private port",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "pause",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "service names",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "unpause",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "service names",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "kill",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "signal",
+            "shortName": "s",
+            "description": "Signal to send to the container (default \u0027KILL\u0027)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "all",
+            "shortName": "a",
+            "description": "Signal all running containers",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "service names",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "stats",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "interval",
+            "shortName": "i",
+            "description": "Time in seconds between stats reports (default 5)",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          },
+          {
+            "longName": "no-reset",
+            "description": "Disable resetting the screen between intervals",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "no-stream",
+            "description": "Disable streaming stats and only pull the first result",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "format",
+            "shortName": "f",
+            "description": "Pretty-print container statistics to JSON or using a Go template",
+            "valueKind": "single",
+            "clrType": "string",
+            "isRequired": false
+          }
+        ],
+        "arguments": [
+          {
+            "name": "services",
+            "position": 0,
+            "description": "service names",
+            "clrType": "string",
+            "isRequired": true,
+            "isVariadic": false
+          }
+        ],
+        "subCommands": []
+      },
+      {
+        "name": "images",
+        "options": [
+          {
+            "longName": "help",
+            "shortName": "h",
+            "description": "show this help message and exit",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          },
+          {
+            "longName": "quiet",
+            "shortName": "q",
+            "description": "Only display images IDs",
+            "valueKind": "flag",
+            "clrType": "bool",
+            "isRequired": false
+          }
+        ],
+        "arguments": [],
+        "subCommands": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+Description:
+  Adds a trusted signer based on a given package source.
+
+Usage:
+  NuGet.CommandLine.XPlat trust source <NAME> [options]
+
+Arguments:
+  <NAME>  "The name of the trusted signer to add. If only <NAME> is provided without --<source-url>, the package source from your NuGet configuration files with the same name is added to the trusted list. If <NAME> already exists in the configuration, the package source is appended to it."
+
+Options:
+  --source-url <source-url>    If a source-url is provided, it must be a v3 package source URL (like https://api.nuget.org/v3/index.json). Other package source types are not supported.
+  --owners <owners>            Semi-colon separated list of trusted owners to further restrict the trust of a repository.
+  --configfile <configfile>    The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -v, --verbosity <verbosity>  Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help               Show help and usage information
+  --force-english-output       Forces the application to run using an invariant, English-based culture.
+

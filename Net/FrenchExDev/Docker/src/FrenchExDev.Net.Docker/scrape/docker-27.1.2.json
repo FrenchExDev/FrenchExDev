@@ -490,33 +490,8 @@
           },
           {
             "name": "cp",
-            "description": "Use \u0027-\u0027 as the source to read a tar archive from stdin",
-            "options": [
-              {
-                "longName": "archive",
-                "shortName": "a",
-                "description": "Archive mode (copy all uid/gid information)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "follow-link",
-                "shortName": "L",
-                "description": "Always follow symbol link in SRC_PATH",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "quiet",
-                "shortName": "q",
-                "description": "Suppress progress output during copy. Progress",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "description": "Copy files/folders between a container and the local filesystem",
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -1444,71 +1419,8 @@
           },
           {
             "name": "ls",
-            "description": "docker container ls, docker container list, docker container ps, docker ps",
-            "options": [
-              {
-                "longName": "all",
-                "shortName": "a",
-                "description": "Show all containers (default shows just running)",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "filter",
-                "shortName": "f",
-                "description": "filter   Filter output based on conditions provided",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "format",
-                "description": "Format output using a custom template:",
-                "valueKind": "single",
-                "clrType": "string",
-                "isRequired": false
-              },
-              {
-                "longName": "last",
-                "shortName": "n",
-                "description": "Show n last created containers (includes all",
-                "valueKind": "single",
-                "clrType": "integer",
-                "isRequired": false
-              },
-              {
-                "longName": "latest",
-                "shortName": "l",
-                "description": "Show the latest created container (includes all",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "no-trunc",
-                "description": "Don\u0027t truncate output",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "quiet",
-                "shortName": "q",
-                "description": "Only display container IDs",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              },
-              {
-                "longName": "size",
-                "shortName": "s",
-                "description": "Display total file sizes",
-                "valueKind": "flag",
-                "clrType": "bool",
-                "isRequired": false
-              }
-            ],
+            "description": "List containers",
+            "options": [],
             "arguments": [],
             "subCommands": []
           },
@@ -4038,15 +3950,8 @@
             "subCommands": [
               {
                 "name": "generate",
-                "options": [
-                  {
-                    "longName": "dir",
-                    "description": "Directory to generate key in, defaults to current",
-                    "valueKind": "single",
-                    "clrType": "string",
-                    "isRequired": false
-                  }
-                ],
+                "description": "Generate and load a signing key-pair",
+                "options": [],
                 "arguments": [],
                 "subCommands": []
               },
@@ -4073,30 +3978,15 @@
             "subCommands": [
               {
                 "name": "add",
-                "options": [
-                  {
-                    "longName": "key",
-                    "description": "list   Path to the signer\u0027s public key file",
-                    "valueKind": "flag",
-                    "clrType": "bool",
-                    "isRequired": false
-                  }
-                ],
+                "description": "Add a signer",
+                "options": [],
                 "arguments": [],
                 "subCommands": []
               },
               {
                 "name": "remove",
-                "options": [
-                  {
-                    "longName": "force",
-                    "shortName": "f",
-                    "description": "Do not prompt for confirmation before removing the most",
-                    "valueKind": "flag",
-                    "clrType": "bool",
-                    "isRequired": false
-                  }
-                ],
+                "description": "Remove a signer",
+                "options": [],
                 "arguments": [],
                 "subCommands": []
               }
@@ -5529,24 +5419,8 @@
       },
       {
         "name": "rmi",
-        "description": "docker image rm, docker image remove, docker rmi",
-        "options": [
-          {
-            "longName": "force",
-            "shortName": "f",
-            "description": "Force removal of the image",
-            "valueKind": "flag",
-            "clrType": "bool",
-            "isRequired": false
-          },
-          {
-            "longName": "no-prune",
-            "description": "Do not delete untagged parents",
-            "valueKind": "flag",
-            "clrType": "bool",
-            "isRequired": false
-          }
-        ],
+        "description": "Remove one or more images",
+        "options": [],
         "arguments": [],
         "subCommands": []
       },
@@ -5674,14 +5548,14 @@
       },
       {
         "name": "tag",
-        "description": "docker image tag, docker tag",
+        "description": "Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE",
         "options": [],
         "arguments": [],
         "subCommands": []
       },
       {
         "name": "top",
-        "description": "docker container top, docker top",
+        "description": "Display the running processes of a container",
         "options": [],
         "arguments": [],
         "subCommands": []

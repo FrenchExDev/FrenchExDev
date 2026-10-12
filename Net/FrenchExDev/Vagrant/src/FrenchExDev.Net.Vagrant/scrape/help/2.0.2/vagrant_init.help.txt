@@ -1,0 +1,10 @@
+Usage: vagrant init [options] [name [url]]
+
+Options:
+
+        --box-version VERSION        Version of the box to add
+    -f, --force                      Overwrite existing Vagrantfile
+    -m, --minimal                    Use minimal Vagrantfile template (no help comments). Ignored with --template
+        --output FILE                Output path for the box. '-' for stdout
+        --template FILE              Path to custom Vagrantfile template
+    -h, --help                       Print this help

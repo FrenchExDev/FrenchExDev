@@ -1,0 +1,32 @@
+
+  Get the list of CI/CD pipelines.                                                                                      
+         
+  USAGE  
+         
+    glab ci list [--flags]          
+            
+  EXAMPLES  
+            
+    $ glab ci list                  
+    $ glab ci list --status=failed  
+         
+  FLAGS  
+         
+    -h --help            Show help for this command.
+    -n --name            Return only pipelines with the given name.
+    -o --order           Order pipelines by this field. Options: id, status, ref, updated_at, user_id. (id)
+    -F --output          Format output. Options: text, json. (text)
+    -p --page            Page number. (1)
+    -P --per-page        Number of items to list per page. (30)
+    -r --ref             Return only pipelines for given ref.
+    -R --repo            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    --scope              Return only pipelines with the given scope: {running|pending|finished|branches|tags}
+    --sha                Return only pipelines with the given SHA.
+    --sort               Sort direction for --order field: asc or desc. (desc)
+    --source             Return only pipelines triggered via the given source. See https://docs.gitlab.com/ci/jobs/job_rules/#ci_pipeline_source-predefined-variable for full list. Commonly used options: {merge_request_event|parent_pipeline|pipeline|push|trigger}
+    -s --status          Get pipeline with this status. Options: running, pending, success, failed, canceled, skipped, created, manual, waiting_for_resource, preparing, scheduled
+    -a --updated-after   Return only pipelines updated after the specified date. Expected in ISO 8601 format (2019-03-15T08:00:00Z).
+    -b --updated-before  Return only pipelines updated before the specified date. Expected in ISO 8601 format (2019-03-15T08:00:00Z).
+    -u --username        Return only pipelines triggered by the given username.
+    -y --yaml-errors     Return only pipelines with invalid configurations.
+

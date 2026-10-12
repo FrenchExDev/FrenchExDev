@@ -1,0 +1,26 @@
+
+
+Usage: dotnet nuget sign [arguments] [options]
+
+Arguments:
+  <package-paths>  Signs NuGet packages at <package-paths> with the specified certificate.
+
+Options:
+  -o|--output                   Directory where the signed package(s) should be saved. By default the original package is overwritten by the signed package.
+  --certificate-path            File path to the certificate to be used while signing the package.
+  --certificate-store-name      Name of the X.509 certificate store to use to search for the certificate. Defaults to "My", the X.509 certificate store for personal certificates.
+This option should be used when specifying the certificate via --certificate-subject-name or --certificate-fingerprint options.
+  --certificate-store-location  Name of the X.509 certificate store use to search for the certificate. Defaults to "CurrentUser", the X.509 certificate store used by the current user.
+This option should be used when specifying the certificate via --certificate-subject-name or --certificate-fingerprint options.
+  --certificate-subject-name    Subject name of the certificate used to search a local certificate store for the certificate.
+The search is a case-insensitive string comparison using the supplied value, which will find all certificates with the subject name containing that string, regardless of other subject values. The certificate store can be specified by --certificate-store-name and --certificate-store-location options.
+  --certificate-fingerprint     SHA-1 fingerprint of the certificate used to search a local certificate store for the certificate. The certificate store can be specified by --certificate-store-name and --certificate-store-location options.
+  --certificate-password        Password for the certificate, if needed.
+This option can be used to specify the password for the certificate. The command will throw an error message if certificate is password protected but password is not provided as input.
+  --hash-algorithm              Hash algorithm to be used to sign the package. Defaults to SHA256.
+  --timestamper                 URL to an RFC 3161 timestamping server.
+  --timestamp-hash-algorithm    Hash algorithm to be used by the RFC 3161 timestamp server. Defaults to SHA256.
+  --overwrite                   Switch to indicate if the current signature should be overwritten. By default the command will fail if the package already has a signature.
+  -v|--verbosity                Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -h|--help                     Show help information
+

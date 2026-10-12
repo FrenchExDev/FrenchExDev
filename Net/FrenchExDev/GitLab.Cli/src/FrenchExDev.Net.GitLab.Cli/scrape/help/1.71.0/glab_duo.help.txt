@@ -1,0 +1,15 @@
+Work with GitLab Duo
+
+USAGE
+  glab duo <command> prompt [flags]
+
+CORE COMMANDS
+  ask:        Generate Git commands from natural language.
+  claude:     Launch Claude Code with GitLab Duo integration
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

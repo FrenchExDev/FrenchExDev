@@ -1,0 +1,24 @@
+solution: FrenchExDev.Net.Reactive.slnx
+
+coverage:
+  - "**/coverage.cobertura.xml"
+
+mutations:
+  - "**/mutation-report.json"
+
+output: .quality-gate/
+
+gates:
+  max-cyclomatic-complexity: 10
+  max-cognitive-complexity: 15
+  max-class-coupling: 30
+  max-inheritance-depth: 3
+  min-maintainability-index: 70
+  max-lcom: 15
+  max-distance-from-main-sequence: 1.0
+  max-duplication-percent: 5
+  min-test-quality-score: 0.85
+
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"

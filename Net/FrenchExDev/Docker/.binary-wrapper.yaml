@@ -1,0 +1,2 @@
+binary: src/FrenchExDev.Net.Docker/FrenchExDev.Net.Docker.csproj
+design: src/FrenchExDev.Net.Docker.Design/FrenchExDev.Net.Docker.Design.csproj

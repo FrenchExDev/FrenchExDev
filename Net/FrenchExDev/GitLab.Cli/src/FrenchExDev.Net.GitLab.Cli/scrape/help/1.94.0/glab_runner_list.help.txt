@@ -1,0 +1,34 @@
+
+  List runners for a project (default), group, or instance.                                                             
+                                                                                                                        
+  Instance scope requires administrator access.                                                                         
+                                                                                                                        
+         
+  USAGE  
+         
+    glab runner list [--flags]              
+            
+  EXAMPLES  
+            
+    # List runners for the current project  
+    glab runner list                        
+                                            
+    # List runners for a specific project   
+    glab runner list -R owner/repo          
+                                            
+    # List runners for a group              
+    glab runner list --group mygroup        
+                                            
+    # List runners as JSON                  
+    glab runner list --output json          
+         
+  FLAGS  
+         
+    -g --group     List runners for a group. Ignored if -R/--repo is set.
+    -h --help      Show help for this command.
+    -i --instance  List all runners available to the user (instance scope).
+    -F --output    Format output as: text, json. (text)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (30)
+    -R --repo      Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+

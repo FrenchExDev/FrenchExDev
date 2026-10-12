@@ -1,0 +1,18 @@
+Description:
+  Adds a trusted signer with the given name, based on the repository signature or countersignature of a signed package.
+
+Usage:
+  NuGet.CommandLine.XPlat trust repository <NAME> <PACKAGE> [options]
+
+Arguments:
+  <NAME>     The name of the trusted signer to add. If name already exists in the configuration, the signature is appended.
+  <PACKAGE>  The given package should be a local path to the signed .nupkg file.
+
+Options:
+  --allow-untrusted-root       Specifies if the certificate for the trusted signer should be allowed to chain to an untrusted root. This is not recommended.
+  --owners <owners>            Semi-colon separated list of trusted owners to further restrict the trust of a repository.
+  --configfile <configfile>    The NuGet configuration file. If specified, only the settings from this file will be used. If not specified, the hierarchy of configuration files from the current directory will be used. For more information, see https://docs.microsoft.com/nuget/consume-packages/configuring-nuget-behavior.
+  -v, --verbosity <verbosity>  Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+  -?, -h, --help               Show help and usage information
+  --force-english-output       Forces the application to run using an invariant, English-based culture.
+

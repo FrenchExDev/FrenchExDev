@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Pages.Widgets.Attributes\FrenchExDev.Net.Diem.Pages.Widgets.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Pages.Layouts.Attributes\FrenchExDev.Net.Diem.Pages.Layouts.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Pages.Routing.Attributes\FrenchExDev.Net.Diem.Pages.Routing.Attributes.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Pages.Widgets\FrenchExDev.Net.Diem.Pages.Widgets.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Pages.Layouts\FrenchExDev.Net.Diem.Pages.Layouts.csproj" />
+    <ProjectReference Include="..\..\src\FrenchExDev.Net.Diem.Pages.Routing\FrenchExDev.Net.Diem.Pages.Routing.csproj" />
+  </ItemGroup>
+</Project>

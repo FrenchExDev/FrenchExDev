@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Mapper/FrenchExDev.Net.Mapper.csproj" />
+    <Project Path="src/FrenchExDev.Net.Mapper.Attributes/FrenchExDev.Net.Mapper.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.Mapper.Testing/FrenchExDev.Net.Mapper.Testing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Mapper.Tests/FrenchExDev.Net.Mapper.Tests.csproj" />
+  </Folder>
+</Solution>

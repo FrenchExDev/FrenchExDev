@@ -1,0 +1,15 @@
+usage: git multi-pack-index [<options>] write [--preferred-pack=<pack>]
+         [--[no-]bitmap] [--[no-]incremental] [--[no-]stdin-packs]
+         [--refs-snapshot=<path>] [--[no-]write-chain-file]
+         [--base=<checksum>]
+   or: git multi-pack-index [<options>] compact [--[no-]incremental]
+         [--[no-]bitmap] [--base=<checksum>] [--[no-]write-chain-file]
+         <from> <to>
+   or: git multi-pack-index [<options>] verify
+   or: git multi-pack-index [<options>] expire
+   or: git multi-pack-index [<options>] repack [--batch-size=<size>]
+
+    --[no-]object-dir <directory>
+                          object directory containing set of packfile and pack-index pairs
+    --[no-]progress       force progress reporting
+

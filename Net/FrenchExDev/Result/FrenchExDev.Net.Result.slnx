@@ -1,2 +1,9 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.Result/FrenchExDev.Net.Result.csproj" />
+    <Project Path="src/FrenchExDev.Net.Result.Testing/FrenchExDev.Net.Result.Testing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.Result.Tests/FrenchExDev.Net.Result.Tests.csproj" />
+  </Folder>
 </Solution>

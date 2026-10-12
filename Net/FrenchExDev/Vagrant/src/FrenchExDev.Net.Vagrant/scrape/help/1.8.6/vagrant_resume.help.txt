@@ -1,0 +1,5 @@
+Usage: vagrant resume [vm-name]
+
+        --[no-]provision             Enable or disable provisioning
+        --provision-with x,y,z       Enable only certain provisioners, by type or by name.
+    -h, --help                       Print this help

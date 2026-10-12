@@ -1,0 +1,39 @@
+
+  Revoke an user, group or project access token. If multiple tokens with the same name exist, you can specify           
+  the ID of the token.                                                                                                  
+                                                                                                                        
+  The output format can be either "JSON" or "text". The JSON output will show the meta information of the               
+  revoked token. The normal text output is a description of the revoked token name and ID.                              
+                                                                                                                        
+  Administrators can revoke personal access tokens belonging to other users.                                            
+                                                                                                                        
+         
+  USAGE  
+         
+    glab token revoke <token-name|token-id> [--flags]                      
+            
+  EXAMPLES  
+            
+    # Revoke a project access token of current project                     
+    glab token revoke my-project-token                                     
+                                                                           
+    # Revoke a project access token of a specific project                  
+    glab token revoke --repo user/my-repo my-project-token                 
+                                                                           
+    # Revoke a group access token                                          
+    glab token revoke --group group/sub-group my-group-token               
+                                                                           
+    # Revoke my personal access token                                      
+    glab token revoke --user @me my-personal-token                         
+                                                                           
+    # Revoke a personal access token of another user (administrator only)  
+    glab token revoke --user johndoe johns-personal-token                  
+         
+  FLAGS  
+         
+    -g --group   Revoke group access token. Ignored if a user or repository argument is set.
+    -h --help    Show help for this command.
+    -F --output  Format output as: text, json. 'text' provides the name and ID of the revoked token; 'json' outputs the token with metadata. (text)
+    -R --repo    Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+    -U --user    Revoke personal access token. Use @me for the current user.
+

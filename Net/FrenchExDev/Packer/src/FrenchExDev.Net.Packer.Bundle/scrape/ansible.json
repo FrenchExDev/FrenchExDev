@@ -1,0 +1,189 @@
+{
+  "pluginKind": "provisioner",
+  "typeName": "ansible",
+  "repo": "hashicorp/packer-plugin-ansible",
+  "sourcePath": "provisioner/ansible/provisioner.hcl2spec.go",
+  "fields": [
+    {
+      "hclName": "packer_build_name",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_builder_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_core_version",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_debug",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_force",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_on_error",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_user_variables",
+      "ctyType": "cty.Map(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "packer_sensitive_variables",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "extra_arguments",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "ansible_env_vars",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "playbook_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ansible_ssh_extra_args",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "groups",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "empty_groups",
+      "ctyType": "cty.List(cty.String)",
+      "isRequired": false
+    },
+    {
+      "hclName": "host_alias",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "user",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "local_port",
+      "ctyType": "cty.Number",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_host_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ssh_authorized_key_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "ansible_proxy_key_type",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "sftp_command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "skip_version_check",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_sftp",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "inventory_directory",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "inventory_file_template",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "inventory_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "keep_inventory_file",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_file",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_command",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_force_install",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "galaxy_force_with_deps",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "roles_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "collections_path",
+      "ctyType": "cty.String",
+      "isRequired": false
+    },
+    {
+      "hclName": "use_proxy",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    },
+    {
+      "hclName": "ansible_winrm_use_http",
+      "ctyType": "cty.Bool",
+      "isRequired": false
+    }
+  ],
+  "nestedBlocks": []
+}

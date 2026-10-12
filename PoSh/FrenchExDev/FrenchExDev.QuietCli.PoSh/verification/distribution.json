@@ -1,0 +1,29 @@
+{
+  "Outcome": "Success",
+  "CheckedDate": "2026-10-12",
+  "ExecutedAtUtc": "2026-10-12T10:23:43.2301737Z",
+  "RemoteGitHubAvailabilityVerified": false,
+  "ArchiveSHA256": "44275898c97c258fcf5f43880a91651aa8c3523cbb5ca90273d0fb40a208709a",
+  "FilesVerified": 24,
+  "ExtractedDocumentationLinks": 27,
+  "OriginalRuntimeFilesUnchanged": 11,
+  "ExtractedScenariosPassed": 15,
+  "ExtractedScenariosFailed": 0,
+  "PowerShell": "7.6.6",
+  "Git": "git version 2.55.0.windows.3",
+  "Python": "Python 3.13.5",
+  "StreamingMode": "Podman adapter; original Python fixture; native Python companion not executed",
+  "InlineExampleExactOutput": "{\"Branch\":\"main\",\"Changed\":1,\"Untracked\":1,\"Clean\":false,\"AnswerComplete\":true}",
+  "Skill": {
+    "Outcome": "Success",
+    "Data": {
+      "Name": "quiet-cli",
+      "FrontmatterValid": true,
+      "LocalLinks": 8,
+      "Validator": "Existing js-yaml parser and actual link targets",
+      "OfficialPythonValidator": "Attempted; unavailable because the offline image has no PyYAML"
+    },
+    "Items": []
+  },
+  "ReproducibleArchive": true
+}

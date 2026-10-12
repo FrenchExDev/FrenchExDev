@@ -1,0 +1,17 @@
+
+  Transfer a repository to a new namespace.                                                                             
+         
+  USAGE  
+         
+    glab repo transfer [repo] [--flags]                                  
+            
+  EXAMPLES  
+            
+    $ glab repo transfer profclems/glab --target-namespace notprofclems  
+         
+  FLAGS  
+         
+    -h --help              Show help for this command.
+    -t --target-namespace  The namespace where your project should be transferred to.
+    -y --yes               Warning: Skip confirmation prompt and force transfer operation. Transfer cannot be undone.
+

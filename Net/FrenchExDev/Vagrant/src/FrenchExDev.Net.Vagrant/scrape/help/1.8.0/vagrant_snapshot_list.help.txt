@@ -1,0 +1,4 @@
+Usage: vagrant snapshot list [options] [vm-name]
+
+List all snapshots taken for a machine.
+    -h, --help                       Print this help

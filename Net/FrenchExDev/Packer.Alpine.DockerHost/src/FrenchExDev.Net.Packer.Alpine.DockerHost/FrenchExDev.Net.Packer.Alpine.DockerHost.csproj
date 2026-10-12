@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FrenchExDev.Net.Packer.Alpine.DockerHost</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Packer.Alpine\src\FrenchExDev.Net.Packer.Alpine\FrenchExDev.Net.Packer.Alpine.csproj" />
+    <ProjectReference Include="..\..\..\Packer\src\FrenchExDev.Net.Packer.Bundle\FrenchExDev.Net.Packer.Bundle.csproj" />
+  </ItemGroup>
+
+</Project>

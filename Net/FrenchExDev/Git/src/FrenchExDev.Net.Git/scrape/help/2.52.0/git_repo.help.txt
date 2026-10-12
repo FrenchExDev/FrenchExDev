@@ -1,0 +1,3 @@
+usage: git repo info [--format=(keyvalue|nul)] [-z] [<key>...]
+   or: git repo structure [--format=(table|keyvalue|nul)]
+

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Vos\src\FrenchExDev.Net.Vos\FrenchExDev.Net.Vos.csproj" />
+    <ProjectReference Include="..\..\..\Vos.Alpine\src\FrenchExDev.Net.Vos.Alpine\FrenchExDev.Net.Vos.Alpine.csproj" />
+  </ItemGroup>
+</Project>

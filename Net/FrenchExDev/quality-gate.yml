@@ -1,0 +1,25 @@
+solution: FrenchExDev.Net.slnx
+
+coverage:
+  - "**/coverage.cobertura.xml"
+
+output: .quality-gate/
+
+# Root solution gates: permissive — catches only extreme violations.
+# Per-project quality-gate.yml files have stricter, tuned thresholds.
+# High limits accommodate SG-generated code (Docker/Podman/GitLab commands
+# with CC 500+ from BinaryWrapper SG generating ToArguments/ValidateAsync).
+gates:
+  max-cyclomatic-complexity: 500
+  max-cognitive-complexity: 1000
+  max-class-coupling: 1500
+  max-inheritance-depth: 10
+  min-maintainability-index: 10
+  max-lcom: 100
+  max-distance-from-main-sequence: 1.0
+  max-duplication-percent: 10
+  min-test-quality-score: 0.05
+
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"

@@ -1,0 +1,2 @@
+Usage: vagrant plugin uninstall <name> [<name2> <name3> ...] [-h]
+    -h, --help                       Print this help

@@ -1,0 +1,32 @@
+Play a pod or volume based on Kubernetes YAML.
+
+Description:
+  Command reads in a structured file of Kubernetes YAML.
+
+  It creates pods or volumes based on the Kubernetes kind described in the YAML. Supported kinds are Pods, Deployments and PersistentVolumeClaims.
+
+Usage:
+  podman play kube [options] KUBEFILE|-
+
+Examples:
+  podman play kube nginx.yml
+  cat nginx.yml | podman play kube -
+  podman play kube --creds user:password --seccomp-profile-root /custom/path apache.yml
+
+Options:
+      --annotation strings    Add annotations to pods (key=value)
+      --authfile string       Path of the authentication file. Use REGISTRY_AUTH_FILE environment variable to override
+      --creds Credentials     Credentials (USERNAME:PASSWORD) to use for authenticating to a registry
+      --down                  Stop pods defined in the YAML file
+      --ip ipSlice            Static IP addresses to assign to the pods (default [])
+      --log-driver string     Logging driver for the container
+      --log-opt strings       Logging driver options
+      --mac-address strings   Static MAC addresses to assign to the pods
+      --network stringArray   Connect pod to network(s) or network mode
+      --no-hosts              Do not create /etc/hosts within the pod's containers, instead use the version from the image
+  -q, --quiet                 Suppress output information when pulling images
+      --replace               Delete and recreate pods defined in the YAML file
+      --start                 Start the pod after creating it (default true)
+      --tls-verify            Require HTTPS and verify certificates when contacting registries (default true)
+      --userns string         User namespace to use
+

@@ -1,0 +1,20 @@
+
+  Cancel CI/CD pipelines.                                                                                               
+         
+  USAGE  
+         
+    glab ci cancel pipeline <id> [--flags]                   
+            
+  EXAMPLES  
+            
+    glab ci cancel pipeline 1504182795                       
+    glab ci cancel pipeline 1504182795,1504182796            
+    glab ci cancel pipeline "1504182795 1504182796"          
+    glab ci cancel pipeline 1504182795,1504182796 --dry-run  
+         
+  FLAGS  
+         
+    --dry-run  Simulates process, but does not cancel anything.
+    -h --help  Show help for this command.
+    -R --repo  Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+

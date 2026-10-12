@@ -1,0 +1,26 @@
+
+  Update a pipeline schedule.                                                                                           
+         
+  USAGE  
+         
+    glab schedule update <id> [--flags]                                                                               
+            
+  EXAMPLES  
+            
+    # Update a scheduled pipeline with ID 10                                                                          
+    $ glab schedule update 10 --cron "0 * * * *" --description "Describe your pipeline here" --ref "main" --create-…  
+    Updated schedule with ID 10                                                                                       
+         
+  FLAGS  
+         
+    --active           Whether or not the schedule is active. (to not change)
+    --create-variable  Pass new variables to schedule in format <key>:<value>.
+    --cron             Cron interval pattern.
+    --cronTimeZone     Cron timezone.
+    --delete-variable  Pass variables you want to delete from schedule in format <key>.
+    --description      Description of the schedule.
+    -h --help          Show help for this command.
+    --ref              Target branch or tag.
+    -R --repo          Select another repository. You can use either OWNER/REPO or GROUP/NAMESPACE/REPO. The full URL or Git URL is also accepted.
+    --update-variable  Pass updated variables to schedule in format <key>:<value>.
+

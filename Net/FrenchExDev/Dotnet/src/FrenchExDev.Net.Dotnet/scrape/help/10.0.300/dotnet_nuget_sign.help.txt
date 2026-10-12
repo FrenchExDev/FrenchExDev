@@ -1,0 +1,23 @@
+Description:
+
+Usage:
+  dotnet nuget sign <package-paths>... [options]
+
+Arguments:
+  <package-paths>
+
+Options:
+  -o, --output <output>
+  --certificate-path <certificate-path>
+  --certificate-store-name <certificate-store-name>
+  --certificate-store-location <certificate-store-location>
+  --certificate-subject-name <certificate-subject-name>
+  --certificate-fingerprint <certificate-fingerprint>
+  --certificate-password <certificate-password>
+  --hash-algorithm <hash-algorithm>
+  --timestamper <timestamper>
+  --timestamp-hash-algorithm <timestamp-hash-algorithm>
+  --overwrite                                                [default: False]
+  -v, --verbosity <LEVEL>                                    Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. [default: normal]
+  -?, -h, --help                                             Show command line help.
+

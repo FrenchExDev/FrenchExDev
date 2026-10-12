@@ -1,0 +1,3 @@
+Usage: vagrant plugin update [names...] [-h]
+
+    -h, --help                       Print this help

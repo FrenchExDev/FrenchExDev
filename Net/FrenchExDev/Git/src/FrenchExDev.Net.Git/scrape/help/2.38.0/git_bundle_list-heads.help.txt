@@ -1,0 +1,2 @@
+usage: git bundle list-heads <file> [<refname>...]
+

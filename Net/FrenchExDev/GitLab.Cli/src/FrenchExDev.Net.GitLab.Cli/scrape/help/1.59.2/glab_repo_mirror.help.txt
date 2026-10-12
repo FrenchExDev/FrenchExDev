@@ -1,0 +1,18 @@
+Mirror a project or repository to the specified location, using pull or push methods.
+
+USAGE
+  glab repo mirror [ID | URL | PATH] [flags]
+
+FLAGS
+  --allow-divergence          Determines if divergent refs are skipped.
+  --direction string          Mirror direction. Options: pull, push. (default "pull")
+  --enabled                   Determines if the mirror is enabled. (default true)
+  --protected-branches-only   Determines if only protected branches are mirrored.
+  --url string                The target URL to which the repository is mirrored.
+
+INHERITED FLAGS
+  --help   Show help for this command.
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

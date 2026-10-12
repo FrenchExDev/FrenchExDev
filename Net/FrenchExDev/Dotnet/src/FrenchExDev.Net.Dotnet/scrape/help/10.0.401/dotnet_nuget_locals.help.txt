@@ -1,0 +1,16 @@
+Description:
+  Clears or lists local NuGet resources such as http requests cache, packages folder, plugin operations cache  or machine-wide global packages folder.
+
+Usage:
+  NuGet.CommandLine.XPlat locals [<Cache Location(s)>] [options]
+
+Arguments:
+  <Cache Location(s)>  Specifies the cache location(s) to list or clear.
+                       <all | http-cache | global-packages | temp>
+
+Options:
+  -c, --clear             Clear the selected local resources or cache location(s).
+  -l, --list              List the selected local resources or cache location(s).
+  -?, -h, --help          Show help and usage information
+  --force-english-output  Forces the application to run using an invariant, English-based culture.
+

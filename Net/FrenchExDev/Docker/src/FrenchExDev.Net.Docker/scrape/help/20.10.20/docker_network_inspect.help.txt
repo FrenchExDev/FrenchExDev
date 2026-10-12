@@ -1,0 +1,8 @@
+
+Usage:  docker network inspect [OPTIONS] NETWORK [NETWORK...]
+
+Display detailed information on one or more networks
+
+Options:
+  -f, --format string   Format the output using the given Go template
+  -v, --verbose         Verbose output for diagnostics

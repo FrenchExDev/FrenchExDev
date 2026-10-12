@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FrenchExDev.Net.GitLab.Ci.Yaml/FrenchExDev.Net.GitLab.Ci.Yaml.csproj" />
+    <Project Path="src/FrenchExDev.Net.GitLab.Ci.Yaml.Attributes/FrenchExDev.Net.GitLab.Ci.Yaml.Attributes.csproj" />
+    <Project Path="src/FrenchExDev.Net.GitLab.Ci.Yaml.Design/FrenchExDev.Net.GitLab.Ci.Yaml.Design.csproj" />
+    <Project Path="src/FrenchExDev.Net.GitLab.Ci.Yaml.SourceGenerator/FrenchExDev.Net.GitLab.Ci.Yaml.SourceGenerator.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FrenchExDev.Net.GitLab.Ci.Yaml.Tests/FrenchExDev.Net.GitLab.Ci.Yaml.Tests.csproj" />
+  </Folder>
+</Solution>

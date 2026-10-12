@@ -1,0 +1,3 @@
+usage: git refs migrate --ref-format=<format> [--dry-run]
+   or: git refs verify [--strict] [--verbose]
+

@@ -1,0 +1,5 @@
+Usage: vagrant login
+
+    -c, --check                      Only checks if you're logged in
+    -k, --logout                     Logs you out if you're logged in
+    -h, --help                       Print this help

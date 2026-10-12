@@ -1,0 +1,9 @@
+Usage: vagrant box remove <name>
+
+Options:
+
+    -f, --force                      Destroy without confirmation.
+        --provider PROVIDER          The specific provider type for the box to remove
+        --box-version VERSION        The specific version of the box to remove
+        --all                        Remove all available versions of the box
+    -h, --help                       Print this help

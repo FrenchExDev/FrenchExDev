@@ -1,0 +1,24 @@
+
+  Get repository contributors list.                                                                                     
+         
+  USAGE  
+         
+    glab repo contributors [--flags]                       
+            
+  EXAMPLES  
+            
+    # List contributors for the current repository         
+    $ glab repo contributors                               
+                                                           
+    # List contributors for a specific repository          
+    $ glab repo contributors -R gitlab-com/www-gitlab-com  
+         
+  FLAGS  
+         
+    -h --help      Show help for this command.
+    -o --order     Return contributors ordered by name, email, or commits (orders by commit date) fields. (commits)
+    -p --page      Page number. (1)
+    -P --per-page  Number of items to list per page. (30)
+    -R --repo      Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
+    -s --sort      Return contributors. Sort options: asc, desc.
+

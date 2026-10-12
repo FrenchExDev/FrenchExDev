@@ -1,0 +1,8 @@
+Usage: vagrant ssh [options] [name|id] [-- extra ssh args]
+
+Options:
+
+    -c, --command COMMAND            Execute an SSH command directly
+    -p, --plain                      Plain mode, leaves authentication up to user
+    -t, --[no-]tty                   Enables tty when executing an ssh command (defaults to true)
+    -h, --help                       Print this help

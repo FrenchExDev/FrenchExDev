@@ -1,0 +1,18 @@
+
+  Publishes resources in the project.                                                                                   
+                                                                                                                        
+  Currently only supports publishing CI/CD components to the catalog.                                                   
+                                                                                                                        
+         
+  USAGE  
+         
+    glab repo publish <command> [command] [--flags]  
+            
+  COMMANDS  
+            
+    catalog <tag-name>  [Experimental] Publishes CI/CD components to the catalog.
+         
+  FLAGS  
+         
+    -h --help           Show help for this command.
+

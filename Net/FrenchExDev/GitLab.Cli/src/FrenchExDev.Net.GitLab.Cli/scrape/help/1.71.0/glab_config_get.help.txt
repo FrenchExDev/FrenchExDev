@@ -1,0 +1,24 @@
+Prints the value of a given configuration key.
+
+USAGE
+  glab config get <key> [flags]
+
+FLAGS
+  -g, --global        Read from global config file (~/.config/glab-cli/config.yml). (default checks 'Environment variables → Local → Global')
+      --host string   Get per-host setting.
+
+INHERITED FLAGS
+  -h, --help   Show help for this command.
+
+EXAMPLES
+  $ glab config get editor                                                                                            
+                                                                                                                        
+    | vim                                                                                                               
+                                                                                                                        
+    $ glab config get glamour_style                                                                                     
+                                                                                                                        
+    | notty
+
+LEARN MORE
+  Use 'glab <command> <subcommand> --help' for more information about a command.
+

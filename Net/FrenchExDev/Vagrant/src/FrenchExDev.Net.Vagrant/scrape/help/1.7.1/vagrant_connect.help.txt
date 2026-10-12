@@ -1,0 +1,14 @@
+Usage: vagrant connect NAME
+
+Gives you access to any Vagrant environment shared using 
+`vagrant share`. The NAME parameter should be the unique name
+that was outputted with `vagrant share` on the remote side.
+
+Vagrant will give you an IP that you can use to access the
+remote environment. You'll be able to access any ports that
+the shared environment has authorized.
+
+        --disable-static-ip          No static IP, only a SOCKS proxy
+        --static-ip IP               Manually override static IP chosen
+        --ssh                        SSH into the remote machine
+    -h, --help                       Print this help
