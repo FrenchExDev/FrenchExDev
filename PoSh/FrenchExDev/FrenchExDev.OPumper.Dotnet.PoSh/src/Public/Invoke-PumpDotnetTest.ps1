@@ -3,7 +3,7 @@ function Invoke-PumpDotnetTest {
     param([Parameter(Mandatory)][string]$Target, [string]$WorkingDirectory='.',
           [string]$Configuration, [string]$Framework, [string]$Filter, [string]$MtpFilterOption, [switch]$NoRestore, [switch]$NoBuild,
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     $reports=Join-Path ([IO.Path]::GetTempPath()) ('output-pump-trx-'+[guid]::NewGuid().ToString('N'))
     try {
         if($Target.StartsWith('-')){throw 'Invalid target'}
@@ -20,7 +20,7 @@ function Invoke-PumpDotnetTest {
         if($Configuration){$arguments+=@('--configuration',$Configuration)};if($Framework){$arguments+=@('--framework',$Framework)}
         if($Filter){$arguments+=@($(if($runner -eq 'VSTest'){'--filter'}else{$MtpFilterOption}),$Filter)}
         if($NoRestore){$arguments+='--no-restore'};if($NoBuild){$arguments+='--no-build'}
-        $capture=Invoke-PumpProcess dotnet $arguments $WorkingDirectory $TimeoutSeconds
+        $capture=Invoke-PumpProcess dotnet $arguments $WorkingDirectory $TimeoutSeconds -Environment $Environment
         if($capture.StartError -or $capture.TimedOut -or $capture.Truncated){return Complete-PumpProcess $capture -Summary '.NET test execution incomplete.' -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes}
         $files=@(Get-ChildItem -LiteralPath $reports -Filter '*.trx' -Recurse -File -ErrorAction SilentlyContinue)
         if($files.Count -eq 0) {

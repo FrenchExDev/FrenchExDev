@@ -2,9 +2,9 @@ function Get-PumpGitLog {
     [CmdletBinding()]
     param([string]$WorkingDirectory='.', [string[]]$Path=@(), [string]$Revision='HEAD',
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     if($Revision.StartsWith('-')){return New-PumpResult -Summary 'Invalid Git revision.' -Outcome Failed -RetryAdvice CorrectRequest -ErrorInfo @{Code='InvalidRevision'} -MaxOutputBytes $MaxOutputBytes}
-    $capture=Invoke-PumpProcess git (@('--no-pager','log',"-n$($MaxItems+1)",'--format=%H%x00%aI%x00%s%x00',$Revision,'--')+$Path) $WorkingDirectory $TimeoutSeconds
+    $capture=Invoke-PumpProcess git (@('--no-pager','log',"-n$($MaxItems+1)",'--format=%H%x00%aI%x00%s%x00',$Revision,'--')+$Path) $WorkingDirectory $TimeoutSeconds -Environment $Environment
     Complete-PumpProcess $capture -Summary 'Git history: hashes, dates and subjects.' -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -Parse {
         param($c)
         $p=$c.Stdout.Split([char]0);$items=[Collections.Generic.List[object]]::new()

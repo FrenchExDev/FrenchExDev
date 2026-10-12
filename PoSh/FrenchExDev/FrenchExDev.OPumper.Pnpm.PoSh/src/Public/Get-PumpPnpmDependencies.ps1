@@ -3,7 +3,7 @@ function Get-PumpPnpmDependencies {
     param([string]$WorkingDirectory='.', [string[]]$Package=@(), [switch]$Recursive,
           [ValidateRange(0,5)][int]$Depth=0,
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     $binary=Get-Command pnpm -CommandType Application -ErrorAction SilentlyContinue | Where-Object Extension -eq '.exe' | Select-Object -First 1
     $executable=if($binary){$binary.Source}else{'pnpm'}
     if($IsWindows -and !$binary) {
@@ -13,7 +13,7 @@ function Get-PumpPnpmDependencies {
     }
     foreach($p in $Package){if($p.StartsWith('-')){return New-PumpResult -Summary 'Invalid package filter.' -Outcome Failed -RetryAdvice CorrectRequest -ErrorInfo @{Code='InvalidPackage'} -MaxOutputBytes $MaxOutputBytes}}
     $arguments=@('list','--json','--depth',$Depth.ToString());if($Recursive){$arguments+='--recursive'};$arguments+=$Package
-    $capture=Invoke-PumpProcess $executable $arguments $WorkingDirectory $TimeoutSeconds
+    $capture=Invoke-PumpProcess $executable $arguments $WorkingDirectory $TimeoutSeconds -Environment $Environment
     Complete-PumpProcess $capture -Summary 'pnpm dependencies: selected packages and versions.' -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -Parse {
         param($c)
         if($c.ExitCode -ne 0 -and !$c.Stdout.Trim()){return @{Items=@()}}

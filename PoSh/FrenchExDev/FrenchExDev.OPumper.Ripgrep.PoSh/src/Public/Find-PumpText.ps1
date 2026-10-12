@@ -3,11 +3,11 @@ function Find-PumpText {
     param([Parameter(Mandatory)][string]$Pattern, [string[]]$Path=@('.'), [string[]]$Glob=@(),
           [string]$WorkingDirectory='.', [switch]$Literal, [switch]$IgnoreCase,
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     $arguments=@('--json','--color=never');if($Literal){$arguments+='--fixed-strings'};if($IgnoreCase){$arguments+='--ignore-case'}
     foreach($g in $Glob){$arguments+=@('--glob',$g)};$arguments+=@('--',$Pattern)+$Path
     $state=@{Items=[Collections.Generic.List[object]]::new();Count=0L;EncodingOmitted=$false;MaxItems=$MaxItems}
-    Invoke-OutputPumpNative -Executable rg -ArgumentList $arguments -WorkingDirectory $WorkingDirectory -TimeoutSeconds $TimeoutSeconds -Summary 'Text search: paths, line numbers and selected matches.' -SuccessCodes @(0,1) -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -State $state -OnRecord {
+    Invoke-OutputPumpNative -Executable rg -ArgumentList $arguments -WorkingDirectory $WorkingDirectory -TimeoutSeconds $TimeoutSeconds -Environment $Environment -Summary 'Text search: paths, line numbers and selected matches.' -SuccessCodes @(0,1) -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -State $state -OnRecord {
         param($record,$state)
         if($record.Stream -ne 'stdout' -or $record.Truncated -or !$record.Text){return}
         $event=ConvertFrom-Json -InputObject $record.Text -AsHashtable -ErrorAction Stop

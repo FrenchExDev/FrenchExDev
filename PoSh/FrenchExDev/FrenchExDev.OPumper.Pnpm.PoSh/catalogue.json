@@ -42,7 +42,8 @@
           "WorkingDirectory",
           "Package",
           "Recursive",
-          "Depth"
+          "Depth",
+          "Environment"
         ],
         "Function": "Get-PumpPnpmDependencies",
         "Id": "pnpm.dependencies"

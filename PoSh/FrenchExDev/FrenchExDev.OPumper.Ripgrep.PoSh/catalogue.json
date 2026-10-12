@@ -60,7 +60,8 @@
           "Path",
           "Glob",
           "Literal",
-          "IgnoreCase"
+          "IgnoreCase",
+          "Environment"
         ],
         "Function": "Find-PumpText",
         "Id": "ripgrep.search"
@@ -94,7 +95,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Path",
-          "Glob"
+          "Glob",
+          "Environment"
         ],
         "Function": "Find-PumpFiles",
         "Id": "ripgrep.files"

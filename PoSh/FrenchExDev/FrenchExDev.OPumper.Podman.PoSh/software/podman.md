@@ -20,15 +20,15 @@ Appels disponibles :
 
 - Route : `podman ps` ; identifiant `podman.containers`.
 - `Get-PumpPodmanContainers` : Inventaire de conteneurs sélectionnés.
-  Paramètres du besoin : `WorkingDirectory, Filter, All`.
+  Paramètres du besoin : `WorkingDirectory, Filter, All, Environment`.
   Exemple : `Get-PumpPodmanContainers -Filter 'status=running' -MaxItems 10`.
 - Route : `podman images` ; identifiant `podman.images`.
 - `Get-PumpPodmanImages` : Inventaire dʼimages sélectionnées.
-  Paramètres du besoin : `WorkingDirectory, Filter`.
+  Paramètres du besoin : `WorkingDirectory, Filter, Environment`.
   Exemple : `Get-PumpPodmanImages -Filter 'dangling=true'`.
 - Route : `podman logs` ; identifiant `podman.log`.
 - `Get-PumpPodmanLog` : Derniers événements dʼun conteneur.
-  Paramètres du besoin : `WorkingDirectory, Container, Since, Filter`.
+  Paramètres du besoin : `WorkingDirectory, Container, Since, Filter, Environment`.
   Exemple : `Get-PumpPodmanLog -Container $container -Since '10m' -Filter 'error'`.
 
 Paramètres communs : `MaxItems` (20), `MaxOutputBytes` (8192, minimum 1024), `TimeoutSeconds` (600). Objets uniquement ; aucun affichage terminal.

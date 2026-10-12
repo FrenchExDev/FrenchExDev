@@ -19,11 +19,11 @@ Appels disponibles :
 
 - Route : `rg ` ; identifiant `ripgrep.search`.
 - `Find-PumpText` : Correspondances structurées, filtres et compteurs.
-  Paramètres du besoin : `WorkingDirectory, Pattern, Path, Glob, Literal, IgnoreCase`.
+  Paramètres du besoin : `WorkingDirectory, Pattern, Path, Glob, Literal, IgnoreCase, Environment`.
   Exemple : `Find-PumpText -WorkingDirectory $repo -Pattern 'TODO' -Path 'src/' -MaxItems 10`.
 - Route : `rg --files` ; identifiant `ripgrep.files`.
 - `Find-PumpFiles` : Chemins de fichiers ciblés.
-  Paramètres du besoin : `WorkingDirectory, Path, Glob`.
+  Paramètres du besoin : `WorkingDirectory, Path, Glob, Environment`.
   Exemple : `Find-PumpFiles -WorkingDirectory $repo -Glob '*.cs' -Path 'src/'`.
 
 Paramètres communs : `MaxItems` (20), `MaxOutputBytes` (8192, minimum 1024), `TimeoutSeconds` (600). Objets uniquement ; aucun affichage terminal.

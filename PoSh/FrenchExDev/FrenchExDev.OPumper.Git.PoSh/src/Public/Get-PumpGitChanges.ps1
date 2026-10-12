@@ -2,11 +2,11 @@ function Get-PumpGitChanges {
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Path, [string]$WorkingDirectory='.', [switch]$Staged,
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     $arguments=@('--no-pager','diff','--no-ext-diff','--no-textconv','--no-color','--unified=0')
     if(Test-Path -LiteralPath (Join-Path $WorkingDirectory $Path) -PathType Container){return New-PumpResult -Summary 'Changed-line extraction needs one file.' -Outcome Failed -RetryAdvice CorrectRequest -ErrorInfo @{Code='SingleFileRequired';Message='Use Get-PumpGitDiff first and select one file.'} -MaxOutputBytes $MaxOutputBytes}
     if($Staged){$arguments+='--cached'};$arguments+=@('--',$Path)
-    $capture=Invoke-PumpProcess git $arguments $WorkingDirectory $TimeoutSeconds
+    $capture=Invoke-PumpProcess git $arguments $WorkingDirectory $TimeoutSeconds -Environment $Environment
     Complete-PumpProcess $capture -Summary 'Git changes: selected changed lines, without patch headers.' -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -Parse {
         param($c)
         $items=[Collections.Generic.List[object]]::new();$oldLine=0;$newLine=0;$fileCount=0;$privateKey=$false;$inHunk=$false

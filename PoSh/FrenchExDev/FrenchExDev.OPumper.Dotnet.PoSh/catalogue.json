@@ -55,7 +55,8 @@
           "WorkingDirectory",
           "Configuration",
           "Framework",
-          "NoRestore"
+          "NoRestore",
+          "Environment"
         ],
         "Function": "Invoke-PumpDotnetBuild",
         "Id": "dotnet.build"
@@ -124,7 +125,8 @@
           "Filter",
           "MtpFilterOption",
           "NoRestore",
-          "NoBuild"
+          "NoBuild",
+          "Environment"
         ],
         "Function": "Invoke-PumpDotnetTest",
         "Id": "dotnet.test"

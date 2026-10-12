@@ -2,10 +2,10 @@ function Get-PumpPodmanLog {
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Container, [string]$Since, [string]$Filter, [string]$WorkingDirectory='.',
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     if($Container.StartsWith('-')){return New-PumpResult -Summary 'Invalid container.' -Outcome Failed -RetryAdvice CorrectRequest -ErrorInfo @{Code='InvalidContainer'} -MaxOutputBytes $MaxOutputBytes}
     $arguments=@('logs','--timestamps','--tail',($MaxItems+1).ToString());if($Since){$arguments+=@('--since',$Since)};$arguments+=@('--',$Container)
-    $capture=Invoke-PumpProcess podman $arguments $WorkingDirectory $TimeoutSeconds
+    $capture=Invoke-PumpProcess podman $arguments $WorkingDirectory $TimeoutSeconds -Environment $Environment
     Complete-PumpProcess $capture -Summary 'Podman logs: selected timestamped events in a bounded tail.' -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -Parse {
         param($c)
         $items=[Collections.Generic.List[object]]::new()

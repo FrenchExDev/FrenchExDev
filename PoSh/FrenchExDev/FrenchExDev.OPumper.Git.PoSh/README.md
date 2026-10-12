@@ -4,6 +4,8 @@ Independent **PowerShell 7.4+ Core** provider for OutputPumps. It contributes 4 
 
 Project directory: `FrenchExDev.OPumper.Git.PoSh`. Module entry point: `Git-OPumper.psd1`. The provider ID and pump IDs are unchanged.
 
+Git status analyzes NUL records progressively, retaining at most `MaxItems` paths and counting the complete stream. A limited preview reports `Success` with `ItemLimit` and an exact total, even when the native output exceeds the buffered capture limit. Use `Pump-Me git status -Debug` to inspect the selected source, capture mode, limits and completion counters without exposing native output.
+
 ## Activate
 
 Clone this directory as its own repository, or keep it next to the OutputPumps engine. Add its parent to `$HOME/.pumps-config.yaml`:

@@ -2,10 +2,10 @@ function Find-PumpFiles {
     [CmdletBinding()]
     param([string[]]$Path=@('.'), [string[]]$Glob=@(), [string]$WorkingDirectory='.',
           [ValidateRange(1,1000)][int]$MaxItems=20, [ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,
-          [ValidateRange(1,86400)][int]$TimeoutSeconds=600)
+          [ValidateRange(1,86400)][int]$TimeoutSeconds=600,[Collections.IDictionary]$Environment)
     $arguments=@('--files','--null');foreach($g in $Glob){$arguments+=@('--glob',$g)};$arguments+=@('--')+$Path
     $state=@{Items=[Collections.Generic.List[object]]::new();Count=0L;MaxItems=$MaxItems}
-    Invoke-OutputPumpNative -Executable rg -ArgumentList $arguments -WorkingDirectory $WorkingDirectory -TimeoutSeconds $TimeoutSeconds -Summary 'File discovery: selected paths.' -SuccessCodes @(0,1) -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -RecordDelimiter ([char]0) -State $state -OnRecord {
+    Invoke-OutputPumpNative -Executable rg -ArgumentList $arguments -WorkingDirectory $WorkingDirectory -TimeoutSeconds $TimeoutSeconds -Environment $Environment -Summary 'File discovery: selected paths.' -SuccessCodes @(0,1) -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes -RecordDelimiter ([char]0) -State $state -OnRecord {
         param($record,$state)
         if($record.Stream -ne 'stdout' -or $record.Truncated -or !$record.Text){return}
         $state.Count++

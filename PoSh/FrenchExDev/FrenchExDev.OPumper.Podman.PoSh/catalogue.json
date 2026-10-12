@@ -41,7 +41,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Filter",
-          "All"
+          "All",
+          "Environment"
         ],
         "Function": "Get-PumpPodmanContainers",
         "Id": "podman.containers"
@@ -68,7 +69,8 @@
         },
         "Parameters": [
           "WorkingDirectory",
-          "Filter"
+          "Filter",
+          "Environment"
         ],
         "Function": "Get-PumpPodmanImages",
         "Id": "podman.images"
@@ -97,7 +99,8 @@
           "WorkingDirectory",
           "Container",
           "Since",
-          "Filter"
+          "Filter",
+          "Environment"
         ],
         "Function": "Get-PumpPodmanLog",
         "Id": "podman.log"

@@ -2,7 +2,7 @@
   {
     "Name": "Git",
     "VerifiedVersion": "Git 2.55.0.windows.3, commandes locales vérifiées le 2026-10-10",
-    "IdentityMarkdown": "Git gère les commits, lʼindex et les modifications du répertoire de travail. Ces pompes sont en lecture seule et ne font aucun fetch : ahead/behind décrit uniquement les références locales connues.\n\nStatus utilise `--porcelain=v2 --branch -z --untracked-files=all`. Les chemins sont groupés par état (Staged, Unstaged, Untracked, Conflict) et les renommages conservent les deux noms. `Path` réduit le périmètre ; une capture trop large exige un chemin plus précis. Les branches détachées ou sans commit restent identifiables.\n\nDiff utilise `--numstat -z`, sans pager, textconv ni diff externe. `Staged` sélectionne lʼindex, `Revision` une base explicite. Les fichiers binaires nʼont pas de compteurs de lignes. Pour inspecter du contenu, `Get-PumpGitChanges` exige un chemin et renvoie des lignes changées structurées, pas le patch brut. Log demande un élément supplémentaire pour détecter la troncature ; le total de lʼhistorique peut rester inconnu. Les sujets sont assainis ; auteurs et emails ne sont pas exportés.",
+    "IdentityMarkdown": "Git gère les commits, lʼindex et les modifications du répertoire de travail. Ces pompes sont en lecture seule et ne font aucun fetch : ahead/behind décrit uniquement les références locales connues.\n\nStatus utilise `--porcelain=v2 --branch -z --untracked-files=all`, analysé progressivement par enregistrements NUL. Les chemins sont groupés par état (Staged, Unstaged, Untracked, Conflict) et les renommages conservent les deux noms. Seuls `MaxItems` chemins sont conservés en mémoire ; le flux est parcouru jusqu’à sa fin pour fournir le total exact. Un aperçu limité reste `Success` avec `ItemLimit`, sans échec `CaptureLimit` lié à la taille globale. `Path` réduit le périmètre. Les branches détachées ou sans commit restent identifiables. `Pump-Me git status -Debug` affiche le routage, le mode, les limites et les compteurs sur le flux debug, sans sortie native brute.\n\nDiff utilise `--numstat -z`, sans pager, textconv ni diff externe. `Staged` sélectionne lʼindex, `Revision` une base explicite. Les fichiers binaires nʼont pas de compteurs de lignes. Pour inspecter du contenu, `Get-PumpGitChanges` exige un chemin et renvoie des lignes changées structurées, pas le patch brut. Log demande un élément supplémentaire pour détecter la troncature ; le total de lʼhistorique peut rester inconnu. Les sujets sont assainis ; auteurs et emails ne sont pas exportés.",
     "Module": "Git-OPumper.psm1",
     "Id": "git",
     "Commands": [
@@ -21,7 +21,8 @@
         },
         "Parameters": [
           "WorkingDirectory",
-          "Path"
+          "Path",
+          "Environment"
         ],
         "Function": "Get-PumpGitStatus",
         "Id": "git.status"
@@ -56,7 +57,8 @@
           "WorkingDirectory",
           "Path",
           "Staged",
-          "Revision"
+          "Revision",
+          "Environment"
         ],
         "Function": "Get-PumpGitDiff",
         "Id": "git.diff"
@@ -91,7 +93,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Path",
-          "Staged"
+          "Staged",
+          "Environment"
         ],
         "Function": "Get-PumpGitChanges",
         "Id": "git.changes"
@@ -125,7 +128,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Path",
-          "Revision"
+          "Revision",
+          "Environment"
         ],
         "Function": "Get-PumpGitLog",
         "Id": "git.log"
