@@ -16,7 +16,7 @@ This approach suits agents that inspect repositories, run builds or tests, proce
 
 ## Get started in one minute
 
-1. Open [PROMPT.md](PROMPT.md) and provide its contents to your agent, either in its working instructions or alongside your request.
+1. Open [SKILL](skills/quiet-cli/SKILL.md) and provide its contents to your agent, either in its working instructions or alongside your request.
 2. Describe the question and the information you want to receive.
 3. Ask the agent to create or reuse the companion script, then run it.
 4. Review the common result: status, useful data, completeness, and any omissions.
