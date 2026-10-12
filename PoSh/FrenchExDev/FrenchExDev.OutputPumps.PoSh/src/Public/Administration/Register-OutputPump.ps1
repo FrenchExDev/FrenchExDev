@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Register a live contribution or persist reusable documentation.
+.DESCRIPTION
+Define Register-OutputPump for the OutputPumps runtime. Keep in-memory route registration separate from descriptor registration; explicit replacement preserves the previous entry for restoration.
+#>
+
+
 function Register-OutputPump {
+    <#
+    .SYNOPSIS
+    Register a live contribution or persist reusable documentation.
+    .DESCRIPTION
+    Keep in-memory route registration separate from descriptor registration; explicit replacement preserves the previous entry for restoration.
+    #>
+    
     [CmdletBinding(DefaultParameterSetName='Native')]
     param(
         [Parameter(Mandatory,Position=0,ParameterSetName='Documentation')][Collections.IDictionary]$Descriptor,

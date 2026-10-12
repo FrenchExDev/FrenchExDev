@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Build the public result envelope for provider authors.
+.DESCRIPTION
+Define New-OutputPumpResult for the OutputPumps runtime. Delegate sanitization and byte limits to the core builder while preserving business object type names.
+#>
+
+
 function New-OutputPumpResult {
+    <#
+    .SYNOPSIS
+    Build the public result envelope for provider authors.
+    .DESCRIPTION
+    Delegate sanitization and byte limits to the core builder while preserving business object type names.
+    #>
+    
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Summary,[object]$Data=@{},[ValidateSet('Success','Failed','Timeout','Unsupported')][string]$Outcome='Success',
           [Nullable[int]]$ExitCode=$null,[Collections.IDictionary]$ErrorInfo,[string]$RetryAdvice='SafeToRetry',

@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Persist a validated reusable pump in the catalogue.
+.DESCRIPTION
+Define Register-OutputPumpDocumentation for the OutputPumps runtime. Coordinate descriptor validation and documentation updates under the library registration lock.
+#>
+
+
 function Register-OutputPumpDocumentation {
+    <#
+    .SYNOPSIS
+    Persist a validated reusable pump in the catalogue.
+    .DESCRIPTION
+    Coordinate descriptor validation and documentation updates under the library registration lock.
+    #>
+    
     param([Collections.IDictionary]$Descriptor,[string]$LibraryRoot)
     $lock=$null;$written=[Collections.Generic.List[string]]::new();$previous=@{}
     try {

@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Load the OutputPumps engine and export its public commands.
+.DESCRIPTION
+Load source categories in dependency order, initialize shared state and leave contribution activation to Setup-OutputPumps.
+#>
+
+
 #requires -Version 7.4
 #requires -PSEdition Core
 Set-StrictMode -Version Latest

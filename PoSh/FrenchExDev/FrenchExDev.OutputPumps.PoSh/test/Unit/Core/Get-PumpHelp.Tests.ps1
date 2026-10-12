@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Get-PumpHelp.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll {. (Join-Path $PSScriptRoot '../TestSupport.ps1');Import-Module (Join-Path $script:Library 'Core.psm1') -Force}
 Describe 'Get-PumpHelp' {
     It 'extracts only selected help sections' {

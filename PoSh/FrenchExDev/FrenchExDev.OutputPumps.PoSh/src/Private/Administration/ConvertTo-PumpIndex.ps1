@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Render the compact catalogue entry point.
+.DESCRIPTION
+Define ConvertTo-PumpIndex for the OutputPumps runtime. Summarize available software and the bounded-output workflow without requiring source inspection.
+#>
+
+
 function ConvertTo-PumpIndex {
+    <#
+    .SYNOPSIS
+    Render the compact catalogue entry point.
+    .DESCRIPTION
+    Summarize available software and the bounded-output workflow without requiring source inspection.
+    #>
+    
     param([object[]]$Descriptors)
     $lines=@(
         '# OutputPumps — index','',

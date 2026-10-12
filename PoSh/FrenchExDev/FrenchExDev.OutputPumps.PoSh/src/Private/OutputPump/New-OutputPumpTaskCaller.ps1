@@ -1,8 +1,30 @@
+<#
+.SYNOPSIS
+Write a temporary caller that emits one task result.
+.DESCRIPTION
+Define New-OutputPumpTaskCaller for the OutputPumps runtime. Encode the payload as data, reuse the session runtime when possible and delete the caller after execution.
+#>
+
+
 function New-OutputPumpTaskCaller {
+    <#
+    .SYNOPSIS
+    Write a temporary caller that emits one task result.
+    .DESCRIPTION
+    Encode the payload as data, reuse the session runtime when possible and delete the caller after execution.
+    #>
+    
     param([scriptblock]$ScriptBlock,[object[]]$ArgumentList,[int]$MaxItems,[int]$MaxOutputBytes,[string]$ScriptDirectory)
     $payload=@{Body=$ScriptBlock.ToString();Arguments=$ArgumentList;Runtime=$ExecutionContext.SessionState.Module.Path;ConfigurationPath=$script:OutputPumpSession.ConfigurationPath;MaxItems=$MaxItems;MaxOutputBytes=$MaxOutputBytes}
     $encoded=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $payload -Depth 20 -Compress)))
     $text=@'
+<#
+.SYNOPSIS
+Execute a generated task and emit one bounded JSON result.
+.DESCRIPTION
+Decode the data payload, reuse or initialize the runtime and remove this temporary caller after execution.
+#>
+
 #requires -Version 7.4
 #requires -PSEdition Core
 $ErrorActionPreference='Stop'

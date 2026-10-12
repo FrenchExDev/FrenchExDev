@@ -1,5 +1,27 @@
+<#
+.SYNOPSIS
+Unit tests for Invoke-OutputPumpTask.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll {. (Join-Path $PSScriptRoot '../TestSupport.ps1');Import-Module (Join-Path $script:Library 'OutputPump.PoSh.psd1') -Force -DisableNameChecking}
 Describe 'Invoke-OutputPumpTask' {
+    It 'times tasks and steps on stream five without changing their execution outcome' {
+        $events=@(Invoke-OutputPumpTask -Debug {
+            $local=Invoke-OutputPumpStep measured {Write-Debug 'fixture debug';New-OutputPumpResult -Summary complete -Data @{Count=1}}
+            @{Count=$local.Data.Count}
+        } 5>&1)
+        $results=@($events | Where-Object {$_ -isnot [Management.Automation.DebugRecord]})
+        $results.Count | Should -Be 1
+        $results[0].Outcome | Should -Be Success
+        $results[0].Data.Status.Steps | Should -Be 1
+        $results[0].Data.Items[0].Count | Should -Be 1
+        $messages=($events | Where-Object {$_ -is [Management.Automation.DebugRecord]} | ForEach-Object Message) -join ' '
+        $messages | Should -Match 'action=Task.Step; elapsedMs=\d+\.\d{3};'
+        $messages | Should -Match 'action=Task.Total;'
+    }
     It 'retains an assigned intermediate failure and truncation in one bounded envelope' {
         $output=@(Invoke-OutputPumpTask -MaxOutputBytes 1024 {
             $bad=Invoke-OutputPumpStep search {New-OutputPumpResult -Summary failed -Outcome Failed -ExitCode 2 -ErrorInfo @{Code='SearchErrors'}}

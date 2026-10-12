@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Write a deterministic provider loading inventory.
+.DESCRIPTION
+Define New-OutputPumpCompilation for the OutputPumps runtime. Discover configured providers and atomically update registry metadata without serializing closures or compiling provider code.
+#>
+
+
 function New-OutputPumpCompilation {
+    <#
+    .SYNOPSIS
+    Write a deterministic provider loading inventory.
+    .DESCRIPTION
+    Discover configured providers and atomically update registry metadata without serializing closures or compiling provider code.
+    #>
+    
     [CmdletBinding()]
     param([string]$ConfigurationPath=(Join-Path $HOME '.pumps-config.yaml'),[string]$Path=(Join-Path $HOME '.pwsh-pumps/registry.json'))
     $lock=$null

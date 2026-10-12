@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Invoke one selected specialized pump with bounded diagnostics.
+.DESCRIPTION
+Define Invoke-OutputPumpFunction for the OutputPumps runtime. Resolve its implementation and parameters, then convert invocation failures into the standard result envelope.
+#>
+
+
 function Invoke-OutputPumpFunction {
+    <#
+    .SYNOPSIS
+    Invoke one selected specialized pump with bounded diagnostics.
+    .DESCRIPTION
+    Resolve its implementation and parameters, then convert invocation failures into the standard result envelope.
+    #>
+    
     param([string]$SoftwareId,[string]$Function,[hashtable]$Parameters)
     try {
         $entry=$null

@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Inspect active pump registrations without exposing captured state.
+.DESCRIPTION
+Define Get-OutputPump for the OutputPumps runtime. Return selected route and provider metadata while keeping closures and their captured variables private.
+#>
+
+
 function Get-OutputPump {
+    <#
+    .SYNOPSIS
+    Inspect active pump registrations without exposing captured state.
+    .DESCRIPTION
+    Return selected route and provider metadata while keeping closures and their captured variables private.
+    #>
+    
     [CmdletBinding()]
     param([string]$Id='*',[string]$ProviderId='*',[ValidateRange(1,1000)][int]$MaxItems=20,[ValidateRange(1024,8192)][int]$MaxOutputBytes=8192)
     try {

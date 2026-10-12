@@ -1,13 +1,30 @@
+<#
+.SYNOPSIS
+Run local processing under one final output budget.
+.DESCRIPTION
+Define Invoke-OutputPumpTask for the OutputPumps runtime. Aggregate step outcomes and truncation, keep intermediate objects local and optionally emit one compact JSON result.
+#>
+
+
 function Invoke-OutputPumpTask {
+    <#
+    .SYNOPSIS
+    Run local processing under one final output budget.
+    .DESCRIPTION
+    Aggregate step outcomes and truncation, keep intermediate objects local and optionally emit one compact JSON result.
+    #>
+    
     [CmdletBinding()]
     param([Parameter(Mandatory)][scriptblock]$ScriptBlock,[object[]]$ArgumentList=@(),
           [ValidateRange(1,1000)][int]$MaxItems=20,[ValidateRange(1024,8192)][int]$MaxOutputBytes=8192,[switch]$AsJson)
+    $timer=[Diagnostics.Stopwatch]::StartNew()
+    try {
     if(!(Get-Variable -Name OutputPumpTaskStack -Scope Script -ErrorAction SilentlyContinue)){$script:OutputPumpTaskStack=[Collections.Generic.Stack[object]]::new()}
     $state=@{Steps=0;Failed=0;Timeout=0;Unsupported=0;Truncated=0;ScriptErrors=0;OmittedIssues=0;UnknownRetry=$false;CorrectionRequired=$false;NarrowRequired=$false;Budget=$MaxOutputBytes;Issues=[Collections.Generic.List[object]]::new();Seen=[Runtime.CompilerServices.ConditionalWeakTable[object,object]]::new()}
     $items=[Collections.Generic.List[object]]::new();$produced=0L;$projectionTruncated=$false
     $script:OutputPumpTaskStack.Push($state)
     try {
-        & $ScriptBlock @ArgumentList *>&1 | ForEach-Object {
+        & $ScriptBlock @ArgumentList 2>&1 3>&1 4>&1 6>&1 | ForEach-Object {
             $value=$_
             if($value -is [Management.Automation.ErrorRecord] -or $value -is [Management.Automation.InformationalRecord] -or $value -is [Management.Automation.InformationRecord]){$state.ScriptErrors++;return}
             if($value.PSObject.Properties['Outcome'] -and $value.PSObject.Properties['Truncation']) {
@@ -50,4 +67,5 @@ function Invoke-OutputPumpTask {
     $result.PSObject.TypeNames.Insert(0,'FrenchExDev.OutputPump.TaskResult')
     $result.PSObject.TypeNames.Insert(1,'FrenchExDev.OutputPump.Result')
     if($AsJson){ConvertTo-OutputPumpJson -InputObject $result -MaxItems $MaxItems -MaxOutputBytes $MaxOutputBytes}else{$result}
+    }finally{Write-OutputPumpTiming 'Task.Total' $timer.Elapsed.TotalMilliseconds}
 }

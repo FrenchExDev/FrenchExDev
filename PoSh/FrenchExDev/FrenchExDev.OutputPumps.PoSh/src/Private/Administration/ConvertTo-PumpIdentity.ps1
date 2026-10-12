@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Render the software reference sheet for a descriptor.
+.DESCRIPTION
+Define ConvertTo-PumpIdentity for the OutputPumps runtime. Include verified documentation, supported commands and parameterized examples for catalogue readers.
+#>
+
+
 function ConvertTo-PumpIdentity {
+    <#
+    .SYNOPSIS
+    Render the software reference sheet for a descriptor.
+    .DESCRIPTION
+    Include verified documentation, supported commands and parameterized examples for catalogue readers.
+    #>
+    
     param($Descriptor)
     $lines=[Collections.Generic.List[string]]::new()
     $lines.Add("# $($Descriptor.Name)");$lines.Add('');$lines.Add($Descriptor.IdentityMarkdown.Trim());$lines.Add('')

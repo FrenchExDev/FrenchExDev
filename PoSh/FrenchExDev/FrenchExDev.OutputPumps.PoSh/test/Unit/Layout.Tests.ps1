@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Layout.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll { . (Join-Path $PSScriptRoot 'TestSupport.ps1') }
 Describe 'Project and test layout' {
     It 'has a named unit suite for every public source cmdlet' {

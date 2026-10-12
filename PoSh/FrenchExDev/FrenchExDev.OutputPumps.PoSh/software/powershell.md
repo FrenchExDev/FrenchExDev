@@ -16,7 +16,7 @@ Documentation officielle :
 - <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-content>
 - <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-help>
 
-Module : `Modules/PowerShell.psm1`.
+Module : `../FrenchExDev.OPumper.PowerShell.PoSh/PowerShell-OPumper.psm1`.
 
 Appels disponibles :
 

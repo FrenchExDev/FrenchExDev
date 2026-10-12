@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Build a deterministic snapshot of provider resources.
+.DESCRIPTION
+Define New-OutputPumpResourceSnapshot for the OutputPumps runtime. Include resource content in change detection so additions, removals and updates invalidate stale inventory metadata.
+#>
+
+
 function New-OutputPumpResourceSnapshot {
+    <#
+    .SYNOPSIS
+    Build a deterministic snapshot of provider resources.
+    .DESCRIPTION
+    Include resource content in change detection so additions, removals and updates invalidate stale inventory metadata.
+    #>
+    
     param([string]$Root,[string]$ModuleText,$Compiler)
     $resources=[ordered]@{}
     $folder=Join-Path $Root 'resources'

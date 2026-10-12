@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Get-DevPoShProjects.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll { . (Join-Path $PSScriptRoot '../TestSupport.ps1'); Import-Module (Join-Path $script:DevLibrary 'DevPoSh.PoSh.psd1') -Force -DisableNameChecking }
 Describe 'Get-DevPoShProjects' {
     It 'deduplicates compatibility manifests and avoids cache dependencies' {

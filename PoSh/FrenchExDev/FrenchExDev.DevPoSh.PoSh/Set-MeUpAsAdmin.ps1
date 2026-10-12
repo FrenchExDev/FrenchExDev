@@ -1,0 +1,1 @@
+Install-Module powershell-yaml -RequiredVersion 0.4.12 -Scope CurrentUser

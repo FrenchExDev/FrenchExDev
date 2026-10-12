@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Integration harness for OutputPumpRuntime.
+.DESCRIPTION
+Run controlled scenarios, keep raw child-process output local and emit a bounded report of passed and failed checks.
+#>
+
+
 #requires -Version 7.4
 #requires -PSEdition Core
 $ErrorActionPreference='Stop'
@@ -11,15 +19,43 @@ $root=Join-Path $library ('.cache/runtime-'+[guid]::NewGuid().ToString('N'))
 [void][IO.Directory]::CreateDirectory($root)
 $failures=[Collections.Generic.List[object]]::new();$passed=0
 $oldSourceRoot=$env:FRENCHEXDEV_MYDEVPOSH_PATH
-function Assert-Runtime([bool]$Condition,[string]$Message){if(!$Condition){throw $Message}}
+function Assert-Runtime([bool]$Condition,[string]$Message){
+    <#
+    .SYNOPSIS
+    Fail a runtime scenario when its expected condition is false.
+    .DESCRIPTION
+    Raise a controlled assertion error consumed by the integration harness.
+    #>
+    if(!$Condition){throw $Message}}
 function Test-Runtime([string]$Name,[scriptblock]$Body){
+    <#
+    .SYNOPSIS
+    Run and record one runtime integration scenario.
+    .DESCRIPTION
+    Convert scenario failures into report entries while allowing subsequent checks to execute.
+    #>
+    
     try{& $Body;$script:passed++}catch{$script:failures.Add(@{Test=$Name;Message=$_.Exception.Message;Line=$_.InvocationInfo.ScriptLineNumber})}
 }
 function Invoke-RuntimeNative([string]$Executable,[string[]]$Arguments,[string]$Directory=$root,[int]$Timeout=60){
+    <#
+    .SYNOPSIS
+    Run a controlled native command for a runtime test.
+    .DESCRIPTION
+    Keep process output inside the test harness for assertions rather than displaying it.
+    #>
+    
     $capture=& $core {param($e,$a,$d,$t) Invoke-PumpProcess -Executable $e -Arguments $a -WorkingDirectory $d -TimeoutSeconds $t -CaptureLimit 65536} $Executable $Arguments $Directory $Timeout
     return $capture
 }
 function Invoke-RuntimeChild([string]$Text,[string[]]$Arguments=@(),[string]$UserDirectory){
+    <#
+    .SYNOPSIS
+    Execute a runtime fixture in a fresh PowerShell session.
+    .DESCRIPTION
+    Verify startup and passthrough behavior without inheriting the parent registry state.
+    #>
+    
     $path=Join-Path $root ('child-'+[guid]::NewGuid().ToString('N')+'.ps1');[IO.File]::WriteAllText($path,$Text)
     $previous=$env:USERPROFILE
     try{
@@ -85,7 +121,7 @@ New-OutputPumpCompilation -ConfigurationPath $Configuration -Path $Inventory | C
         } finally {$lock.Dispose()}
         $fixture=Join-Path $root 'PoSh/FrenchExDev/FrenchExDev.OutputPumps.PoSh'
         [void][IO.Directory]::CreateDirectory($fixture)
-        foreach($name in @('src','Modules','resources','software','Core.psm1','OutputPump.PoSh.psm1','OutputPump.PoSh.psd1','OutputPumps.psm1','OutputPumps.psd1','catalogue.json','index.md')){Copy-Item -LiteralPath (Join-Path $library $name) -Destination $fixture -Recurse}
+        foreach($name in @('src','resources','software','Core.psm1','OutputPump.PoSh.psm1','OutputPump.PoSh.psd1','OutputPumps.psm1','OutputPumps.psd1','catalogue.json','index.md')){Copy-Item -LiteralPath (Join-Path $library $name) -Destination $fixture -Recurse}
         Copy-Item -LiteralPath $devLibrary -Destination (Join-Path (Split-Path $fixture) 'FrenchExDev.DevPoSh.PoSh') -Recurse
         foreach($name in @('Git','Dotnet','Pnpm','Podman','Ripgrep','PowerShell')){Copy-Item -LiteralPath (Join-Path (Split-Path $library) "FrenchExDev.OPumper.$name.PoSh") -Destination (Split-Path $fixture) -Recurse}
         $user=Join-Path $root user;[void][IO.Directory]::CreateDirectory($user)
@@ -99,14 +135,42 @@ New-OutputPumpCompilation -ConfigurationPath $Configuration -Path $Inventory | C
         [IO.File]::WriteAllText((Join-Path $project 'resources/value.txt'),'packaged resource')
         $provider=Join-Path $root 'PoSh/Fixture/Provider.PoSh'
         foreach($name in @('Private','Public')){[void][IO.Directory]::CreateDirectory((Join-Path $provider "src/$name"))}
-        [IO.File]::WriteAllText((Join-Path $provider 'src/Private/Get-FixtureSecret.ps1'),'function Get-FixtureSecret {"dependency"}')
-        [IO.File]::WriteAllText((Join-Path $provider 'src/Public/Get-FixtureDependency.ps1'),'function Get-FixtureDependency {Get-FixtureSecret}')
+        [IO.File]::WriteAllText((Join-Path $provider 'src/Private/Get-FixtureSecret.ps1'),'function Get-FixtureSecret {
+    <#
+    .SYNOPSIS
+    Return a private fixture value to verify compiled module scope.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    "dependency"}')
+        [IO.File]::WriteAllText((Join-Path $provider 'src/Public/Get-FixtureDependency.ps1'),'function Get-FixtureDependency {
+    <#
+    .SYNOPSIS
+    Return a dependency value used by the compilation fixture.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    Get-FixtureSecret}')
         [IO.File]::WriteAllText((Join-Path $provider 'Provider.PoSh.psm1'),'foreach($category in @("Private","Public")){Get-ChildItem (Join-Path $PSScriptRoot "src/$category") -Filter *.ps1 | ForEach-Object {. $_.FullName}}; Export-ModuleMember -Function Get-FixtureDependency')
         [IO.File]::WriteAllText((Join-Path $provider 'Provider.PoSh.psd1'),"@{RootModule='Provider.PoSh.psm1';ModuleVersion='1.0';FunctionsToExport=@('Get-FixtureDependency')}")
         [IO.File]::WriteAllText((Join-Path $project 'src/Classes/FixtureValue.ps1'),'class FixtureValue { [int] $Number=42 }')
         [IO.File]::WriteAllText((Join-Path $project 'src/Variables/State.ps1'),'$script:FixtureState="state"; Set-Alias fixture Get-FixtureValue')
-        [IO.File]::WriteAllText((Join-Path $project 'src/Private/Get-FixtureSecret.ps1'),'function Get-FixtureSecret {"private"}')
-        [IO.File]::WriteAllText((Join-Path $project 'src/Public/Get-FixtureValue.ps1'),'function Get-FixtureValue { [pscustomobject]@{Number=[FixtureValue]::new().Number;Resource=[IO.File]::ReadAllText((Join-Path $PSScriptRoot "../../resources/value.txt"));State=$script:FixtureState;Dependency=Get-FixtureDependency;Local=Get-FixtureSecret} }')
+        [IO.File]::WriteAllText((Join-Path $project 'src/Private/Get-FixtureSecret.ps1'),'function Get-FixtureSecret {
+    <#
+    .SYNOPSIS
+    Return a private fixture value to verify compiled module scope.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    "private"}')
+        [IO.File]::WriteAllText((Join-Path $project 'src/Public/Get-FixtureValue.ps1'),'function Get-FixtureValue {
+    <#
+    .SYNOPSIS
+    Read the fixture value through the selected module dependency.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+     [pscustomobject]@{Number=[FixtureValue]::new().Number;Resource=[IO.File]::ReadAllText((Join-Path $PSScriptRoot "../../resources/value.txt"));State=$script:FixtureState;Dependency=Get-FixtureDependency;Local=Get-FixtureSecret} }')
         [IO.File]::WriteAllText((Join-Path $project 'Example.PoSh.psm1'),'foreach($category in @("Classes","Private","Public","Variables")){Get-ChildItem (Join-Path $PSScriptRoot "src/$category") -Filter *.ps1 | ForEach-Object {. $_.FullName}}; Export-ModuleMember -Function Get-FixtureValue -Variable FixtureState -Alias fixture')
         [IO.File]::WriteAllText((Join-Path $project 'Example.PoSh.psd1'),"@{RootModule='Example.PoSh.psm1';ModuleVersion='1.0';RequiredModules=@('Provider.PoSh');FunctionsToExport=@('Get-FixtureValue');VariablesToExport=@('FixtureState');AliasesToExport=@('fixture')}")
         $cache=Join-Path $root 'user/.posh.posh.compilations'
@@ -148,8 +212,22 @@ $env:FRENCHEXDEV_MYDEVPOSH_PATH=$SourceRoot;$env:FRENCHEXDEV_DEVPOSH='';$env:TER
         $generated=New-OPumperModule -Name Custom -Executable custom -Path $external
         Assert-Runtime ($generated.Outcome -eq 'Success') 'Provider generation failed.'
         [IO.File]::WriteAllText((Join-Path $external 'resources/value.txt'),'resource two')
-        [IO.File]::WriteAllText((Join-Path $external 'src/Private/Get-CustomValue.ps1'),'function Get-CustomValue {[IO.File]::ReadAllText((Join-Path $PSScriptRoot "../../resources/value.txt"))}')
-        [IO.File]::WriteAllText((Join-Path $external 'src/Public/Invoke-PumpCustom.ps1'),'function Invoke-PumpCustom {param($ArgumentList,$WorkingDirectory,$MaxItems=20,$MaxOutputBytes=8192,$TimeoutSeconds=600) New-OutputPumpResult -Summary "custom" -Data @{Value=(Get-CustomValue)}}')
+        [IO.File]::WriteAllText((Join-Path $external 'src/Private/Get-CustomValue.ps1'),'function Get-CustomValue {
+    <#
+    .SYNOPSIS
+    Return deterministic business data from a custom module.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    [IO.File]::ReadAllText((Join-Path $PSScriptRoot "../../resources/value.txt"))}')
+        [IO.File]::WriteAllText((Join-Path $external 'src/Public/Invoke-PumpCustom.ps1'),'function Invoke-PumpCustom {
+    <#
+    .SYNOPSIS
+    Build a custom pump result without executing a native command.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    param($ArgumentList,$WorkingDirectory,$MaxItems=20,$MaxOutputBytes=8192,$TimeoutSeconds=600) New-OutputPumpResult -Summary "custom" -Data @{Value=(Get-CustomValue)}}')
         $config=Join-Path $root custom.yaml;[IO.File]::WriteAllText($config,"version: 2`nroots:`n - path: '$($external.Replace("'","''"))'`nproviders: {}`npumps: {}`n")
         $child=Invoke-RuntimeChild @'
 param($Manifest,$Configuration)
@@ -205,7 +283,14 @@ param($ProfileFile,$SourceRoot,$ExpectedHome)
 if($HOME -ne $ExpectedHome){throw 'Isolated user directory was not applied.'}
 $env:FRENCHEXDEV_MYDEVPOSH_PATH=$SourceRoot;$env:FRENCHEXDEV_DEVPOSH='Production';$env:TERM_PROGRAM=''
 # Provider inventory discovery is distinct from DevPoSh compilation.
-function global:Get-DevPoSh {throw 'Production attempted compilation.'}
+function global:Get-DevPoSh {
+    <#
+    .SYNOPSIS
+    Simulate module discovery for the copied profile startup scenario.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    throw 'Production attempted compilation.'}
 . $ProfileFile
 $copied=Set-DevPoShPowershellProfile -Path (Join-Path $ExpectedHome 'from-compiled.ps1')
 [pscustomobject]@{Value=(Get-FixtureValue).Number;Copied=$copied.Changed;DevModules=@(Get-Module DevPoSh.PoSh).Count} | ConvertTo-Json -Compress
@@ -214,7 +299,14 @@ $copied=Set-DevPoShPowershellProfile -Path (Join-Path $ExpectedHome 'from-compil
     }
     Test-Runtime 'Invalid candidate and interrupted compilation preserve the previous module' {
         $target=Join-Path $root 'stable.psm1'
-        $first=& $dev.ExportedFunctions['Export-DevPoShCompilation'] -ScriptText 'function Get-Stable {42}; Export-ModuleMember Get-Stable' -Destination $target
+        $first=& $dev.ExportedFunctions['Export-DevPoShCompilation'] -ScriptText 'function Get-Stable {
+    <#
+    .SYNOPSIS
+    Provide a stable export for compilation change detection.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    42}; Export-ModuleMember Get-Stable' -Destination $target
         Assert-Runtime ($first.Outcome -eq 'Success') 'Stable fixture could not be published.'
         $hash=(Get-FileHash $target).Hash
         $bad=& $dev.ExportedFunctions['Export-DevPoShCompilation'] -ScriptText 'throw "invalid module import"' -Destination $target
@@ -253,7 +345,14 @@ $warnings=@(& { . $ProfileFile } 3>&1)
         $child=Invoke-RuntimeChild @'
 param($ProfileFile,$InvalidRoot)
 $env:FRENCHEXDEV_MYDEVPOSH_PATH=$InvalidRoot;$env:FRENCHEXDEV_DEVPOSH='';$env:TERM_PROGRAM=''
-function global:Get-ChildItem {throw 'Invalid root caused discovery.'}
+function global:Get-ChildItem {
+    <#
+    .SYNOPSIS
+    Reject source traversal when checking production profile startup.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    throw 'Invalid root caused discovery.'}
 $warnings=@(& { . $ProfileFile } 3>&1)
 [pscustomobject]@{Warnings=$warnings.Count;Loaded=@(Get-Module DevPoSh.PoSh,OutputPump.PoSh).Count;Encoding=[Console]::OutputEncoding.WebName} | ConvertTo-Json -Compress
 '@ @((Join-Path $root 'copied-profile.ps1'),(Join-Path $root 'invalid-source-root')) -UserDirectory $emptyUser

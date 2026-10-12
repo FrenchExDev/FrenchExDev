@@ -17,17 +17,17 @@ Documentation officielle :
 - <https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test-vstest>
 - <https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test-mtp>
 
-Module : `Modules/Dotnet.psm1`.
+Module : `../FrenchExDev.OPumper.Dotnet.PoSh/Dotnet-OPumper.psm1`.
 
 Appels disponibles :
 
 - Route : `dotnet build` ; identifiant `dotnet.build`.
 - `Invoke-PumpDotnetBuild` : Compiler une cible et sélectionner les diagnostics.
-  Paramètres du besoin : `Target, WorkingDirectory, Configuration, Framework, NoRestore`.
+  Paramètres du besoin : `Target, WorkingDirectory, Configuration, Framework, NoRestore, Environment`.
   Exemple : `Invoke-PumpDotnetBuild -WorkingDirectory $repo -Target 'app.csproj'`.
 - Route : `dotnet test` ; identifiant `dotnet.test`.
 - `Invoke-PumpDotnetTest` : Exécuter des tests avec compteurs TRX. Sous MTP, fournir MtpFilterOption avec Filter selon la documentation du framework.
-  Paramètres du besoin : `Target, WorkingDirectory, Configuration, Framework, Filter, MtpFilterOption, NoRestore, NoBuild`.
+  Paramètres du besoin : `Target, WorkingDirectory, Configuration, Framework, Filter, MtpFilterOption, NoRestore, NoBuild, Environment`.
   Exemple : `Invoke-PumpDotnetTest -WorkingDirectory $repo -Target 'tests.csproj'`.
 
 Paramètres communs : `MaxItems` (20), `MaxOutputBytes` (8192, minimum 1024), `TimeoutSeconds` (600). Objets uniquement ; aucun affichage terminal.

@@ -1,8 +1,23 @@
+<#
+.SYNOPSIS
+Unit tests for Export-DevPoShCompilation.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll { . (Join-Path $PSScriptRoot '../TestSupport.ps1'); Import-Module (Join-Path $script:DevLibrary 'DevPoSh.PoSh.psd1') -Force -DisableNameChecking }
 Describe 'Export-DevPoShCompilation' {
     BeforeEach { Mock Test-DevPoShCompilationCandidate -ModuleName 'DevPoSh.PoSh' {} }
     It 'publishes assets, then avoids rewriting identical artifacts' {
-        $path=Join-Path $TestDrive 'module.psm1';$code='function Get-Example {42}; Export-ModuleMember Get-Example'
+        $path=Join-Path $TestDrive 'module.psm1';$code='function Get-Example {
+    <#
+    .SYNOPSIS
+    Provide a minimal export for the compiled module fixture.
+    .DESCRIPTION
+    Keep the integration or unit fixture deterministic and independent of the real user environment.
+    #>
+    42}; Export-ModuleMember Get-Example'
         $assets=@{'.assets/fixture/value.txt'=[Text.Encoding]::UTF8.GetBytes('resource')}
         (Export-DevPoShCompilation $code $path -Assets $assets).Changed | Should -BeTrue
         $before=(Get-Item $path).LastWriteTimeUtc

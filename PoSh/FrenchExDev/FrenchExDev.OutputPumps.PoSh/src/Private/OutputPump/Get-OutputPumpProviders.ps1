@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Discover contribution manifests below configured roots.
+.DESCRIPTION
+Define Get-OutputPumpProviders, Test-OutputPumpContainedPath for the OutputPumps runtime. Collect provider identities and registration paths without importing modules or executing contribution scripts.
+#>
+
+
 function Get-OutputPumpProviders {
+    <#
+    .SYNOPSIS
+    Discover contribution manifests below configured roots.
+    .DESCRIPTION
+    Collect provider identities and registration paths without importing modules or executing contribution scripts.
+    #>
+    
     param([Parameter(Mandatory)]$Configuration)
     $found=@{};$paths=[Collections.Generic.HashSet[string]]::new($(if($IsWindows){[StringComparer]::OrdinalIgnoreCase}else{[StringComparer]::Ordinal}))
     foreach($root in $Configuration.Roots | Where-Object Enabled) {
@@ -51,6 +66,13 @@ function Get-OutputPumpProviders {
 }
 
 function Test-OutputPumpContainedPath {
+    <#
+    .SYNOPSIS
+    Check that a path stays inside its expected provider root.
+    .DESCRIPTION
+    Compare normalized paths before accepting provider entry points or resources.
+    #>
+    
     param([string]$Path,[string]$Root,[switch]$AllowEqual)
     $p=[IO.Path]::GetFullPath($Path).TrimEnd('/','\');$r=[IO.Path]::GetFullPath($Root).TrimEnd('/','\')
     $comparison=if($IsWindows){[StringComparison]::OrdinalIgnoreCase}else{[StringComparison]::Ordinal}

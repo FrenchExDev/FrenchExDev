@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for ConvertTo-OutputPumpJson.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll {. (Join-Path $PSScriptRoot '../TestSupport.ps1');Import-Module (Join-Path $script:Library 'OutputPump.PoSh.psd1') -DisableNameChecking -Force;Import-Module (Join-Path $script:Library 'Core.psm1')}
 Describe 'ConvertTo-OutputPumpJson' {
     It 'reapplies redaction and the byte budget after arbitrary structured projection' {

@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Initialize shared session state and the pump alias.
+.DESCRIPTION
+Bind the engine to the session singleton without activating providers or launching native commands.
+#>
+
+
 $script:PumpLibraryRoot = if(Get-Variable DevPoShProjectRoot -Scope Script -ErrorAction SilentlyContinue){$script:DevPoShProjectRoot}else{Split-Path (Split-Path $PSScriptRoot)}
 $script:PumpCaptureSource=$null
 $script:IsOutputPumpCompilation=$false

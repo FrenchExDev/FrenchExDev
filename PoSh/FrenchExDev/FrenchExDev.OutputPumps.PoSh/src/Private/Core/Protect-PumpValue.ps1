@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Recursively sanitize values before they enter a result.
+.DESCRIPTION
+Define Protect-PumpValue for the OutputPumps runtime. Mask suspected secrets and report omitted or shortened values while enforcing field and collection limits.
+#>
+
+
 function Protect-PumpValue {
+    <#
+    .SYNOPSIS
+    Recursively sanitize values before they enter a result.
+    .DESCRIPTION
+    Mask suspected secrets and report omitted or shortened values while enforcing field and collection limits.
+    #>
+    
     param($Value, [hashtable]$State, [int]$Depth = 0)
     if ($null -eq $Value) { return $null }
     if ($Depth -gt 12) { $State.Omitted=$true; return '[omitted: depth]' }

@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Expose command references needed by compatibility providers.
+.DESCRIPTION
+Define Get-OutputPumpRuntime for the OutputPumps runtime. Bind service references to this runtime instance so private capture helpers retain their module scope.
+#>
+
+
 function Get-OutputPumpRuntime {
+    <#
+    .SYNOPSIS
+    Expose command references needed by compatibility providers.
+    .DESCRIPTION
+    Bind service references to this runtime instance so private capture helpers retain their module scope.
+    #>
+    
     # Provider compatibility services. Commands remain bound to the runtime module.
     [CmdletBinding()]
     param()

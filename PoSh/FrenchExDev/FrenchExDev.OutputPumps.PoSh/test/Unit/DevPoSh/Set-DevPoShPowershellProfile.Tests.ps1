@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Set-DevPoShPowershellProfile.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll { . (Join-Path $PSScriptRoot '../TestSupport.ps1'); Import-Module (Join-Path $script:DevLibrary 'DevPoSh.PoSh.psd1') -Force -DisableNameChecking }
 Describe 'Set-DevPoShPowershellProfile' {
     It 'copies exact bytes and preserves timestamps on repeated use' {

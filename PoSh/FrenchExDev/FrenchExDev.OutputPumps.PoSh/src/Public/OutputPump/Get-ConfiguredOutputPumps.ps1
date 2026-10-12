@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Read and validate the user YAML configuration without executing providers.
+.DESCRIPTION
+Define Get-ConfiguredOutputPumps for the OutputPumps runtime. Resolve relative roots from the configuration file and distinguish invalid configuration from an empty selection.
+#>
+
+
 function Get-ConfiguredOutputPumps {
+    <#
+    .SYNOPSIS
+    Read and validate the user YAML configuration without executing providers.
+    .DESCRIPTION
+    Resolve relative roots from the configuration file and distinguish invalid configuration from an empty selection.
+    #>
+    
     [CmdletBinding()]
     param([string]$Path=(Join-Path $HOME '.pumps-config.yaml'))
     $resolved=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)

@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Extract a bounded selection of local command help.
+.DESCRIPTION
+Define Get-PumpHelp for the OutputPumps runtime. Capture help through the process engine and return only the requested sections with explicit omission metadata.
+#>
+
+
 function Get-PumpHelp {
+    <#
+    .SYNOPSIS
+    Extract a bounded selection of local command help.
+    .DESCRIPTION
+    Capture help through the process engine and return only the requested sections with explicit omission metadata.
+    #>
+    
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Executable, [string[]]$Arguments=@('--help'),
           [string]$Filter='--|^usage|^synopsis|^options|^commands', [string]$WorkingDirectory='.',

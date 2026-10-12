@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Integration harness for OutputPumps.
+.DESCRIPTION
+Run controlled scenarios, keep raw child-process output local and emit a bounded report of passed and failed checks.
+#>
+
+
 #requires -Version 7.4
 #requires -PSEdition Core
 [CmdletBinding()]
@@ -7,12 +15,26 @@ Set-StrictMode -Version Latest
 $library=Split-Path (Split-Path $PSScriptRoot)
 Import-Module (Join-Path $library 'Core.psm1') -Force
 Import-Module (Join-Path $library 'OutputPumps.psd1') -Force -DisableNameChecking
-foreach($name in @('Git','Ripgrep','PowerShell','Dotnet','Podman','Pnpm')){Import-Module (Join-Path $library "Modules/$name.psm1") -Force}
+foreach($name in @('Git','Ripgrep','PowerShell','Dotnet','Podman','Pnpm')){Import-Module (Join-Path (Split-Path $library) "FrenchExDev.OPumper.$name.PoSh/$name-OPumper.psd1") -Force -DisableNameChecking}
 $workspace=Join-Path ([IO.Path]::GetTempPath()) ('output-pump-tests-'+[guid]::NewGuid().ToString('N'))
 [void][IO.Directory]::CreateDirectory($workspace)
 $failures=[Collections.Generic.List[object]]::new();$passed=0
-function Assert($Condition,[string]$Message){if(!$Condition){throw $Message}}
+function Assert($Condition,[string]$Message){
+    <#
+    .SYNOPSIS
+    Check a harness invariant and raise a controlled failure.
+    .DESCRIPTION
+    Stop the current scenario when the expected condition is not satisfied.
+    #>
+    if(!$Condition){throw $Message}}
 function Assert-Envelope($Result,[int]$Budget=8192){
+    <#
+    .SYNOPSIS
+    Validate the bounded result contract in an integration scenario.
+    .DESCRIPTION
+    Check required envelope fields and serialization limits before inspecting business data.
+    #>
+    
     Assert ($Result -is [pscustomobject]) 'Result must be a PSCustomObject'
     Assert ($Result.PSObject.Properties.Name.Count -eq 7) 'Unexpected envelope fields'
     Assert ($Result.Summary -notmatch '[\r\n]') 'Summary must have one line'
@@ -22,13 +44,34 @@ function Assert-Envelope($Result,[int]$Budget=8192){
     Assert ($json -notmatch '"Stdout"\s*:|"Stderr"\s*:') 'Raw process streams leaked'
 }
 function Test-Case([string]$Name,[scriptblock]$Action){
+    <#
+    .SYNOPSIS
+    Run and record one core integration scenario.
+    .DESCRIPTION
+    Catch scenario errors and add a compact result to the final harness report.
+    #>
+    
     try{& $Action;$script:passed++}catch{$script:failures.Add(@{Test=$Name;Message=$_.Exception.Message;Line=$_.InvocationInfo.ScriptLineNumber})}
 }
 function Git-Run([string]$Directory,[string[]]$Arguments,[int[]]$Allowed=@(0)){
+    <#
+    .SYNOPSIS
+    Run a Git command used to arrange an integration fixture.
+    .DESCRIPTION
+    Keep setup output local and check the native exit status before continuing the scenario.
+    #>
+    
     $c=Invoke-PumpProcess git (@('-c','core.autocrlf=false')+$Arguments) $Directory 30
     Assert ($c.ExitCode -in $Allowed -and !$c.StartError) 'Git fixture setup failed'
 }
-function Write-Text([string]$Path,[string]$Text){[IO.File]::WriteAllText($Path,$Text,[Text.UTF8Encoding]::new($false))}
+function Write-Text([string]$Path,[string]$Text){
+    <#
+    .SYNOPSIS
+    Write deterministic UTF-8 fixture content.
+    .DESCRIPTION
+    Create test files without relying on the host default text encoding.
+    #>
+    [IO.File]::WriteAllText($Path,$Text,[Text.UTF8Encoding]::new($false))}
 try {
     Test-Case 'PowerShell syntax and Core-only manifests' {
         foreach($file in (Get-ChildItem -LiteralPath $library -Recurse -File | Where-Object Extension -in '.ps1','.psm1','.psd1')){
@@ -161,6 +204,13 @@ try {
         try {
             & $module {
                 function script:Invoke-PumpProcess {
+                    <#
+                    .SYNOPSIS
+                    Replace native capture with a controlled integration fixture.
+                    .DESCRIPTION
+                    Return scenario-specific captures without starting an external command.
+                    #>
+                    
                     param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds)
                     $script:LastArguments=$Arguments
                     if($Arguments[0] -eq 'test'){
@@ -188,24 +238,45 @@ try {
             Assert ($r.Data.Runner -eq 'Microsoft.Testing.Platform') 'global.json runner ignored'
         } finally {
             if($null -eq $previousRunner){Remove-Item Env:DOTNET_TEST_RUNNER -ErrorAction SilentlyContinue}else{$env:DOTNET_TEST_RUNNER=$previousRunner}
-            Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Dotnet.PoSh/Dotnet-OPumper.psd1') -Force;Import-Module (Join-Path $library 'Modules/Dotnet.psm1') -Force
+            Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Dotnet.PoSh/Dotnet-OPumper.psd1') -Force
         }
     }
     Test-Case 'Dotnet missing reports never imply successful tests' {
         $module=Get-Module -All -Name 'Dotnet-OPumper' | Select-Object -First 1;$previousRunner=$env:DOTNET_TEST_RUNNER
         try{
-            & $module {function script:Invoke-PumpProcess {param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='';Stderr='';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}}}
+            & $module {function script:Invoke-PumpProcess {
+    <#
+    .SYNOPSIS
+    Replace native capture with a controlled integration fixture.
+    .DESCRIPTION
+    Return scenario-specific captures without starting an external command.
+    #>
+    param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='';Stderr='';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}}}
             $env:DOTNET_TEST_RUNNER='VSTest';$r=Invoke-PumpDotnetTest -Target 'none.csproj' -WorkingDirectory $repoB;Assert-Envelope $r
             Assert ($r.Outcome -eq 'Failed' -and $r.Error.Code -eq 'TestReportMissing') 'Missing evidence treated as success'
-            & $module {function script:Invoke-PumpProcess {param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='unknown option --report-trx';Stderr='';StartError='';ExitCode=1;TimedOut=$false;Truncated=$false}}}
+            & $module {function script:Invoke-PumpProcess {
+    <#
+    .SYNOPSIS
+    Replace native capture with a controlled integration fixture.
+    .DESCRIPTION
+    Return scenario-specific captures without starting an external command.
+    #>
+    param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='unknown option --report-trx';Stderr='';StartError='';ExitCode=1;TimedOut=$false;Truncated=$false}}}
             $env:DOTNET_TEST_RUNNER='Microsoft.Testing.Platform';$r=Invoke-PumpDotnetTest -Target 'none.csproj' -WorkingDirectory $repoB;Assert-Envelope $r
             Assert ($r.Outcome -eq 'Unsupported' -and $r.Error.Code -eq 'TrxReporterMissing') 'Missing MTP reporter not distinguished'
-        }finally{if($null -eq $previousRunner){Remove-Item Env:DOTNET_TEST_RUNNER -ErrorAction SilentlyContinue}else{$env:DOTNET_TEST_RUNNER=$previousRunner};Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Dotnet.PoSh/Dotnet-OPumper.psd1') -Force;Import-Module (Join-Path $library 'Modules/Dotnet.psm1') -Force}
+        }finally{if($null -eq $previousRunner){Remove-Item Env:DOTNET_TEST_RUNNER -ErrorAction SilentlyContinue}else{$env:DOTNET_TEST_RUNNER=$previousRunner};Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Dotnet.PoSh/Dotnet-OPumper.psd1') -Force}
     }
     Test-Case 'Podman projection excludes command and environment secrets' {
         $module=Get-Module -All -Name 'Podman-OPumper' | Select-Object -First 1
         try{
             & $module {function script:Invoke-PumpProcess {
+    <#
+    .SYNOPSIS
+    Replace native capture with a controlled integration fixture.
+    .DESCRIPTION
+    Return scenario-specific captures without starting an external command.
+    #>
+    
                 param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds)
                 $json=if($Arguments[0] -eq 'ps'){'[{"Id":"123","Names":["app"],"Image":"image","State":"running","Status":"Up","ExitCode":0,"Command":"password=must-not-export","Env":{"SECRET":"hidden"}}]'}else{'[{"Id":"456","Names":["image:tag"],"Size":123,"Created":12}]'}
                 [pscustomobject]@{Stdout=$json;Stderr='';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}
@@ -214,27 +285,55 @@ try {
             Assert ($r.Outcome -eq 'Success' -and $r.Data.Items[0].State -eq 'running') 'Container projection invalid'
             Assert (!(($r|ConvertTo-Json -Depth 24 -Compress).Contains('must-not-export'))) 'Container command leaked'
             $r=Get-PumpPodmanImages;Assert-Envelope $r;Assert ($r.Outcome -eq 'Success' -and $r.Data.Items[0].Size -eq 123) 'Image projection invalid'
-            & $module {function script:Invoke-PumpProcess {param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='';Stderr='cannot connect to socket';StartError='';ExitCode=125;TimedOut=$false;Truncated=$false}}}
+            & $module {function script:Invoke-PumpProcess {
+    <#
+    .SYNOPSIS
+    Replace native capture with a controlled integration fixture.
+    .DESCRIPTION
+    Return scenario-specific captures without starting an external command.
+    #>
+    param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='';Stderr='cannot connect to socket';StartError='';ExitCode=125;TimedOut=$false;Truncated=$false}}}
             $r=Get-PumpPodmanContainers;Assert ($r.Outcome -eq 'Failed' -and $r.Error.Code -eq 'ConnectionFailed') 'Unavailable service treated as empty inventory'
-        }finally{Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Podman.PoSh/Podman-OPumper.psd1') -Force;Import-Module (Join-Path $library 'Modules/Podman.psm1') -Force}
+        }finally{Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Podman.PoSh/Podman-OPumper.psd1') -Force}
     }
     Test-Case 'Podman bounded tail retains the newest events across streams' {
         $module=Get-Module -All -Name 'Podman-OPumper' | Select-Object -First 1
         try{
-            & $module {function script:Invoke-PumpProcess {param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout="2026-10-10T10:00:01Z first`n2026-10-10T10:00:03Z last";Stderr='2026-10-10T10:00:02Z middle';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}}}
+            & $module {function script:Invoke-PumpProcess {
+    <#
+    .SYNOPSIS
+    Replace native capture with a controlled integration fixture.
+    .DESCRIPTION
+    Return scenario-specific captures without starting an external command.
+    #>
+    param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout="2026-10-10T10:00:01Z first`n2026-10-10T10:00:03Z last";Stderr='2026-10-10T10:00:02Z middle';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}}}
             $r=Get-PumpPodmanLog -Container app -MaxItems 2;Assert-Envelope $r
             Assert ($r.Outcome -eq 'Success' -and $r.Data.Items[0].Message -eq 'middle' -and $r.Data.Items[1].Message -eq 'last') 'Newest log events dropped'
             Assert ($null -eq $r.Truncation.TotalCount -and $r.Truncation.Applied) 'Tail completeness overstated'
-        }finally{Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Podman.PoSh/Podman-OPumper.psd1') -Force;Import-Module (Join-Path $library 'Modules/Podman.psm1') -Force}
+        }finally{Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Podman.PoSh/Podman-OPumper.psd1') -Force}
     }
     Test-Case 'Pnpm projects and bounded dependency depth' {
         $module=Get-Module -All -Name 'Pnpm-OPumper' | Select-Object -First 1
         try{
-            & $module {function script:Get-Command {param($Name,$CommandType);[pscustomobject]@{Source=(Join-Path $PSHOME 'pwsh.exe');Extension='.exe'}}}
-            & $module {function script:Invoke-PumpProcess {param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='[{"name":"app","dependencies":{"lib":{"version":"1.2.3","dependencies":{"child":{"version":"2.0.0"}}}}}]';Stderr='';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}}}
+            & $module {function script:Get-Command {
+    <#
+    .SYNOPSIS
+    Simulate command lookup for an unavailable executable.
+    .DESCRIPTION
+    Override lookup only inside the fixture scope to exercise the missing-command result path.
+    #>
+    param($Name,$CommandType);[pscustomobject]@{Source=(Join-Path $PSHOME 'pwsh.exe');Extension='.exe'}}}
+            & $module {function script:Invoke-PumpProcess {
+    <#
+    .SYNOPSIS
+    Replace native capture with a controlled integration fixture.
+    .DESCRIPTION
+    Return scenario-specific captures without starting an external command.
+    #>
+    param($Executable,$Arguments,$WorkingDirectory,$TimeoutSeconds);[pscustomobject]@{Stdout='[{"name":"app","dependencies":{"lib":{"version":"1.2.3","dependencies":{"child":{"version":"2.0.0"}}}}}]';Stderr='';StartError='';ExitCode=0;TimedOut=$false;Truncated=$false}}}
             $r=Get-PumpPnpmDependencies -WorkingDirectory $repoB -Depth 1;Assert-Envelope $r
             Assert ($r.Outcome -eq 'Success' -and $r.Data.Items.Count -eq 2 -and $r.Data.Items[1].Depth -eq 1) 'Dependency projection invalid'
-        }finally{Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Pnpm.PoSh/Pnpm-OPumper.psd1') -Force;Import-Module (Join-Path $library 'Modules/Pnpm.psm1') -Force}
+        }finally{Import-Module (Join-Path (Split-Path $library) 'FrenchExDev.OPumper.Pnpm.PoSh/Pnpm-OPumper.psd1') -Force}
     }
     Test-Case 'Generated calls run from two repositories and self-delete' {
         foreach($repo in @($repoA,$repoB)){
@@ -280,8 +379,8 @@ try {
     Test-Case 'Registration extension, idempotence, validation and locking' {
         $copy=Join-Path $workspace 'library';[void][IO.Directory]::CreateDirectory($copy)
         $descriptor=(Get-Content -LiteralPath (Join-Path $library 'catalogue.json') -Raw|ConvertFrom-Json -AsHashtable)[0]
-        $providerName=([IO.Path]::GetFileNameWithoutExtension($descriptor.Module))+'-OPumper'
-        $providerRoot=Join-Path (Split-Path $library) ('FrenchExDev.OPumper.'+[IO.Path]::GetFileNameWithoutExtension($descriptor.Module)+'.PoSh')
+        $providerName=[IO.Path]::GetFileNameWithoutExtension($descriptor.Module)
+        $providerRoot=Split-Path (Join-Path $library $descriptor.Module)
         foreach($item in Get-ChildItem -LiteralPath $providerRoot -Force){Copy-Item -LiteralPath $item.FullName -Destination $copy -Recurse}
         $descriptor.Module="$providerName.psm1"
         $descriptor.Id='reusable-example';$descriptor.Name='Reusable example'

@@ -1,9 +1,31 @@
+<#
+.SYNOPSIS
+Read the innermost active task aggregation state.
+.DESCRIPTION
+Define Get-OutputPumpTaskState, Add-OutputPumpTaskResult for the OutputPumps runtime. Return no state outside a task so ordinary pump calls remain independent of task aggregation.
+#>
+
+
 function Get-OutputPumpTaskState {
+    <#
+    .SYNOPSIS
+    Read the innermost active task aggregation state.
+    .DESCRIPTION
+    Return no state outside a task so ordinary pump calls remain independent of task aggregation.
+    #>
+    
     $variable=Get-Variable -Name OutputPumpTaskStack -Scope Script -ErrorAction SilentlyContinue
     if($variable -and $variable.Value.Count){return $variable.Value.Peek()}
     return $null
 }
 function Add-OutputPumpTaskResult {
+    <#
+    .SYNOPSIS
+    Record one result in the active task summary.
+    .DESCRIPTION
+    Deduplicate result instances, count technical outcomes and retain bounded issues with failures taking priority.
+    #>
+    
     param($State,$Result,[string]$Name)
     $seen=$null
     if($State.Seen.TryGetValue($Result,[ref]$seen)){return}

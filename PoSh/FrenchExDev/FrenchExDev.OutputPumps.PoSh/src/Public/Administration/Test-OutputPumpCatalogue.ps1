@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Check catalogue metadata against available modules and exports.
+.DESCRIPTION
+Define Test-OutputPumpCatalogue for the OutputPumps runtime. Return a bounded validation report rather than importing unrelated software or exposing raw diagnostics.
+#>
+
+
 function Test-OutputPumpCatalogue {
+    <#
+    .SYNOPSIS
+    Check catalogue metadata against available modules and exports.
+    .DESCRIPTION
+    Return a bounded validation report rather than importing unrelated software or exposing raw diagnostics.
+    #>
+    
     [CmdletBinding()]
     param([string]$LibraryRoot=$script:PumpLibraryRoot)
     try {

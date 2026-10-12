@@ -1,6 +1,21 @@
+<#
+.SYNOPSIS
+Unit tests for New-DevPoSh.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll {
     . (Join-Path $PSScriptRoot '../TestSupport.ps1'); Import-Module (Join-Path $script:DevLibrary 'DevPoSh.PoSh.psd1') -Force -DisableNameChecking
-    InModuleScope 'DevPoSh.PoSh' { function script:New-Git {} }
+    InModuleScope 'DevPoSh.PoSh' { function script:New-Git {
+    <#
+    .SYNOPSIS
+    Provide an offline replacement for the legacy Git scaffolding command.
+    .DESCRIPTION
+    Keep the DevPoSh unit test independent of external Git execution.
+    #>
+    } }
 }
 Describe 'New-DevPoSh' {
     BeforeEach { Mock New-Git -ModuleName 'DevPoSh.PoSh' {} }

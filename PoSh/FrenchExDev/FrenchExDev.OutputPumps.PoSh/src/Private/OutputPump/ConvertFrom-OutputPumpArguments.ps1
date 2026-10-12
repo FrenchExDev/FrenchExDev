@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Translate native arguments into supported pump parameters.
+.DESCRIPTION
+Define ConvertFrom-OutputPumpArguments for the OutputPumps runtime. Use the selected route definition to reject unsupported options before any native execution.
+#>
+
+
 function ConvertFrom-OutputPumpArguments {
+    <#
+    .SYNOPSIS
+    Translate native arguments into supported pump parameters.
+    .DESCRIPTION
+    Use the selected route definition to reject unsupported options before any native execution.
+    #>
+    
     param($Route,[string[]]$Arguments)
     $parameters = @{}
     $positionals = [Collections.Generic.List[string]]::new()

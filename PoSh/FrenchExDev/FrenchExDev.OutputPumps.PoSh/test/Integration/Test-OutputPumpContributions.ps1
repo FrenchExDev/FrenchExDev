@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Integration harness for OutputPumpContributions.
+.DESCRIPTION
+Run controlled scenarios, keep raw child-process output local and emit a bounded report of passed and failed checks.
+#>
+
+
 #requires -Version 7.4
 #requires -PSEdition Core
 $ErrorActionPreference='Stop'
@@ -9,14 +17,42 @@ $dev=Import-Module (Join-Path $parent 'FrenchExDev.DevPoSh.PoSh/DevPoSh.PoSh.psd
 $root=Join-Path $library ('.cache/contributions-'+[guid]::NewGuid().ToString('N'))
 [void][IO.Directory]::CreateDirectory($root)
 $failures=[Collections.Generic.List[object]]::new();$passed=0
-function Assert-Contribution([bool]$Condition,[string]$Message){if(!$Condition){throw $Message}}
-function Test-Contribution([string]$Name,[scriptblock]$Body){try{& $Body;$script:passed++}catch{$script:failures.Add(@{Test=$Name;Message=$_.Exception.Message;Line=$_.InvocationInfo.ScriptLineNumber})}}
+function Assert-Contribution([bool]$Condition,[string]$Message){
+    <#
+    .SYNOPSIS
+    Fail a contribution scenario when an invariant is false.
+    .DESCRIPTION
+    Raise a controlled assertion error for the integration harness to record as a bounded failure.
+    #>
+    if(!$Condition){throw $Message}}
+function Test-Contribution([string]$Name,[scriptblock]$Body){
+    <#
+    .SYNOPSIS
+    Run and record one contribution integration scenario.
+    .DESCRIPTION
+    Isolate scenario errors in the harness report so later scenarios can still run.
+    #>
+    try{& $Body;$script:passed++}catch{$script:failures.Add(@{Test=$Name;Message=$_.Exception.Message;Line=$_.InvocationInfo.ScriptLineNumber})}}
 function Invoke-ContributionNative([string]$Executable,[string[]]$Arguments,[string]$Directory=$root){
+    <#
+    .SYNOPSIS
+    Run a native fixture inside the contribution harness.
+    .DESCRIPTION
+    Keep captured process details local to the test instead of emitting its raw output.
+    #>
+    
     $capture=& $engine {param($e,$a,$d) Invoke-PumpProcess -Executable $e -Arguments $a -WorkingDirectory $d -TimeoutSeconds 120 -CaptureLimit 65536} $Executable $Arguments $Directory
     Assert-Contribution (!$capture.TimedOut -and !$capture.StartError -and !$capture.Truncated -and $capture.ExitCode -eq 0) 'Fixture process failed its capture contract.'
     $capture
 }
 function Invoke-ContributionChild([string]$Code,[string[]]$Arguments=@(),[switch]$ScriptScope){
+    <#
+    .SYNOPSIS
+    Execute a contribution scenario in a fresh PowerShell process.
+    .DESCRIPTION
+    Use a child session to verify loading and compilation independently of the current module state.
+    #>
+    
     $file=Join-Path $root ('child-'+[guid]::NewGuid().ToString('N')+'.ps1');[IO.File]::WriteAllText($file,$Code)
     # A real startup profile runs in global scope, unlike a script passed to -File.
     $encodedArguments=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject @($Arguments) -Compress)))

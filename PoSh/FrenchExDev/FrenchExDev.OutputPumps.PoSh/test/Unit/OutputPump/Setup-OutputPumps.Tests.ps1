@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Setup-OutputPumps.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll { . (Join-Path $PSScriptRoot '../TestSupport.ps1');Import-Module (Join-Path $script:Library 'OutputPump.PoSh.psd1') -Force -DisableNameChecking }
 Describe 'Setup-OutputPumps' {
     BeforeEach {Reset-TestOutputPumpSession; $root=Join-Path $TestDrive ([guid]::NewGuid().ToString('N'));[void][IO.Directory]::CreateDirectory($root);$provider=New-TestOPumper $root;$config=New-TestConfiguration $root $root;$inventory=Join-Path $root 'registry.json'}

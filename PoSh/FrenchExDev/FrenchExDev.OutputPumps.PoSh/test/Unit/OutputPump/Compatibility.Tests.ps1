@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Compatibility.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll {. (Join-Path $PSScriptRoot '../TestSupport.ps1');Import-Module (Join-Path $script:Library 'OutputPump.PoSh.psd1') -DisableNameChecking}
 Describe 'OutputPumps compatibility import' {
     It 'delegates every pipeline input to the main engine without duplicating implementations' {

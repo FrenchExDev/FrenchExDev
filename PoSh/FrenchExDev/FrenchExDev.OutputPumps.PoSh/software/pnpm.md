@@ -14,13 +14,13 @@ Documentation officielle :
 
 - <https://pnpm.io/cli/list>
 
-Module : `Modules/Pnpm.psm1`.
+Module : `../FrenchExDev.OPumper.Pnpm.PoSh/Pnpm-OPumper.psm1`.
 
 Appels disponibles :
 
 - Route : `pnpm list` ; identifiant `pnpm.dependencies`.
 - `Get-PumpPnpmDependencies` : Dépendances installées et versions sélectionnées.
-  Paramètres du besoin : `WorkingDirectory, Package, Recursive, Depth`.
+  Paramètres du besoin : `WorkingDirectory, Package, Recursive, Depth, Environment`.
   Exemple : `Get-PumpPnpmDependencies -WorkingDirectory $repo -Depth 0 -MaxItems 10`.
 
 Paramètres communs : `MaxItems` (20), `MaxOutputBytes` (8192, minimum 1024), `TimeoutSeconds` (600). Objets uniquement ; aucun affichage terminal.

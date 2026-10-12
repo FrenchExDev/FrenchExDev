@@ -117,7 +117,7 @@ Pump-Me git status -Filter { param($data) $data.Branch -eq 'main' } `
 
 Native calls are synchronous: they return after process exit and stdout/stderr EOF, or a structured execution failure. There is no `Wait` switch. Preview or JSON limits never terminate a process. Expiration is a separate condition that terminates the process tree and reports `Timeout` without retrying.
 
-The SDK offers two modes. Existing `-Parse { param($capture) ... }` calls keep bounded capture for formats requiring a complete document. Streaming calls add `-State` and `-OnRecord`; the final `-Parse` receives `(state, capture)` after draining both streams. Ripgrep search and file discovery use streaming, and the provider generator creates a streaming starter.
+The SDK offers two modes. Existing `-Parse { param($capture) ... }` calls keep bounded capture for formats requiring a complete document. Streaming calls add `-State` and `-OnRecord`; the final `-Parse` receives `(state, capture)` after draining both streams. Git status, ripgrep search and file discovery use streaming, and the provider generator creates a streaming starter. Git status retains at most `MaxItems` paths while counting all changes, including NUL-framed rename pairs.
 
 ```powershell
 $state = @{ Lines=0L; Warnings=0L }
@@ -134,9 +134,34 @@ Invoke-OutputPumpNative -Executable my-cli -ArgumentList @('--info') `
     }
 ```
 
-Callbacks run on the caller's PowerShell thread. `OnRecord` updates state without emitting output. Keep state bounded with counters and a limited sample; do not append every record. The internal queue holds at most 16 records and waits for consumer capacity. Records default to 65,536 characters, configurable with `MaxRecordCharacters`; stdout uses `RecordDelimiter` (newline by default, NUL for file discovery), while stderr remains line-delimited. A giant record is drained with `Truncated=true` and no text. The command continues, but the final result reports `Failed / RecordLimit`, `AnalysisComplete=false` and an unknown total. A parser exception also drains the command before reporting failure. Raw records and captures are never agent-facing output.
+Callbacks run on the caller's PowerShell thread. `OnRecord` updates state without emitting output. Keep state bounded with counters and a limited sample; do not append every record. The internal queue is bounded and waits for consumer capacity. Records default to 65,536 characters, configurable with `MaxRecordCharacters`; stdout uses `RecordDelimiter` (newline by default, NUL for file discovery), while stderr remains line-delimited. A giant record is drained with `Truncated=true` and no text. The command continues, but the final result reports `Failed / RecordLimit`, `AnalysisComplete=false` and an unknown total. A parser exception also drains the command before reporting failure. Raw records and captures are never agent-facing output.
 
 After upgrading the capture runtime, open a new PowerShell process: an already loaded C# type cannot be replaced by reimporting the module. Rebuild Production artifacts explicitly before using the new API there.
+
+## Debugging a pump
+
+Run `Pump-Me git status -Debug` for opt-in diagnostics. Traces identify the selected route, engine/provider source, capture mode, limits, character counts and completion status. `Timing` entries report `action`, monotonic `elapsedMs`, `count` and `averageMs`. Actions cover registry lookup, routing, argument conversion, provider loading, invocation, filtering/mapping, bounding, capture initialization, native setup/start, each stream drain, final parsing, tasks and steps. Streaming callbacks and record waits use cumulative timers and counts, without a log per record. Totals include their nested actions; stdout/stderr drains overlap, so these durations must not be added together. Timings are also emitted when an action fails or times out.
+
+Traces never print native arguments, environment entries, stdout, stderr, records or exception messages. Debug records stay on stream 5 and do not count as additional business envelopes or task errors. `-Debug:$false` suppresses them.
+
+If `Outcome=Failed`, `Error.Code=CaptureLimit` and `ExitCode=0`, the native command succeeded but its buffered capture was incomplete. `Error.Diagnostics` gives observed and retained character counts without exposing output. Buffered stdout is limited to 4,194,304 characters and stderr to 262,144 characters. Lowering `MaxItems` does not reduce that native capture. Git status uses streaming to avoid this global capture limit; its bounded preview may still report `Success` with `Truncation.Reasons=ItemLimit` and an exact `TotalCount`.
+
+With a configured profile that already provides `Pump-Me`, no additional import is required. Otherwise import `OutputPump.PoSh.psd1` and run `Setup-OutputPumps`. The historical `OutputPumps.psm1` entry point delegates to the same engine. After updating loaded provider functions, start a new PowerShell Core session so registry closures reference the updated commands.
+
+## Child process environment
+
+Native providers for Git, dotnet, pnpm, Podman and ripgrep accept `-Environment` through `Pump-Me`, their own cmdlets and `Invoke-OutputPumpNative`. Pass a dictionary of child-only overrides:
+
+```powershell
+Pump-Me git status -Environment @{
+    LANG = 'C.UTF-8'
+    GIT_TRACE = $null
+} -Debug
+```
+
+The child inherits the parent environment. OutputPumps then sets `NO_COLOR=1`, `TERM=dumb` and `GIT_TERMINAL_PROMPT=0`, followed by your overrides. A string sets or replaces an entry; `$null` removes it, including a default; `''` keeps an empty value. The parent environment is unchanged. Invalid names or NUL values fail before process startup, and diagnostics omit the entries. A route that cannot apply overrides returns `Unsupported` rather than ignoring them.
+
+Custom providers declare an optional `[Collections.IDictionary]$Environment` parameter and forward it to `Invoke-OutputPumpNative -Environment $Environment`. `New-OPumperModule` includes this forwarding in its starter. The C# `BoundedProcess.Run` and `StreamingProcess` constructor retain their original overloads; new overloads accept `IDictionary<string,string>` as the final argument.
 
 ## One budget for a whole task
 
@@ -297,6 +322,8 @@ The generated caller emits compact JSON and deletes itself. In the current proce
 
 `Register-OutputPump -Descriptor $descriptor -LibraryRoot $providerRoot` retains the documentary registration parameter set. It validates exports, parameters and examples, and updates catalogue, software sheet and index under a lock. This is separate from live registration, which writes no files. Run `Test-OutputPumpCatalogue -LibraryRoot ...` to check coherence.
 
+Run `./Initialize-Catalogue.ps1` to refresh the engine's aggregate catalogue and software sheets from the six independent provider catalogues. Those provider catalogues are the source of truth. Aggregate module paths point directly to sibling `FrenchExDev.OPumper.<Name>.PoSh/<Name>-OPumper.psm1` loaders. Validation requires a matching provider manifest and rejects linked providers or arbitrary parent paths.
+
 ## Tests
 
 Development dependencies are explicit and locally cached: **Pester 6.2.0**, `powershell-yaml` 0.4.12. Experimental Pester parallelism is disabled.
@@ -316,7 +343,7 @@ Unit tests use mocks and fixtures without requiring native tools or writing the 
 
 - Replace `$HOME/.pwsh-pumps/pumps.yaml` with `$HOME/.pumps-config.yaml`, change `version` to `2`, rename `sources` to `roots`, and express provider switches under `providers` and route switches under `pumps`.
 - The old monolithic `$HOME/.pwsh-pumps/OutputPump.psm1` is no longer generated or loaded by setup. Import the engine and call setup; `registry.json` is metadata, not executable code.
-- CLI implementations moved from engine `Modules/` to independent `FrenchExDev.OPumper.*.PoSh` directories. Old `Modules/*.psm1` imports delegate to providers. The old `OutputPumps.psd1` entry point delegates to the main engine.
+- CLI implementations live in independent `FrenchExDev.OPumper.*.PoSh` directories. Import their `<Name>-OPumper.psd1` manifests directly; the six engine compatibility loaders have been removed. The old `OutputPumps.psd1` entry point delegates to the main engine.
 - Provider directories formerly named `<Name>-OPumper` are now `FrenchExDev.OPumper.<Name>.PoSh`, for example `Git-OPumper` → `FrenchExDev.OPumper.Git.PoSh`. Update YAML roots and scripts that point directly to a renamed directory, then run `Setup-OutputPumps` to refresh the inventory. Roots pointing to the parent directory need no change. Rebuild DevPoSh compilations explicitly when using Production artifacts.
 - Keep all providers you use in configured roots, then reopen your shell. Recopy a DevPoSh profile explicitly if you use its template.
 - Profile-copy generation parameters were replaced by mandatory `Set-DevPoShPowershellProfile -Path <file>`. No implicit destination or automatic profile installation remains.

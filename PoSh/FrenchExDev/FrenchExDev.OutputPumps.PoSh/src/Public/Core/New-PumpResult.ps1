@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Construct a sanitized result within the JSON byte budget.
+.DESCRIPTION
+Define New-PumpResult for the OutputPumps runtime. Preserve the seven-field envelope, report every omission and reduce retained data until compact UTF-8 JSON fits.
+#>
+
+
 function New-PumpResult {
+    <#
+    .SYNOPSIS
+    Construct a sanitized result within the JSON byte budget.
+    .DESCRIPTION
+    Preserve the seven-field envelope, report every omission and reduce retained data until compact UTF-8 JSON fits.
+    #>
+    
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Summary,
           [ValidateSet('Success','Failed','Timeout','Unsupported')][string]$Outcome='Success',

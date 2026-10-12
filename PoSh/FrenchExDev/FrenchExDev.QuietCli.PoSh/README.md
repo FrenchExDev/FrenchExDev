@@ -14,17 +14,81 @@ The companion script turns repetitive interpretation into code: parsing a machin
 
 This approach suits agents that inspect repositories, run builds or tests, process files, or chain several tools together. It is especially useful when output is verbose or data from several commands can be combined locally.
 
+## Download a complete bundle
+
+The [QuietCli ZIP](https://github.com/FrenchExDev/FrenchExDev/raw/refs/heads/develop/PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh/downloads/QuietCli.zip) contains the runtime, skill, examples, fixtures and verification launcher. It extracts into one `QuietCli/` directory. Use PowerShell **7.4+ Core** and Git for this first example; Python is needed only for the noisy-job example.
+
+```powershell
+$archive = Join-Path (Get-Location).Path 'QuietCli.zip'
+Invoke-WebRequest -Uri 'https://github.com/FrenchExDev/FrenchExDev/raw/refs/heads/develop/PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh/downloads/QuietCli.zip' -OutFile $archive
+Expand-Archive -LiteralPath $archive -DestinationPath (Get-Location).Path
+$moduleRoot = Join-Path (Get-Location).Path 'QuietCli'
+Import-Module (Join-Path $moduleRoot 'QuietCli.PoSh.psd1') -ErrorAction Stop
+& (Join-Path $moduleRoot 'examples/Generated-GitOverview.ps1') `
+    -Repository 'C:/code/my-project' -MaxOutputBytes 2048
+```
+
+Replace the repository path with yours. No PowerShell profile edit or editor installation is needed for this route. Give [SKILL.md](skills/quiet-cli/SKILL.md) and the extracted module path to your agent. Downloading that instruction file alone does not install the runtime.
+
+The [archive manifest](https://github.com/FrenchExDev/FrenchExDev/blob/develop/PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh/downloads/QuietCli.manifest.json) records SHA-256 hashes and the source branch. GitHub links target the moving `develop` branch; keep the manifest with a downloaded archive to identify its contents. To reproduce the executable checks with an installed Python interpreter, run:
+
+```powershell
+& (Join-Path $moduleRoot 'scripts/Invoke-Examples.ps1') `
+    -QuietCliRoot $moduleRoot -Python python3
+```
+
+Maintainers can rebuild the archive with `./scripts/New-QuietCliArchive.ps1` from this module directory. The sparse-clone route below remains available when you want a Git checkout.
+
 ## Get started in one minute
 
-1. Open [SKILL](skills/quiet-cli/SKILL.md) and provide its contents to your agent, either in its working instructions or alongside your request.
-2. Describe the question and the information you want to receive.
-3. Ask the agent to create or reuse the companion script, then run it.
-4. Review the common result: status, useful data, completeness, and any omissions.
+Use **PowerShell Core 7.4+**, Git, and Visual Studio Code with the `code` command available.
+
+**1. Clone only the QuietCli directory from `develop`.** Choose a new local directory; this example uses `$HOME/FrenchExDev-QuietCli`:
+
+```powershell
+$cloneRoot = Join-Path $HOME 'FrenchExDev-QuietCli'
+git clone --depth 1 --filter=blob:none --no-checkout --single-branch --branch develop `
+    https://github.com/FrenchExDev/FrenchExDev.git $cloneRoot
+if ($LASTEXITCODE -ne 0) { throw 'QuietCli clone failed.' }
+git -C $cloneRoot sparse-checkout set --no-cone '/PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh/'
+if ($LASTEXITCODE -ne 0) { throw 'QuietCli sparse checkout failed.' }
+git -C $cloneRoot checkout develop
+if ($LASTEXITCODE -ne 0) { throw 'QuietCli checkout failed.' }
+```
+
+The [partial clone](https://git-scm.com/docs/git-clone) defers downloading file contents until needed. The [sparse checkout](https://git-scm.com/docs/git-sparse-checkout) selects the [QuietCli module directory](https://github.com/FrenchExDev/FrenchExDev/tree/develop/PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh); repository metadata remains in `$cloneRoot/.git`.
+
+**2. Open your PowerShell profile.** Create the profile file if necessary, preserving any existing contents:
+
+```powershell
+New-Item -ItemType Directory -Path (Split-Path -Parent $PROFILE) -Force | Out-Null
+if (!(Test-Path -LiteralPath $PROFILE)) {
+    New-Item -ItemType File -Path $PROFILE | Out-Null
+}
+code $PROFILE
+```
+
+**3. Paste this line into the profile and save it:**
+
+```powershell
+Import-Module (Join-Path $HOME 'FrenchExDev-QuietCli/PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh/QuietCli.PoSh.psd1') -ErrorAction Stop
+```
+
+If you chose a different `$cloneRoot`, replace the path with the full path to `QuietCli.PoSh.psd1` in that clone. The profile line loads the module at each PowerShell startup without relying on variables from the cloning session.
+
+**4. Load it now and open the module directory:**
+
+```powershell
+. $PROFILE
+Set-Location (Join-Path $cloneRoot 'PoSh/FrenchExDev/FrenchExDev.QuietCli.PoSh')
+```
+
+Open [SKILL](skills/quiet-cli/SKILL.md) and provide its contents to your agent, either in its working instructions or alongside your request. Describe the question, ask the agent to create or reuse a companion script, then review the result's status, useful data, completeness, and omissions.
 
 Example request:
 
 ```text
-Read PROMPT.md and follow its instructions.
+Read skills/quiet-cli/SKILL.md and follow its instructions.
 
 Inspect this Git repository. I want to know the current branch,
 the number of changed entries, the number of untracked entries,
@@ -36,11 +100,7 @@ Return a single JSON result with a final budget of 2048 bytes.
 
 The prompt defines an execution discipline. Its application depends on the agent and the available tools; it does not automatically install a command interceptor.
 
-The included [QuietCli module](QuietCli.PoSh.psd1) illustrates this contract in PowerShell. Run the commands in this README from the root of the `FrenchExDev.QuietCli.PoSh` directory:
-
-```powershell
-Import-Module ./QuietCli.PoSh.psd1
-```
+The included [QuietCli module](QuietCli.PoSh.psm1) implements this contract in PowerShell. The remaining commands in this README run from the root of the `FrenchExDev.QuietCli.PoSh` directory selected above.
 
 ## How the data flows
 
@@ -229,7 +289,7 @@ Invoke-QuietTask -MaxOutputBytes 2048 -AsJson {
 
 **Every call whose result is consumed locally must go through `Invoke-QuietStep`.** Assigning a variable does not automatically make its value visible to the aggregator. The task body emits the final domain projection; `-AsJson` produces a single document.
 
-The [stack documentation](docs/STACK.md) covers document and streaming modes, limits, callbacks, and nested tasks.
+The [skill](skills/quiet-cli/SKILL.md) covers document and streaming workflows, limits and nested tasks; the [runtime source](src/QuietCli.psm1) defines the exact callbacks and parameters.
 
 ## Completeness, omissions, and budget
 
@@ -267,8 +327,7 @@ Creating and maintaining scripts, along with any additional requests, has a cost
 
 | File | Contents |
 |---|---|
-| [PROMPT.md](PROMPT.md) | Instructions to give the agent. |
-| [docs/STACK.md](docs/STACK.md) | Technical guide to the PowerShell foundation. |
+| [src/QuietCli.psm1](src/QuietCli.psm1) | PowerShell runtime implementation and exact parameters. |
 | [QuietCli.PoSh.psd1](QuietCli.PoSh.psd1) | Module manifest. |
 | [QuietCli.PoSh.psm1](QuietCli.PoSh.psm1) | Module loader; reuses the implementation under `src/`. |
 | [examples/Generated-NoisyJob.ps1](examples/Generated-NoisyJob.ps1) | Two-step task with event reduction. |

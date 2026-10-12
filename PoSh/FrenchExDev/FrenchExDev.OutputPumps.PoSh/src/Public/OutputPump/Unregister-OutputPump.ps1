@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Remove the active registration for a pump identifier.
+.DESCRIPTION
+Define Unregister-OutputPump for the OutputPumps runtime. Restore a previous registration when removing an override instead of discarding the underlying provider contribution.
+#>
+
+
 function Unregister-OutputPump {
+    <#
+    .SYNOPSIS
+    Remove the active registration for a pump identifier.
+    .DESCRIPTION
+    Restore a previous registration when removing an override instead of discarding the underlying provider contribution.
+    #>
+    
     [CmdletBinding()]
     param([Parameter(Mandatory)][string]$Id)
     if($script:OutputPumpSession.Transaction){throw 'Cannot unregister during provider setup.'}

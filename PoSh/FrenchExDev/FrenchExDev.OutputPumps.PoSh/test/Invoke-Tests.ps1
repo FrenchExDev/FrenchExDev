@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Run selected OutputPumps unit and integration suites.
+.DESCRIPTION
+Configure pinned test dependencies, collect reports and coverage, and emit a bounded summary with a failing exit code when checks fail.
+#>
+
+
 #requires -Version 7.4
 #requires -PSEdition Core
 [CmdletBinding()]

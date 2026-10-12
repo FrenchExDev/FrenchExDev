@@ -3,7 +3,7 @@
     "Name": ".NET CLI",
     "VerifiedVersion": "SDK 11.0.100-rc.1.26425.128 ; profils VSTest/MTP, vérifié le 2026-10-10",
     "IdentityMarkdown": "La CLI .NET sélectionne le SDK selon le répertoire de travail et global.json. Toujours donner Target et WorkingDirectory explicitement. Les pompes nʼajoutent pas de parallélisme ; build et test peuvent écrire leurs artefacts habituels. NoRestore et NoBuild ne sont activés que sur demande.\n\nBuild désactive lʼaffichage terminal dynamique (`--tl:off`) et conserve les diagnostics de compilateur structurés : chemin, ligne, sévérité, code, message. Les compteurs portent sur les diagnostics uniques capturés ; un format de diagnostic inconnu nʼest pas transformé en log de secours. Ce profil suppose un SDK supportant `--tl:off`.\n\nTests : détecter DOTNET_TEST_RUNNER, puis le global.json le plus proche, sinon VSTest. Les arguments diffèrent entre VSTest et Microsoft.Testing.Platform. Le profil MTP demande une extension TRX disponible ; son absence produit Unsupported. Les rapports sont isolés par invocation, lus puis supprimés. Seuls compteurs et échecs utiles sont rendus. Aucun rapport, rapport trop grand ou malformé : aucun succès supposé et aucun compteur inventé. Un rapport sans test nʼest pas une preuve de tests réussis.\n\nUne commande personnalisée (`dotnet run`, QualityGate, mutation testing…) nécessite sa propre pompe adaptée à son rapport. Un résultat de tests ordinaires ne prouve pas la couverture ni la mutation.",
-    "Module": "Modules/Dotnet.psm1",
+    "Module": "../FrenchExDev.OPumper.Dotnet.PoSh/Dotnet-OPumper.psm1",
     "Id": "dotnet",
     "Commands": [
       {
@@ -55,7 +55,8 @@
           "WorkingDirectory",
           "Configuration",
           "Framework",
-          "NoRestore"
+          "NoRestore",
+          "Environment"
         ],
         "Function": "Invoke-PumpDotnetBuild",
         "Id": "dotnet.build"
@@ -124,7 +125,8 @@
           "Filter",
           "MtpFilterOption",
           "NoRestore",
-          "NoBuild"
+          "NoBuild",
+          "Environment"
         ],
         "Function": "Invoke-PumpDotnetTest",
         "Id": "dotnet.test"
@@ -141,8 +143,8 @@
   {
     "Name": "Git",
     "VerifiedVersion": "Git 2.55.0.windows.3, commandes locales vérifiées le 2026-10-10",
-    "IdentityMarkdown": "Git gère les commits, lʼindex et les modifications du répertoire de travail. Ces pompes sont en lecture seule et ne font aucun fetch : ahead/behind décrit uniquement les références locales connues.\n\nStatus utilise `--porcelain=v2 --branch -z --untracked-files=all`. Les chemins sont groupés par état (Staged, Unstaged, Untracked, Conflict) et les renommages conservent les deux noms. `Path` réduit le périmètre ; une capture trop large exige un chemin plus précis. Les branches détachées ou sans commit restent identifiables.\n\nDiff utilise `--numstat -z`, sans pager, textconv ni diff externe. `Staged` sélectionne lʼindex, `Revision` une base explicite. Les fichiers binaires nʼont pas de compteurs de lignes. Pour inspecter du contenu, `Get-PumpGitChanges` exige un chemin et renvoie des lignes changées structurées, pas le patch brut. Log demande un élément supplémentaire pour détecter la troncature ; le total de lʼhistorique peut rester inconnu. Les sujets sont assainis ; auteurs et emails ne sont pas exportés.",
-    "Module": "Modules/Git.psm1",
+    "IdentityMarkdown": "Git gère les commits, lʼindex et les modifications du répertoire de travail. Ces pompes sont en lecture seule et ne font aucun fetch : ahead/behind décrit uniquement les références locales connues.\n\nStatus utilise `--porcelain=v2 --branch -z --untracked-files=all`, analysé progressivement par enregistrements NUL. Les chemins sont groupés par état (Staged, Unstaged, Untracked, Conflict) et les renommages conservent les deux noms. Seuls `MaxItems` chemins sont conservés en mémoire ; le flux est parcouru jusqu’à sa fin pour fournir le total exact. Un aperçu limité reste `Success` avec `ItemLimit`, sans échec `CaptureLimit` lié à la taille globale. `Path` réduit le périmètre. Les branches détachées ou sans commit restent identifiables. `Pump-Me git status -Debug` affiche le routage, le mode, les limites et les compteurs sur le flux debug, sans sortie native brute.\n\nDiff utilise `--numstat -z`, sans pager, textconv ni diff externe. `Staged` sélectionne lʼindex, `Revision` une base explicite. Les fichiers binaires nʼont pas de compteurs de lignes. Pour inspecter du contenu, `Get-PumpGitChanges` exige un chemin et renvoie des lignes changées structurées, pas le patch brut. Log demande un élément supplémentaire pour détecter la troncature ; le total de lʼhistorique peut rester inconnu. Les sujets sont assainis ; auteurs et emails ne sont pas exportés.",
+    "Module": "../FrenchExDev.OPumper.Git.PoSh/Git-OPumper.psm1",
     "Id": "git",
     "Commands": [
       {
@@ -160,7 +162,8 @@
         },
         "Parameters": [
           "WorkingDirectory",
-          "Path"
+          "Path",
+          "Environment"
         ],
         "Function": "Get-PumpGitStatus",
         "Id": "git.status"
@@ -195,7 +198,8 @@
           "WorkingDirectory",
           "Path",
           "Staged",
-          "Revision"
+          "Revision",
+          "Environment"
         ],
         "Function": "Get-PumpGitDiff",
         "Id": "git.diff"
@@ -230,7 +234,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Path",
-          "Staged"
+          "Staged",
+          "Environment"
         ],
         "Function": "Get-PumpGitChanges",
         "Id": "git.changes"
@@ -264,7 +269,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Path",
-          "Revision"
+          "Revision",
+          "Environment"
         ],
         "Function": "Get-PumpGitLog",
         "Id": "git.log"
@@ -281,7 +287,7 @@
     "Name": "pnpm",
     "VerifiedVersion": "pnpm 12.8.1, exécutable direct et list --json vérifiés le 2026-10-10",
     "IdentityMarkdown": "pnpm gère les dépendances et workspaces Node. Cette première pompe inspecte les dépendances installées avec `list --json --depth`, sans installation, réparation ou modification du lockfile.\n\nWorkingDirectory choisit le projet ; Package filtre les noms ; Recursive parcourt les projets du workspace. Depth vaut 0 par défaut, maximum 5 pour éviter une expansion incontrôlée. La sortie contient nom/version/type/projet/profondeur, sans chemins internes du store ni configuration dʼauthentification.\n\nSous Windows, invoquer directement pnpm.exe. Si Get-Command résout un launcher pnpm.ps1, chercher son exécutable pnpm voisin ; ne pas utiliser de couche cmd ou modifier lʼExecutionPolicy. Un exécutable direct introuvable produit Unsupported. Une dépendance absente ou un store déplacé ne déclenche aucune réinstallation automatique.\n\nLes commandes install, run et exec nécessitent des pompes adaptées. Un script pnpm lançant un runner de tests doit fournir le rapport structuré de ce runner ; ne pas présenter son log comme un résultat de tests analysé.",
-    "Module": "Modules/Pnpm.psm1",
+    "Module": "../FrenchExDev.OPumper.Pnpm.PoSh/Pnpm-OPumper.psm1",
     "Id": "pnpm",
     "Commands": [
       {
@@ -320,7 +326,8 @@
           "WorkingDirectory",
           "Package",
           "Recursive",
-          "Depth"
+          "Depth",
+          "Environment"
         ],
         "Function": "Get-PumpPnpmDependencies",
         "Id": "pnpm.dependencies"
@@ -335,7 +342,7 @@
     "Name": "Podman",
     "VerifiedVersion": "Podman CLI 6.1.2 ; disponibilité du service non présumée, vérifié le 2026-10-10",
     "IdentityMarkdown": "Podman gère les conteneurs et images OCI. Sous Windows, la CLI peut dépendre dʼune machine et dʼun service accessibles. Ces pompes ne démarrent pas de machine, ne téléchargent pas dʼimage et ne modifient pas de conteneur.\n\nLes inventaires utilisent `--format json`, puis sélectionnent identifiants, noms, images, états et tailles. Ils nʼexportent ni variables dʼenvironnement ni commandes complètes de conteneurs. Filter transmet les filtres natifs documentés, All inclut les conteneurs arrêtés.\n\nLes logs exigent Container. Utiliser Since et Filter pour cibler le besoin ; seule une fin de journal plafonnée est interrogée, jamais follow. Chaque événement conserve sa date, son flux et son message assaini. Les flux sont triés par date ; lʼordre exact entre événements de même date nʼest pas garanti. Le total global reste inconnu. Un service inaccessible est un échec distinguable dʼun inventaire vide.",
-    "Module": "Modules/Podman.psm1",
+    "Module": "../FrenchExDev.OPumper.Podman.PoSh/Podman-OPumper.psm1",
     "Id": "podman",
     "Commands": [
       {
@@ -373,7 +380,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Filter",
-          "All"
+          "All",
+          "Environment"
         ],
         "Function": "Get-PumpPodmanContainers",
         "Id": "podman.containers"
@@ -400,7 +408,8 @@
         },
         "Parameters": [
           "WorkingDirectory",
-          "Filter"
+          "Filter",
+          "Environment"
         ],
         "Function": "Get-PumpPodmanImages",
         "Id": "podman.images"
@@ -429,7 +438,8 @@
           "WorkingDirectory",
           "Container",
           "Since",
-          "Filter"
+          "Filter",
+          "Environment"
         ],
         "Function": "Get-PumpPodmanLog",
         "Id": "podman.log"
@@ -446,7 +456,7 @@
     "Name": "PowerShell Core",
     "VerifiedVersion": "PowerShell Core 7.6.6 ; minimum 7.4, vérifié le 2026-10-10",
     "IdentityMarkdown": "PowerShell Core est le moteur dʼexécution de la bibliothèque. Windows PowerShell 5.1 est exclu. Le minimum 7.4 permet les API .NET modernes utilisées pour les processus et lʼannulation. Si un alias WindowsApps échoue dans le sandbox, employer une installation Core accessible ou les permissions dʼexécution autorisées ; ne pas remplacer le moteur par 5.1.\n\nInventaire : parcours explicite via Path, Filter, Recurse et Force. Lecture : Path littéral, StartLine et LineCount ; Filter est une expression régulière avec limite de temps. Les fichiers sont lus progressivement, avec 512 caractères conservés par ligne ; une ligne plus longue est signalée. Les clés privées multilignes sont supprimées. La lecture reconnaît les BOM et utilise UTF-8 par défaut ; préciser un autre besoin dʼencodage exige une extension de la pompe.\n\nLogs : seules les dernières lignes correspondant au filtre sont retenues. Le champ Window décrit le périmètre ; TailWindow signale que lʼobjet nʼest pas le journal complet. Les compteurs concernent la fenêtre et le filtre, jamais implicitement tous les fichiers.\n\nPour une aide locale longue, importer uniquement `Core.psm1` et appeler `Get-PumpHelp -Executable $outil -Arguments @('--help') -Filter 'option utile'`. Il renvoie des sections sélectionnées, sans déverser le manuel.",
-    "Module": "Modules/PowerShell.psm1",
+    "Module": "../FrenchExDev.OPumper.PowerShell.PoSh/PowerShell-OPumper.psm1",
     "Id": "powershell",
     "Commands": [
       {
@@ -577,7 +587,7 @@
     "Name": "ripgrep (rg)",
     "VerifiedVersion": "ripgrep 15.2.0, commandes locales vérifiées le 2026-10-10",
     "IdentityMarkdown": "Ripgrep recherche dans les fichiers en respectant par défaut les règles dʼignorance ; il évite normalement les fichiers cachés et binaires. Utiliser Path et Glob pour cibler le besoin, Literal pour une chaîne exacte et IgnoreCase si nécessaire.\n\nLa recherche lit `rg --json` : chemins, numéros de ligne et extraits sont sélectionnés. La découverte de fichiers utilise `--files --null` pour préserver les noms inhabituels. Code 0 : résultats ; 1 : aucun résultat, succès fonctionnel ; 2 : erreur, potentiellement accompagnée de résultats partiels. Une erreur de lecture ne prouve jamais lʼabsence de correspondance. Les événements à encodage non représentable sont omis et signalés. Les extraits longs ou sensibles sont limités et assainis.\n\nNe pas utiliser `--max-count` comme plafond global : cette option est par fichier. Les deux pompes analysent progressivement tous les enregistrements et attendent la fin du processus et des flux. MaxItems borne les extraits, sans arrêter la commande ni le comptage. Data.Complete certifie MatchLines ou FileCount ; un total exact devient nul si l’analyse est incomplète. Une ligne géante dépassant la limite d’enregistrement est signalée par RecordLimit. Aucun flux source n’est affiché.",
-    "Module": "Modules/Ripgrep.psm1",
+    "Module": "../FrenchExDev.OPumper.Ripgrep.PoSh/Ripgrep-OPumper.psm1",
     "Id": "ripgrep",
     "Commands": [
       {
@@ -634,7 +644,8 @@
           "Path",
           "Glob",
           "Literal",
-          "IgnoreCase"
+          "IgnoreCase",
+          "Environment"
         ],
         "Function": "Find-PumpText",
         "Id": "ripgrep.search"
@@ -668,7 +679,8 @@
         "Parameters": [
           "WorkingDirectory",
           "Path",
-          "Glob"
+          "Glob",
+          "Environment"
         ],
         "Function": "Find-PumpFiles",
         "Id": "ripgrep.files"

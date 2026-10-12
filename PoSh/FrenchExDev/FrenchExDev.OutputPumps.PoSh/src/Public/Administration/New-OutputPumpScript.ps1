@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Generate a temporary bounded pump or task caller.
+.DESCRIPTION
+Define New-OutputPumpScript for the OutputPumps runtime. Validate specialized calls and encode arguments as data; task callers aggregate intermediate results under one budget.
+#>
+
+
 function New-OutputPumpScript {
+    <#
+    .SYNOPSIS
+    Generate a temporary bounded pump or task caller.
+    .DESCRIPTION
+    Validate specialized calls and encode arguments as data; task callers aggregate intermediate results under one budget.
+    #>
+    
     [CmdletBinding(DefaultParameterSetName='Pump')]
     param([Parameter(Mandatory,ParameterSetName='Pump')][string]$SoftwareId,[Parameter(Mandatory,ParameterSetName='Pump')][string]$Function,[Parameter(ParameterSetName='Pump')][hashtable]$Parameters=@{},
           [Parameter(Mandatory,ParameterSetName='Task')][scriptblock]$TaskScriptBlock,[Parameter(ParameterSetName='Task')][object[]]$ArgumentList=@(),
@@ -30,6 +45,14 @@ function New-OutputPumpScript {
         $payload=@{SoftwareId=$SoftwareId;Function=$Function;Parameters=$Parameters;Runtime=$ExecutionContext.SessionState.Module.Path;ProviderImport=$providerImport;ConfigurationPath=$script:OutputPumpSession.ConfigurationPath;HadRegistry=[bool]$entry}
         $encoded=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes((ConvertTo-Json $payload -Depth 20 -Compress)))
         $text=@'
+<#
+.SYNOPSIS
+Execute a generated specialized pump call.
+.DESCRIPTION
+Restore the encoded arguments as data, initialize only the selected provider when needed and emit compact JSON.
+Delete this temporary caller after execution, including when invocation fails.
+#>
+
 #requires -Version 7.4
 #requires -PSEdition Core
 $ErrorActionPreference='Stop'

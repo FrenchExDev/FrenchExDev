@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Install explicitly requested development dependencies.
+.DESCRIPTION
+Prepare the pinned PowerShell test modules in the project cache for the standalone runner.
+#>
+
+
 #requires -Version 7.4
 [CmdletBinding()]
 param([string]$Path=(Join-Path (Split-Path (Split-Path $PSScriptRoot)) '.cache/Modules'))

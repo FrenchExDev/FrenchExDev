@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Serialize each input envelope as bounded compact JSON.
+.DESCRIPTION
+Define ConvertTo-OutputPumpJson for the OutputPumps runtime. Sanitize and bound each result independently; use a task envelope when several calls share one context budget.
+#>
+
+
 function ConvertTo-OutputPumpJson {
+    <#
+    .SYNOPSIS
+    Serialize each input envelope as bounded compact JSON.
+    .DESCRIPTION
+    Sanitize and bound each result independently; use a task envelope when several calls share one context budget.
+    #>
+    
     [CmdletBinding()]
     param([Parameter(Mandatory,ValueFromPipeline)]$InputObject,
           [ValidateRange(1,1000)][int]$MaxItems=20,[ValidateRange(1024,8192)][int]$MaxOutputBytes=8192)

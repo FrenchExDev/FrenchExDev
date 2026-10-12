@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Compatibility loader for OutputPumps.
+.DESCRIPTION
+Delegate to the maintained engine or independent provider while preserving the historical import entry point.
+#>
+
+
 #requires -Version 7.4
 #requires -PSEdition Core
 # Compatibility entry point. Implementations remain in OutputPump.PoSh.

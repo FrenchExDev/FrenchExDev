@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+Unit tests for Get-OutputPump.
+.DESCRIPTION
+Exercise the named command or contract with isolated fixtures and mocks; keep process execution under test control.
+#>
+
+
 BeforeAll {. (Join-Path $PSScriptRoot '../TestSupport.ps1');Import-Module (Join-Path $script:Library 'OutputPump.PoSh.psd1') -Force -DisableNameChecking}
 Describe 'Get-OutputPump' {
     It 'exposes routing arguments without treating them as authentication tokens' {

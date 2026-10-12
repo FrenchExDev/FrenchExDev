@@ -1,4 +1,19 @@
+<#
+.SYNOPSIS
+Activate configured contributions in the session registry.
+.DESCRIPTION
+Define Setup-OutputPumps for the OutputPumps runtime. Reuse compatible loaded modules, stage provider registrations transactionally and preserve unchanged live overrides.
+#>
+
+
 function Setup-OutputPumps {
+    <#
+    .SYNOPSIS
+    Activate configured contributions in the session registry.
+    .DESCRIPTION
+    Reuse compatible loaded modules, stage provider registrations transactionally and preserve unchanged live overrides.
+    #>
+    
     [CmdletBinding()]
     param([string]$ConfigurationPath=(Join-Path $HOME '.pumps-config.yaml'),[string]$InventoryPath=(Join-Path $HOME '.pwsh-pumps/registry.json'),[string[]]$ProviderId)
     $session=$script:OutputPumpSession
